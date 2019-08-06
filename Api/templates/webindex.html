@@ -366,12 +366,12 @@ layui.use('table', function() {
         , cols: [[ //表头
             {type: 'checkbox', fixed: 'left'}
             , {field: 'caseid', title: 'ID', width: 60, sort: true, fixed: 'left',align:"center"}
-            , {field: 'case_models', title: '所属模块', width: 120,align:"center"}
-            , {field: 'webfunpoint', title: '功能点', width: 120,align:"center"}
+            , {field: 'module', title: '所属模块', width: 120,align:"center"}
+            , {field: 'funpoint', title: '功能点', width: 120,align:"center"}
             , {field: 'casename', title: '测试用例名称', width: 210,align:"center",style:'background-color: lightyellow;'}
-            , {field: 'webpremise', title: '前提条件', width: 150,align:"center"}
+            , {field: 'premise', title: '前提条件', width: 150,align:"center"}
 			,{field:'teststep', title:'测试步骤', width:220,align:"center", edit: 'text'}
-			, {field: 'webexceptres', title: '期望结果', width: 220, sort: true,align:"center"}
+			, {field: 'exceptres', title: '期望结果', width: 220, sort: true,align:"center"}
             , {field: 'result', title: '执行结果', width: 130, sort: true,align:"center",edit: 'text',templet: function(res){
                 if(res.result.indexOf("Failed") != -1){
 					    return '<span style="color: red;">' +res.result + '</span>'
