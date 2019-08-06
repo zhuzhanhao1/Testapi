@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VagrantProjectSettings">
+    <option name="envs">
+      <map>
+        <entry key="" value="" />
+        <entry key="                              &lt;!-- &lt;td&gt;&lt;input type" value="&quot;radio&quot;&gt;&lt;/td&gt;  --&gt;" />
+        <entry key="                              &lt;td&gt;&lt;input type" value="&quot;radio&quot;&gt;&lt;/td&gt;" />
+        <entry key="                            &lt;input type" value="&quot;submit&quot; name=&quot;cancel&quot; value=&quot;取消&quot; class=&quot;btnLogin&quot;&gt;" />
+        <entry key="                        &lt;div class" value="&quot;but&quot;&gt;" />
+        <entry key="                      &lt;input name" value="&quot;casename&quot; type=&quot;text&quot; placeholder=&quot;用例名称&quot; class=&quot;form-control&quot;&gt;" />
+        <entry key="                    &lt;button type" value="&quot;submit&quot; class=&quot;btn btn-success&quot;&gt;搜索&lt;/button&gt;" />
+        <entry key="                    &lt;div class" value="&quot;form-line&quot;&gt;" />
+        <entry key="                    &lt;table class" value="&quot;table table-striped&quot;&gt;" />
+        <entry key="                  &lt;form class" value="&quot;navbar-form&quot; method=&quot;get&quot; action=&quot;/search_name/&quot;&gt;" />
+        <entry key="                &lt;button id" value="&quot;run&quot; onclick=&quot;run()&quot;&gt;" />
+        <entry key="                &lt;div class" value="&quot;col-md-12&quot;&gt;" />
+        <entry key="                &lt;form action" value="&quot;/create_case/&quot; method=&quot;post&quot; id='Fcase'&gt;" />
+        <entry key="                &lt;li class" value="&quot;active&quot;&gt;&lt;a href=&quot;#&quot;&gt;用例库&lt;/a&gt;&lt;/li&gt;" />
+        <entry key="                &lt;li&gt;&lt;a href" value="&quot;/guest_manage/&quot;&gt;导入用例&lt;/a&gt;&lt;/li&gt;" />
+        <entry key="                &lt;p id" value="'pp'&gt;{{error}}&lt;/p&gt;" />
+        <entry key="                a.style.display " value=" &quot;block&quot;;" />
+        <entry key="                var a " value=" document.getElementById(&quot;Fcase&quot;);" />
+        <entry key="               &lt;div id" value="&quot;navbar&quot; class=&quot;navbar-collapse collapse&quot;&gt;" />
+        <entry key="               &lt;li&gt;&lt;a href" value="&quot;/logout/&quot;&gt;退出&lt;/a&gt;&lt;/li&gt;" />
+        <entry key="              &lt;a class" value="&quot;navbar-brand&quot; href=&quot;/caselist/&quot;&gt;Automated TTest System&lt;/a&gt;" />
+        <entry key="              &lt;ul class" value="&quot;nav navbar-nav navbar-right&quot;&gt;" />
+        <entry key="            &lt;div class" value="&quot;col&quot;&gt;" />
+        <entry key="            &lt;div id" value="&quot;navbar&quot; class=&quot;collapse navbar-collapse&quot;&gt;" />
+        <entry key="          &lt;div class" value="&quot;container&quot;&gt;" />
+        <entry key="        &lt;div class" value="&quot;container theme-showcase&quot; role=&quot;main&quot;&gt;" />
+        <entry key="        &lt;link rel" value="&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;./../static/css/index.css&quot;&gt;" />
+        <entry key="        &lt;meta charset" value="&quot;utf-8&quot;&gt;" />
+        <entry key="        &lt;nav class" value="&quot;navbar navbar-inverse navbar-fixed-top&quot;&gt;" />
+        <entry key="        &lt;script src" value="&quot;https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;" />
+        <entry key="&lt;html lang" value="&quot;en&quot;&gt;" />
+      </map>
+    </option>
+    <option name="instanceFolder" value="" />
+    <option name="provider" value="" />
+  </component>
+</project>

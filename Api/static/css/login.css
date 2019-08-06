@@ -1,0 +1,138 @@
+body{
+    background: no-repeat;
+    background-position:center;
+    background-size: 1440px;
+}
+
+#container{
+    width: 990px;
+    margin: 100px auto;
+    /*border: 1px solid red;*/
+}
+
+body,p,h1,h2,h3,h4,h5,h6,ul,ol{
+    margin: 0px;
+}
+
+
+#container h2{
+    color: #999;
+    border-bottom: 1px solid skyblue;
+    font-weight: normal;
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+    padding-top: 15px;
+    text-align: center;
+}
+
+#login{
+    float: right;
+    margin-left: 50px;
+    margin-top:80px;
+}
+
+
+#login .form-line{
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+#login .form-line>div{
+    float: right;
+    width: 300px;
+}
+
+#login .form-line>p{
+    float: right;
+    color: #999;
+    margin-right: 30px;
+    height: 40px;
+    line-height: 40px;
+}
+
+#login .form-control{
+    width: 300px;
+    height: 40px;
+    /*文本框有１的内边距*/
+    /*border: 1px solid #ccc;*/
+    box-sizing: border-box;
+    /*元素width=内容宽度+左右border+左右padding*/
+    /*元素height=内容高度+上下border+上下padding*/
+    padding-left: 15px;
+    outline: none;
+    border-radius:5px;
+    border: 2px solid skyblue;
+}
+
+#login p.anchor{
+    float: right;
+}
+
+#login p.saved{
+    /*float: left;*/
+    color: #999;
+}
+
+#login p.anchor a{
+    color: #999;
+}
+
+#login p.saved input{
+    width: 16px;
+    height: 16px;
+/*  控制垂直对齐，控制当前元素两端文本相对于当前元素的垂直对齐
+    top:顶部对齐;
+    middle:居中对齐;
+    bottom:底部对齐;
+    baseline:基线对齐;*/
+    vertical-align: middle;
+}
+
+#d1{
+    margin-top: 40px;
+}
+#login div.form-line a.goReg{
+    float: right; 
+    text-decoration: none;
+}
+
+#login div.form-line .btnLogin{
+    background: none;
+}
+
+
+#login div.form-line a.goReg,#login div.form-line .btnLogin{
+    /*高度　宽度　边框　边框倒角　文本水平居中　行高　文字大小*/
+    width: 146px;
+    height: 40px;
+    border: 1px solid #7A8F66;
+    border-radius: 5px;
+    text-align: center;
+    line-height: 40px;
+    font-size: 18px;
+    color: white;
+}
+
+#img{
+    position: relative;
+    width: 500px;
+    height: 400px;
+    border: 2px solid skyblue;
+    border-radius: 5px;
+}
+
+/*#img>a{*/
+    /*position: absolute;*/
+    /*!*宽高　边框　倒角　位置　文字　大小　颜色　居中　行高*!*/
+    /*width: 155px;*/
+    /*height: 50px;*/
+    /*box-sizing: border-box;*/
+    /*border: 1px solid #7A8861;*/
+    /*border-radius: 5px;*/
+    /*bottom: 19px;*/
+    /*left: 174px;*/
+    /*text-align: center;*/
+    /*line-height: 50px;*/
+    /*text-decoration: none;*/
+    /*color: black;*/
+/*}*/

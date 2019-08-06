@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>执行结果</title>
+	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<!--<script>
+		var json = $('#detail').val();
+		var result = JSON.stringify(JSON.parse(json), null, 4);
+		$('#detail').val(result);
+		var j = $('#jbody').val();
+		var r = JSON.stringify(JSON.parse(j), null, 4);
+		$('#jbody').val(r);
+	</script>-->
+	<style>
+		li{
+			font-size: 16px;
+			color: black;
+			margin-bottom: 15px;
+			width: 600px;
+		}
+		h4{
+			text-align: center;
+		}
+		ul{
+			float: left;
+			margin-right: 70px;
+			width: 50%;
+
+		}
+		textarea{
+			font-size: 14px;
+			color: black;
+		}
+	</style>
+</head>
+<body>
+	<h4 class="alert alert-success">
+		🚚接口测试执行结果→/{{ dic.casename }}/
+	</h4>
+	<div class="alert alert-warning">
+		<ul>
+			<li>Request URL: {{ dic.url }}</li>
+			<li>Request Method: {{ dic.method }}</li>
+			<li>Request accessToken: {{ dic.header }}</li>
+			<li>Query String Parameters: {{ dic.params }}</li>
+			<li id = "jbody">Body String Parameters: {{ dic.body }}</li>
+			<li>Login User: {{ dic.identity }}</li>
+			<li>Subordinate to the module: {{ dic.belong }}</li>
+			<li>Use case name: {{ dic.casename }}</li>
+		</ul>
+		<textarea id="detail" rows="25" cols="80" readonly="readonly">{{response}}</textarea>
+	</div>
+
+</body>
+</html>

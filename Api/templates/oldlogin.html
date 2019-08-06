@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+            Testapi-登录
+        {% endblock %}
+    </title>
+    <link rel="stylesheet" type="text/css" href="./../static/css/login.css">
+
+    {% block style %}
+    {% endblock %}
+
+    {% block js %}
+        <script type="text/javascript"></script>
+    {% endblock %}
+</head>
+<body style="background-image: url('{% static 'images/9.jpg' %}')">
+    <div id='container'>
+        <h2>
+            {% block h2 %}
+                用户登录
+            {% endblock %}
+        </h2>
+        <div id='content'>
+            <div id='login'>
+            {% block form %}
+                <form action="/login/" method="post">
+                    {% csrf_token %}
+                    <!-- 循环便利form对象-->
+                    {% for field in form %}
+                        <div class="form-line">
+                            <div>
+                                {{field}}
+                            </div>
+                            <p>
+                                {{field.label}}
+                            </p>
+                        </div>
+                    {% endfor %}
+                    <!-- 记住密码 -->
+                    <div class="form-line">
+                        <div>
+                            <p class="anchor">
+                                <a href="#">忘记密码</a>
+                                <a href="#">快捷登录</a>
+                            </p>
+                            <p class="saved">
+                                <input type="checkbox" name="isSaved">记住密码
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-line" id='d1'>
+                        <div>
+                           <a href="/registered" class="goReg">用户注册</a>
+                            <input type="submit" value="登录" class="btnLogin">
+                        </div>
+                    </div>
+                </form>
+            {% endblock %}
+            </div>
+            <p id='img'>
+                <img src="{% static 'images/huiyuan.jpg' %}">
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+

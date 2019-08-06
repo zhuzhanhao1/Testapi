@@ -1,0 +1,722 @@
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Testapi</title>
+        <link rel="stylesheet" href="./../static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+		<link rel="icon" href="./../static/images/favicon.ico">
+        <link rel="stylesheet" type="text/css" href="./../static/css/index.css">
+		<link rel="stylesheet" href="./../static/css/layui.css"  media="all">
+		<script src="./../static/js/layui/layui.js"></script>
+        <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+        <script src="./../static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+        <script>
+			<!--循环得到用户的头像-->
+			window.onload = function (){
+				var ident = document.getElementsByClassName("identity");
+				for(var i = 0;i<ident.length;i++){
+					if(document.getElementsByClassName("identity")[i].innerHTML == "sysadmin"){
+						document.getElementsByClassName("identity")[i].innerHTML = '<img src="./../static/images/4.png">';
+					}else if(document.getElementsByClassName("identity")[i].innerHTML == "admin"){
+						document.getElementsByClassName("identity")[i].innerHTML = '<img src="./../static/images/5.png">';
+					}else if(document.getElementsByClassName("identity")[i].innerHTML == "ast"){
+						document.getElementsByClassName("identity")[i].innerHTML = '<img src="./../static/images/6.png">';
+					};
+				};
+				var elements=$("#table").find("em");
+				for (var i=0;i<elements.length;i++){
+					$(elements[i]).attr("title",$(elements[i]).text());
+					console.log($(elements[i]).text());
+					if ($(elements[i]).text().length>=50){
+						var str=$(elements[i]).text().substring(0,50)+"...";
+						$(elements[i]).html(str);
+					}
+					//当鼠标在列表上悬停时，出现内容
+					$(elements[i]).mouseover(function(){
+						$(this).tooltip;
+					});
+				}
+			};
+			function edititem(a){
+				var tr=$(a).parent().parent();
+				var ucaseid = tr.children("td#ucaseid").text();
+				var ucsaename = tr.children("td#ucsaename").text();
+				var uurl = tr.children("td#uurl").text();
+				var umethod = tr.children("td#umethod").text();
+				var uparams = tr.children("td#uparams").text();
+				var ubody = tr.children("td#ubody").text();
+				$('#show1').val(ucaseid);
+				$('#show2').val(ucsaename);
+				$('#show3').val(uurl);
+				$('#show4').val(umethod);
+				$('#show5').val(uparams);
+				$('#show6').val(ubody);
+			};
+
+		function delcase(obj){
+			var tr=$(obj).parent().parent();
+			console.log(tr);
+			var uucaseid = tr.children("td#ucaseid").text();
+			console.log(uucaseid);
+			$('#www').val(uucaseid);
+		};
+		</script>
+		{% if messages %}
+			<script>
+				{% for msg in messages %}
+					layer.msg('{{ msg.message }}');
+				{% endfor %}
+			</script>
+		{% endif %}
+		<style>
+		</style>
+    </head>
+    <body>
+		<!--头部导航栏信息-->
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+          <div class="container">
+            <div class="navbar-header" style="margin-left: -90px;margin-right: 30px;">
+              <a class="navbar-brand" href="/index/">
+				  <span class="glyphicon glyphicon-home"></span>
+				  Automated Test System
+			  </a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+              <ul class="nav navbar-nav">
+                <li class="active">
+					<a href="/caselist/">
+						<span class="badge pull-right" style="margin-left: 5px;">{{ all_p.count }}</span>
+						<span class="glyphicon glyphicon-th-large"></span>
+						用例库
+					</a>
+				</li>
+                <li><a  data-toggle="modal" data-target="#myModal3">
+					<span class="glyphicon glyphicon-import"></span>
+					导入用例
+				</a>
+				</li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right" style="margin-right: -70px;">
+               <li>
+				   <a href="/login/" class="glyphicon glyphicon-user" style="padding-top: 12px;">{{user}}</a>
+			   </li>
+               <li><a href="/welcome/" class="glyphicon glyphicon-off" style="padding-top: 12px;">返回</a></li>
+             </ul>
+            </div>
+          </div>
+        </nav>
+
+		<!--头部导航以下所有内容-->
+        <div class="theme-showcase" role="main">
+            <div style="padding-top:60px;">
+				<!--搜索框-->
+				<div style="margin-top: -5px;float: right;">
+				   <div id="navbar" class="navbar-collapse collapse" style="padding-left: 0px;padding-right: 40px;">
+					  <form class="navbar-form" method="get" action="/search_name/">
+						<div class="form-group" style="margin-bottom: -14px;">
+							<span  style="margin-right: 606px;color: darkorange;font-size: 20px;">
+								<span class="glyphicon glyphicon-th-list"></span>用例列表展现
+							</span>
+							<button type="button" class="layui-btn layui-btn-warm layui-btn-radius layui-anim layui-anim-rotate" data-toggle="modal" data-loading-text="Loading..." data-target="#myModal" style="margin: 0 20px 10px 0;">新建用例</button>
+							<label>
+								<input name="casename" type="text" placeholder="用例名称" class="form-control" style="margin-right: 1px;margin-bottom: 14px;">
+							</label>
+						</div>
+						<button type="submit" class="btn btn-success" style="margin-bottom:5px;background-color: yellowgreen">搜索</button>
+					  </form>
+				   </div>
+				</div>
+            </div>
+			<!--左侧导航栏信息-->
+			<div style="width: 220px;height:657px;margin: 0px 0 0 15px;overflow-y:auto;" class="pull-left">
+				<a href="#" class="list-group-item active">接口模块列表</a>
+				<a href="?belong=unit" class="list-group-item ">
+					<span class="badge pull-right">{{ p1.count }}</span>
+					单位接口
+				</a>
+				<a href="?belong=dept" class="list-group-item">
+					<span class="badge pull-right">{{ p2.count }}</span>
+					部门管理接口
+				</a>
+				<a href="?belong=user" class="list-group-item">
+					<span class="badge pull-right">{{ p3.count }}</span>
+					用户模块接口
+				</a>
+				<a href="?belong=policy" class="list-group-item">
+					<span class="badge pull-right">{{ p4.count }}</span>
+					保留处置策略接口
+				</a>
+				<a href="?belong=source" class="list-group-item">
+					<span class="badge pull-right">{{ p5.count }}</span>
+					档案来源接口
+				</a>
+				<a href="?belong=category" class="list-group-item">
+					<span class="badge pull-right">{{ p23.count }}</span>
+					门类模块接口
+				</a>
+				<a href="?belong=acl" class="list-group-item">
+					<span class="badge pull-right">{{ p20.count }}</span>
+					访问控制权限接口
+				</a>
+				<a href="?belong=view" class="list-group-item">
+					<span class="badge pull-right">{{ p18.count }}</span>
+					视图自定义接口
+				</a>
+				<a href="?belong=navigation" class="list-group-item">
+					<span class="badge pull-right">{{ p8.count }}</span>
+					导航管理接口
+				</a>
+				<a href="?belong=data_form" class="list-group-item">
+					<span class="badge pull-right">{{ p9.count }}</span>
+					数据表单管理接口
+				</a>
+				<a href="?belong=data_form_config" class="list-group-item">
+					<span class="badge pull-right">{{ p10.count }}</span>
+					数据表单配置管理接口
+				</a>
+				<a href="?belong=file_plan" class="list-group-item">
+					<span class="badge pull-right">{{ p11.count }}</span>
+					文件计划管理接口
+				</a>
+				<a href="?belong=document" class="list-group-item">
+					<span class="badge pull-right">{{ p12.count }}</span>
+					文档管理
+				</a>
+				<a href="?belong=record" class="list-group-item">
+					<span class="badge pull-right">{{ p13.count }}</span>
+					Record接口
+				</a>
+				<a href="?belong=volume" class="list-group-item">
+					<span class="badge pull-right">{{ p14.count }}</span>
+					案卷管理
+				</a>
+				<a href="?belong=archives" class="list-group-item">
+					<span class="badge pull-right">{{ p15.count }}</span>
+					档案管理
+				</a>
+				<a href="?belong=class" class="list-group-item">
+					<span class="badge pull-right">{{ p17.count }}</span>
+					类目模块接口
+				</a>
+				<a href="?belong=transfer_form" class="list-group-item">
+					<span class="badge pull-right">{{ p16.count }}</span>
+					移交表单接口
+				</a>
+				<a href="?belong=role" class="list-group-item">
+					<span class="badge pull-right">{{ p19.count }}</span>
+					角色管理
+				</a>
+				<a href="?belong=resource" class="list-group-item">
+					<span class="badge pull-right">{{ p21.count }}</span>
+					资源管理
+				</a>
+				<a href="?belong=common_folder" class="list-group-item">
+					<span class="badge pull-right">{{ p22.count }}</span>
+					通用文件夹管理
+				</a>
+				<a href="?belong=metadata" class="list-group-item">
+					<span class="badge pull-right">{{ p6.count }}</span>
+					元数据管理平台相关接口
+				</a>
+				<a href="?belong=common" class="list-group-item">
+					<span class="badge pull-right">{{ p7.count }}</span>
+					公共操作相关接口
+				</a>
+
+			</div>
+
+			<!--用例列表展现-->
+            <div class="col">
+                <div class="col-md-10">
+                    <table  id="table" class="table table-bordered table-condensed table-hover">
+                        <thead>
+                            <tr class="success">
+								<th style="vertical-align:middle;">User</th>
+                                <th style="vertical-align:middle;">ID</th>
+                                <th style="vertical-align:middle;">CaseName</th>
+                                <th style="vertical-align:middle;">Url</th>
+                                <th style="vertical-align:middle;">Method</th>
+                                <th style="vertical-align:middle;overflow: hidden;width: 30px;">Query</th>
+                                <th style="vertical-align:middle;">Body</th>
+								<th style="vertical-align:middle;">Result</th>
+								<th style="vertical-align:middle;">&nbsp;&nbsp;&nbsp;&nbsp;Operation&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                            </tr>
+                        </thead>
+                    	<tbody>
+                        	{% for case in cases %}
+                            <tr style="vertical-align:middle;">
+							  <td class="identity" style="vertical-align:middle;">{{ case.identity }}</td>
+                              <td id = "ucaseid" style="vertical-align:middle;">{{ case.caseid }}</td>
+                              <td id ="ucsaename" style="vertical-align:middle;">{{ case.casename }}</td>
+                              <td id ="uurl" style="vertical-align:middle;">{{ case.url }}</td>
+                              <td id ="umethod" style="vertical-align:middle;">{{ case.method }}</td>
+                              <td id ="uparams" style="vertical-align:middle;">{{ case.params }}</td>
+                              <td id ="ubody" style="vertical-align:middle;"><em>{{ case.body }}</em></td>
+							  <td style="vertical-align:middle;"><em>{{ case.result }}</em></td>
+							  <td style="vertical-align:middle;">
+								<!--编辑按钮-->
+							  	<button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#myModal1"  onclick="edititem(this)" style="border: none;margin-bottom: 8px;font-size: 20px;color: orange;">
+									<span class="glyphicon glyphicon-edit" aria-hidden="true"><span>
+								</button>
+
+								<!--删除按钮，-->
+							  	<button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#myModal2"  onclick="delcase(this)" style="border: none;margin-bottom: 8px;font-size: 20px;color: red;">
+								  	<span class="glyphicon glyphicon-remove" aria-hidden="true"><span>
+							  	</button>
+
+							  	<!--执行按钮，-->
+							  	<button class="btn btn-default btn-xs" onclick="location.href ='/run_case/?caseid={{ case.caseid }}&identity={{ case.identity }}'" style="border: none;margin-bottom: 8px;font-size: 20px;color: lawngreen;">
+								  <span class="glyphicon glyphicon-play" aria-hidden="true"><span>
+							  	</button>
+							  </td>
+							</tr>
+                        	{% endfor %}
+						</tbody>
+					</table>
+                </div>
+            </div>
+
+			<!--分页-->
+		    <div class="pagination pagination-lg pull-right" style="margin-right: 20px;">
+			  <span class="step-links">
+				{% if cases.has_previous %}
+				  <a href="?belong={{ b }}&page={{ cases.previous_page_number }}" class="Previous" style="border: 1px solid black;border-bottom-left-radius: 12px;padding: 3px;border-top-left-radius: 12px;border-bottom-right-radius:5px;border-top-right-radius:5px;color: red">&laquo;上一页</a>
+				{% endif %}
+				  <span class="current"><i><strong>
+					Page {{ cases.number }} of {{ cases.paginator.num_pages }}</i></strong>
+				  </span>
+				{% if cases.has_next %}
+					<a href="?belong={{ b }}&page={{ cases.next_page_number }}" class="next" style="border: 1px solid black;border-bottom-right-radius: 12px;padding: 3px;border-top-right-radius: 12px;border-bottom-left-radius:5px;border-top-left-radius:5px;">下一页&raquo;</a>
+				{% endif %}
+			  </span>
+			</div>
+
+		</div>
+
+		<!--删除提示框，-->
+		<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			 <div class="modal-dialog" style="width: 400px;">
+				<div class="modal-content">
+					<form action="/delete_case/" method="post">
+						<div class="modal-header">
+							<button class="close"  aria-label="Close">
+								<span aria-hidden="true" data-dismiss="modal">×</span>
+							</button>
+							<h3 class="modal-title">
+								<span translate="MSG_HSTEMPLATES_NEW" class="ng-scope">删除用例</span>
+							</h3>
+						</div>
+						<div class="modal-body">
+							<div class="new--category-wrapper">
+								<!--用例ID，-->
+								<div class="input-content-wrapper">
+									<div class="input-boxs pull-left" style="margin-left: 20px;">
+										<span class="title pull-left">
+											<span class="text-danger">*</span>
+											<span class="title__title">
+												<span translate="MSG_HSUIGRIDTEMPLATES_TITLE_CATEGORY_NUMBER" class="ng-scope">CaseId</span>
+												:&nbsp;&nbsp;
+											</span>
+										</span>
+										<div class="do--position-parent pull-right">
+											<input type="text" name="caseid" id = "www" class="form-control category--modal--input ng-pristine \
+													ng-untouched ng-isolate-scope ng-invalid ng-invalid-required" aria-invalid="true" style="width: 80px;margin: 0px">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<h4 class="modal-title" id="myModalLabel" style="color: #FF5722;text-align: center;"><strong>删除后无法撤销，请确认</strong></h4>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+							<button type="submit" class="btn btn-primary"  style="background:#FF5722;color:white;">删除</button>
+						</div>
+					</form>
+				</div>
+			 </div>
+		</div>
+		<!--新建用例form表单--><!--默认模态框弹出后，点击背景蒙层部分弹框会消失-->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" style="width: 530px;">
+				<div class="modal-content pull-right">
+
+					<form action="/create_case/" method="post">
+						<div class="modal-header">
+							<button class="close"  aria-label="Close">
+								<span aria-hidden="true" data-dismiss="modal">×</span>
+							</button>
+							<h3 class="modal-title">
+								<span translate="MSG_HSTEMPLATES_NEW" class="ng-scope">新建用例</span>
+							</h3>
+						</div>
+						<!--逐个输入框，-->
+						<div class="modal-body pull-left">
+							<div class="new--category-wrapper pull-left">
+
+								<!--用例ID
+								<div class="input-content-wrapper">
+									<div class="input-boxs pull-left">
+										<span class="title">
+											<span class="text-danger">*</span>
+											<span class="title__title">
+												<span translate="MSG_HSUIGRIDTEMPLATES_TITLE_CATEGORY_NUMBER" class="ng-scope">CaseId</span>
+												:&nbsp;&nbsp;
+											</span>
+										</span>
+										<div class="do--position-parent pull-right">
+											<input type="text" name="caseid" class="form-control category--modal--input ng-pristine \
+													ng-untouched ng-isolate-scope ng-invalid ng-invalid-required" aria-invalid="true">
+										</div>
+									</div>
+								</div>-->
+
+								<!--用例名字，-->
+								<div class="input-content-wrapper">
+									<div class="input-boxs pull-left">
+										<span class="title">
+											<span class="text-danger">*</span>
+											<span class="title__title">
+												<span translate="MSG_HSUIGRIDTEMPLATES_TITLE_CATEGORY_NUMBER" class="ng-scope">Name</span>
+												:&nbsp;&nbsp;&nbsp;&nbsp;
+											</span>
+										</span>
+										<div class="do--position-parent pull-right">
+											<input type="text" name="casename" class="form-control category--modal--input ng-pristine \
+													ng-untouched ng-isolate-scope ng-invalid ng-invalid-required" aria-invalid="true">
+										</div>
+									</div>
+								</div>
+
+								<!--访问路径，-->
+								<div class="input-content-wrapper">
+									<div class="input-boxs pull-left">
+										<span class="title">
+											<span class="text-danger">*</span>
+											<span class="title__title">
+												<span translate="MSG_HSUIGRIDTEMPLATES_TITLE_CATEGORY_NUMBER" class="ng-scope">Url</span>
+												:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+											</span>
+										</span>
+										<div class="do--position-parent pull-right">
+											<input type="text" name="url" class="form-control category--modal--input ng-pristine \
+														ng-untouched ng-isolate-scope ng-invalid ng-invalid-required" aria-invalid="true">
+										</div>
+									</div>
+								</div>
+
+								<!--访问用户，-->
+								<div class="input-content-wrapper">
+									<div class="input-boxs pull-left">
+										<span class="title">
+											<span class="text-danger">*</span>
+											<span class="title__title">
+												<span translate="MSG_HSUIGRIDTEMPLATES_TITLE_CATEGORY_NUMBER" class="ng-scope">User</span>
+												:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+											</span>
+										</span>
+										<div class="do--position-parent pull-right">
+											<div class="radio--option-box">
+												<label class="radio-inline-select">
+													<input type="radio" name = "r1" value = "sysadmin" class="ng-pristine ng-untouched ng-valid ng-scope" aria-invalid="false">Sysadmin
+												</label>
+												<label class="radio-inline-select">
+													<input type="radio" name = "r2" value = "admin" class="ng-pristine ng-untouched ng-valid ng-scope" aria-invalid="false">Admin
+												</label>
+												<label class="radio-inline-select">
+													<input type="radio" name = "r3" value = "ast" class="ng-pristine ng-untouched ng-valid ng-scope" aria-invalid="false">Ast
+												</label>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<!--请求方式，-->
+								<div class="input-content-wrapper">
+									<div class="input-boxs pull-left">
+										<span class="title">
+											<span class="text-danger">*</span>
+											<span class="title__title">
+												<span translate="MSG_HSUIGRIDTEMPLATES_TITLE_CATEGORY_NUMBER" class="ng-scope">Method</span>
+												:&nbsp;
+											</span>
+										</span>
+										<div class="do--position-parent pull-right">
+											<input type="text" name="method" class="form-control category--modal--input ng-pristine \
+															ng-untouched ng-isolate-scope ng-invalid ng-invalid-required" aria-invalid="true">
+										</div>
+									</div>
+								</div>
+
+								<!--请求头，-->
+								<div class="input-content-wrapper">
+									<div class="input-boxs pull-left">
+										<span class="title">
+											<span class="text-danger">*</span>
+											<span class="title__title">
+												<span translate="MSG_HSUIGRIDTEMPLATES_TITLE_CATEGORY_NUMBER" class="ng-scope">Belong</span>
+												:&nbsp;
+											</span>
+										</span>
+										<div class="do--position-parent pull-right">
+											<input type="text" name="belong" class="form-control category--modal--input ng-pristine \
+														ng-untouched ng-isolate-scope ng-invalid ng-invalid-required" aria-invalid="true">
+										</div>
+									</div>
+								</div>
+
+
+								<div class="input-content-wrapper">
+									<div class="input-boxs pull-left">
+										<span class="title">
+											<span class="text-danger">*</span>
+											<span class="title__title">
+												<span translate="MSG_HSUIGRIDTEMPLATES_TITLE_CATEGORY_NUMBER" class="ng-scope">Query</span>
+												:&nbsp;&nbsp;&nbsp;
+											</span>
+										</span>
+										<div class="do--position-parent pull-right">
+											<textarea type="text" rows="3" class="form-control category--modal--input ng-pristine ng-valid \
+															ng-touched"  name = "params" aria-invalid="false"></textarea>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="input-content-wrapper">
+									<div class="input-boxs pull-left">
+										<span class="title">
+											<span class="text-danger">*</span>
+											<span class="title__title">
+												<span translate="MSG_HSUIGRIDTEMPLATES_TITLE_CATEGORY_NUMBER" class="ng-scope">Body</span>
+												:&nbsp;&nbsp;&nbsp;&nbsp;
+											</span>
+										</span>
+										<div class="do--position-parent pull-right">
+											<textarea type="text" rows="7" class="form-control category--modal--input ng-pristine \
+													ng-valid ng-touched"  name = "body" aria-invalid="false"></textarea>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" translate="MSG_HSTEMPLATES_CANCEL" data-dismiss="modal">
+								取消
+							</button>
+							<button  onclick="Ccase()" class="btn btn-primary ng-scope" type="submit" translate="MSG_HSTEMPLATES_CONFIRM">
+								确定
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	  	<!--编辑用例，-->
+	  	<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" style="width: 530px;">
+				<div class="modal-content pull-right">
+
+					<form action="/update_case/" method="post">
+						<div class="modal-header">
+							<button class="close"  aria-label="Close">
+								<span aria-hidden="true" data-dismiss="modal">×</span>
+							</button>
+							<h3 class="modal-title">
+								<span translate="MSG_HSTEMPLATES_NEW" class="ng-scope">编辑用例</span>
+							</h3>
+						</div>
+						<!--逐个输入框，-->
+						<div class="modal-body pull-left">
+							<div class="new--category-wrapper pull-left">
+
+								<!--用例ID，-->
+								<div class="input-content-wrapper">
+									<div class="input-boxs pull-left">
+										<span class="title">
+											<span class="text-danger">*</span>
+											<span class="title__title">
+												<span translate="MSG_HSUIGRIDTEMPLATES_TITLE_CATEGORY_NUMBER" class="ng-scope">CaseId</span>
+												:&nbsp;&nbsp;
+											</span>
+										</span>
+										<div class="do--position-parent pull-right">
+											<input type="text" name="caseid" id = "show1" class="form-control category--modal--input ng-pristine \
+													ng-untouched ng-isolate-scope ng-invalid ng-invalid-required" aria-invalid="true">
+										</div>
+									</div>
+								</div>
+
+								<!--用例名字，-->
+								<div class="input-content-wrapper">
+									<div class="input-boxs pull-left">
+										<span class="title">
+											<span class="text-danger">*</span>
+											<span class="title__title">
+												<span translate="MSG_HSUIGRIDTEMPLATES_TITLE_CATEGORY_NUMBER" class="ng-scope">Name</span>
+												:&nbsp;&nbsp;&nbsp;&nbsp;
+											</span>
+										</span>
+										<div class="do--position-parent pull-right">
+											<input type="text" name="casename" id = "show2" class="form-control category--modal--input ng-pristine \
+													ng-untouched ng-isolate-scope ng-invalid ng-invalid-required" aria-invalid="true">
+										</div>
+									</div>
+								</div>
+
+								<!--访问路径，-->
+								<div class="input-content-wrapper">
+									<div class="input-boxs pull-left">
+										<span class="title">
+											<span class="text-danger">*</span>
+											<span class="title__title">
+												<span translate="MSG_HSUIGRIDTEMPLATES_TITLE_CATEGORY_NUMBER" class="ng-scope">Url</span>
+												:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+											</span>
+										</span>
+										<div class="do--position-parent pull-right">
+											<input type="text" name="url" id ="show3" class="form-control category--modal--input ng-pristine \
+														ng-untouched ng-isolate-scope ng-invalid ng-invalid-required" aria-invalid="true">
+										</div>
+									</div>
+								</div>
+
+								<!--访问用户，-->
+								<div class="input-content-wrapper">
+									<div class="input-boxs pull-left">
+										<span class="title">
+											<span class="text-danger">*</span>
+											<span class="title__title">
+												<span translate="MSG_HSUIGRIDTEMPLATES_TITLE_CATEGORY_NUMBER" class="ng-scope">User</span>
+												:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+											</span>
+										</span>
+										<div class="do--position-parent pull-right">
+											<div class="radio--option-box">
+												<label class="radio-inline-select">
+													<input type="radio" name = "r1" value = "sysadmin" class="ng-pristine ng-untouched ng-valid ng-scope" aria-invalid="false">Sysadmin
+												</label>
+												<label class="radio-inline-select">
+													<input type="radio" name = "r2" value = "admin" class="ng-pristine ng-untouched ng-valid ng-scope" aria-invalid="false">Admin
+												</label>
+												<label class="radio-inline-select">
+													<input type="radio" name = "r3" value = "ast" class="ng-pristine ng-untouched ng-valid ng-scope" aria-invalid="false">Ast
+												</label>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<!--请求方式，-->
+								<div class="input-content-wrapper">
+									<div class="input-boxs pull-left">
+										<span class="title">
+											<span class="text-danger">*</span>
+											<span class="title__title">
+												<span translate="MSG_HSUIGRIDTEMPLATES_TITLE_CATEGORY_NUMBER" class="ng-scope">Method</span>
+												:&nbsp;
+											</span>
+										</span>
+										<div class="do--position-parent pull-right">
+											<input type="text" name="method" id="show4" class="form-control category--modal--input ng-pristine \
+															ng-untouched ng-isolate-scope ng-invalid ng-invalid-required" aria-invalid="true">
+										</div>
+									</div>
+								</div>
+
+								<!--请求头，-->
+								<div class="input-content-wrapper">
+									<div class="input-boxs pull-left">
+										<span class="title">
+											<span class="text-danger">*</span>
+											<span class="title__title">
+												<span translate="MSG_HSUIGRIDTEMPLATES_TITLE_CATEGORY_NUMBER" class="ng-scope">Belong</span>
+												:&nbsp;
+											</span>
+										</span>
+										<div class="do--position-parent pull-right">
+											<input type="text" name="belong" id="show7" class="form-control category--modal--input ng-pristine \
+														ng-untouched ng-isolate-scope ng-invalid ng-invalid-required" aria-invalid="true">
+										</div>
+									</div>
+								</div>
+
+
+								<div class="input-content-wrapper">
+									<div class="input-boxs pull-left">
+										<span class="title">
+											<span class="text-danger">*</span>
+											<span class="title__title">
+												<span translate="MSG_HSUIGRIDTEMPLATES_TITLE_CATEGORY_NUMBER" class="ng-scope">Query</span>
+												:&nbsp;&nbsp;&nbsp;
+											</span>
+										</span>
+										<div class="do--position-parent pull-right">
+											<textarea type="text" rows="3"  class="form-control category--modal--input ng-pristine \
+													ng-valid ng-touched"  name = "params" aria-invalid="false" id="show5"></textarea>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="input-content-wrapper">
+									<div class="input-boxs pull-left">
+										<span class="title">
+											<span class="text-danger">*</span>
+											<span class="title__title">
+												<span translate="MSG_HSUIGRIDTEMPLATES_TITLE_CATEGORY_NUMBER" class="ng-scope">Body</span>
+												:&nbsp;&nbsp;&nbsp;&nbsp;
+											</span>
+										</span>
+										<div class="do--position-parent pull-right">
+											<textarea type="text" rows="7"  class="form-control category--modal--input ng-pristine \
+													ng-valid ng-touched"  name = "body" aria-invalid="false" id="show6"></textarea>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" translate="MSG_HSTEMPLATES_CANCEL" data-dismiss="modal">
+								取消
+							</button>
+{#							<button type="button" class="btn btn-primary" onclick="edititem(this)">Save</button>#}
+							<button  class="btn btn-primary ng-scope" type="submit" translate="MSG_HSTEMPLATES_CONFIRM">
+								确定
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div><!--编辑用例，-->
+		<!--导入用例-->
+		<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<form action="/import_case/" method="post" enctype="multipart/form-data">
+						{% csrf_token %}
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+									aria-hidden="true">×
+							</button>
+							<h3 class="modal-title" id="myModalLabel">
+								导入用例
+							</h3>
+						</div>
+						<div class="modal-body">
+							<div class="page-container">
+								<input type="file"  name="file" id="filename">
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default"
+									data-dismiss="modal">关闭
+							</button>
+							<button class="btn btn-primary" type="submit">提交</button>
+						</div>
+					</form>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+	</body>
+
+</html>
