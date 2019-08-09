@@ -19,6 +19,13 @@ urlpatterns = [
     url(r'^run_case/$',run_case_views),
     url(r'^logout/$',logout_views),
     url(r'^webindex/$',webindex_views),
+#----------------------Api_v2 url-----------------------------
+    url(r'^apiindex/$', apiindex_view),
+    url(r'^apilist/$', apilist_view),
+    url(r'^create_apicase/$', create_apicase_views),
+    url(r'^del_apicase/$', delete_apicase_views),
+    url(r'^update_apicase/$', update_apicase_views),
+    url(r'^run_apicase/$', run_apicase_views),
 
     #----------------------web url-----------------------------
     url(r'^weblist/$',weblist_view),
@@ -28,15 +35,15 @@ urlpatterns = [
     url(r'^update_webcase/$',update_webcase_views),
     url(r'^import_webcase/$',import_webcase_views),
     url(r'^TestReport/$',report_webcase_views),
+    #----------------------webAuto url-----------------------------
+    url(r'^autolist/$',antolist_view),
+    url(r'^create_autocase/$',create_autocase_views),
+    url(r'^run_autocase/$',run_autocase_views),
+    url(r'^del_webcase/$',delete_autocase_views),
+    url(r'^update_autocase/$',update_autocase_views),
 
     #----------------------timing url-----------------------------
     url(r'^timing/$',timing_views),
     url(r'^performance/$',performance_views),
 
-    url(r'^apiindex/$',apiindex_view),
-    url(r'^apilist/$',apilist_view),
-    url(r'^create_apicase/$',create_apicase_views),
-    url(r'^del_apicase/$',delete_apicase_views),
-    url(r'^update_apicase/$',update_apicase_views),
-    url(r'^run_apicase/$',run_apicase_views),
 ]

@@ -1,3 +1,5 @@
+import json
+
 from selenium import webdriver
 import unittest
 import time
@@ -10,6 +12,7 @@ sys.path.append(cur_path)
 from .my_base import Base
 from .sysadmin_conf import *
 from .login import Login
+from .conn_db import ConnDataBase
 
 
 class SystemManagement(unittest.TestCase):
@@ -19,6 +22,7 @@ class SystemManagement(unittest.TestCase):
         cls.driver.maximize_window()
         Login(cls.driver).login()
         cls.d = Base(cls.driver)
+        cls.data = ConnDataBase()
         # cls.d.js_element(LoginDisplay)
         # time.sleep(3)
         # cls.d.js_accept()
@@ -209,14 +213,21 @@ class SystemManagement(unittest.TestCase):
         self.alert(CreateForms)        #显示alert弹框
         d.js_element(forms_create)     #点击新建数据表单按钮
         time.sleep(1)
-        d.sendKeys(bdmc,bdmc_value)    #输入表单名称
+
+        result = json.dumps(eval(self.data.get_logininfo(1)[0]),ensure_ascii=False)  #从数据库获取数据，转换为字典取值
+        print(result)
+        print(type(result))
+        formsname = json.loads(result)["forms_name"]
+        time.sleep(1)
+
+        d.sendKeys(bdmc,formsname)    #输入表单名称
         time.sleep(1)
         d.js_element(ysjfa)            #点击元数据方案选择按钮
         time.sleep(1)
         d.js_element(ysjfa_value)      #选择元数据方案的值
         time.sleep(1)
         d.submit(bdmc)                 #提交表单
-        time.sleep(2)
+        time.sleep(5)
 
 
     def test_a_forms_delete(self):
@@ -225,10 +236,17 @@ class SystemManagement(unittest.TestCase):
         d.click(formsmodel)            #进入到数据表单模块
         time.sleep(1)
         self.alert(DeleteForms)        #显示alert弹框
-        self.matching(editor,formname,"2019年检登记表单")  #匹配数据表单名字为"2019年检登记表单"的做编辑操作
+
+        result = json.dumps(eval(self.data.get_logininfo(1)[0]),ensure_ascii=False)  #从数据库获取数据，转换为字典取值
+        print(result)
+        print(type(result))
+        formsname = json.loads(result)["forms_name"]
+        time.sleep(1)
+
+        self.matching(editor,formname,formsname)  #匹配数据表单名字为formsname的做编辑操作
         time.sleep(1)
         d.js_element(dformsdetermine)   #点击确定
-        time.sleep(2)
+        time.sleep(5)
 
     def test_view_create(self):
         '''视图管理-新建视图'''

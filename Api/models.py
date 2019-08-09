@@ -27,7 +27,7 @@ class Case(models.Model):
     def __str__(self):
         return self.casename
 
-# web自动化测试
+# web自动化测试/功能测试
 class Webcase(models.Model):
     webcaseid = models.AutoField(primary_key=True, max_length=200, unique=True)
     webbelong = models.CharField(verbose_name="父模块",max_length=250)
@@ -44,3 +44,19 @@ class Webcase(models.Model):
     def __str__(self):
         return self.webcasename
 
+
+
+#WebAuto测试
+class Autocase(models.Model):
+    autoid = models.AutoField(primary_key=True, max_length=200, unique=True)
+    autobelong = models.CharField(verbose_name="父模块",max_length=250)
+    autoidentity = models.CharField(max_length=50, verbose_name="用户身份",blank=True)
+    autoname = models.CharField(verbose_name='测试用例名称', max_length=250)
+    autostep = models.TextField(verbose_name='测试步骤')
+    autodataready = models.CharField(verbose_name="数据准备",max_length=500)
+    autoexceptres = models.CharField(max_length=500, verbose_name="期望结果")
+    autoresult = models.TextField(verbose_name="执行结果",blank=True)
+    autocreat_time = models.DateTimeField(verbose_name='创建时间', auto_now=True,blank=True)
+
+    def __str__(self):
+        return self.autoname
