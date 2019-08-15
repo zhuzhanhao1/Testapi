@@ -69,10 +69,12 @@ if __name__ == "__main__":
     # print(result)
     # print(type(result))
     # new_res = eval(result)
-    data_a = data.get_logininfo(1)[0]
+    data_a = data.get_logininfo(6)[0]
+    print(data_a)
     data_b = json.dumps(eval(data_a),ensure_ascii=False)
     print(data_b)
+    print(type(data_b))
     data_c = json.loads(data_b)
-    print(data_c["forms_name"])
+    print(data_c["year"])
     print(type(data_c))
-    print(data_a)
+

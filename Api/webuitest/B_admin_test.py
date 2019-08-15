@@ -1,3 +1,5 @@
+import json
+
 from selenium import webdriver
 import unittest
 import time
@@ -10,6 +12,7 @@ sys.path.append(cur_path)
 from .my_base import Base
 from .admin_conf import *
 from .login import Login
+from .conn_db import ConnDataBase
 
 
 class UnitManagement(unittest.TestCase):
@@ -19,6 +22,7 @@ class UnitManagement(unittest.TestCase):
         cls.driver.maximize_window()
         Login(cls.driver).login(flag='admin')
         cls.d = Base(cls.driver)
+        cls.data = ConnDataBase()
         # cls.d.js_element(LoginDisplay)  #打开浏览器首先提示单位管理员登录的弹框
         # time.sleep(3)
         # cls.d.js_accept()
@@ -43,6 +47,7 @@ class UnitManagement(unittest.TestCase):
             eles = self.driver.find_elements_by_xpath(a)
             for ele in eles:
                 alas = ele.find_element_by_xpath(b)
+                print(alas.text)
                 if alas.text == c:
                     ele.click()
                     break
@@ -70,12 +75,23 @@ class UnitManagement(unittest.TestCase):
         self.alert(CreateDept)              #提示alert弹框
         d.js_element(create_dept)           #点击创建部门
         time.sleep(1)
-        d.sendKeys(bmmc,bmmc_value)         #输入部门名称
-        time.sleep(1)
-        d.sendKeys(bmxh,bmxh_value)         #输入部门序号
-        time.sleep(1)
-        d.js_element(base_update_determine) #点击确定
-        time.sleep(2)
+        try:
+            result = json.dumps(eval(self.data.get_logininfo(9)[0]),ensure_ascii=False)  #从数据库获取数据，转换为字典取值
+            print(result)
+            print(type(result))
+            dept_name = json.loads(result)["dept_name"]
+            number = json.loads(result)["number"]
+            d.sendKeys(bmmc, dept_name)  # 输入部门名称
+            time.sleep(1)
+            d.sendKeys(bmxh, number)  # 输入部门序号
+            time.sleep(1)
+            d.js_element(base_update_determine)  # 点击确定
+            time.sleep(2)
+        except:
+            self.alert('alert("获取数据失败，请核对信息")')
+
+
+
 
 
     def test_c_update_dept(self):
@@ -83,12 +99,19 @@ class UnitManagement(unittest.TestCase):
         d = self.d
         d.click(deptmanager_model)      #进入到部门管理模块
         self.alert(UpdateDept)          #提示alert弹框
-        self.matching(editor,deptname,"梅里号")   #匹配部门名字为梅里号的部门做编辑操作
+
+        result = json.dumps(eval(self.data.get_logininfo(10)[0]), ensure_ascii=False)  # 从数据库获取数据，转换为字典取值
+        print(result)
+        print(type(result))
+        dept_name = json.loads(result)["dept_name"]
+        fax = json.loads(result)["fax"]
+
+        self.matching(editor,deptname,dept_name)   #匹配部门名字为梅里号的部门做编辑操作
         time.sleep(1)
-        d.sendKeys(cz,cz_value)         #编辑输入框，输入传真信息
+        d.sendKeys(cz,fax)         #编辑输入框，输入传真信息
         time.sleep(1)
         d.submit(cz)                    #提交表单
-        time.sleep(2)
+        time.sleep(5)
 
 
     def test_d_delete_dept(self):
@@ -96,10 +119,17 @@ class UnitManagement(unittest.TestCase):
         d = self.d
         d.click(deptmanager_model)          #进入到部门管理模块
         self.alert(DeleteDept)              #提示alert弹框
-        self.matching(delete,deptname,"梅里号")    #匹配名字为梅里号的部门做删除操作
+
+        result = json.dumps(eval(self.data.get_logininfo(11)[0]), ensure_ascii=False)  # 从数据库获取数据，转换为字典取值
+        print(result)
+        print(type(result))
+        dept_name = json.loads(result)["dept_name"]
+
+
+        self.matching(delete,deptname,dept_name)    #匹配名字为梅里号的部门做删除操作
         time.sleep(1)
         d.js_element(dept_delete_determine) #确定删除
-        time.sleep(2)
+        time.sleep(5)
 
 
     def test_e_user_create(self):
@@ -109,23 +139,37 @@ class UnitManagement(unittest.TestCase):
         self.alert(CreateUser)          #提示alert弹框
         d.js_element(create_user)       #点击创建用户按钮
         time.sleep(1)
-        d.sendKeys(yhm,yhm_value)       #输入用户名
+
+        result = json.dumps(eval(self.data.get_logininfo(12)[0]), ensure_ascii=False)  # 从数据库获取数据，转换为字典取值
+        print(result)
+        print(type(result))
+        user_name = json.loads(result)["user_name"]
+        password = json.loads(result)["password"]
+        email = json.loads(result)["email"]
+        belong_dept = json.loads(result)["belong_dept"]
+        role = json.loads(result)["role"]
+        number = json.loads(result)["number"]
+        depthead = json.loads(result)["depthead"]
+
+        d.sendKeys(yhm,user_name)       #输入用户名
         time.sleep(1)
-        d.sendKeys(mm,mm_value)         #输入密码
+        d.sendKeys(mm,password)         #输入密码
         time.sleep(1)
-        d.sendKeys(yjdz,yjdz_value)     #输入邮件地址
+        d.sendKeys(yjdz,email)     #输入邮件地址
         time.sleep(1)
         d.js_element(ssbm)              #点击所属部门
         time.sleep(1)
-        d.js_element(ssbm_value)        #选择所属的部门
+        d.js_element('$("mat-option.mat-option.ng-star-inserted")[{}].click()'.format(belong_dept))   #选择所属的部门
         time.sleep(1)
         d.js_element(js)                #点击角色
         time.sleep(1)
-        d.js_element(js_value)          #选择角色
+        d.js_element('$("mat-option.mat-option")[{}].click()'.format(role))          #选择角色
         time.sleep(1)
-        d.js_element(depthead)          #勾上为部门负责人
-        time.sleep(1)
-        d.sendKeys(xh,xh_value)         #输入序号
+        if depthead == 'true':
+            d.js_element(depthead)          #勾上为部门负责人
+            time.sleep(1)
+
+        d.sendKeys(xh,number)         #输入序号
         time.sleep(1)
         d.submit(xh)
         time.sleep(2)

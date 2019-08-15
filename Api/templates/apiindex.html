@@ -234,6 +234,7 @@
 			</div>
 		</div>
 
+	<!--导入用例-->
 	<div class="layui-row" id="importCase" style="display:none;">
 		<div class="layui-col-md11">
 			<form class="layui-form" action="/import_case/" method="post" enctype="multipart/form-data">
@@ -253,6 +254,47 @@
 			</form>
 		</div>
 	</div>
+
+	<!--更新用户信息-->
+	<div class="layui-row" id="popSearchRoleTest2" style="display:none;">
+			<div class="layui-col-md11">
+				<form class="layui-form" action="/update_userinfo/" method="post">
+
+				  <div class="layui-form-item" style="margin-top: 20px;">
+					<label class="layui-form-label">角色</label>
+					<div class="layui-input-block" >
+					  <input type="checkbox" name="identity" value="sysadmin" title="系统管理员" checked>
+					  <input type="checkbox" name="identity" value="admin" title="单位管理员">
+					  <input type="checkbox" name="identity" value="ast" title="单位档案员">
+					</div>
+				  </div>
+
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">账号</label>
+					<div class="layui-input-block">
+					  <input type="text" id = "username" name="username" required  lay-verify="required" placeholder="请输入账号" autocomplete="off" class="layui-input" value="{{ test }}">
+					</div>
+				</div>
+
+				  <div class="layui-form-item layui-form-text">
+					<label class="layui-form-label">密码</label>
+					<div class="layui-input-block">
+					  <input type="text" id = "password" name="password" required  lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+					</div>
+				  </div>
+
+
+				  <div class="layui-form-item">
+					<div class="layui-input-block">
+					  <button class="layui-btn" lay-submit lay-filter="formDemo" style="margin-left: 245px;background-color: yellowgreen;">立即提交</button>
+					  <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+					</div>
+				  </div>
+				</form>
+			</div>
+		</div>
+
   <div class="layui-footer">
     <!-- 底部固定区域 -->
 	  <span style="float: right;">人生苦短，我用Python</span>
@@ -266,6 +308,7 @@
     <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="getCheckLength">获取选中数目</button>
     <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="isAll">验证是否全选</button>
 	<button id = "Runcase" class="layui-btn layui-btn-sm layui-btn-danger" lay-event="runcase">执行用例</button>
+	<button type="button" onclick="loginuser()" class="layui-btn layui-btn-sm layui-btn-normal">用户信息</button>
   </div>
 </script>
 <script type="text/html" id="barDemo">
@@ -741,7 +784,46 @@ function importcase(){
             content:$("#importCase").html()
         });
     }
+function loginuser(){
+        layer.open({
+            //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+            type:1,
+            title:"编辑用户信息",
+            area: ['40%','45%'],
+            content:$("#popSearchRoleTest2").html()
+        });
+		$.ajax({
+				cache: false,
+				url: "/get_userinfo/",
+				dataType: 'text',
+				type: 'GET',
+				async: false,
+				data: {
+				    "ids":"s",
+				},
+				success: function (data) {
+                    //var strjson = JSON.stringify(data, null, 4);
+                    layer.prompt({
+                        formType: 2,//多行文本
+                        value: data,
+                        title: '用户信息',
+                        anim: 4,//从左滚动进来
+                        area: ['300px', '300px'] //自定义文本域宽高
+                        //$("#username").val("ssssss");
+                    });
+                },
+				error:function (data) {
+					console.log(data);
+				    layer.msg(data, {
+					 offset: 't',
+					 anim: 6,
+					 area:["200px","50px"],
+					});
+				}
+			});
 
+
+    }
 </script>
 
 <script>

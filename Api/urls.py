@@ -41,6 +41,8 @@ urlpatterns = [
     url(r'^run_autocase/$',run_autocase_views),
     url(r'^del_webcase/$',delete_autocase_views),
     url(r'^update_autocase/$',update_autocase_views),
+    url(r'^update_userinfo/$',update_userinfo_views),
+    url(r'^get_userinfo/$',get_userinfo_views),
 
     #----------------------timing url-----------------------------
     url(r'^timing/$',timing_views),

@@ -2,29 +2,20 @@
 unitmodel = ("xpath","//span[text()='入驻单位管理']/..")
 unit_create_but = ("xpath","//button[@class='mat-flat-button mat-primary']")
 jgdm = ("id","code")
-jadm_value = "ONEPIECE"
 dwmc = ("id","displayName")
-dwmc_value= "伟大航路"
 qzh = ("id","fonds")
-qzh_value = "ONEPIECE"
 dwfzr = ("id","officer")
-dwfzr_value = "罗杰"
 
 #单位管理员信息
 manager_info = '$("div.mat-tab-label.mat-ripple.ng-star-inserted").click()'
 bmmc = ("id","deptDisplayName")
-bmmc_value = "桑尼号"
 xm = ("id","userDisplayName")
-xm_value = "路飞"
 mm = ("id","userPassword")
-mm_value = "Dctm@1234"
 dzyj = ("id","userAddress")
-dzyj_value = "luf@amberdata.cn"
 cunit_determine = '$("button.mat-flat-button.mat-primary")[1].click()'
 
 #编辑入驻单位
 lxdh = ("id","telephone")
-lxdh_value = "15158989710"
 uunit_determine = '$("button.mat-flat-button.mat-primary")[1].click()'
 
 #删除入驻单位
@@ -33,11 +24,17 @@ dunit_determine = '$("button.swal2-confirm.swal2-styled").click()'
 
 #保管处置策略创建
 policymodel = ("xpath","//span[text()='保留处置策略管理']/..")
-policy_create = ("xpath", "//button[@class='mat-flat-button mat-primary']")
+
+# policy_create = ("xpath", "//button[@class='mat-flat-button mat-primary']")
+policy_create = '$(".mat-flat-button.mat-primary")[0].click()'
+
+
 policy_year = ("xpath","//span[text()='年后']/../input")
 choose_way= ("xpath", "//div[@class='mat-select-trigger'][1]")
+
 policy_xh = '$(".mat-option-text")[1].click()'
 choose_month = '$(".mat-select-trigger")[1].click()'
+
 month = "$('#mat-option-5').click()"
 choose_day = '$(".mat-select-trigger")[2].click()'
 day = "$('#mat-option-22').click()"

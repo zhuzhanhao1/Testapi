@@ -392,6 +392,47 @@
 			</form>
 		</div>
 	</div>
+
+	<!--创建AUto测试用例-->
+	<div class="layui-row" id="popSearchRoleTest2" style="display:none;">
+			<div class="layui-col-md11">
+				<form class="layui-form" action="/update_userinfo/" method="post">
+
+				  <div class="layui-form-item" style="margin-top: 20px;">
+					<label class="layui-form-label">角色</label>
+					<div class="layui-input-block" >
+					  <input type="checkbox" name="identity" value="sysadmin" title="系统管理员" checked>
+					  <input type="checkbox" name="identity" value="admin" title="单位管理员">
+					  <input type="checkbox" name="identity" value="ast" title="单位档案员">
+					</div>
+				  </div>
+
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">账号</label>
+					<div class="layui-input-block">
+					  <input type="text" id = "username" name="username" required  lay-verify="required" placeholder="请输入账号" autocomplete="off" class="layui-input" value="{{ test }}">
+					</div>
+				</div>
+
+				  <div class="layui-form-item layui-form-text">
+					<label class="layui-form-label">密码</label>
+					<div class="layui-input-block">
+					  <input type="text" id = "password" name="password" required  lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+					</div>
+				  </div>
+
+
+				  <div class="layui-form-item">
+					<div class="layui-input-block">
+					  <button class="layui-btn" lay-submit lay-filter="formDemo" style="margin-left: 245px;background-color: yellowgreen;">立即提交</button>
+					  <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+					</div>
+				  </div>
+				</form>
+			</div>
+		</div>
+
   <div class="layui-footer">
     <!-- 底部固定区域 -->
 	  <span style="float: right;">人生苦短，我用Python</span>
@@ -415,6 +456,7 @@
     <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="getCheckLength1">获取选中数目</button>
     <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="isAll1">验证是否全选</button>
 	<button id = "Runcase" class="layui-btn layui-btn-sm layui-btn-danger" lay-event="runcase1">执行用例</button>
+	<button type="button" onclick="loginuser()" class="layui-btn layui-btn-sm layui-btn-normal">用户信息</button>
   </div>
 </script>
 
@@ -789,7 +831,50 @@ function selectRole1(){
             area: ['40%','90%'],
             content:$("#popSearchRoleTest1").html()
         });
+
     }
+function loginuser(){
+        layer.open({
+            //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+            type:1,
+            title:"编辑用户信息",
+            area: ['40%','45%'],
+            content:$("#popSearchRoleTest2").html()
+        });
+        $("#username").val("ssssss");
+		$.ajax({
+				cache: false,
+				url: "/get_userinfo/",
+				dataType: 'text',
+				type: 'GET',
+				async: false,
+				data: {
+				    "ids":"s",
+				},
+				success: function (data) {
+                    //var strjson = JSON.stringify(data, null, 4);
+                    layer.prompt({
+                        formType: 2,//多行文本
+                        value: data,
+                        title: '用户信息',
+                        anim: 4,//从左滚动进来
+                        area: ['300px', '300px'] //自定义文本域宽高
+                        //$("#username").val("ssssss");
+                    });
+                },
+				error:function (data) {
+					console.log(data);
+				    layer.msg(data, {
+					 offset: 't',
+					 anim: 6,
+					 area:["200px","50px"],
+					});
+				}
+			});
+
+
+    }
+
 function importcase(){
         layer.open({
             //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
@@ -879,7 +964,7 @@ layui.use('table', function() {
             , {field: 'module', title: '所属模块', width: 120,align:"center"}
             , {field: 'casename', title: '测试用例名称', width: 150,align:"center",style:'background-color: lightyellow;'}
             , {field: 'dataready', title: '数据准备', width: 220,align:"center"}
-			, {field:'teststep', title:'测试步骤', width:200,align:"center", edit: 'text'}
+			, {field:'teststep', title:'测试步骤', width:200	,align:"center", edit: 'text'}
 			, {field: 'exceptres', title: '期望结果', width: 200,align:"center"}
             , {field: 'result', title: '执行结果', width: 120, sort: true,align:"center",edit: 'text',templet: function(res){
                 if(res.result.indexOf("Failed") != -1){
@@ -949,7 +1034,7 @@ layui.use('table', function() {
 			  value: strjson,
 			  title: '响应结果',
 			  anim:4,//从左滚动进来
-			  area: ['600px', '400px'] //自定义文本域宽高
+			  area: ['1100px', '500px'] //自定义文本域宽高
 			});
 			//layer.alert(JSON.stringify(data));
 		  break;
@@ -1066,9 +1151,9 @@ layui.use('table', function() {
 			layer.prompt({
 			  formType: 2,//多行文本
 			  value: strjson,
-			  title: '用例详情',
+			  title: '单条用例详情',
 			  anim:4,//从左滚动进来
-			  area: ['600px', '400px'] //自定义文本域宽高
+			  area: ['1050px', '300px'] //自定义文本域宽高
 
 		  }, function(value, index){
 		      console.log(value);

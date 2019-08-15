@@ -54,13 +54,24 @@ class ConnDataBase:
 
     def get_logininfo(self,identity):
         sql = "select username,password from ERMS.userinfo where identity='{}';".format(identity)
+
         res = self.fetchCount(sql)
         return res
 
 
+    def update_logininfo(self,username,password,identity):
+        sql = "update ERMS.userinfo set username='{zhanghao}',password='{mima}'  where identity='{shenfeng}';".format(zhanghao=username,mima=password,shenfeng=identity)
+        print(sql)
+        res = self.fetchCount(sql)
+        return res
+
 
 if __name__ == "__main__":
     data = ConnDataBase()
+    # print(data.update_logininfo("haoyi@amberdata.cn","Dctm@1234","admin"))
     print(data.get_logininfo("sysadmin"))
     print(data.get_logininfo("admin"))
     print(data.get_logininfo("ast"))
+
+
+    # print(data.update_logininfo("zeh@amberdata.cn","Dctm@1234","ast"))

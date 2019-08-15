@@ -116,19 +116,19 @@ function html_escape(s) {
 <div class='heading'>
 <h1 style="font-family: Microsoft YaHei">ERMS自动化测试报告</h1>
 <p class='attribute'><strong>测试人员 : </strong> 朱占豪</p>
-<p class='attribute'><strong>开始时间 : </strong> 2019-08-09 13:20:5608:00:00</p>
-<p class='attribute'><strong>合计耗时 : </strong> 0:01:16.271492</p>
-<p class='attribute'><strong>测试结果 : </strong> 共 2，通过 2，通过率= 100.00%</p>
+<p class='attribute'><strong>开始时间 : </strong> 2019-08-14 09:22:5208:00:00</p>
+<p class='attribute'><strong>合计耗时 : </strong> 0:04:14.443338</p>
+<p class='attribute'><strong>测试结果 : </strong> 共 14，通过 8，错误 6，通过率= 57.14%</p>
 
 <p class='description'>Web Automation Testingweb</p>
 </div>
 
 
 <p id='show_detail_line'>
-<a class="btn btn-primary" href='javascript:showCase(0)'>概要{ 100.00% }</a>
+<a class="btn btn-primary" href='javascript:showCase(0)'>概要{ 57.14% }</a>
 <a class="btn btn-danger" href='javascript:showCase(1)'>失败{ 0 }</a>
-<a class="btn btn-success" href='javascript:showCase(2)'>通过{ 2 }</a>
-<a class="btn btn-info" href='javascript:showCase(3)'>所有{ 2 }</a>
+<a class="btn btn-success" href='javascript:showCase(2)'>通过{ 8 }</a>
+<a class="btn btn-info" href='javascript:showCase(3)'>所有{ 14 }</a>
 </p>
 <table id='result_table' class="table table-condensed table-bordered table-hover">
 <colgroup>
@@ -150,11 +150,11 @@ function html_escape(s) {
 
 <tr class='passClass warning'>
     <td>Api.webuitest.A_sysadmin_test.SystemManagement</td>
-    <td class="text-center">2</td>
-    <td class="text-center">2</td>
+    <td class="text-center">7</td>
+    <td class="text-center">7</td>
     <td class="text-center">0</td>
     <td class="text-center">0</td>
-    <td class="text-center"><a href="javascript:showClassDetail('c1',2)" class="detail" id='c1'>详细</a></td>
+    <td class="text-center"><a href="javascript:showClassDetail('c1',7)" class="detail" id='c1'>详细</a></td>
 </tr>
 
 <tr id='pt1_1' class='hiddenRow'>
@@ -169,7 +169,7 @@ function html_escape(s) {
     <pre>
     
 pt1_1: 正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//span[text()='数据表单设置']/..
-{"formsname":"auto测试表单"}
+{"forms_name": "auto测试表单"}
 &lt;class 'str'&gt;
 正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//input[@id='name']
 正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//input[@id='name']
@@ -192,8 +192,374 @@ pt1_1: 正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//span[te
     <pre>
     
 pt1_2: 正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//span[text()='数据表单设置']/..
-{"formsname":"auto测试表单"}
+{"forms_name": "auto测试表单"}
 &lt;class 'str'&gt;
+
+
+    </pre>
+    </div>
+    </td>
+</tr>
+
+<tr id='pt1_3' class='hiddenRow'>
+    <td class='passCase'><div class='testcase'>test_a_unit_create: 入驻单位管理-新建入驻单位</div></td>
+    <td colspan='5' align='center'>
+    <!--默认收起错误信息 -Findyou
+    <button id='btn_pt1_3' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_pt1_3'>通过</button>
+    <div id='div_pt1_3' class="collapse">  -->
+    <!-- 默认展开错误信息 -Findyou -->
+    <button id='btn_pt1_3' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_pt1_3'>通过</button>
+    <div id='div_pt1_3' class="collapse in">
+    <pre>
+    
+pt1_3: 正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//span[text()='入驻单位管理']/..
+正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//button[@class='mat-flat-button mat-primary']
+{"jgdm": "Z004", "dwmc": "下城区安全局", "qzh": "Z004", "dwfzr": "朱占豪", "bmmc": "测试部", "xm": "萧炎", "mm": "Dctm@1234", "dzyj": "xiaoyan@amberdata.cn"}
+&lt;class 'str'&gt;
+正在定位元素信息：定位方式-&gt;id, value值-&gt;code
+正在定位元素信息：定位方式-&gt;id, value值-&gt;displayName
+正在定位元素信息：定位方式-&gt;id, value值-&gt;fonds
+正在定位元素信息：定位方式-&gt;id, value值-&gt;officer
+正在定位元素信息：定位方式-&gt;id, value值-&gt;deptDisplayName
+正在定位元素信息：定位方式-&gt;id, value值-&gt;userDisplayName
+正在定位元素信息：定位方式-&gt;id, value值-&gt;userPassword
+正在定位元素信息：定位方式-&gt;id, value值-&gt;userAddress
+
+
+    </pre>
+    </div>
+    </td>
+</tr>
+
+<tr id='pt1_4' class='hiddenRow'>
+    <td class='passCase'><div class='testcase'>test_b_unit_update: 入驻单位管理-编辑入驻单位</div></td>
+    <td colspan='5' align='center'>
+    <!--默认收起错误信息 -Findyou
+    <button id='btn_pt1_4' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_pt1_4'>通过</button>
+    <div id='div_pt1_4' class="collapse">  -->
+    <!-- 默认展开错误信息 -Findyou -->
+    <button id='btn_pt1_4' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_pt1_4'>通过</button>
+    <div id='div_pt1_4' class="collapse in">
+    <pre>
+    
+pt1_4: 正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//span[text()='入驻单位管理']/..
+{"qzh": "Z004", "lxdh": "110"}
+&lt;class 'str'&gt;
+Z004
+正在定位元素信息：定位方式-&gt;id, value值-&gt;telephone
+正在定位元素信息：定位方式-&gt;id, value值-&gt;telephone
+正在定位元素信息：定位方式-&gt;id, value值-&gt;telephone
+
+
+    </pre>
+    </div>
+    </td>
+</tr>
+
+<tr id='pt1_5' class='hiddenRow'>
+    <td class='passCase'><div class='testcase'>test_d_policy_create: 保留处置策略-新建保留处置策略</div></td>
+    <td colspan='5' align='center'>
+    <!--默认收起错误信息 -Findyou
+    <button id='btn_pt1_5' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_pt1_5'>通过</button>
+    <div id='div_pt1_5' class="collapse">  -->
+    <!-- 默认展开错误信息 -Findyou -->
+    <button id='btn_pt1_5' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_pt1_5'>通过</button>
+    <div id='div_pt1_5' class="collapse in">
+    <pre>
+    
+pt1_5: 正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//span[text()='保留处置策略管理']/..
+正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//span[text()='年后']/../input
+{"year": "666", "strategy": "0", "month": "11", "day": "12", "备注": "移交为0，销毁为1，日期从0开始"}
+&lt;class 'str'&gt;
+666
+正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//span[text()='年后']/../input
+正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//div[@class='mat-select-trigger'][1]
+
+
+    </pre>
+    </div>
+    </td>
+</tr>
+
+<tr id='pt1_6' class='hiddenRow'>
+    <td class='passCase'><div class='testcase'>test_e_policy_update: 保留处置策略-编辑保留处置策略</div></td>
+    <td colspan='5' align='center'>
+    <!--默认收起错误信息 -Findyou
+    <button id='btn_pt1_6' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_pt1_6'>通过</button>
+    <div id='div_pt1_6' class="collapse">  -->
+    <!-- 默认展开错误信息 -Findyou -->
+    <button id='btn_pt1_6' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_pt1_6'>通过</button>
+    <div id='div_pt1_6' class="collapse in">
+    <pre>
+    
+pt1_6: 正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//span[text()='保留处置策略管理']/..
+{"updatepolicy": "保留666年后移交", "strategy": "1"}
+&lt;class 'str'&gt;
+正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//div[@class='mat-select-trigger'][1]
+
+
+    </pre>
+    </div>
+    </td>
+</tr>
+
+<tr id='pt1_7' class='hiddenRow'>
+    <td class='passCase'><div class='testcase'>test_f_policy_delete: 保留处置策略-删除保留处置策略</div></td>
+    <td colspan='5' align='center'>
+    <!--默认收起错误信息 -Findyou
+    <button id='btn_pt1_7' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_pt1_7'>通过</button>
+    <div id='div_pt1_7' class="collapse">  -->
+    <!-- 默认展开错误信息 -Findyou -->
+    <button id='btn_pt1_7' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_pt1_7'>通过</button>
+    <div id='div_pt1_7' class="collapse in">
+    <pre>
+    
+pt1_7: 正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//span[text()='保留处置策略管理']/..
+{"deletepolicy": "保留666年后销毁"}
+&lt;class 'str'&gt;
+
+
+    </pre>
+    </div>
+    </td>
+</tr>
+
+<tr class='errorClass warning'>
+    <td>Api.webuitest.B_admin_test.UnitManagement</td>
+    <td class="text-center">7</td>
+    <td class="text-center">1</td>
+    <td class="text-center">0</td>
+    <td class="text-center">6</td>
+    <td class="text-center"><a href="javascript:showClassDetail('c2',7)" class="detail" id='c2'>详细</a></td>
+</tr>
+
+<tr id='pt2_1' class='hiddenRow'>
+    <td class='passCase'><div class='testcase'>test_b_create_dept: 部门管理-创建部门</div></td>
+    <td colspan='5' align='center'>
+    <!--默认收起错误信息 -Findyou
+    <button id='btn_pt2_1' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_pt2_1'>通过</button>
+    <div id='div_pt2_1' class="collapse">  -->
+    <!-- 默认展开错误信息 -Findyou -->
+    <button id='btn_pt2_1' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_pt2_1'>通过</button>
+    <div id='div_pt2_1' class="collapse in">
+    <pre>
+    
+pt2_1: 正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//span[text()='部门管理']/..
+{"dept_name": "看守所", "number": "02"}
+&lt;class 'str'&gt;
+正在定位元素信息：定位方式-&gt;id, value值-&gt;displayName
+正在定位元素信息：定位方式-&gt;id, value值-&gt;code
+
+
+    </pre>
+    </div>
+    </td>
+</tr>
+
+<tr id='ft2_2' class='none'>
+    <td class='errorCase'><div class='testcase'>test_c_update_dept: 部门管理-编辑部门</div></td>
+    <td colspan='5' align='center'>
+    <!--默认收起错误信息 -Findyou
+    <button id='btn_ft2_2' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_ft2_2'>错误</button>
+    <div id='div_ft2_2' class="collapse">  -->
+    <!-- 默认展开错误信息 -Findyou -->
+    <button id='btn_ft2_2' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_ft2_2'>错误</button>
+    <div id='div_ft2_2' class="collapse in">
+    <pre>
+    
+ft2_2: 正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//span[text()='部门管理']/..
+Traceback (most recent call last):
+  File "/Users/zhuzhanhao/Testapi/Api/webuitest/B_admin_test.py", line 100, in test_c_update_dept
+    d.click(deptmanager_model)      #进入到部门管理模块
+  File "/Users/zhuzhanhao/Testapi/Api/webuitest/my_base.py", line 48, in click
+    ele = self.findElement(locator)
+  File "/Users/zhuzhanhao/Testapi/Api/webuitest/my_base.py", line 29, in findElement
+    ele = WebDriverWait(self.driver, self.timeout, self.t).until(lambda x: x.find_element(*locator))
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/support/wait.py", line 86, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+
+
+
+    </pre>
+    </div>
+    </td>
+</tr>
+
+<tr id='ft2_3' class='none'>
+    <td class='errorCase'><div class='testcase'>test_c_update_dept: 部门管理-编辑部门</div></td>
+    <td colspan='5' align='center'>
+    <!--默认收起错误信息 -Findyou
+    <button id='btn_ft2_3' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_ft2_3'>错误</button>
+    <div id='div_ft2_3' class="collapse">  -->
+    <!-- 默认展开错误信息 -Findyou -->
+    <button id='btn_ft2_3' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_ft2_3'>错误</button>
+    <div id='div_ft2_3' class="collapse in">
+    <pre>
+    
+ft2_3: 正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//span[text()='部门管理']/..
+Traceback (most recent call last):
+  File "/Users/zhuzhanhao/Testapi/Api/webuitest/B_admin_test.py", line 32, in tearDown
+    self.driver.refresh()
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/webdriver.py", line 851, in refresh
+    self.execute(Command.REFRESH)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/webdriver.py", line 318, in execute
+    self.error_handler.check_response(response)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.NoSuchWindowException: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=74.0.3729.108)
+  (Driver info: chromedriver=74.0.3729.6 (255758eccf3d244491b8a1317aa76e1ce10d57e9-refs/branch-heads/3729@{#29}),platform=Mac OS X 10.14.5 x86_64)
+
+
+
+    </pre>
+    </div>
+    </td>
+</tr>
+
+<tr id='ft2_4' class='none'>
+    <td class='errorCase'><div class='testcase'>test_d_delete_dept: 部门管理-删除部门</div></td>
+    <td colspan='5' align='center'>
+    <!--默认收起错误信息 -Findyou
+    <button id='btn_ft2_4' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_ft2_4'>错误</button>
+    <div id='div_ft2_4' class="collapse">  -->
+    <!-- 默认展开错误信息 -Findyou -->
+    <button id='btn_ft2_4' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_ft2_4'>错误</button>
+    <div id='div_ft2_4' class="collapse in">
+    <pre>
+    
+ft2_4: 正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//span[text()='部门管理']/..
+Traceback (most recent call last):
+  File "/Users/zhuzhanhao/Testapi/Api/webuitest/B_admin_test.py", line 120, in test_d_delete_dept
+    d.click(deptmanager_model)          #进入到部门管理模块
+  File "/Users/zhuzhanhao/Testapi/Api/webuitest/my_base.py", line 48, in click
+    ele = self.findElement(locator)
+  File "/Users/zhuzhanhao/Testapi/Api/webuitest/my_base.py", line 29, in findElement
+    ele = WebDriverWait(self.driver, self.timeout, self.t).until(lambda x: x.find_element(*locator))
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/support/wait.py", line 77, in until
+    value = method(self._driver)
+  File "/Users/zhuzhanhao/Testapi/Api/webuitest/my_base.py", line 29, in &lt;lambda&gt;
+    ele = WebDriverWait(self.driver, self.timeout, self.t).until(lambda x: x.find_element(*locator))
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/webdriver.py", line 1014, in find_element
+    'value': value})['value']
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/webdriver.py", line 318, in execute
+    self.error_handler.check_response(response)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.NoSuchWindowException: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=74.0.3729.108)
+  (Driver info: chromedriver=74.0.3729.6 (255758eccf3d244491b8a1317aa76e1ce10d57e9-refs/branch-heads/3729@{#29}),platform=Mac OS X 10.14.5 x86_64)
+
+
+
+    </pre>
+    </div>
+    </td>
+</tr>
+
+<tr id='ft2_5' class='none'>
+    <td class='errorCase'><div class='testcase'>test_d_delete_dept: 部门管理-删除部门</div></td>
+    <td colspan='5' align='center'>
+    <!--默认收起错误信息 -Findyou
+    <button id='btn_ft2_5' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_ft2_5'>错误</button>
+    <div id='div_ft2_5' class="collapse">  -->
+    <!-- 默认展开错误信息 -Findyou -->
+    <button id='btn_ft2_5' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_ft2_5'>错误</button>
+    <div id='div_ft2_5' class="collapse in">
+    <pre>
+    
+ft2_5: 正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//span[text()='部门管理']/..
+Traceback (most recent call last):
+  File "/Users/zhuzhanhao/Testapi/Api/webuitest/B_admin_test.py", line 32, in tearDown
+    self.driver.refresh()
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/webdriver.py", line 851, in refresh
+    self.execute(Command.REFRESH)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/webdriver.py", line 318, in execute
+    self.error_handler.check_response(response)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.NoSuchWindowException: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=74.0.3729.108)
+  (Driver info: chromedriver=74.0.3729.6 (255758eccf3d244491b8a1317aa76e1ce10d57e9-refs/branch-heads/3729@{#29}),platform=Mac OS X 10.14.5 x86_64)
+
+
+
+    </pre>
+    </div>
+    </td>
+</tr>
+
+<tr id='ft2_6' class='none'>
+    <td class='errorCase'><div class='testcase'>test_e_user_create: 用户管理-创建用户</div></td>
+    <td colspan='5' align='center'>
+    <!--默认收起错误信息 -Findyou
+    <button id='btn_ft2_6' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_ft2_6'>错误</button>
+    <div id='div_ft2_6' class="collapse">  -->
+    <!-- 默认展开错误信息 -Findyou -->
+    <button id='btn_ft2_6' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_ft2_6'>错误</button>
+    <div id='div_ft2_6' class="collapse in">
+    <pre>
+    
+ft2_6: 正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//span[text()='用户管理']/..
+Traceback (most recent call last):
+  File "/Users/zhuzhanhao/Testapi/Api/webuitest/B_admin_test.py", line 138, in test_e_user_create
+    d.click(usermanager_model)      #进入到用户管理模块
+  File "/Users/zhuzhanhao/Testapi/Api/webuitest/my_base.py", line 48, in click
+    ele = self.findElement(locator)
+  File "/Users/zhuzhanhao/Testapi/Api/webuitest/my_base.py", line 29, in findElement
+    ele = WebDriverWait(self.driver, self.timeout, self.t).until(lambda x: x.find_element(*locator))
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/support/wait.py", line 77, in until
+    value = method(self._driver)
+  File "/Users/zhuzhanhao/Testapi/Api/webuitest/my_base.py", line 29, in &lt;lambda&gt;
+    ele = WebDriverWait(self.driver, self.timeout, self.t).until(lambda x: x.find_element(*locator))
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/webdriver.py", line 1014, in find_element
+    'value': value})['value']
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/webdriver.py", line 318, in execute
+    self.error_handler.check_response(response)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.NoSuchWindowException: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=74.0.3729.108)
+  (Driver info: chromedriver=74.0.3729.6 (255758eccf3d244491b8a1317aa76e1ce10d57e9-refs/branch-heads/3729@{#29}),platform=Mac OS X 10.14.5 x86_64)
+
+
+
+    </pre>
+    </div>
+    </td>
+</tr>
+
+<tr id='ft2_7' class='none'>
+    <td class='errorCase'><div class='testcase'>test_e_user_create: 用户管理-创建用户</div></td>
+    <td colspan='5' align='center'>
+    <!--默认收起错误信息 -Findyou
+    <button id='btn_ft2_7' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_ft2_7'>错误</button>
+    <div id='div_ft2_7' class="collapse">  -->
+    <!-- 默认展开错误信息 -Findyou -->
+    <button id='btn_ft2_7' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_ft2_7'>错误</button>
+    <div id='div_ft2_7' class="collapse in">
+    <pre>
+    
+ft2_7: 正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//span[text()='用户管理']/..
+Traceback (most recent call last):
+  File "/Users/zhuzhanhao/Testapi/Api/webuitest/B_admin_test.py", line 32, in tearDown
+    self.driver.refresh()
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/webdriver.py", line 851, in refresh
+    self.execute(Command.REFRESH)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/webdriver.py", line 318, in execute
+    self.error_handler.check_response(response)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.NoSuchWindowException: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=74.0.3729.108)
+  (Driver info: chromedriver=74.0.3729.6 (255758eccf3d244491b8a1317aa76e1ce10d57e9-refs/branch-heads/3729@{#29}),platform=Mac OS X 10.14.5 x86_64)
+
 
 
     </pre>
@@ -203,11 +569,11 @@ pt1_2: 正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//span[te
 
 <tr id='total_row' class="text-center active">
     <td>总计</td>
-    <td>2</td>
-    <td>2</td>
+    <td>14</td>
+    <td>8</td>
     <td>0</td>
-    <td>0</td>
-    <td>通过率：100.00%</td>
+    <td>6</td>
+    <td>通过率：57.14%</td>
 </tr>
 </table>
 

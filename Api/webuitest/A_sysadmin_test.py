@@ -63,7 +63,21 @@ class SystemManagement(unittest.TestCase):
         self.d.js_element("document.getElementsByClassName('mat-flat-button mat-primary')[0].style.color='red'")
         d.click(unit_create_but)        #点击新建入驻单位
         time.sleep(1)
-        d.sendKeys(jgdm,jadm_value)     #输入机构代码
+
+        result = json.dumps(eval(self.data.get_logininfo(3)[0]),ensure_ascii=False)  #从数据库获取数据，转换为字典取值
+        print(result)
+        print(type(result))
+        jgdm_value = json.loads(result)["jgdm"]
+        dwmc_value = json.loads(result)["dwmc"]
+        qzh_value= json.loads(result)["qzh"]
+        dwfzr_value = json.loads(result)["dwfzr"]
+        bmmc_value = json.loads(result)["bmmc"]
+        xm_value = json.loads(result)["xm"]
+        mm_value = json.loads(result)["mm"]
+        dzyj_value = json.loads(result)["dzyj"]
+
+
+        d.sendKeys(jgdm,jgdm_value)     #输入机构代码
         time.sleep(1)
         d.sendKeys(dwmc,dwmc_value)     #输入单位名称
         time.sleep(1)
@@ -83,7 +97,7 @@ class SystemManagement(unittest.TestCase):
         d.sendKeys(dzyj,dzyj_value)     #输入电子邮件
         time.sleep(1)
         d.js_element(cunit_determine)   #点击确定
-        time.sleep(3)
+        time.sleep(60)
 
 
     def test_b_unit_update(self):
@@ -92,14 +106,22 @@ class SystemManagement(unittest.TestCase):
         d.click(unitmodel)              #点击入驻单位模块
         time.sleep(1)
         self.alert(UpdateUnit)          #显示alert弹框
-        self.matching(editor,unitname,"ONEPIECE")   #匹配单位名字为"ONEPIECE"的做编辑操作
+
+        result = json.dumps(eval(self.data.get_logininfo(4)[0]),ensure_ascii=False)  #从数据库获取数据，转换为字典取值
+        print(result)
+        print(type(result))
+        qzh_value = json.loads(result)["qzh"]
+        print(qzh_value)
+        lxdh_value = json.loads(result)['lxdh']
+
+        self.matching(editor,unitname,qzh_value)   #匹配单位名字为"ONEPIECE"的做编辑操作
         time.sleep(2)
         d.clear(lxdh)
         d.sendKeys(lxdh,lxdh_value)     #输入联系方式
-        d.sendKeys(lxdh, Keys.BACK_SPACE)
+        # d.sendKeys(lxdh, Keys.BACK_SPACE)
         d.sendKeys(lxdh,Keys.ENTER)
         # d.submit(lxdh)                  #提交表单
-        time.sleep(2)
+        time.sleep(5)
 
 
     def test_c_unit_delete(self):
@@ -108,7 +130,13 @@ class SystemManagement(unittest.TestCase):
         d.click(unitmodel)              #点击入驻单位模块
         time.sleep(1)
         self.alert(DeleteUnit)          #显示alert弹框
-        self.matching(delete,unitname,"ONEPIECE")  #匹配单位名字为"ONEPIECE"的做编辑操作
+
+        result = json.dumps(eval(self.data.get_logininfo(5)[0]),ensure_ascii=False)  #从数据库获取数据，转换为字典取值
+        print(result)
+        print(type(result))
+        qzh_value = json.loads(result)["qzh"]
+
+        self.matching(delete,unitname,qzh_value)  #匹配单位名字为"ONEPIECE"的做编辑操作
         time.sleep(2)
         d.js_element(dunit_determine)
         time.sleep(3)
@@ -121,21 +149,32 @@ class SystemManagement(unittest.TestCase):
         d.click(policymodel)                   #进入到保留处置策略模块
         time.sleep(1)
         self.alert(CreatePolicy)               #显示alert弹框
-        d.click(policy_create)                 #点击新建按钮
+
+        d.js_element(policy_create)                 #点击新建按钮
         time.sleep(1)
         d.sendKeys(policy_year,Keys.BACK_SPACE)#退格
-        d.sendKeys(policy_year,14)              #选择保留期限的年限xxx年
+
+        result = json.dumps(eval(self.data.get_logininfo(6)[0]),ensure_ascii=False)  #从数据库获取数据，转换为字典取值
+        print(result)
+        print(type(result))
+        year = json.loads(result)["year"]
+        print(year)
+        strategy = json.loads(result)["strategy"]
+        month = json.loads(result)["month"]
+        day = json.loads(result)["day"]
+
+        d.sendKeys(policy_year,year)              #选择保留期限的年限xxx年
         time.sleep(1)
         d.click(choose_way)                    #下拉框选择(默认移交)
-        d.js_element(policy_xh)                #选择销毁
+        d.js_element('$(".mat-option-text")[{}].click()'.format(strategy))                #选择销毁
         time.sleep(1)
         d.js_element(choose_month)             #下拉框选择-月
         time.sleep(1)
-        d.js_element(month)                    #点击选中的月份
+        d.js_element('$(".mat-option-text")[{}].click()'.format(month))                    #点击选中的月份
         time.sleep(1)
         d.js_element(choose_day)               #下拉框选择-日
         time.sleep(1)
-        d.js_element(day)                      #点击选中的日期
+        d.js_element('$(".mat-option-text")[{}].click()'.format(day))                      #点击选中的日期
         time.sleep(1)
         d.js_element(cpolicy_determine)        #点击确定
         time.sleep(5)
@@ -144,13 +183,20 @@ class SystemManagement(unittest.TestCase):
     def test_e_policy_update(self):
         '''保留处置策略-编辑保留处置策略'''
         d = self.d
-        d.click(policymodel)                    #进入到档案来源模块
+        d.click(policymodel)                    #进入到保留处置策略模块
         time.sleep(1)
         self.alert(UpdatePolicy)                #显示alert弹框
-        self.matching(editor,policyname,"保留14年后销毁")  #匹配保留处置策略名字为"保留4年后销毁"的做编辑操作
+
+        result = json.dumps(eval(self.data.get_logininfo(7)[0]),ensure_ascii=False)  #从数据库获取数据，转换为字典取值
+        print(result)
+        print(type(result))
+        updatepolicy = json.loads(result)["updatepolicy"]
+        strategy = json.loads(result)["strategy"]
+        self.matching(editor,policyname,updatepolicy)  #匹配保留处置策略名字为"updatepolicy"的做编辑操作
+
         d.click(choose_way)                     #点击选择销毁或是移交方式
         time.sleep(1)
-        d.js_element(policy_yj)                 #选择移交
+        d.js_element('$(".mat-option-text")[{}].click()'.format(strategy))                 #选择移交
         time.sleep(1)
         d.js_element(upolicy_determine)         #点击确定
         time.sleep(2)
@@ -162,7 +208,13 @@ class SystemManagement(unittest.TestCase):
         d.click(policymodel)                    #进入到保留处置策略模块
         time.sleep(1)
         self.alert(DeletePolicy)                #显示alert弹框
-        self.matching(delete,policyname,"保留14年后移交")   #匹配保留处置策略名字为"保留4年后销毁"的做删除操作
+
+        result = json.dumps(eval(self.data.get_logininfo(8)[0]),ensure_ascii=False)  #从数据库获取数据，转换为字典取值
+        print(result)
+        print(type(result))
+        deletepolicy = json.loads(result)["deletepolicy"]
+
+        self.matching(delete,policyname,deletepolicy)   #匹配保留处置策略名字为"deletepolicy"的做删除操作
         time.sleep(1)
         d.js_element(dpolicy_determine)         #点击确定
         time.sleep(2)

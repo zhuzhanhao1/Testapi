@@ -1,3 +1,4 @@
+import json
 import unittest
 import sys
 import os
@@ -21,6 +22,7 @@ from Api.webuitest.A_sysadmin_test import SystemManagement
 from Api.webuitest.B_admin_test import UnitManagement
 from Api.webuitest.C_ywsd_test import AstManagement
 import Api.webuitest.htmlCN
+from Api.webuitest.conn_database import ConnDataBase
 from Api.webuitest.EmailSend import SendEmail
 from Api.webuitest.DingDing import send_ding
 
@@ -276,35 +278,36 @@ def weblist_view(request):
 
 #Auto列表页
 def antolist_view(request):
-    module = request.GET.get("key[id]", "")
-    caseid= request.GET.get("key[id1]","")
-    a = request.GET.get("belong","")
-    if module == "" and a == "" and caseid == "":
-        weblists = Autocase.objects.filter()
-    elif a == "policy":
-        weblists = Autocase.objects.filter(webcase_models="保留处置策略管理")
-    elif a == "unit":
-        weblists = Autocase.objects.filter(webcase_models__contains="入驻单位管理")
-    elif a == "forms":
-        weblists = Autocase.objects.filter(webcase_models="数据表单设置")
-    elif a == "views":
-        weblists = Autocase.objects.filter(webcase_models="视图管理")
-    elif a == "info":
-        weblists = Autocase.objects.filter(webcase_models="基本信息")
-    elif a == "dept":
-        weblists = Autocase.objects.filter(webcase_models="部门管理")
-    elif a == "user":
-        weblists = Autocase.objects.filter(webcase_models="用户管理")
-    elif a == "class":
-        weblists = Autocase.objects.filter(webcase_models="类目保管期限设定")
-    elif a == "access":
-        weblists = Autocase.objects.filter(webcase_models="访问控制策略管理")
-    elif a == "transfer":
-        weblists = Autocase.objects.filter(webcase_models="移交操作")
-    elif module:
-        weblists = Autocase.objects.filter(webcase_models__contains=module)
-    elif caseid:
-        weblists = Autocase.objects.filter(webcaseid=caseid)
+    # module = request.GET.get("key[id]", "")
+    # caseid= request.GET.get("key[id1]","")
+    # a = request.GET.get("belong","")
+    # if module == "" and a == "" and caseid == "":
+    #     weblists = Autocase.objects.filter()
+    # elif a == "policy":
+    #     weblists = Autocase.objects.filter(webcase_models="保留处置策略管理")
+    # elif a == "unit":
+    #     weblists = Autocase.objects.filter(webcase_models__contains="入驻单位管理")
+    # elif a == "forms":
+    #     weblists = Autocase.objects.filter(webcase_models="数据表单设置")
+    # elif a == "views":
+    #     weblists = Autocase.objects.filter(webcase_models="视图管理")
+    # elif a == "info":
+    #     weblists = Autocase.objects.filter(webcase_models="基本信息")
+    # elif a == "dept":
+    #     weblists = Autocase.objects.filter(webcase_models="部门管理")
+    # elif a == "user":
+    #     weblists = Autocase.objects.filter(webcase_models="用户管理")
+    # elif a == "class":
+    #     weblists = Autocase.objects.filter(webcase_models="类目保管期限设定")
+    # elif a == "access":
+    #     weblists = Autocase.objects.filter(webcase_models="访问控制策略管理")
+    # elif a == "transfer":
+    #     weblists = Autocase.objects.filter(webcase_models="移交操作")
+    # elif module:
+    #     weblists = Autocase.objects.filter(webcase_models__contains=module)
+    # elif caseid:
+    #     weblists = Autocase.objects.filter(webcaseid=caseid)
+    weblists = Autocase.objects.filter()
     L = []
     for weblist in weblists:
         data = {
@@ -447,6 +450,7 @@ def update_autocase_views(request):
                 Autocase.objects.filter(autoid=ids).update(autoresult=result)
             return HttpResponse("编辑成功")
 
+
 #导入用例
 def import_webcase_views(request):
     if request.method == 'POST':
@@ -482,4 +486,54 @@ def import_webcase_views(request):
 #测试报告
 def report_webcase_views(request):
     return render(request,"TestReport.html")
+
+
+#更改用户信息
+def update_userinfo_views(request):
+    role = request.POST.get("identity","")
+    username = request.POST.get("username","")
+    password = request.POST.get("password","")
+    if username:
+        try:
+            con = ConnDataBase()
+            con.update_logininfo(username,password,role)
+            return HttpResponseRedirect("/webindex/")
+        except:
+            print("修改用户信息失败")
+            return HttpResponse("链接数据库失败、修改用户信息失败")
+
+    else:
+        return HttpResponse("必须输入用户名和用户密码！！！")
+
+
+#获取当前用户信息
+def get_userinfo_views(request):
+    con = ConnDataBase()
+    sysadmin = con.get_logininfo("sysadmin")
+    admin = con.get_logininfo("admin")
+    ast = con.get_logininfo("ast")
+    dic = {
+        "系统管理员":{
+            "账号":sysadmin[0],
+            "密码":sysadmin[1]
+        },
+        "单位管理员":{
+            "账号":admin[0],
+            "密码":admin[1]
+        },
+        "单位档案员":{
+            "账号":ast[0],
+            "密码":ast[1]
+        }
+    }
+    dic1 = json.dumps(dic,ensure_ascii=False,sort_keys=True, indent=2)
+    print(dic1)
+    return HttpResponse(dic1)
+
+
+
+
+
+
+
 

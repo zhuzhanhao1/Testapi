@@ -1,7 +1,17 @@
 import json
 import requests
+import os,sys
+
+
+
+from Api.webuitest.conn_database import ConnDataBase
+
+
+
+
 url="http://demo.amberdata.cn/ermsapi/v2/user/user_login"
-ast = "sanwa@amberdata.cn"
+
+ast = "wuyufei@amberdata.cn"
 admin = "erwa@amberdata.cn"
 sysadmin = "admin@amberdata.cn"
 password = "Dctm@1234"
@@ -57,6 +67,9 @@ class ReqParam:
 
 if __name__ == "__main__":
     # print(admin_login())
-    a = ReqParam()
-    print(a.get_user_power("admin"))
+    # a = ReqParam()
+    # print(a.get_user_power("ast"))
+    con = ConnDataBase()
+    print(con.get_logininfo("admin"))
+
 
