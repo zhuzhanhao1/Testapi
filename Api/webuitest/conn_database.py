@@ -1,3 +1,9 @@
+import sys,os
+currentUrl = os.path.dirname(__file__)
+cur_path = os.path.abspath(os.path.join(currentUrl,os.pardir))
+sys.path.append(cur_path)
+
+
 import pymysql
 
 class ConnDataBase:

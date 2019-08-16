@@ -430,17 +430,15 @@ def update_autocase_views(request):
             webname = a["casename"]
             belong = a["module"]
             identity = a["identity"]
-            premise = a["dataready"]
             exceptres = a["exceptres"]
             result = a["result"]
             print(step)
             print(webname)
             print(belong)
-            print(premise)
             print(exceptres)
             print(result)
             Autocase.objects.filter(autoid=ids).update(autostep=step,autoname=webname,autoidentity=identity,\
-                autobelong=belong,autodataready=premise,autoexceptres=exceptres,autoresult=result)
+                autobelong=belong,autoexceptres=exceptres,autoresult=result)
             return HttpResponse("编辑成功")
         elif result:
             print(result)
@@ -449,6 +447,20 @@ def update_autocase_views(request):
             else:
                 Autocase.objects.filter(autoid=ids).update(autoresult=result)
             return HttpResponse("编辑成功")
+
+
+def update_dataready_views(request):
+    ids = request.POST.get("ids", "")
+    dataready = request.POST.get("body","")
+    print(type(dataready))
+    # data = eval(dataready)
+    data = json.dumps(eval(dataready),ensure_ascii=False,sort_keys=True, indent=2)
+    if dataready == "null":
+        Autocase.objects.filter(autoid=ids).update(autodataready="")
+    else:
+        Autocase.objects.filter(autoid=ids).update(autodataready=data)
+    return HttpResponse("编辑成功")
+
 
 
 #导入用例

@@ -64,7 +64,7 @@ class SystemManagement(unittest.TestCase):
         d.click(unit_create_but)        #点击新建入驻单位
         time.sleep(1)
 
-        result = json.dumps(eval(self.data.get_logininfo(3)[0]),ensure_ascii=False)  #从数据库获取数据，转换为字典取值
+        result = self.data.get_logininfo(3)[0]  #从数据库获取数据，转换为字典取值
         print(result)
         print(type(result))
         jgdm_value = json.loads(result)["jgdm"]
@@ -107,9 +107,7 @@ class SystemManagement(unittest.TestCase):
         time.sleep(1)
         self.alert(UpdateUnit)          #显示alert弹框
 
-        result = json.dumps(eval(self.data.get_logininfo(4)[0]),ensure_ascii=False)  #从数据库获取数据，转换为字典取值
-        print(result)
-        print(type(result))
+        result = self.data.get_logininfo(4)[0]#从数据库获取数据，转换为字典取值
         qzh_value = json.loads(result)["qzh"]
         print(qzh_value)
         lxdh_value = json.loads(result)['lxdh']
@@ -131,9 +129,7 @@ class SystemManagement(unittest.TestCase):
         time.sleep(1)
         self.alert(DeleteUnit)          #显示alert弹框
 
-        result = json.dumps(eval(self.data.get_logininfo(5)[0]),ensure_ascii=False)  #从数据库获取数据，转换为字典取值
-        print(result)
-        print(type(result))
+        result = self.data.get_logininfo(5)[0]#从数据库获取数据，转换为字典取值
         qzh_value = json.loads(result)["qzh"]
 
         self.matching(delete,unitname,qzh_value)  #匹配单位名字为"ONEPIECE"的做编辑操作
@@ -154,11 +150,8 @@ class SystemManagement(unittest.TestCase):
         time.sleep(1)
         d.sendKeys(policy_year,Keys.BACK_SPACE)#退格
 
-        result = json.dumps(eval(self.data.get_logininfo(6)[0]),ensure_ascii=False)  #从数据库获取数据，转换为字典取值
-        print(result)
-        print(type(result))
+        result = self.data.get_logininfo(6)[0]  #从数据库获取数据，转换为字典取值
         year = json.loads(result)["year"]
-        print(year)
         strategy = json.loads(result)["strategy"]
         month = json.loads(result)["month"]
         day = json.loads(result)["day"]
@@ -187,9 +180,7 @@ class SystemManagement(unittest.TestCase):
         time.sleep(1)
         self.alert(UpdatePolicy)                #显示alert弹框
 
-        result = json.dumps(eval(self.data.get_logininfo(7)[0]),ensure_ascii=False)  #从数据库获取数据，转换为字典取值
-        print(result)
-        print(type(result))
+        result = self.data.get_logininfo(7)[0]  #从数据库获取数据，转换为字典取值
         updatepolicy = json.loads(result)["updatepolicy"]
         strategy = json.loads(result)["strategy"]
         self.matching(editor,policyname,updatepolicy)  #匹配保留处置策略名字为"updatepolicy"的做编辑操作
@@ -209,9 +200,7 @@ class SystemManagement(unittest.TestCase):
         time.sleep(1)
         self.alert(DeletePolicy)                #显示alert弹框
 
-        result = json.dumps(eval(self.data.get_logininfo(8)[0]),ensure_ascii=False)  #从数据库获取数据，转换为字典取值
-        print(result)
-        print(type(result))
+        result = self.data.get_logininfo(8)[0]  #从数据库获取数据，转换为字典取值
         deletepolicy = json.loads(result)["deletepolicy"]
 
         self.matching(delete,policyname,deletepolicy)   #匹配保留处置策略名字为"deletepolicy"的做删除操作
@@ -266,9 +255,7 @@ class SystemManagement(unittest.TestCase):
         d.js_element(forms_create)     #点击新建数据表单按钮
         time.sleep(1)
 
-        result = json.dumps(eval(self.data.get_logininfo(1)[0]),ensure_ascii=False)  #从数据库获取数据，转换为字典取值
-        print(result)
-        print(type(result))
+        result = self.data.get_logininfo(1)[0]  #从数据库获取数据，转换为字典取值
         formsname = json.loads(result)["forms_name"]
         time.sleep(1)
 
@@ -289,9 +276,7 @@ class SystemManagement(unittest.TestCase):
         time.sleep(1)
         self.alert(DeleteForms)        #显示alert弹框
 
-        result = json.dumps(eval(self.data.get_logininfo(1)[0]),ensure_ascii=False)  #从数据库获取数据，转换为字典取值
-        print(result)
-        print(type(result))
+        result = self.data.get_logininfo(1)[0]  #从数据库获取数据，转换为字典取值
         formsname = json.loads(result)["forms_name"]
         time.sleep(1)
 

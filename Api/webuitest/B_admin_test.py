@@ -76,7 +76,7 @@ class UnitManagement(unittest.TestCase):
         d.js_element(create_dept)           #点击创建部门
         time.sleep(1)
         try:
-            result = json.dumps(eval(self.data.get_logininfo(9)[0]),ensure_ascii=False)  #从数据库获取数据，转换为字典取值
+            result = self.data.get_logininfo(9)[0]  #从数据库获取数据，转换为字典取值
             print(result)
             print(type(result))
             dept_name = json.loads(result)["dept_name"]
@@ -100,7 +100,7 @@ class UnitManagement(unittest.TestCase):
         d.click(deptmanager_model)      #进入到部门管理模块
         self.alert(UpdateDept)          #提示alert弹框
 
-        result = json.dumps(eval(self.data.get_logininfo(10)[0]), ensure_ascii=False)  # 从数据库获取数据，转换为字典取值
+        result = self.data.get_logininfo(10)[0]  # 从数据库获取数据，转换为字典取值
         print(result)
         print(type(result))
         dept_name = json.loads(result)["dept_name"]
@@ -120,7 +120,7 @@ class UnitManagement(unittest.TestCase):
         d.click(deptmanager_model)          #进入到部门管理模块
         self.alert(DeleteDept)              #提示alert弹框
 
-        result = json.dumps(eval(self.data.get_logininfo(11)[0]), ensure_ascii=False)  # 从数据库获取数据，转换为字典取值
+        result = self.data.get_logininfo(11)[0]  # 从数据库获取数据，转换为字典取值
         print(result)
         print(type(result))
         dept_name = json.loads(result)["dept_name"]
@@ -140,7 +140,7 @@ class UnitManagement(unittest.TestCase):
         d.js_element(create_user)       #点击创建用户按钮
         time.sleep(1)
 
-        result = json.dumps(eval(self.data.get_logininfo(12)[0]), ensure_ascii=False)  # 从数据库获取数据，转换为字典取值
+        result = self.data.get_logininfo(12)[0] # 从数据库获取数据，转换为字典取值
         print(result)
         print(type(result))
         user_name = json.loads(result)["user_name"]

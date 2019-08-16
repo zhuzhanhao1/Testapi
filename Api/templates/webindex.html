@@ -469,6 +469,16 @@
 </script>
 
 
+<!--行按钮-->
+<script type="text/html" id="barDemonew">
+{#  <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>#}
+  <a class="layui-icon-about layui-icon" lay-event="edit" style="color:#74777b;font-size: 24px;"></a>
+  <a class="layui-icon-edit layui-icon" lay-event="edit2" style="color:#74777b;font-size: 21px;"></a>
+  <a class="layui-icon-survey layui-icon" lay-event="edit1" style="color:#74777b;font-size: 21px;"></a>
+  <a class="layui-icon-delete layui-icon" lay-event="del" style="color: #74777b;font-size: 24px;"></a>
+</script>
+
+
 <script>
 	function showlist() {
 	    var a = document.getElementById("navlist");
@@ -961,11 +971,11 @@ layui.use('table', function() {
             {type: 'checkbox', fixed: 'left'}
             , {field: 'caseid', title: 'ID', width: 60, sort: true, fixed: 'left',align:"center"}
             , {field: 'identity', title: 'User', width: 60,align:"center",templet:"#identityTpl"}
-            , {field: 'module', title: '所属模块', width: 120,align:"center"}
+            //, {field: 'module', title: '所属模块', width: 120,align:"center"}
             , {field: 'casename', title: '测试用例名称', width: 150,align:"center",style:'background-color: lightyellow;'}
-            , {field: 'dataready', title: '数据准备', width: 220,align:"center"}
-			, {field:'teststep', title:'测试步骤', width:200	,align:"center", edit: 'text'}
-			, {field: 'exceptres', title: '期望结果', width: 200,align:"center"}
+            , {field: 'dataready', title: '数据准备', width: 600,align:"center"}
+			//, {field:'teststep', title:'测试步骤', width:200	,align:"center", edit: 'text'}
+			//, {field: 'exceptres', title: '期望结果', width: 200,align:"center"}
             , {field: 'result', title: '执行结果', width: 120, sort: true,align:"center",edit: 'text',templet: function(res){
                 if(res.result.indexOf("Failed") != -1){
 					    return '<span style="color: red;">' +res.result + '</span>'
@@ -976,7 +986,7 @@ layui.use('table', function() {
 					    return '<span>' +res.result + '</span>'
 					}
                 }}
-            , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 120,align:"center"}
+            , {fixed: 'right', title: '操作', toolbar: '#barDemonew', width: 150,align:"center"}
         ]]
 		,id: 'testReload1'
 		,done:function (res) {   //返回数据执行回调函数
@@ -1027,12 +1037,14 @@ layui.use('table', function() {
 			case 'getCheckData1':
 			var data = checkStatus.data;
 			//console.log(data[0]["caseid"]);
+			delete data[0].dataready;
+			console.log(data);
 			var strjson = JSON.stringify(data,null,4);
 		    console.log(strjson);
 			layer.prompt({
 			  formType: 2,//多行文本
 			  value: strjson,
-			  title: '响应结果',
+			  title: '用例内容',
 			  anim:4,//从左滚动进来
 			  area: ['1100px', '500px'] //自定义文本域宽高
 			});
@@ -1234,11 +1246,57 @@ layui.use('table', function() {
 			  result: value
 			});
 			layer.close(index);
+		  });
+
+		}else if(obj.event === 'edit2'){
+		  layer.prompt({
+			formType: 2
+			,value: data.dataready
+			,title:["数据准备"]
+			,area: ['400px', '400px'] //自定义文本域宽高
+			,maxlength: 500000
+
+		  }, function(value, index){
+		      console.log(value);
+		      console.log(index);
+			  $.ajax({
+				cache: false,
+				url: "/update_dataready/",
+				dataType: 'text',
+				type: 'POST',
+				async: false,
+				data: {
+				    "ids":obj.data['caseid'],
+					"body":value
+				},
+				success: function (data) {
+				    layer.msg(data, {
+					 offset: 't',
+					 anim: 6,
+					 area:["200px","50px"],
+					});
+					setTimeout(function(){ window.location.reload(); }, 500);
+				},
+				error:function (data) {
+					console.log(data);
+				    layer.msg(data, {
+					 offset: 't',
+					 anim: 6,
+					 area:["200px","50px"],
+					});
+				}
+			});
+		    //同步更新缓存对应的值
+			obj.update({
+			  body: value
+			});
+			layer.close(index);
 
 		  });
 		}
 
 	  });
+
 });
 </script>
 
