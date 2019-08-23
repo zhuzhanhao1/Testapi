@@ -1,18 +1,21 @@
-import os
+import os,sys
 from datetime import datetime
-import xlrd
 import json
-from django.contrib import messages
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import transaction
+from django.db.models import Q
 from django.shortcuts import render
-from .models import *
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from .forms import *
 from Api.interfacetest.run_method import RequestMethod
 from Api.interfacetest.get_header import ReqParam
 from Api.webuitest.DingDing import send_ding
 
+currentUrl = os.path.dirname(__file__)
+#父文件路径
+cur_path = os.path.abspath(os.path.join(currentUrl,os.pardir))
+sys.path.append(cur_path)
+from webuitest.conn_database import ConnDataBase
 
 
 #接口api用例首页
@@ -24,7 +27,6 @@ def apiindex_view(request):
     return render(request,"apiindex.html",{"user":uname,"abq":a,"case_count":case_count})
 
 
-
 #用例列表
 def apilist_view(request):
     casename = request.GET.get("key[casename]","")
@@ -34,6 +36,11 @@ def apilist_view(request):
     print("请求进入的模块是:"+belong)
     if casename == "" and belong == "":
         apilists = Case.objects.filter()
+
+    #流程接口
+    elif belong == "process":
+        #匹配流程字段的值不能等于空
+        apilists = Case.objects.filter(~Q(isprocess= ''))
 
 
     elif belong == "unit":
@@ -80,6 +87,8 @@ def apilist_view(request):
         apilists = Case.objects.filter(belong__contains="通用文件夹管理接口")
     elif belong == "metadata":
         apilists = Case.objects.filter(belong__contains="元数据管理平台接口")
+    elif belong == "deposit_form":
+        apilists = Case.objects.filter(belong__contains="续存记录接口")
 
 
     elif casename:
@@ -88,6 +97,7 @@ def apilist_view(request):
     for weblist in apilists:
         data = {
             "caseid": weblist.caseid,
+            "processid":weblist.isprocess,
             "identity": weblist.identity,
             "casename": weblist.casename,
             "url": weblist.url,
@@ -159,6 +169,25 @@ def update_apicase_views(request):
             else:
                 Case.objects.filter(caseid=ids).update(body=body)
         return HttpResponse("编辑成功")
+
+
+
+#更改用户信息
+def update_userinfo_api_views(request):
+    role = request.POST.get("identity","")
+    username = request.POST.get("username","")
+    password = request.POST.get("password","")
+    if username:
+        try:
+            con = ConnDataBase()
+            con.update_logininfo(username,password,role)
+            return HttpResponseRedirect("/apiindex/")
+        except:
+            print("修改用户信息失败")
+            return HttpResponse("链接数据库失败、修改用户信息失败")
+
+    else:
+        return HttpResponse("必须输入用户名和用户密码！！！")
 
 
 #执行用例

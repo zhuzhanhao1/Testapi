@@ -1,4 +1,6 @@
 from django.conf.urls import url
+
+from .view_process import *
 from .views import *
 from .view_web import *
 from .view_api import *
@@ -26,6 +28,15 @@ urlpatterns = [
     url(r'^del_apicase/$', delete_apicase_views),
     url(r'^update_apicase/$', update_apicase_views),
     url(r'^run_apicase/$', run_apicase_views),
+#----------------------Api_process  url-----------------------------
+    url(r'^ProcessIndex/$', process_interface_view),
+    url(r'^processlist/$', processlist_view),
+    url(r'^create_processcase/$', create_processcase_views),
+    url(r'^del_processcase/$', delete_processcase_views),
+    url(r'^update_processcase/$', update_processcase_views),
+    url(r'^run_processcase/$', run_processcase_views),
+
+
 
     #----------------------web url-----------------------------
     url(r'^weblist/$',weblist_view),
@@ -44,6 +55,7 @@ urlpatterns = [
     url(r'^update_dataready/$',update_dataready_views),
     url(r'^update_userinfo/$',update_userinfo_views),
     url(r'^get_userinfo/$',get_userinfo_views),
+    url(r'^update_userinfo_api/$',update_userinfo_api_views),
 
     #----------------------timing url-----------------------------
     url(r'^timing/$',timing_views),

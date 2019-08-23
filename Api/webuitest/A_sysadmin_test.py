@@ -97,7 +97,7 @@ class SystemManagement(unittest.TestCase):
         d.sendKeys(dzyj,dzyj_value)     #输入电子邮件
         time.sleep(1)
         d.js_element(cunit_determine)   #点击确定
-        time.sleep(60)
+        time.sleep(5)
 
 
     def test_b_unit_update(self):
@@ -190,7 +190,7 @@ class SystemManagement(unittest.TestCase):
         d.js_element('$(".mat-option-text")[{}].click()'.format(strategy))                 #选择移交
         time.sleep(1)
         d.js_element(upolicy_determine)         #点击确定
-        time.sleep(2)
+        time.sleep(5)
 
 
     def test_f_policy_delete(self):
@@ -206,7 +206,7 @@ class SystemManagement(unittest.TestCase):
         self.matching(delete,policyname,deletepolicy)   #匹配保留处置策略名字为"deletepolicy"的做删除操作
         time.sleep(1)
         d.js_element(dpolicy_determine)         #点击确定
-        time.sleep(2)
+        time.sleep(5)
 
 
     @unittest.skip("")
@@ -221,7 +221,7 @@ class SystemManagement(unittest.TestCase):
         d.sendKeys(source_name,source_name_value)   #输入档案来源的名称
         time.sleep(2)
         d.click(csource_determine)                  #点击确定
-        time.sleep(1)
+        time.sleep(5)
 
 
     @unittest.skip("")

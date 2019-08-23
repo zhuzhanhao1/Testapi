@@ -216,18 +216,6 @@ def search_name_views(request):
     return render(request, "index.html", {"cases": cases_list,"user":uname})
 
 
-#删除用例
-# def delete_case_views(request):
-    # id = request.session.get('id')
-    # uname = User.objects.get(id=id).uname
-    # uList = Case.objects.all()
-    # if request.is_ajax():
-    #     print("ssssssssss")
-    #     ucaseid = request.POST.get("caseid","")
-    #     print(ucaseid)
-    #     Case.objects.get(caseid=ucaseid).delete()
-    #     return render(request,"index.html",{"cases":uList,"user":uname})
-
 
 #删除用例
 def delete_case_views(request):

@@ -1,18 +1,22 @@
 import json
 import requests
 import sys
+import time
+
 
 sys.path.append('/Users/zhuzhanhao/Testapi')
 
 from Api.webuitest.conn_database import ConnDataBase
 
 
-url="http://demo.amberdata.cn/ermsapi/v2/user/user_login"
+url="http://amberdata.cn/adminapi/v2/user/login"
 
 con = ConnDataBase()
 sysadmin = con.get_logininfo("sysadmin")
 admin = con.get_logininfo("admin")
 ast = con.get_logininfo("ast")
+
+
 
 #单位档案员登录
 def ast_login():
@@ -20,7 +24,11 @@ def ast_login():
         "loginName":ast[0],
         "password":ast[1]
     }
-    response = requests.get(url,params=params)
+    headers = {
+        "Content-Type":"application/json"
+    }
+    response = requests.post(url,headers=headers,data=json.dumps(params))
+    # print(response.text)
     return response.json()['accessToken']
 
 #系统管理员登录
@@ -29,7 +37,11 @@ def sysadmin_login():
         "loginName":sysadmin[0],
         "password":sysadmin[1]
     }
-    response = requests.get(url,params=params)
+    headers = {
+        "Content-Type":"application/json"
+    }
+    response = requests.post(url,headers=headers,data=json.dumps(params))
+    # print(response.json())
     return response.json()['accessToken']
 
 #单位管理员登录
@@ -38,7 +50,10 @@ def admin_login():
         "loginName":admin[0],
         "password":admin[1]
     }
-    response = requests.get(url,params=params)
+    headers = {
+        "Content-Type":"application/json"
+    }
+    response = requests.post(url,headers=headers,data=json.dumps(params))
     return response.json()['accessToken']
 
 class ReqParam:
@@ -62,7 +77,10 @@ class ReqParam:
 
 
 if __name__ == "__main__":
+    start_time = time.time()
     a = ReqParam()
-    print(a.get_user_power("sysadmin"))
-
+    # print(a.get_json(a.get_user_power("ast")))
+    print(a.get_user_power("ast"))
+    end_time = time.time()
+    print(round(end_time-start_time,3))
 

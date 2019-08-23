@@ -24,4 +24,4 @@ def send_ding(content):
         return False
 
 if __name__ == "__main__":
-    send_ding("一会吃啥")
+    send_ding("123")

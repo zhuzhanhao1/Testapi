@@ -87,6 +87,7 @@
           </dl>
         </li>
 
+
 		<li class="layui-nav-item">
           <a href="?belong=record">Record接口</a>
         </li>
@@ -120,6 +121,13 @@
 		<li class="layui-nav-item">
           <a href="?belong=metadata">元数据管理平台接口</a>
         </li>
+		<li class="layui-nav-item">
+          <a href="?belong=deposit_form">续存记录接口</a>
+        </li>
+		<li class="layui-nav-item">
+          <a href="?belong=process" style="background-color: lightslategrey;">ERMS流程接口</a>
+        </li>
+
 
 
 	  </ul>
@@ -130,7 +138,8 @@
     <!-- 内容主体区域 -->
     <div style="padding: 15px;">
 		<div class="demoTable">
-			<span id = "casetitle" style="font-size: 24px;padding: 0px;margin-left: 5px;margin-right: 640px;color: white;" class="layui-anim layui-anim-up layui-icon layui-icon-list">接口测试用例列表展现</span>
+			<span id = "casetitle" style="font-size: 24px;padding: 0px;margin-left: 5px;margin-right: 444px;color: white;" class="layui-anim layui-anim-up layui-icon layui-icon-list">http://demo.amberdata.cn/ermsapi/v2</span>
+
 		  	<div class="layui-inline" style="margin-top: -7px;">
 				<input class="layui-input" name="id" id="demoReload" autocomplete="off" placeholder="请输入用例名称" style="width:200px;">
 		 	</div>
@@ -172,6 +181,7 @@
 						<option value="公共操作相关接口">公共操作相关接口</option>
 						<option value="通用文件夹管理接口">通用文件夹管理接口</option>
 						<option value="元数据管理平台接口">元数据管理平台接口</option>
+						<option value="续存记录接口">续存记录接口</option>
 					  </select>
 					</div>
 				  </div>
@@ -258,7 +268,7 @@
 	<!--更新用户信息-->
 	<div class="layui-row" id="popSearchRoleTest2" style="display:none;">
 			<div class="layui-col-md11">
-				<form class="layui-form" action="/update_userinfo/" method="post">
+				<form class="layui-form" action="/update_userinfo_api/" method="post">
 
 				  <div class="layui-form-item" style="margin-top: 20px;">
 					<label class="layui-form-label">角色</label>
@@ -429,6 +439,7 @@ layui.use('table', function() {
 				}
 
 			  }}
+			, {field: 'processid', title: '流程序号', width: 100, sort: true, align:"center"}
 			, {field: 'result', title: '响应内容', width: 220, sort: true,align:"center",templet:function (res) {
 					if(res.result.indexOf("error") != -1){
 					    console.log("aaaaaaaaaaaaa");
@@ -786,12 +797,14 @@ function importcase(){
         });
     }
 function loginuser(){
+    	username.value = "sdddaefqegw";
         layer.open({
             //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
             type:1,
             title:"编辑用户信息",
             area: ['40%','45%'],
-            content:$("#popSearchRoleTest2").html()
+            content:$("#popSearchRoleTest2").html(),
+
         });
 		$.ajax({
 				cache: false,
@@ -803,6 +816,7 @@ function loginuser(){
 				    "ids":"s",
 				},
 				success: function (data) {
+				    $("username").innerHTML = "ssssss";
                     //var strjson = JSON.stringify(data, null, 4);
                     layer.prompt({
                         formType: 2,//多行文本

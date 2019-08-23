@@ -12,12 +12,10 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from Api.models import Webcase, User, Autocase
 
 currentUrl = os.path.dirname(__file__)
-sys.path.append(currentUrl)
-print(currentUrl)
 #父文件路径
 cur_path = os.path.abspath(os.path.join(currentUrl,os.pardir))
-print(cur_path)
 sys.path.append(cur_path)
+
 from Api.webuitest.A_sysadmin_test import SystemManagement
 from Api.webuitest.B_admin_test import UnitManagement
 from Api.webuitest.C_ywsd_test import AstManagement
@@ -524,6 +522,7 @@ def get_userinfo_views(request):
     sysadmin = con.get_logininfo("sysadmin")
     admin = con.get_logininfo("admin")
     ast = con.get_logininfo("ast")
+    URL = str(con.get_logininfo("sysadmin")[2], 'utf-8')
     dic = {
         "系统管理员":{
             "账号":sysadmin[0],
@@ -536,7 +535,8 @@ def get_userinfo_views(request):
         "单位档案员":{
             "账号":ast[0],
             "密码":ast[1]
-        }
+        },
+        "访问路径":URL
     }
     dic1 = json.dumps(dic,ensure_ascii=False,sort_keys=True, indent=2)
     print(dic1)

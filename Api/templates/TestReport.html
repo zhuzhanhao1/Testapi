@@ -116,8 +116,8 @@ function html_escape(s) {
 <div class='heading'>
 <h1 style="font-family: Microsoft YaHei">ERMS自动化测试报告</h1>
 <p class='attribute'><strong>测试人员 : </strong> 朱占豪</p>
-<p class='attribute'><strong>开始时间 : </strong> 2019-08-15 07:44:3308:00:00</p>
-<p class='attribute'><strong>合计耗时 : </strong> 0:00:30.383513</p>
+<p class='attribute'><strong>开始时间 : </strong> 2019-08-16 08:15:0708:00:00</p>
+<p class='attribute'><strong>合计耗时 : </strong> 0:00:23.417417</p>
 <p class='attribute'><strong>测试结果 : </strong> 共 1，错误 1，通过率= 0.00%</p>
 
 <p class='description'>Web Automation Testingweb</p>
@@ -169,10 +169,9 @@ function html_escape(s) {
     <pre>
     
 ft1_1: 正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//span[text()='入驻单位管理']/..
-正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//button[@class='mat-flat-button mat-primary']
 Traceback (most recent call last):
-  File "/Users/zhuzhanhao/Testapi/Api/webuitest/A_sysadmin_test.py", line 64, in test_a_unit_create
-    d.click(unit_create_but)        #点击新建入驻单位
+  File "/Users/zhuzhanhao/Testapi/Api/webuitest/A_sysadmin_test.py", line 60, in test_a_unit_create
+    d.click(unitmodel)              #点击入驻单位模块
   File "/Users/zhuzhanhao/Testapi/Api/webuitest/my_base.py", line 49, in click
     ele.click()
   File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/webelement.py", line 80, in click
@@ -183,7 +182,7 @@ Traceback (most recent call last):
     self.error_handler.check_response(response)
   File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
     raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.ElementClickInterceptedException: Message: element click intercepted: Element &lt;button _ngcontent-skd-c22="" color="primary" mat-flat-button="" type="button" class="mat-flat-button mat-primary" ng-reflect-color="primary" style="color: red;"&gt;...&lt;/button&gt; is not clickable at point (1363, 95). Other element would receive the click: &lt;div class="ant-notification ant-notification-topRight" style="top: 24px; right: 0px;"&gt;...&lt;/div&gt;
+selenium.common.exceptions.StaleElementReferenceException: Message: stale element reference: element is not attached to the page document
   (Session info: chrome=74.0.3729.108)
   (Driver info: chromedriver=74.0.3729.6 (255758eccf3d244491b8a1317aa76e1ce10d57e9-refs/branch-heads/3729@{#29}),platform=Mac OS X 10.14.5 x86_64)
 
