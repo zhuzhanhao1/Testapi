@@ -44,14 +44,14 @@
 		<ul>
 			<li>Request URL: {{ dic.url }}</li>
 			<li>Request Method: {{ dic.method }}</li>
-			<li>Request accessToken: {{ dic.header }}</li>
+			<li>Request accessToken: </li>
 			<li>Query String Parameters: {{ dic.params }}</li>
 			<li id = "jbody">Body String Parameters: {{ dic.body }}</li>
 			<li>Login User: {{ dic.identity }}</li>
 			<li>Subordinate to the module: {{ dic.belong }}</li>
 			<li>Use case name: {{ dic.casename }}</li>
 		</ul>
-		<textarea id="detail" rows="25" cols="80" readonly="readonly">{{response}}</textarea>
+		<textarea id="detail" rows="25" cols="80" readonly="readonly">{{dic.result}}</textarea>
 	</div>
 
 </body>

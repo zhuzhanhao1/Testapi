@@ -66,7 +66,7 @@ def login_views(request):
                 resp.set_cookie('id',uList[0].id,60*60*24*365)
                 resp.set_cookie('uphone',uphone,60*60*24*365)
             # uname = User.objects.get(id=uList[0].id).uname
-            # return render(request,"welcome.html",{"user":uname})
+            # return render(request,"oldwelcome.html",{"user":uname})
             return HttpResponseRedirect('/welcome/')
         # 登录失败
         else:
@@ -122,7 +122,7 @@ def welcome_views(request):
     print(id)
     uname = User.objects.get(id=id).uname
     print(uname)
-    return render(request,"welcome.html",{"user":uname})
+    return render(request, "welcome.html", {"user":uname})
 
 
 #-----------------------------------------------------------------------------------
@@ -131,14 +131,14 @@ def timing_views(request):
     os.system("java -jar /Users/zhuzhanhao/jenkins.war")
     id = request.session.get('id')
     uname = User.objects.get(id=id).uname
-    return render(request,"welcome.html",{"user":uname})
+    return render(request, "oldwelcome.html", {"user":uname})
 
 #启动jmeter
 def performance_views(request):
     os.system("sh /Users/zhuzhanhao/apache-jmeter-5.1/bin/jmeter.sh")
     id = request.session.get('id')
     uname = User.objects.get(id=id).uname
-    return render(request,"welcome.html",{"user":uname})
+    return render(request, "oldwelcome.html", {"user":uname})
 
 
 

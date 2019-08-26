@@ -9,7 +9,8 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from .forms import *
 from Api.interfacetest.run_method import RequestMethod
-from Api.interfacetest.get_header import ReqParam
+
+from Api.interfacetest.get_header import GetToken
 from Api.webuitest.DingDing import send_ding
 
 currentUrl = os.path.dirname(__file__)
@@ -47,7 +48,10 @@ def processlist_view(request):
         apilists = Processapi.objects.filter(belong="数据表单配置接口")
     elif belong == "alc":
         apilists = Processapi.objects.filter(belong="访问控制策略接口")
-
+    elif belong == "category":
+        apilists = Processapi.objects.filter(belong="类目保管期限接口")
+    elif belong == "view":
+        apilists = Processapi.objects.filter(belong="视图自定义接口")
 
     #按用例名称查询
     elif casename:
@@ -102,7 +106,19 @@ def create_processcase_views(request):
         dependkey = request.POST.get("dependkey","")
         replacekey = request.POST.get("replacekey","")
         replaceposition = request.POST.get("replaceposition","")
-        Processapi.objects.create(casename=casename, identity=identity, url=url,
+        if "<" in body or ">" in body:
+            print('存在需要替换的符号')
+            a = body.replace("<","＜")
+            print(a)
+            b = a.replace(">","＞")
+            print(b)
+            Processapi.objects.create(casename=casename, identity=identity, url=url,
+                            method=method, params=params, body=b, belong=belong,
+                            isprocess=isprocess,depend_id=dependid,depend_key=dependkey,
+                            replace_key=replacekey,replace_position=replaceposition,order_no=orderno
+                            )
+        else:
+            Processapi.objects.create(casename=casename, identity=identity, url=url,
                             method=method, params=params, body=body, belong=belong,
                             isprocess=isprocess,depend_id=dependid,depend_key=dependkey,
                             replace_key=replacekey,replace_position=replaceposition,order_no=orderno
@@ -137,9 +153,15 @@ def update_processcase_views(request):
                 Processapi.objects.filter(caseid=ids).update(params=params)
 
         elif body:
-            print(body)
             if body == "null":
                 Processapi.objects.filter(caseid=ids).update(body="")
+            elif "<" in body or ">" in body:
+                print('存在需要替换的符号')
+                a = body.replace("<", "＜")
+                print(a)
+                b = a.replace(">", "＞")
+                print(b)
+                Processapi.objects.filter(caseid=ids).update(body=b)
             else:
                 Processapi.objects.filter(caseid=ids).update(body=body)
         return HttpResponse("编辑成功")
@@ -164,6 +186,30 @@ def update_userinfo_api_views(request):
         return HttpResponse("必须输入用户名和用户密码！！！")
 
 
+#获取token信息
+def get_tokeninfo_views(request):
+    pass
+
+
+#更改数据库存储的token
+def update_token_views(request):
+
+    role = request.POST.get("identity","")
+    print(role)
+    if role == "sysadmin":
+        GetToken().get_token_by_role("sysadmin")
+    if role == "admin":
+        GetToken().get_token_by_role("admin")
+    if role == "ast":
+        GetToken().get_token_by_role("ast")
+
+    return HttpResponseRedirect("/ProcessIndex/")
+
+
+
+
+
+
 #执行用例
 def run_processcase_views(request):
     con = ConnDataBase()
@@ -185,6 +231,11 @@ def run_processcase_views(request):
         Runmethod = RequestMethod(identity)
         starttime = time.time()
         if body != "":
+            if "＜" in body or "＞" in body:
+                print('body存在需要替换的符号')
+                a = body.replace("＜", "<")
+                b = a.replace("＞", ">")
+                body = b
             body = eval(body)
             if params:
                 params = eval(params)
@@ -205,7 +256,7 @@ def run_processcase_views(request):
         #json格式化
         djson = json.dumps(d, ensure_ascii=False,sort_keys=True, indent=2)
         if "<" in djson or ">" in djson:
-            print('存在需要替换的符号')
+            print('result存在需要替换的符号')
             a = djson.replace("<","＜")
             print(a)
             b = a.replace(">","＞")
@@ -245,6 +296,8 @@ def run_processcase_views(request):
             if isprocess == "True":
                 print("我需要依赖别的接口哦！！！")
                 dependid = Processapi.objects.get(caseid=depend_id)
+
+                #处理
                 if "," in depend_key:
                     #存在多个key时需要拆分字符串，通过循环赋值给每个结果
                     transfer_key = depend_key.split(",")
@@ -287,18 +340,62 @@ def run_processcase_views(request):
                     # 存在多个key时需要拆分字符串，通过循环赋值给每个结果
                     transfer_key = depend_key.split("/")
                     print(transfer_key)
-                    need_key = replace_key.split("/")
+                    need_key = replace_key.split(",")
                     print(need_key)
 
                     # 依赖的数据
-                    depend_res = json.loads(dependid.result)[dependid.casename][(transfer_key[0])][0][(transfer_key[1])]
-                    print(depend_res)
-                    if replace_position == "body":
-                        body = eval(body)
-                        body[(need_key[0])] = depend_res
-                    elif replace_position == "params":
-                        params = eval(params)
-                        params[(need_key[0])] = depend_res
+                    try:
+                        depend_res = json.loads(dependid.result)[dependid.casename][(transfer_key[0])][0][(transfer_key[1])]
+                        print(depend_res)
+                        if replace_position == "body":
+                            if "＜" in body or "＞" in body:
+                                print('body存在需要替换的符号')
+                                a = body.replace("＜", "<")
+                                b = a.replace("＞", ">")
+                                body = b
+                            body = eval(body)
+                            body[(need_key[0])] = depend_res
+                        elif replace_position == "params":
+                            params = eval(params)
+                            params[(need_key[0])] = depend_res
+
+                        print("更新后的:" + str(body))
+                        print("更新后的:" + str(params))
+                        if params:
+                            if type(params) == str:
+                                params = eval(params)
+                        if body:
+                            if type(body) == str:
+                                body = eval(body)
+                        starttime = time.time()
+                        response = Runmethod.run_main(method, url, params, body)
+
+                    except:
+                        print('请查看日志')
+
+
+
+                #处理访问控制策略的列表接口返回的值
+                elif "-" in depend_key:
+                    # 存在多个key时需要拆分字符串，通过循环赋值给每个结果
+                    transfer_key = depend_key.split("-")
+                    print(transfer_key)
+                    need_key = replace_key.split(",")
+                    print(need_key)
+
+                    # 依赖的数据
+                    print("我是body"+body)
+                    for i in range(len(need_key)):
+                        depend_res = json.loads(dependid.result)[dependid.casename][(transfer_key[0])][(transfer_key[i+1])]
+                        print(depend_res)
+                        if replace_position == "body":
+                            if type(body) == str:
+                                body = eval(body)
+                            body[(need_key[i])] = depend_res
+                        elif replace_position == "params":
+                            if type(body) == str:
+                                params = eval(params)
+                            params[(need_key[i])] = depend_res
 
                     print("更新后的:" + str(body))
                     print("更新后的:" + str(params))
@@ -312,15 +409,17 @@ def run_processcase_views(request):
                     response = Runmethod.run_main(method, url, params, body)
 
 
-
-
-
             #不需要别的接口
             elif isprocess != "True":
                 print("我不需要依赖别的接口！！！")
                 #计算运行前的时间
                 starttime = time.time()
                 if body != "":
+                    if "＜" in body or "＞" in body:
+                        print('noprocess-body存在需要替换的符号')
+                        a = body.replace("＜", "<")
+                        b = a.replace("＞", ">")
+                        body = b
                     body = eval(body)
                     if params:
                         params = eval(params)
@@ -338,7 +437,7 @@ def run_processcase_views(request):
             if runtime > 0.5 and runtime <= 1.0:
                 d[casename+"运行时间为"] = str(runtime)+"秒"
             elif runtime > 3.0:
-                d[casename +"运行时间为"] = str(runtime)+"秒"
+                d[casename +"运行缓慢"] = str(runtime)+"秒"
             else:
                 d[casename +"运行时间为"] = str(runtime)+"秒"
             d["＜"+ucaseid+"＞"+"负责人"] = head
@@ -348,11 +447,9 @@ def run_processcase_views(request):
             # json格式化
             djson = json.dumps(d, ensure_ascii=False, sort_keys=True, indent=2)
             if "<" in djson or ">" in djson:
-                print('存在需要替换的符号')
+                print('result存在需要替换的符号')
                 a = djson.replace("<", "＜")
-                print(a)
                 b = a.replace(">", "＞")
-                print(b)
                 Processapi.objects.filter(caseid=ucaseid).update(result=b)
             else:
                 #每次运行结束将每个接口返回的数据JOSN格式化存入数据库
@@ -368,3 +465,57 @@ def run_processcase_views(request):
         #send_ding(djson_new)
         #将JSON数据返回给前端
         return HttpResponse(djson_new)
+
+
+def detail_views(request):
+    res = request.GET.get("id","")
+    id = Processapi.objects.get(caseid=res)
+    identity = id.identity
+    url =  id.url
+    method = id.method
+    params = id.params
+    body = id.body
+    casename = id.casename
+    isprocess = id.isprocess
+    depend_id = id.depend_id
+    depend_key = id.depend_key
+    replace_key = id.replace_key
+    replace_position = id.replace_position
+    head = id.exceptres
+    belong = id.belong
+    result = id.result
+    forward = str(int(res) + 1)
+    print(forward)
+    back = str(int(res) - 1)
+    if identity == "sysadmin":
+        identity = "系统管理员"
+    if identity == "admin":
+        identity = "单位管理员"
+    if identity == "ast":
+        identity = "单位档案员"
+
+
+    if params == "":
+        params = {
+            "surprise":"params没有传参数哦!"
+        }
+        params = json.dumps(params, ensure_ascii=False, sort_keys=True, indent=2)
+    if body == "":
+        body = {
+            "surprise": "body没有传参数哦!"
+        }
+        body = json.dumps(body, ensure_ascii=False, sort_keys=True, indent=2)
+    dic = {
+        "identity": identity,
+        "belong": belong,
+        "casename": casename,
+        "url": url,
+        "method": method,
+        "params": params,
+        "body" : body,
+        "result" : result,
+        "head" : head,
+        "forward" : forward,
+        "back" : back
+    }
+    return render(request,"detail.html",{"dic":dic})

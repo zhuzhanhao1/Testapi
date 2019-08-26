@@ -18,6 +18,40 @@ ast = con.get_logininfo("ast")
 
 
 
+class GetToken:
+    def __init__(self):
+        self.con = ConnDataBase()
+        self.sysaadmin = self.con.get_logininfo("sysadmin")
+        self.admin = self.con.get_logininfo("admin")
+        self.ast = self.con.get_logininfo("ast")
+
+
+    def get_token_by_role(self,role):
+        if role == "ast":
+            params = {
+                "loginName": self.ast[0],
+                "password": self.ast[1]
+            }
+        elif role == "admin":
+            params = {
+                "loginName": self.admin[0],
+                "password": self.admin[1]
+            }
+        elif role == "sysadmin":
+            params = {
+                "loginName": self.sysaadmin[0],
+                "password": self.sysaadmin[1]
+            }
+        headers = {
+            "Content-Type": "application/json"
+        }
+        response = requests.post(url, headers=headers, data=json.dumps(params))
+        res = response.json()['accessToken']
+        result = self.con.update_token(res,role)
+        return result
+
+
+
 #单位档案员登录
 def ast_login():
     params = {
@@ -28,8 +62,8 @@ def ast_login():
         "Content-Type":"application/json"
     }
     response = requests.post(url,headers=headers,data=json.dumps(params))
-    # print(response.text)
     return response.json()['accessToken']
+
 
 #系统管理员登录
 def sysadmin_login():
@@ -41,7 +75,6 @@ def sysadmin_login():
         "Content-Type":"application/json"
     }
     response = requests.post(url,headers=headers,data=json.dumps(params))
-    # print(response.json())
     return response.json()['accessToken']
 
 #单位管理员登录
@@ -55,6 +88,7 @@ def admin_login():
     }
     response = requests.post(url,headers=headers,data=json.dumps(params))
     return response.json()['accessToken']
+
 
 class ReqParam:
     #获取请求头数据
@@ -78,9 +112,9 @@ class ReqParam:
 
 if __name__ == "__main__":
     start_time = time.time()
-    a = ReqParam()
+    a = GetToken()
     # print(a.get_json(a.get_user_power("ast")))
-    print(a.get_user_power("ast"))
+    print(a.get_token_by_role("ast"))
     end_time = time.time()
     print(round(end_time-start_time,3))
 

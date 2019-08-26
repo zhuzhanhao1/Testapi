@@ -38,8 +38,6 @@
 		</a>
         <dl class="layui-nav-child">
           <dd><a href="https://mail.qq.com/" target="_blank">邮件管理</a></dd>
-          <dd><a href="">消息管理</a></dd>
-          <dd><a href="">授权管理</a></dd>
         </dl>
       </li>
     </ul>
@@ -50,11 +48,10 @@
           {{ user }}
         </a>
         <dl class="layui-nav-child">
-          <dd><a href="">基本资料</a></dd>
-          <dd><a href="">安全设置</a></dd>
+          <dd><a href="/welcome/">返回首页</a></dd>
+          <dd><a href="/logout/">退出用户</a></dd>
         </dl>
       </li>
-      <li class="layui-nav-item"><a href="/welcome/">返回</a></li>
     </ul>
   </div>
 
@@ -124,17 +121,12 @@
 		<li class="layui-nav-item">
           <a href="?belong=deposit_form">续存记录接口</a>
         </li>
-		<li class="layui-nav-item">
-          <a href="?belong=process" style="background-color: lightslategrey;">ERMS流程接口</a>
-        </li>
-
-
 
 	  </ul>
     </div>
   </div>
 
-  <div id= "layuibody" class="layui-body" style="background-image: url('./../static/images/a.jpg');margin-bottom: -45px;background-size:1420px 720px;">
+  <div id= "layuibody" class="layui-body" style="background-color:lightslategrey;margin-bottom: -45px;">
     <!-- 内容主体区域 -->
     <div style="padding: 15px;">
 		<div class="demoTable">
@@ -150,6 +142,7 @@
 		<table class="layui-hide" id="test" lay-filter="test"></table>
 	</div>
   </div>
+	<!--创建用例-->
 	<div class="layui-row" id="popSearchRoleTest" style="display:none;">
 			<div class="layui-col-md11">
 				<form class="layui-form" action="/create_apicase/" method="post" id="demoadd">
@@ -255,10 +248,11 @@
 				</div>
 			  </div>
 
+
 			  <div class="layui-form-item">
 				<div class="layui-input-block">
-				  <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
-				  <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+				  <button class="layui-btn" lay-submit lay-filter="formDemo" style="margin-left: 245px;background-color: yellowgreen;">确定导入</button>
+{#				  <button type="reset" class="layui-btn layui-btn-primary">重置</button>#}
 				</div>
 			  </div>
 			</form>
@@ -339,12 +333,12 @@
 		if(a.style.display == "block"){
 		    a.style.display = "none";
 		    b.style.left = "0px";
-		    c.style.marginRight = "840px";
+		    c.style.marginRight = "644px";
 		    d.setAttribute("class","layui-icon layui-icon-spread-left");
 		}else{
 		    a.style.display = "block";
 		    b.style.left = "200px";
-		    c.style.marginRight = "640px";
+		    c.style.marginRight = "444px";
 		    d.setAttribute("class","layui-icon layui-icon-shrink-right");
 		}
     }
@@ -792,7 +786,7 @@ function importcase(){
             //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
             type:1,
             title:"导入用例",
-            area: ['30%','25%'],
+            area: ['35%','30%'],
             content:$("#importCase").html()
         });
     }

@@ -59,8 +59,7 @@ class ConnDataBase:
 
 
     def get_logininfo(self,identity):
-        sql = "select username,password,url from ERMS.userinfo where identity='{}';".format(identity)
-
+        sql = "select username,password,url,token from ERMS.userinfo where identity='{}';".format(identity)
         res = self.fetchCount(sql)
         return res
 
@@ -72,15 +71,21 @@ class ConnDataBase:
         return res
 
 
+    def update_token(self,token,identity):
+        sql = "update ERMS.userinfo set token='{token}' where identity='{shenfeng}';".format(token=token,shenfeng=identity)
+        res = self.fetchCount(sql)
+        return res
+
+
 if __name__ == "__main__":
     data = ConnDataBase()
     # print(data.update_logininfo("haoyi@amberdata.cn","Dctm@1234","admin"))
-    print(data.get_logininfo("sysadmin")[2])
-    print(type(data.get_logininfo("sysadmin")[2]))
-    print(str(data.get_logininfo("sysadmin")[2],'utf-8'))
-    print(type(str(data.get_logininfo("sysadmin")[2],'utf-8')))
-    print(data.get_logininfo("admin"))
+    # print(data.get_logininfo("sysadmin")[2])
+    # print(type(data.get_logininfo("sysadmin")[2]))
+    # print(str(data.get_logininfo("sysadmin")[2],'utf-8'))
+    # print(type(str(data.get_logininfo("sysadmin")[2],'utf-8')))
+    # print(data.get_logininfo("admin"))
     print(data.get_logininfo("ast"))
-
+    # print(data.update_token("saffqewgwrguehrgo","ast"))
 
     # print(data.update_logininfo("zeh@amberdata.cn","Dctm@1234","ast"))

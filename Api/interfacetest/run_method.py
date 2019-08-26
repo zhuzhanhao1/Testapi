@@ -3,66 +3,74 @@ import sys,os
 cur_path = os.path.dirname(os.path.realpath(__file__))
 cur_path1 = os.path.dirname(os.path.realpath(cur_path))
 sys.path.append(cur_path1)
+
 from .get_header import ReqParam
+from Api.webuitest.conn_database import ConnDataBase
+
 
 class RequestMethod():
     def __init__(self,val):
         self.val = val
-        self.reqheader = ReqParam()
+        self.con = ConnDataBase()
 
 
     def get(self,url,params):
         try:
-            headers = self.reqheader.get_user_power(self.val)
-            #print(headers)
+            token = self.con.get_logininfo(self.val)[3]
+            headers = {
+                "accessToken":token
+            }
             r = requests.get(url, params=params,headers=headers)
             json_response = r.json()
-                # self.reqheader.get_json(r.json())
             return json_response
         except Exception as e:
-            print("GET请求出错")
+            print("GET请求出错",e)
 
 
 
     def post(self,url,params,data=None):
         data = json.dumps(data)
         try:
-            headers = self.reqheader.get_user_power(self.val)
-            headers["Content-Type"] = "application/json"
-            #print(headers)
+            token = self.con.get_logininfo(self.val)[3]
+            headers = {
+                "accessToken":token,
+                "Content-Type": "application/json"
+            }
             r =requests.post(url,params=params,data=data,headers=headers)
             json_response = r.json()
-                # ReqParam().get_json(r.json())
             return json_response
         except Exception as e:
-            print("POST请求出错")
+            print("POST请求出错",e)
 
 
 
     def delfile(self,url,params):
         try:
-            headers = self.reqheader.get_user_power(self.val)
+            token = self.con.get_logininfo(self.val)[3]
+            headers = {
+                "accessToken":token
+            }
             r =requests.delete(url,params=params,headers=headers)
             json_response = r.json()
-                # ReqParam().get_json(r.json())
             return json_response
         except Exception as e:
-            print("DELETE请求出错")
+            print("DELETE请求出错",e)
 
 
 
     def putfile(self,url,params,data=None):
         data = json.dumps(data)
         try:
-            headers = self.reqheader.get_user_power(self.val)
-            print(headers)
-            headers["Content-Type"] = "application/json"
+            token = self.con.get_logininfo(self.val)[3]
+            headers = {
+                "accessToken":token,
+                "Content-Type":"application/json"
+            }
             r =requests.put(url,params=params,data=data,headers=headers)
             json_response = r.json()
-                # ReqParam().get_json(r.json())
             return json_response
         except Exception as e:
-            print("PUT请求出错")
+            print("PUT请求出错",e)
 
 
 

@@ -276,35 +276,6 @@ def weblist_view(request):
 
 #Auto列表页
 def antolist_view(request):
-    # module = request.GET.get("key[id]", "")
-    # caseid= request.GET.get("key[id1]","")
-    # a = request.GET.get("belong","")
-    # if module == "" and a == "" and caseid == "":
-    #     weblists = Autocase.objects.filter()
-    # elif a == "policy":
-    #     weblists = Autocase.objects.filter(webcase_models="保留处置策略管理")
-    # elif a == "unit":
-    #     weblists = Autocase.objects.filter(webcase_models__contains="入驻单位管理")
-    # elif a == "forms":
-    #     weblists = Autocase.objects.filter(webcase_models="数据表单设置")
-    # elif a == "views":
-    #     weblists = Autocase.objects.filter(webcase_models="视图管理")
-    # elif a == "info":
-    #     weblists = Autocase.objects.filter(webcase_models="基本信息")
-    # elif a == "dept":
-    #     weblists = Autocase.objects.filter(webcase_models="部门管理")
-    # elif a == "user":
-    #     weblists = Autocase.objects.filter(webcase_models="用户管理")
-    # elif a == "class":
-    #     weblists = Autocase.objects.filter(webcase_models="类目保管期限设定")
-    # elif a == "access":
-    #     weblists = Autocase.objects.filter(webcase_models="访问控制策略管理")
-    # elif a == "transfer":
-    #     weblists = Autocase.objects.filter(webcase_models="移交操作")
-    # elif module:
-    #     weblists = Autocase.objects.filter(webcase_models__contains=module)
-    # elif caseid:
-    #     weblists = Autocase.objects.filter(webcaseid=caseid)
     weblists = Autocase.objects.filter()
     L = []
     for weblist in weblists:
@@ -380,6 +351,7 @@ def delete_autocase_views(request):
             Autocase.objects.filter(autoid=ids).delete()
             return HttpResponse("删除成功")
 
+
 #更新web用例
 def update_webcase_views(request):
     if request.method == "GET":
@@ -445,6 +417,7 @@ def update_autocase_views(request):
             else:
                 Autocase.objects.filter(autoid=ids).update(autoresult=result)
             return HttpResponse("编辑成功")
+
 
 
 def update_dataready_views(request):

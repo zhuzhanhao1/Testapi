@@ -9,7 +9,7 @@
   <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
   <link href="./../static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
   <script src="./../static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-
+  <script src="./../static/js/layui/layui.js"></script>
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
@@ -58,11 +58,10 @@
           {{ user }}
         </a>
         <dl class="layui-nav-child">
-          <dd><a href="">基本资料</a></dd>
-          <dd><a href="">安全设置</a></dd>
+          <dd><a href="/welcome/">返回首页</a></dd>
+          <dd><a href="/logout/">退出用户</a></dd>
         </dl>
       </li>
-      <li class="layui-nav-item"><a href="/welcome/">返回</a></li>
     </ul>
   </div>
 
@@ -167,11 +166,12 @@
     </div>
   </div>
 
-  <div id= "layuibody" class="layui-body" style="background-image: url('./../static/images/44.png');margin-bottom: -45px;">
+  <div id= "layuibody" class="layui-body" style="background-color: #494A5F;margin-bottom: -45px;">
 	<div class="layui-tab" lay-filter="docDemoTabBrief">
 	  <ul class="layui-tab-title" style="left: 20px;">
-		<li class="layui-this" style="color: whitesmoke;">功能测试</li>
-		<li style="color: whitesmoke;">功能自动化测试</li>
+		<li class="layui-this" style="color: whitesmoke;">功能用例-功能测试</li>
+		<li style="color: whitesmoke;">功能自动化用例-自动化测试</li>
+		<li style="color: whitesmoke;">其他</li>
 	  </ul>
 	  <div class="layui-tab-content">
 		<!--内容一-->
@@ -201,6 +201,12 @@
 				<table class="layui-hide" id="test1" lay-filter="test1"></table>
 			</div>
 		</div>
+		<div class="layui-tab-item" style="margin-top: -20px;">
+			<div style="padding: 10px;">
+				<img src="./../static/images/WechatIMG68044.jpeg">
+			</div>
+		</div>
+
 	  </div>
 	</div>
 
@@ -438,7 +444,8 @@
 	  <span style="float: right;">人生苦短，我用Python</span>
   </div>
 </div>
-<!--表头按钮-->
+
+<!--功能测试-表头按钮-->
 <script type="text/html" id="toolbarDemo">
   <div class="layui-btn-container">
 	<button type="button" onclick="selectRole()" class="layui-btn layui-btn-sm layui-btn-warm">新建用例</button>
@@ -448,7 +455,7 @@
 	<button id = "Runcase" class="layui-btn layui-btn-sm layui-btn-danger" lay-event="runcase">执行用例</button>
   </div>
 </script>
-<!--表头按钮-->
+<!--自动化测试-表头按钮-->
 <script type="text/html" id="toolbarDemo1">
   <div class="layui-btn-container">
 	<button type="button" onclick="selectRole1()" class="layui-btn layui-btn-sm layui-btn-normal">新建用例</button>
@@ -468,7 +475,6 @@
   <a class="layui-icon-delete layui-icon" lay-event="del" style="color: #74777b;font-size: 24px;"></a>
 </script>
 
-
 <!--行按钮-->
 <script type="text/html" id="barDemonew">
 {#  <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>#}
@@ -478,7 +484,7 @@
   <a class="layui-icon-delete layui-icon" lay-event="del" style="color: #74777b;font-size: 24px;"></a>
 </script>
 
-
+<!--切换-->
 <script>
 	function showlist() {
 	    var a = document.getElementById("navlist");
@@ -500,7 +506,8 @@
     }
 
 </script>
-<script src="./../static/js/layui/layui.js"></script>
+
+<!--功能测试列表-->
 <script>
 layui.use('table', function() {
     var table = layui.table;
@@ -897,32 +904,7 @@ function importcase(){
 
 </script>
 
-<!--监听提交-->
-<script>
-//Demo
-layui.use('form', function(){
-  var form = layui.form;
-
-  //监听提交
-  form.on('submit(formDemo)', function(data){
-    layer.msg(JSON.stringify(data.field));
-    return true;
-  });
-});
-</script>
-<script>
-layui.use('element', function(){
-  var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
-
-  //监听导航点击
-  element.on('nav(demo)', function(elem){
-    //console.log(elem)
-    layer.msg(elem.text());
-  });
-});
-</script>
-
-<!--身份头像-->
+<!--身份头像模板-->
 <script type="text/html" id="identityTpl">
   {% verbatim %}{{#  if(d.identity === '系统管理员'){ }}{% endverbatim %}
     <img src="./../static/images/7.png" class="layui-nav-img">
@@ -973,9 +955,9 @@ layui.use('table', function() {
             , {field: 'identity', title: 'User', width: 60,align:"center",templet:"#identityTpl"}
             //, {field: 'module', title: '所属模块', width: 120,align:"center"}
             , {field: 'casename', title: '测试用例名称', width: 150,align:"center",style:'background-color: lightyellow;'}
-            , {field: 'dataready', title: '数据准备', width: 600,align:"center"}
-			//, {field:'teststep', title:'测试步骤', width:200	,align:"center", edit: 'text'}
-			//, {field: 'exceptres', title: '期望结果', width: 200,align:"center"}
+            , {field: 'dataready', title: '数据准备', width: 200,align:"center"}
+			, {field:'teststep', title:'测试步骤', width:200	,align:"center", edit: 'text'}
+			, {field: 'exceptres', title: '期望结果', width: 200,align:"center"}
             , {field: 'result', title: '执行结果', width: 120, sort: true,align:"center",edit: 'text',templet: function(res){
                 if(res.result.indexOf("Failed") != -1){
 					    return '<span style="color: red;">' +res.result + '</span>'
@@ -1307,6 +1289,30 @@ layui.use('table', function() {
 		var a = document.getElementById("Searchcase");
 		a.style.display = "block";
     }
+</script>
+<!--监听提交-->
+<script>
+//Demo
+layui.use('form', function(){
+  var form = layui.form;
+
+  //监听提交
+  form.on('submit(formDemo)', function(data){
+    layer.msg(JSON.stringify(data.field));
+    return true;
+  });
+});
+</script>
+<script>
+layui.use('element', function(){
+  var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+
+  //监听导航点击
+  element.on('nav(demo)', function(elem){
+    //console.log(elem)
+    layer.msg(elem.text());
+  });
+});
 </script>
 
 </body>

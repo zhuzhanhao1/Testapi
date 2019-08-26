@@ -38,8 +38,6 @@
 		</a>
         <dl class="layui-nav-child">
           <dd><a href="https://mail.qq.com/" target="_blank">邮件管理</a></dd>
-          <dd><a href="">消息管理</a></dd>
-          <dd><a href="">授权管理</a></dd>
         </dl>
       </li>
     </ul>
@@ -50,11 +48,10 @@
           {{ user }}
         </a>
         <dl class="layui-nav-child">
-          <dd><a href="">基本资料</a></dd>
-          <dd><a href="">安全设置</a></dd>
+          <dd><a href="/welcome/">返回首页</a></dd>
+          <dd><a href="/logout/">退出用户</a></dd>
         </dl>
       </li>
-      <li class="layui-nav-item"><a href="/welcome/">返回</a></li>
     </ul>
   </div>
 
@@ -64,7 +61,7 @@
       <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
       <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="demo">
 
-        <li class="layui-nav-item"><!-- layui-nav-itemed -->
+        <li class="layui-nav-item layui-nav-itemed"><!-- layui-nav-itemed -->
           <a href="#">系统管理</a>
           <dl class="layui-nav-child">
             <dd><a href="?belong=unit">单位接口</a></dd>
@@ -74,7 +71,7 @@
             <dd><a href="?belong=user">用户管理接口</a></dd>
           </dl>
         </li>
-	  	<li class="layui-nav-item">
+	  	<li class="layui-nav-item layui-nav-itemed">
           <a href="javascript:;">业务规则</a>
           <dl class="layui-nav-child">
             <dd><a href="?belong=category">类目保管期限设定</a></dd>
@@ -83,16 +80,29 @@
             <dd><a href="?belong=view">视图自定义</a></dd>
           </dl>
         </li>
-
+	  	<li class="layui-nav-item">
+          <a href="javascript:;">收集整理</a>
+          <dl class="layui-nav-child">
+            <dd><a href="?belong=deptdocument">部门文件</a></dd>
+			<dd><a href="?belong=file_plan">整理任务</a></dd>
+          </dl>
+        </li>
+	  	<li class="layui-nav-item">
+          <a href="javascript:;">档案管理</a>
+          <dl class="layui-nav-child">
+            <dd><a href="?belong=views">多视图</a></dd>
+			<dd><a href="?belong=rearrange">重新整理</a></dd>
+          </dl>
+        </li>
 		<li class="layui-nav-item">
-          <a href="?belong=all_process">ERMS总流程接口</a>
+          <a href="?belong=all_process">ERMS总流程</a>
         </li>
 
 	  </ul>
     </div>
   </div>
 
-  <div id= "layuibody" class="layui-body" style="background-image: url('./../static/images/a.jpg');margin-bottom: -45px;background-size:1420px 720px;">
+  <div id= "layuibody" class="layui-body" style="background-color: slategray;margin-bottom: -45px;">
     <!-- 内容主体区域 -->
     <div style="padding: 15px;">
 		<div class="demoTable">
@@ -108,6 +118,8 @@
 		<table class="layui-hide" id="test" lay-filter="test"></table>
 	</div>
   </div>
+
+	<!--创建用例-->
 	<div class="layui-row" id="popSearchRoleTest" style="display:none;">
 			<div class="layui-col-md11">
 				<form class="layui-form" action="/create_processcase/" method="post" id="demoadd">
@@ -121,7 +133,8 @@
 						<option value="保留处置策略接口">保留处置策略接口</option>
 						<option value="数据表单配置接口">数据表单配置接口</option>
 						<option value="访问控制策略接口">访问控制策略接口</option>
-
+						<option value="类目保管期限接口">类目保管期限接口</option>
+						<option value="视图自定义接口">视图自定义接口</option>
 						<option value="部门管理接口">部门管理接口</option>
 						<option value="用户管理接口">用户管理接口</option>
 					  </select>
@@ -203,12 +216,17 @@
 				  </div>
 
 
-				<div class="layui-form-item">
+
+				  <div class="layui-form-item">
 					<label class="layui-form-label">替换区域</label>
 					<div class="layui-input-block">
-					  <input type="text" name="replaceposition"  class="layui-input">
+					  <input type="checkbox" name="replaceposition" value="params" title="params">
+					  <input type="checkbox" name="replaceposition" value="body" title="body">
+					  <input type="checkbox" name="replaceposition" value="" title="null" checked="">
 					</div>
-				</div>
+				  </div>
+
+
 
 				<div class="layui-form-item">
 					<label class="layui-form-label">依赖的ID</label>
@@ -297,6 +315,30 @@
 			</div>
 		</div>
 
+
+	<!--更新token-->
+	<div class="layui-row" id="popSearchRoleTest3" style="display:none;">
+			<div class="layui-col-md11">
+				<form class="layui-form" action="/update_token/" method="post">
+
+				  <div class="layui-form-item" style="margin-top: 20px;">
+					<label class="layui-form-label">角色</label>
+					<div class="layui-input-block" >
+					  <input type="checkbox" name="identity" value="sysadmin" title="系统管理员" checked>
+					  <input type="checkbox" name="identity" value="admin" title="单位管理员" checked>
+					  <input type="checkbox" name="identity" value="ast" title="单位档案员" checked>
+					</div>
+				  </div>
+
+				  <div class="layui-form-item">
+					<div class="layui-input-block">
+					  <button class="layui-btn" lay-submit lay-filter="formDemo" style="margin-left: 245px;background-color: yellowgreen;">立即提交</button>
+					  <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+					</div>
+				  </div>
+				</form>
+			</div>
+		</div>
 </div>
 
 <script type="text/html" id="toolbarDemo">
@@ -306,6 +348,7 @@
     <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="getCheckData">获取选中行数据</button>
     <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="getCheckLength">获取选中数目</button>
     <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="isAll">验证是否全选</button>
+	<button type="button" onclick="gettoken()" class="layui-btn layui-btn-sm layui-btn-danger">获取令牌</button>
 	<button id = "Runcase" class="layui-btn layui-btn-sm layui-btn-danger" lay-event="runcase">执行用例</button>
 
   </div>
@@ -327,12 +370,12 @@
 		if(a.style.display == "block"){
 		    a.style.display = "none";
 		    b.style.left = "0px";
-		    c.style.marginRight = "840px";
+		    c.style.marginRight = "644px";
 		    d.setAttribute("class","layui-icon layui-icon-spread-left");
 		}else{
 		    a.style.display = "block";
 		    b.style.left = "200px";
-		    c.style.marginRight = "640px";
+		    c.style.marginRight = "444px";
 		    d.setAttribute("class","layui-icon layui-icon-shrink-right");
 		}
     }
@@ -343,33 +386,29 @@
 
 <script type="text/html" id="methodTpl">
   {% verbatim %}{{#  if(d.method === 'get'){ }}{% endverbatim %}
-    <span style="color: mediumpurple;">{% verbatim %}{{ d.method }}{% endverbatim %}</span>
-
+    <span style="color: hotpink;">{% verbatim %}{{ d.method }}{% endverbatim %}</span>
   {% verbatim %}{{# } else if(d.method=== 'post') { }} {% endverbatim %}
-  	<span style="color: yellowgreen;">{% verbatim %}{{ d.method }}{% endverbatim %}</span>
-
+  	<span style="color: mediumpurple;">{% verbatim %}{{ d.method }}{% endverbatim %}</span>
   {% verbatim %}{{# } else if(d.method=== 'put') { }} {% endverbatim %}
-  	<span style="color: #00b4ef;">{% verbatim %}{{ d.method }}{% endverbatim %}</span>
-
+  	<span style="color: cornflowerblue;">{% verbatim %}{{ d.method }}{% endverbatim %}</span>
   {% verbatim %}{{# } else if(d.method=== 'delete') { }} {% endverbatim %}
   	<span style="color: deeppink;">{% verbatim %}{{ d.method }}{% endverbatim %}</span>
-
   {% verbatim %}{{#  } }}{% endverbatim %}
 </script>
 
 <script type="text/html" id="identityTpl">
   {% verbatim %}{{#  if(d.identity === 'sysadmin'){ }}{% endverbatim %}
     <img src="./../static/images/7.png" class="layui-nav-img">
-
   {% verbatim %}{{# } else if(d.identity=== 'admin') { }} {% endverbatim %}
   	<img src="./../static/images/8.png" class="layui-nav-img">
-
   {% verbatim %}{{# } else if(d.identity=== 'ast') { }} {% endverbatim %}
   	<img src="./../static/images/9.png" class="layui-nav-img">
-
   {% verbatim %}{{#  } }}{% endverbatim %}
 </script>
 
+<script type="text/html" id="casenameTpl">
+	<a href="/detail/?id={% verbatim %}{{d.caseid}}{% endverbatim %}" class="layui-table-link" target="_blank" style="color: blueviolet;">{% verbatim %}{{d.casename}}{% endverbatim %}</a>
+</script>
 
 
 
@@ -407,34 +446,14 @@ layui.use('table', function() {
             {type: 'checkbox', fixed: 'left'}
             , {field: 'caseid', title: 'ID', width: 60, sort: true, fixed: 'left',align:"center"}
             , {field: 'identity', title: 'User', width: 60,align:"center",templet:"#identityTpl"}
-            , {field: 'casename', title: '用例名字', width: 150,align:"center"}
-            , {field: 'url', title: '请求地址', width: 200,align:"center"}
+            , {field: 'casename', title: '用例名字', width: 150,align:"center",templet:"#casenameTpl"}
+            , {field: 'url', title: '请求地址', width: 180,align:"center"}
             , {field: 'method', title: '请求方式', width: 90,align:"center",templet:"#methodTpl"}
-			,{field:'params', title:'Params参数', width:220,align:"center", edit: 'text', templet: function(res){
-				return '<span>'+ res.params +'</span>'
-			  }}
-            , {field: 'body', title: 'Data参数', width: 220, sort: true,align:"center",edit: 'text',templet: function(res){
-                if(res.body.indexOf("<") != -1 || res.body.indexOf(">") != -1){
-					    console.log("bbbbbbbbbb");
-					    var reg = /</g;
-					    var a = res.body.replace(reg,"小于");
-					    var reg1 = />/g;
-					    var b = a.replace(reg1,'大于');
-					    return '<span style="color: yellow;">' + b + '</span>'
-					    //return '<span style="color: red;">' +res.result + '</span>'
-					}else{
-                    return '<span>'+ res.body +'</span>'
-				}
-			  }}
-			, {field: 'order_no', title: '流程序号', width: 100, sort: true, align:"center"}
-			, {field: 'depend_id', title: '依赖的ID', width: 120,align:"center"}
-			, {field: 'depend_key', title: '依赖的key', width: 120,align:"center"}
-			, {field: 'replace_key', title: '替换的key', width: 120,align:"center"}
-			, {field: 'replace_position', title: '替换的位置', width: 120,align:"center"}
-			, {field: 'result', title: '响应内容', width: 220, sort: true,align:"center",templet:function (res) {
+			, {field:'params', title:'Params参数', width:150,align:"center", edit: 'text'}
+            , {field: 'body', title: 'Data参数', width: 150, align:"center",edit: 'text'}
+			, {field: 'result', title: '响应内容', width: 160, sort: true,align:"center",templet:function (res) {
 					if(res.result.indexOf("error") != -1){
 					    return '<span style="color: red;">' +res.result + '</span>'
-					    return '<span>' +res.result+ '</span>'
 					}else if(res.result.indexOf("运行缓慢") != -1){
 					    return '<span style="color: deeppink;">' +res.result + '</span>'
 					}
@@ -442,7 +461,12 @@ layui.use('table', function() {
 					    return '<span>' +res.result + '</span>'
 					}
                 }}
-            , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150,align:"center"}
+            , {field: 'order_no', title: '流程序号', width: 100, sort: true, align:"center"}
+			, {field: 'depend_id', title: '依赖的ID', width: 100,align:"center"}
+			, {field: 'depend_key', title: '依赖的key', width: 100,align:"center"}
+			, {field: 'replace_key', title: '替换的key', width: 100,align:"center"}
+			, {field: 'replace_position', title: '替换的位置', width: 100,align:"center"}
+            , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 135,align:"center"}
         ]]
 		,id: 'testReload'
 		,done:function (res) {   //返回数据执行回调函数
@@ -484,13 +508,10 @@ layui.use('table', function() {
 		var checkStatus = table.checkStatus(obj.config.id);
 		//console.log(checkStatus);
 
-
 		switch(obj.event){
+		    //获取选择数据按钮
 			case 'getCheckData':
 			var data = checkStatus.data;
-			//console.log(data[0]);
-			//console.log(typeof data[0].result);
-			//layer.alert(JSON.stringify(data));
 			var strjson = JSON.stringify(data,null,4);
 			layer.prompt({
 			  formType: 2,//多行文本
@@ -499,18 +520,17 @@ layui.use('table', function() {
 			  anim:4,//从左滚动进来
 			  area: ['400px', '400px'] //自定义文本域宽高
 			});
-
 		  break;
-
+			//获取选择数目按钮
 		  case 'getCheckLength':
 			var data = checkStatus.data;
 			layer.msg('选中了：'+ data.length + ' 个');
 		  break;
-
+			//验证是否全选按钮
 		  case 'isAll':
 			layer.msg(checkStatus.isAll ? '全选': '未全选');
 		  break;
-
+			//执行用例按钮
 		  case 'runcase':
 			var data = checkStatus.data;
 			console.log(data);
@@ -520,17 +540,7 @@ layui.use('table', function() {
 					 anim: 6,
 					});
 			}else {
-			    //console.log("为什么还不执行我这个");
-			    //document.getElementById("Runcase").setAttribute("disabled" , true);
-				//document.getElementById("Runcase").innerHTML = "loading...";
-				//document.getElementById("Runcase").style.color = "red";
-				//document.getElementById("Runcase").style.backgroundColor = "white";
-
-				//var layer = layui.layer;
-				//var index = layer.load(0); //添加laoding,0-2两种方式
-				//console.log("我这个已经执行完成了");
-				//layer.alert("用例正在执行，请等待......");
-					//多个ID使用字符串拼接
+				//多个ID使用字符串拼接
                 var ids = "";
                 for (i = 0; i < data.length; i++) {
                     ids += data[i]["caseid"] + ",";
@@ -574,7 +584,6 @@ layui.use('table', function() {
                         });
                         //setTimeout()方法来实现设定一段时间后执行某个任务
                         //setTimeout(function(){ window.location.reload(); }, 3000);
-
                     },
                     error: function (data) {
                         console.log(data);
@@ -584,8 +593,6 @@ layui.use('table', function() {
                             area: ["200px", "50px"]
                         });
                     }
-
-
                 });
             }
 
@@ -604,8 +611,8 @@ layui.use('table', function() {
                 formType: 2,//多行文本
                 value: data.result,
                 title: '响应结果',
-                anim: 1,//从左滚动进来
-                area: ['400px', '400px'] //自定义文本域宽高
+                anim: 5,//从左滚动进来
+                area: ['600px', '400px'] //自定义文本域宽高
             });
         }
       	  //layer.msg('ID：'+ data.caseid + ' 的查看操作')}
@@ -806,6 +813,47 @@ function loginuser(){
 
 
     }
+function gettoken(){
+        layer.open({
+            //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+            type:1,
+            title:"获取AccessToken",
+            area: ['40%','30%'],
+            content:$("#popSearchRoleTest3").html(),
+
+        });
+		$.ajax({
+				cache: false,
+				url: "/get_tokeninfo/",
+				dataType: 'text',
+				type: 'GET',
+				async: false,
+				data: {
+				    "ids":"s",
+				},
+				success: function (data) {
+                    layer.prompt({
+                        formType: 2,//多行文本
+                        value: data,
+                        title: 'AccessToken-Info',
+                        anim: 4,//从左滚动进来
+                        area: ['300px', '400px'] //自定义文本域宽高
+                    });
+                },
+				error:function (data) {
+					console.log(data);
+				    layer.msg(data, {
+					 offset: 't',
+					 anim: 6,
+					 area:["200px","50px"],
+					});
+				}
+			});
+
+
+    }
+
+
 </script>
 
 <script>
