@@ -140,7 +140,7 @@
         </li>
 
 
-		<li class="layui-nav-item">
+		<li class="layui-nav-item layui-nav-itemed">
           <a href="javascript:;">待处理任务</a>
           <dl class="layui-nav-child">
             <dd><a href="?belong=class">受理</a></dd>
@@ -171,7 +171,7 @@
 	  <ul class="layui-tab-title" style="left: 20px;">
 		<li class="layui-this" style="color: whitesmoke;">功能用例-功能测试</li>
 		<li style="color: whitesmoke;">功能自动化用例-自动化测试</li>
-		<li style="color: whitesmoke;">其他</li>
+		<li style="color: whitesmoke;">测试累了欣赏一下图片</li>
 	  </ul>
 	  <div class="layui-tab-content">
 		<!--内容一-->
@@ -181,12 +181,12 @@
 				<div class="demoTable" style="display: none;" id="Searchcase">
 {#					<span id = "casetitle" style="font-size: 24px;padding: 0px;margin-left: 5px;margin-right: 360px;color: white;" class="layui-anim layui-anim-up layui-icon layui-icon-list">测试用例列表展现</span>#}
 					<div class="layui-inline" style="margin-top: 10px;">
-						<input class="layui-input" name="id" id="demoReload" autocomplete="off" placeholder="请输入模块名称" style="width:200px;">
+						<input class="layui-input" name="id" id="demoReload" autocomplete="off" placeholder="请输入模块名称" style="width:250px;">
 					</div>
 					<button class="layui-btn layui-icon layui-icon-search" data-type="reload" style="background-color: lightpink;margin-right: 40px;margin-top: 10px;">搜索</button>
 
 					<div class="layui-inline" style="margin-top: 10px;">
-						<input class="layui-input" name="id1" id="demoReload1" autocomplete="off" placeholder="请输入ID" style="width:200px;">
+						<input class="layui-input" name="id1" id="demoReload1" autocomplete="off" placeholder="请输入ID" style="width:250px;">
 					</div>
 					<button class="layui-btn layui-icon layui-icon-search" data-type="reload" style="background-color: lightpink;margin-top: 10px;">搜索</button>
 				</div>
@@ -252,12 +252,96 @@
 					</div>
 				  </div>
 
+
 				  <div class="layui-form-item">
-					<label class="layui-form-label">用户身份</label>
-					<div class="layui-input-block" >
-					  <input type="checkbox" name="identity" value="系统管理员" title="系统管理员" checked>
-					  <input type="checkbox" name="identity" value="单位管理员" title="单位管理员">
-					  <input type="checkbox" name="identity" value="单位档案员" title="单位档案员">
+					<label class="layui-form-label">功能点</label>
+					<div class="layui-input-block">
+					  <input type="text" name="funpoint" required  lay-verify="required" placeholder="请输入功能点" autocomplete="off" class="layui-input">
+					</div>
+				  </div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">用例名称</label>
+					<div class="layui-input-block">
+					  <input type="text" name="title" required  lay-verify="required" placeholder="请输入用例名称" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+
+				  <div class="layui-form-item layui-form-text">
+					<label class="layui-form-label">前提条件</label>
+					<div class="layui-input-block">
+					  <textarea name="premise" placeholder="请输入内容" class="layui-textarea"></textarea>
+					</div>
+				  </div>
+
+				  <div class="layui-form-item layui-form-text">
+					<label class="layui-form-label">用例步骤</label>
+					<div class="layui-input-block">
+					  <textarea name="steps" placeholder="请输入内容" class="layui-textarea"></textarea>
+					</div>
+				  </div>
+
+				  <div class="layui-form-item layui-form-text">
+					<label class="layui-form-label">期望结果</label>
+					<div class="layui-input-block">
+					  <textarea name="except" placeholder="请输入内容" class="layui-textarea"></textarea>
+					</div>
+				  </div>
+
+				  <div class="layui-form-item">
+					<div class="layui-input-block">
+					  <button class="layui-btn" lay-submit lay-filter="formDemo" style="margin-left: 225px;background-color: yellowgreen;">立即提交</button>
+					  <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+					</div>
+				  </div>
+				</form>
+			</div>
+		</div>
+
+	<!--编辑测试用例-->
+	<div class="layui-row" id="UpdateCase" style="display:none;">
+			<div class="layui-col-md11">
+				<form class="layui-form" action="/update_webcase/" method="post" lay-filter="updatecase">
+
+				  <div class="layui-form-item"  style="margin-top: 20px;">
+					<label class="layui-form-label">主模块</label>
+					<div class="layui-input-block">
+					  <select name="mainbelong" lay-verify="required">
+						<option value="系统管理">系统管理</option>
+						<option value="整理区">整理区</option>
+						<option value="管理区">管理区</option>
+						<option value="档案处置">档案处置</option>
+						<option value="业务设定">业务设定</option>
+						<option value="待处置任务">待处置任务</option>
+						<option value="已完成任务">已完成任务</option>
+						<option value="审计日志">审计日志</option>
+					  </select>
+					</div>
+				  </div>
+
+				  <div class="layui-form-item">
+					<label class="layui-form-label">所属模块</label>
+					<div class="layui-input-block">
+					  <select name="belong" lay-verify="required">
+						<option value="入驻单位管理">入驻单位管理</option>
+						<option value="保留处置策略管理">保留处置策略管理</option>
+						<option value="数据表单设置">数据表单设置</option>
+						<option value="视图管理">视图管理</option>
+						<option value="基本信息">基本信息</option>
+						<option value="部门管理">部门管理</option>
+						<option value="用户管理">用户管理</option>
+						<option value="类目保管期限设定">类目保管期限设定</option>
+						<option value="访问控制策略">访问控制策略</option>
+						<option value="视图自定义">视图自定义</option>
+						<option value="移交操作">移交操作</option>
+					  </select>
+					</div>
+				  </div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">用例ID</label>
+					<div class="layui-input-block">
+					  <input type="text" name="caseID" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
 					</div>
 				  </div>
 
@@ -298,7 +382,7 @@
 
 				  <div class="layui-form-item">
 					<div class="layui-input-block">
-					  <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+					  <button class="layui-btn" lay-submit lay-filter="formDemo" style="margin-left: 225px;background-color: yellowgreen;">立即提交</button>
 					  <button type="reset" class="layui-btn layui-btn-primary">重置</button>
 					</div>
 				  </div>
@@ -333,9 +417,9 @@
 				  <div class="layui-form-item">
 					<label class="layui-form-label">用户身份</label>
 					<div class="layui-input-block" >
-					  <input type="checkbox" name="identity" value="系统管理员" title="系统管理员" checked>
-					  <input type="checkbox" name="identity" value="单位管理员" title="单位管理员">
-					  <input type="checkbox" name="identity" value="单位档案员" title="单位档案员">
+					  <input type="radio" name="identity" value="系统管理员" title="系统管理员" checked>
+					  <input type="radio" name="identity" value="单位管理员" title="单位管理员">
+					  <input type="radio" name="identity" value="单位档案员" title="单位档案员">
 					</div>
 				  </div>
 
@@ -370,7 +454,85 @@
 
 				  <div class="layui-form-item">
 					<div class="layui-input-block">
-					  <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+					  <button class="layui-btn" lay-submit lay-filter="formDemo"  style="margin-left: 225px;background-color: yellowgreen;">立即提交</button>
+					  <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+					</div>
+				  </div>
+				</form>
+			</div>
+		</div>
+
+	<!--编辑AUto测试用例-->
+	<div class="layui-row" id="UpdateAutoCase" style="display:none;">
+			<div class="layui-col-md11">
+				<form class="layui-form" action="/update_autocase/" method="post"  lay-filter="updatautoecase">
+
+				  <div class="layui-form-item" style="margin-top: 20px;">
+					<label class="layui-form-label">所属模块</label>
+					<div class="layui-input-block">
+					  <select name="belong" lay-verify="required">
+						<option value="入驻单位管理">入驻单位管理</option>
+						<option value="保留处置策略管理">保留处置策略管理</option>
+						<option value="数据表单设置">数据表单设置</option>
+						<option value="视图管理">视图管理</option>
+						<option value="基本信息">基本信息</option>
+						<option value="部门管理">部门管理</option>
+						<option value="用户管理">用户管理</option>
+						<option value="类目保管期限设定">类目保管期限设定</option>
+						<option value="访问控制策略">访问控制策略</option>
+						<option value="视图自定义">视图自定义</option>
+						<option value="移交操作">移交操作</option>
+					  </select>
+					</div>
+				  </div>
+
+				  <div class="layui-form-item">
+					<label class="layui-form-label">用户身份</label>
+					<div class="layui-input-block" >
+					  <input type="radio" name="identity" value="系统管理员" title="系统管理员" checked>
+					  <input type="radio" name="identity" value="单位管理员" title="单位管理员">
+					  <input type="radio" name="identity" value="单位档案员" title="单位档案员">
+					</div>
+				  </div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">用例ID</label>
+					<div class="layui-input-block">
+					  <input type="text" name="caseID" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">用例名称</label>
+					<div class="layui-input-block">
+					  <input type="text" name="title" required  lay-verify="required" placeholder="请输入用例名称" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+
+				  <div class="layui-form-item layui-form-text">
+					<label class="layui-form-label">数据准备</label>
+					<div class="layui-input-block">
+					  <textarea name="dataready" placeholder="请输入内容" class="layui-textarea"></textarea>
+					</div>
+				  </div>
+
+				  <div class="layui-form-item layui-form-text">
+					<label class="layui-form-label">用例步骤</label>
+					<div class="layui-input-block">
+					  <textarea name="steps" placeholder="请输入内容" class="layui-textarea"></textarea>
+					</div>
+				  </div>
+
+				  <div class="layui-form-item layui-form-text">
+					<label class="layui-form-label">期望结果</label>
+					<div class="layui-input-block">
+					  <textarea name="except" placeholder="请输入内容" class="layui-textarea"></textarea>
+					</div>
+				  </div>
+
+				  <div class="layui-form-item">
+					<div class="layui-input-block">
+					  <button class="layui-btn" lay-submit lay-filter="formDemo"  style="margin-left: 225px;background-color: yellowgreen;">立即提交</button>
 					  <button type="reset" class="layui-btn layui-btn-primary">重置</button>
 					</div>
 				  </div>
@@ -399,7 +561,7 @@
 		</div>
 	</div>
 
-	<!--创建AUto测试用例-->
+	<!--编辑用户信息-->
 	<div class="layui-row" id="popSearchRoleTest2" style="display:none;">
 			<div class="layui-col-md11">
 				<form class="layui-form" action="/update_userinfo/" method="post">
@@ -407,9 +569,9 @@
 				  <div class="layui-form-item" style="margin-top: 20px;">
 					<label class="layui-form-label">角色</label>
 					<div class="layui-input-block" >
-					  <input type="checkbox" name="identity" value="sysadmin" title="系统管理员" checked>
-					  <input type="checkbox" name="identity" value="admin" title="单位管理员">
-					  <input type="checkbox" name="identity" value="ast" title="单位档案员">
+					  <input type="radio" name="identity" value="sysadmin" title="系统管理员" checked>
+					  <input type="radio" name="identity" value="admin" title="单位管理员">
+					  <input type="radio" name="identity" value="ast" title="单位档案员">
 					</div>
 				  </div>
 
@@ -439,31 +601,27 @@
 			</div>
 		</div>
 
-  <div class="layui-footer">
-    <!-- 底部固定区域 -->
-	  <span style="float: right;">人生苦短，我用Python</span>
-  </div>
 </div>
 
 <!--功能测试-表头按钮-->
 <script type="text/html" id="toolbarDemo">
   <div class="layui-btn-container">
 	<button type="button" onclick="selectRole()" class="layui-btn layui-btn-sm layui-btn-warm">新建用例</button>
-    <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="getCheckData">获取选中行数据</button>
+    <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="getCheckData">编辑选中行数据</button>
     <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="getCheckLength">获取选中数目</button>
     <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="isAll">验证是否全选</button>
-	<button id = "Runcase" class="layui-btn layui-btn-sm layui-btn-danger" lay-event="runcase">执行用例</button>
+	<button id = "Runcase" class="layui-btn layui-btn-sm layui-btn-disabled" lay-event="runcase" disabled>执行用例</button>
   </div>
 </script>
 <!--自动化测试-表头按钮-->
 <script type="text/html" id="toolbarDemo1">
   <div class="layui-btn-container">
 	<button type="button" onclick="selectRole1()" class="layui-btn layui-btn-sm layui-btn-normal">新建用例</button>
-    <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="getCheckData1">获取选中行数据</button>
+    <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="getCheckData1">编辑选中行数据</button>
+	<button type="button" onclick="loginuser()" class="layui-btn layui-btn-sm layui-btn-normal">编辑用户信息</button>
     <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="getCheckLength1">获取选中数目</button>
     <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="isAll1">验证是否全选</button>
 	<button id = "Runcase" class="layui-btn layui-btn-sm layui-btn-danger" lay-event="runcase1">执行用例</button>
-	<button type="button" onclick="loginuser()" class="layui-btn layui-btn-sm layui-btn-normal">用户信息</button>
   </div>
 </script>
 
@@ -477,9 +635,8 @@
 
 <!--行按钮-->
 <script type="text/html" id="barDemonew">
-{#  <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>#}
-  <a class="layui-icon-about layui-icon" lay-event="edit" style="color:#74777b;font-size: 24px;"></a>
-  <a class="layui-icon-edit layui-icon" lay-event="edit2" style="color:#74777b;font-size: 21px;"></a>
+{#  <a class="layui-icon-about layui-icon" lay-event="edit" style="color:#74777b;font-size: 24px;"></a>#}
+  <a class="layui-icon-edit layui-icon" lay-event="edit2" style="color:#74777b;font-size: 24px;"></a>
   <a class="layui-icon-survey layui-icon" lay-event="edit1" style="color:#74777b;font-size: 21px;"></a>
   <a class="layui-icon-delete layui-icon" lay-event="del" style="color: #74777b;font-size: 24px;"></a>
 </script>
@@ -495,12 +652,12 @@
 		    console.log("我已经被点击了！");
 		    a.style.display = "none";
 		    b.style.left = "0px";
-		    c.style.marginRight = "560px";
+		    //c.style.marginRight = "560px";
 		    d.setAttribute("class","layui-icon layui-icon-spread-left");
 		}else{
 		    a.style.display = "block";
 		    b.style.left = "200px";
-		    c.style.marginRight = "360px";
+		    //c.style.marginRight = "360px";
 		    d.setAttribute("class","layui-icon layui-icon-shrink-right");
 		}
     }
@@ -614,18 +771,33 @@ layui.use('table', function() {
 			case 'getCheckData':
 			var data = checkStatus.data;
 			//console.log(data[0]["caseid"]);
-			var strjson = JSON.stringify(data,null,4);
-		    console.log(strjson);
-			layer.prompt({
-			  formType: 2,//多行文本
-			  value: strjson,
-			  title: '响应结果',
-			  anim:4,//从左滚动进来
-			  area: ['600px', '400px'] //自定义文本域宽高
+			case 'getCheckData':
+			var data = checkStatus.data;
+			console.log(data[0]);
+			layer.open({
+				//layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+				type:1,
+				title:"编辑用例",
+				area: ['40%','100%'],
+				content:$("#UpdateCase").html(),
+				success:function () {
+					layui.use('form',function(){
+					  var form = layui.form;
+					  form.val("updatecase",{
+						  "mainbelong":data[0]['webbelong'],
+						  "belong":data[0]['module'],
+						  "caseID":data[0]['caseid'],
+						  "funpoint":data[0]['funpoint'],
+						  "title":data[0]['casename'],
+						  "premise":data[0]['premise'],
+						  "steps":data[0]['teststep'],
+						  "except":data[0]['exceptres']
+						});
+					});
+					//。。。CreateUpdate
+				}
 			});
-			//layer.alert(JSON.stringify(data));
 		  break;
-
 		  case 'getCheckLength':
 			var data = checkStatus.data;
 			layer.msg('选中了：'+ data.length + ' 个');
@@ -836,7 +1008,7 @@ function selectRole(){
             //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
             type:1,
             title:"新建功能测试用例",
-            area: ['40%','100%'],
+            area: ['40%','94%'],
             content:$("#popSearchRoleTest").html()
         });
     }
@@ -891,7 +1063,6 @@ function loginuser(){
 
 
     }
-
 function importcase(){
         layer.open({
             //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
@@ -955,7 +1126,7 @@ layui.use('table', function() {
             , {field: 'identity', title: 'User', width: 60,align:"center",templet:"#identityTpl"}
             //, {field: 'module', title: '所属模块', width: 120,align:"center"}
             , {field: 'casename', title: '测试用例名称', width: 150,align:"center",style:'background-color: lightyellow;'}
-            , {field: 'dataready', title: '数据准备', width: 200,align:"center"}
+            , {field: 'dataready', title: '数据准备', width: 230,align:"center"}
 			, {field:'teststep', title:'测试步骤', width:200	,align:"center", edit: 'text'}
 			, {field: 'exceptres', title: '期望结果', width: 200,align:"center"}
             , {field: 'result', title: '执行结果', width: 120, sort: true,align:"center",edit: 'text',templet: function(res){
@@ -968,7 +1139,7 @@ layui.use('table', function() {
 					    return '<span>' +res.result + '</span>'
 					}
                 }}
-            , {fixed: 'right', title: '操作', toolbar: '#barDemonew', width: 150,align:"center"}
+            , {fixed: 'right', title: '操作', toolbar: '#barDemonew', width: 110,align:"center"}
         ]]
 		,id: 'testReload1'
 		,done:function (res) {   //返回数据执行回调函数
@@ -1018,19 +1189,31 @@ layui.use('table', function() {
 		switch(obj.event){
 			case 'getCheckData1':
 			var data = checkStatus.data;
-			//console.log(data[0]["caseid"]);
-			delete data[0].dataready;
-			console.log(data);
-			var strjson = JSON.stringify(data,null,4);
-		    console.log(strjson);
-			layer.prompt({
-			  formType: 2,//多行文本
-			  value: strjson,
-			  title: '用例内容',
-			  anim:4,//从左滚动进来
-			  area: ['1100px', '500px'] //自定义文本域宽高
+			console.log(data[0]);
+			layer.open({
+				//layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+				type:1,
+				title:"编辑自动化用例",
+				area: ['40%','94%'],
+				content:$("#UpdateAutoCase").html(),
+				success:function () {
+					layui.use('form',function(){
+					  var form = layui.form;
+					  form.val("updatautoecase",{
+						  //"mainbelong":data[0]['webbelong'],
+						  "belong":data[0]['module'],
+						  "caseID":data[0]['caseid'],
+						  "dataready":data[0]['dataready'],
+						  //"funpoint":data[0]['funpoint'],
+						  "title":data[0]['casename'],
+						  "premise":data[0]['premise'],
+						  "steps":data[0]['teststep'],
+						  "except":data[0]['exceptres']
+						});
+					});
+					//。。。CreateUpdate
+				}
 			});
-			//layer.alert(JSON.stringify(data));
 		  break;
 
 		  case 'getCheckLength1':

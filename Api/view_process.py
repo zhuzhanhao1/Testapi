@@ -9,7 +9,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from .forms import *
 from Api.interfacetest.run_method import RequestMethod
-
+import pytz
 from Api.interfacetest.get_header import GetToken
 from Api.webuitest.DingDing import send_ding
 
@@ -73,6 +73,7 @@ def processlist_view(request):
             "depend_key":weblist.depend_key,
             "replace_key":weblist.replace_key,
             "replace_position":weblist.replace_position,
+            "belong":weblist.belong
         }
         L.append(data)
     print(len(L))
@@ -141,6 +142,7 @@ def delete_processcase_views(request):
 #更新api用例
 def update_processcase_views(request):
     if request.method == "GET":
+        print("单个修改")
         params = request.GET.get('params',"")
         body =request.GET.get("body","")
         ids = request.GET.get("ids","")
@@ -165,6 +167,38 @@ def update_processcase_views(request):
             else:
                 Processapi.objects.filter(caseid=ids).update(body=body)
         return HttpResponse("编辑成功")
+    elif request.method == "POST":
+        print("全部修改")
+        casename = request.POST.get("casename", "")
+        url = request.POST.get("url", "")
+        method = request.POST.get("method", "")
+        belong = request.POST.get("belong", "")
+        params = request.POST.get("params", "")
+        body = request.POST.get("body", "")
+        identity = request.POST.get("identity", "")
+        orderno = request.POST.get("orderno","")
+        isprocess = request.POST.get("isprocess","")
+        dependid = request.POST.get("dependid","")
+        dependkey = request.POST.get("dependkey","")
+        replacekey = request.POST.get("replacekey","")
+        replaceposition = request.POST.get("replaceposition","")
+        if "<" in body or ">" in body:
+            print('存在需要替换的符号')
+            a = body.replace("<", "＜")
+            print(a)
+            b = a.replace(">", "＞")
+            print(b)
+            Processapi.objects.filter(order_no=orderno).update(casename=casename, identity=identity, url=url,
+                                  method=method, params=params, body=b, belong=belong,
+                                  isprocess=isprocess, depend_id=dependid, depend_key=dependkey,
+                                  replace_key=replacekey, replace_position=replaceposition)
+            return HttpResponseRedirect("/ProcessIndex/")
+        else:
+            Processapi.objects.filter(order_no=orderno).update(casename=casename, identity=identity, url=url,
+                                  method=method, params=params, body=body, belong=belong,
+                                  isprocess=isprocess, depend_id=dependid, depend_key=dependkey,
+                                  replace_key=replacekey, replace_position=replaceposition)
+            return HttpResponseRedirect("/ProcessIndex/")
 
 
 
@@ -181,7 +215,6 @@ def update_userinfo_api_views(request):
         except:
             print("修改用户信息失败")
             return HttpResponse("链接数据库失败、修改用户信息失败")
-
     else:
         return HttpResponse("必须输入用户名和用户密码！！！")
 
@@ -193,7 +226,6 @@ def get_tokeninfo_views(request):
 
 #更改数据库存储的token
 def update_token_views(request):
-
     role = request.POST.get("identity","")
     print(role)
     if role == "sysadmin":
@@ -202,11 +234,7 @@ def update_token_views(request):
         GetToken().get_token_by_role("admin")
     if role == "ast":
         GetToken().get_token_by_role("ast")
-
     return HttpResponseRedirect("/ProcessIndex/")
-
-
-
 
 
 
@@ -374,7 +402,6 @@ def run_processcase_views(request):
                         print('请查看日志')
 
 
-
                 #处理访问控制策略的列表接口返回的值
                 elif "-" in depend_key:
                     # 存在多个key时需要拆分字符串，通过循环赋值给每个结果
@@ -476,11 +503,11 @@ def detail_views(request):
     params = id.params
     body = id.body
     casename = id.casename
-    isprocess = id.isprocess
-    depend_id = id.depend_id
-    depend_key = id.depend_key
-    replace_key = id.replace_key
-    replace_position = id.replace_position
+    # isprocess = id.isprocess
+    # depend_id = id.depend_id
+    # depend_key = id.depend_key
+    # replace_key = id.replace_key
+    # replace_position = id.replace_position
     head = id.exceptres
     belong = id.belong
     result = id.result
@@ -493,8 +520,6 @@ def detail_views(request):
         identity = "单位管理员"
     if identity == "ast":
         identity = "单位档案员"
-
-
     if params == "":
         params = {
             "surprise":"params没有传参数哦!"
@@ -519,3 +544,96 @@ def detail_views(request):
         "back" : back
     }
     return render(request,"detail.html",{"dic":dic})
+
+
+def timetask_views(request):
+    con = ConnDataBase()
+    URL = str(con.get_logininfo("sysadmin")[2], 'utf-8')
+    #获取需要运行的时间
+    plan_time = request.POST.get("date","")
+    plan_time_l = plan_time.split(":")
+    plan_time_sjc = int(plan_time_l[0])*60*60 + int(plan_time_l[1])*60 + int(plan_time_l[2])
+    print(plan_time_sjc)
+
+    #获取运行的时间间隔
+    interval_time= request.POST.get("date1","")
+    interval_time_l = interval_time.split(":")
+    interval_time_sjc = int(interval_time_l[0]) * 60 * 60 + int(interval_time_l[1]) * 60 + int(interval_time_l[2])
+    print(interval_time_sjc)
+    #获取执行次数
+    number = request.POST.get("number","")
+
+    #获取执行的用例列表
+    ids = request.POST.get("caseid","").split(",")[:-1]
+
+    #获取本地当前时间 格式化格式
+    # locals_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))[11:]
+    locals_time = datetime.fromtimestamp(int(time.time()), pytz.timezone('Asia/Shanghai')).strftime('%Y-%m-%d %H:%M:%S')[11:]
+    locals_time_l = locals_time.split(":")
+    print(locals_time_l)
+    locals_time_sjc = int(locals_time_l[0]) * 60 * 60 + int(locals_time_l[1]) * 60 + int(locals_time_l[2])
+    print(locals_time_sjc)
+
+    #外部循环为执行的次数
+    for w in range(int(number)):
+        now_time = plan_time_sjc + interval_time_sjc
+        print(now_time)
+        #内部循环遍历出执行的执行的用例，每个用例执行运行
+        for ucaseid in ids:
+            print("卧榻麦澳的")
+            if locals_time_sjc == now_time - interval_time_sjc:
+                print(locals_time_sjc)
+                #运行用例编号为q的接口用例
+                d = {}
+                id = Processapi.objects.get(caseid=ucaseid)
+                identity = id.identity
+                head = id.exceptres
+                url = URL + id.url
+                method = id.method
+                params = id.params
+                body = id.body
+                casename = id.casename
+                Runmethod = RequestMethod(identity)
+                starttime = time.time()
+                if body != "":
+                    if "＜" in body or "＞" in body:
+                        print('body存在需要替换的符号')
+                        a = body.replace("＜", "<")
+                        b = a.replace("＞", ">")
+                        body = b
+                    body = eval(body)
+                    if params:
+                        params = eval(params)
+                    response = Runmethod.run_main(method, url, params, body)
+
+                elif body == '':
+                    if params:
+                        params = eval(params)
+                    response = Runmethod.run_main(method, url, params, body)
+
+                endtime = time.time()
+                runtime = round(endtime - starttime, 3)
+                # 存为字典，转换为json格式
+                d[casename] = response
+                d[casename + "运行时间为"] = str(runtime) + "秒"
+                d["＜" + ucaseid + "＞" + "负责人"] = head
+                print(d)
+                # json格式化
+                djson = json.dumps(d, ensure_ascii=False, sort_keys=True, indent=2)
+                if "<" in djson or ">" in djson:
+                    print('result存在需要替换的符号')
+                    a = djson.replace("<", "＜")
+                    print(a)
+                    b = a.replace(">", "＞")
+                    print(b)
+                    Processapi.objects.filter(caseid=ucaseid).update(result=b)
+                else:
+                    Processapi.objects.filter(caseid=ucaseid).update(result=djson)
+                print(djson)
+                # 发送钉钉消息
+                send_ding("第"+ str(w) +"次")
+                # return HttpResponse(djson)
+        interval_time_sjc += interval_time_sjc
+
+
+    return HttpResponse("定时任务已完成")

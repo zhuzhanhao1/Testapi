@@ -120,9 +120,9 @@
   </div>
 
 	<!--创建用例-->
-	<div class="layui-row" id="popSearchRoleTest" style="display:none;">
+	<div class="layui-row" id="popSearchRoleTest"  style="display:none;">
 			<div class="layui-col-md11">
-				<form class="layui-form" action="/create_processcase/" method="post" id="demoadd">
+				<form class="layui-form"  id="demoadd" action="/create_processcase/" method="post" lay-filter="CreateUpdate">
 
 
 				  <div class="layui-form-item" style="margin-top: 20px;">
@@ -195,14 +195,147 @@
 				  <div class="layui-form-item layui-form-text">
 					<label class="layui-form-label">Form Data</label>
 					<div class="layui-input-block">
-					  <textarea name="body" placeholder="请输入内容" class="layui-textarea"></textarea>
+					  <textarea name="body" id="body" placeholder="请输入内容" class="layui-textarea"></textarea>
 					</div>
 				  </div>
 
 
 				  <div class="layui-form-item">
 					<div class="layui-input-block">
-					  <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+					  <button class="layui-btn" lay-submit lay-filter="formDemo" id="upload">立即提交</button>
+					  <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+					</div>
+				  </div>
+
+				  <div class="layui-form-item">
+					<label class="layui-form-label">是否有依赖</label>
+					<div class="layui-input-block">
+					  <input type="radio" name="isprocess" value="True" title="有依赖">
+					  <input type="radio" name="isprocess" value="False" title="无依赖" checked="">
+					</div>
+				  </div>
+
+
+
+				  <div class="layui-form-item">
+					<label class="layui-form-label">替换区域</label>
+					<div class="layui-input-block">
+					  <input type="checkbox" name="replaceposition" value="params" title="params">
+					  <input type="checkbox" name="replaceposition" value="body" title="body">
+					  <input type="checkbox" name="replaceposition" value="" title="null" checked="">
+					</div>
+				  </div>
+
+
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">依赖的ID</label>
+					<div class="layui-input-block">
+					  <input type="text" name="dependid"  class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">依赖的key</label>
+					<div class="layui-input-block">
+					  <input type="text" name="dependkey"  class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">替换的key</label>
+					<div class="layui-input-block">
+					  <input type="text" name="replacekey"  class="layui-input">
+					</div>
+				</div>
+
+
+				</form>
+			</div>
+		</div>
+
+	<!--编辑用例id="demoadd" -->
+	<div class="layui-row" id="updatecacase"  style="display:none;">
+			<div class="layui-col-md11">
+				<form class="layui-form"  action="/update_processcase/" method="post" lay-filter="CreateUpdate">
+				  <div class="layui-form-item" style="margin-top: 20px;">
+					<label class="layui-form-label">所属模块</label>
+					<div class="layui-input-block">
+					  <select name="belong" lay-verify="required">
+						<option value="单位接口">单位接口</option>
+						<option value="保留处置策略接口">保留处置策略接口</option>
+						<option value="数据表单配置接口">数据表单配置接口</option>
+						<option value="访问控制策略接口">访问控制策略接口</option>
+						<option value="类目保管期限接口">类目保管期限接口</option>
+						<option value="视图自定义接口">视图自定义接口</option>
+						<option value="部门管理接口">部门管理接口</option>
+						<option value="用户管理接口">用户管理接口</option>
+					  </select>
+					</div>
+				  </div>
+
+				  <div class="layui-form-item">
+					<label class="layui-form-label">用户身份</label>
+					<div class="layui-input-block" >
+					  <input type="radio" name="identity" value="sysadmin" title="系统管理员" checked>
+					  <input type="radio" name="identity" value="admin" title="单位管理员">
+					  <input type="radio" name="identity" value="ast" title="单位档案员">
+					</div>
+				  </div>
+
+				  <div class="layui-form-item">
+					<label class="layui-form-label">用例名称</label>
+					<div class="layui-input-block">
+					  <input type="text" name="casename" required  lay-verify="required" placeholder="请输入用例名称" autocomplete="off" class="layui-input">
+					</div>
+				  </div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">请求地址</label>
+					<div class="layui-input-block">
+					  <input type="text" name="url" required  lay-verify="required" placeholder="请输入请求地址" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+
+				  <div class="layui-form-item">
+					<label class="layui-form-label">请求方式</label>
+					<div class="layui-input-block" >
+					  <input type="radio" name="method" value="get" title="GET" checked>
+					  <input type="radio" name="method" value="post" title="POST">
+					  <input type="radio" name="method" value="put" title="PUT">
+					  <input type="radio" name="method" value="delete" title="Delete">
+					</div>
+				  </div>
+
+
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">流程序号</label>
+					<div class="layui-input-block">
+					  <input type="text" name="orderno" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+
+
+
+				<div class="layui-form-item layui-form-text">
+					<label class="layui-form-label">Query Params</label>
+					<div class="layui-input-block">
+					  <textarea name="params" placeholder="请输入内容" class="layui-textarea"></textarea>
+					</div>
+				  </div>
+
+				  <div class="layui-form-item layui-form-text">
+					<label class="layui-form-label">Form Data</label>
+					<div class="layui-input-block">
+					  <textarea name="body" id="body" placeholder="请输入内容" class="layui-textarea"></textarea>
+					</div>
+				  </div>
+
+
+				  <div class="layui-form-item">
+					<div class="layui-input-block">
+					  <button class="layui-btn" lay-submit lay-filter="formDemo" id="upload">立即提交</button>
 					  <button type="reset" class="layui-btn layui-btn-primary">重置</button>
 					</div>
 				  </div>
@@ -318,27 +451,71 @@
 
 	<!--更新token-->
 	<div class="layui-row" id="popSearchRoleTest3" style="display:none;">
-			<div class="layui-col-md11">
-				<form class="layui-form" action="/update_token/" method="post">
+		<div class="layui-col-md11">
+			<form class="layui-form" action="/update_token/" method="post">
 
-				  <div class="layui-form-item" style="margin-top: 20px;">
-					<label class="layui-form-label">角色</label>
-					<div class="layui-input-block" >
-					  <input type="checkbox" name="identity" value="sysadmin" title="系统管理员" checked>
-					  <input type="checkbox" name="identity" value="admin" title="单位管理员" checked>
-					  <input type="checkbox" name="identity" value="ast" title="单位档案员" checked>
-					</div>
-				  </div>
+			  <div class="layui-form-item" style="margin-top: 20px;">
+				<label class="layui-form-label">角色</label>
+				<div class="layui-input-block" >
+				  <input type="checkbox" name="identity" value="sysadmin" title="系统管理员" checked>
+				  <input type="checkbox" name="identity" value="admin" title="单位管理员" checked>
+				  <input type="checkbox" name="identity" value="ast" title="单位档案员" checked>
+				</div>
+			  </div>
 
-				  <div class="layui-form-item">
-					<div class="layui-input-block">
-					  <button class="layui-btn" lay-submit lay-filter="formDemo" style="margin-left: 245px;background-color: yellowgreen;">立即提交</button>
-					  <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-					</div>
-				  </div>
-				</form>
-			</div>
+			  <div class="layui-form-item">
+				<div class="layui-input-block">
+				  <button class="layui-btn" lay-submit lay-filter="formDemo" style="margin-left: 245px;background-color: yellowgreen;">立即提交</button>
+				  <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+				</div>
+			  </div>
+			</form>
 		</div>
+	</div>
+
+	<!--设置定时任务-->
+	<div class="layui-row" id="popSearchRoleTest4" style="display:none;">
+		<div class="layui-col-md11">
+			<form class="layui-form" action="/timetask/" method="post" lay-filter="example">
+
+			  <div class="layui-form-item" style="margin-top: 20px;">
+				  <label class="layui-form-label">选择时间</label>
+				  <div class="layui-input-block" style="width: 50%">
+					<input type="text" name="date" id="test5"  placeholder="HH:mm:ss"  class="layui-input test-item">
+				  </div>
+			  </div>
+
+			  <div class="layui-form-item">
+				<label class="layui-form-label">时间间隔</label>
+				<div class="layui-input-block" style="width: 50%">
+				  <input type="text" name="date1" class="layui-input test-item" id="test5" placeholder="HH:mm:ss">
+				</div>
+			  </div>
+
+			  <div class="layui-form-item">
+				<label class="layui-form-label">运行次数</label>
+				<div class="layui-input-block" style="width: 50%">
+				  <input type="text" name = "number"   lay-verify="title" placeholder="请输入运行次数" autocomplete="off"  class="layui-input">
+				</div>
+			  </div>
+
+			  <div class="layui-form-item">
+				<label class="layui-form-label">运行的ID</label>
+				<div class="layui-input-block" style="width: 50%">
+				  <input type="text" name = "caseid"   lay-verify="title"  autocomplete="off"  class="layui-input">
+				</div>
+			  </div>
+
+			  <div class="layui-form-item">
+				<div class="layui-input-block">
+				  <button class="layui-btn"  id="time" lay-submit lay-filter="formDemo"  style="margin-left: 105px;background-color: yellowgreen;">确定</button>
+				  <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+				</div>
+			  </div>
+			</form>
+		</div>
+	</div>
+
 </div>
 
 <script type="text/html" id="toolbarDemo">
@@ -350,16 +527,20 @@
     <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="isAll">验证是否全选</button>
 	<button type="button" onclick="gettoken()" class="layui-btn layui-btn-sm layui-btn-danger">获取令牌</button>
 	<button id = "Runcase" class="layui-btn layui-btn-sm layui-btn-danger" lay-event="runcase">执行用例</button>
-
+	<button id = "task"  class="layui-btn layui-btn-sm layui-btn-danger" lay-event="Timingtask">设置定时任务</button>
   </div>
+
+
 </script>
+
+
+
 <script type="text/html" id="barDemo">
   <a class="layui-icon layui-icon-about" style="color:#74777b;font-size: 24px;" lay-event="detail"></a>
   <a class="layui-icon-edit layui-icon" lay-event="edit" style="color:#74777b;font-size: 24px;"></a>
   <a class="layui-icon-survey layui-icon" lay-event="edit1" style="color:#74777b;font-size: 21px;"></a>
   <a class="layui-icon-delete layui-icon" lay-event="del" style="color: #74777b;font-size: 24px;"></a>
 </script>
-
 
 <script>
 	function showlist() {
@@ -379,10 +560,9 @@
 		    d.setAttribute("class","layui-icon layui-icon-shrink-right");
 		}
     }
-
 </script>
-<script src="./../static/js/layui/layui.js"></script>
 
+<script src="./../static/js/layui/layui.js"></script>
 
 <script type="text/html" id="methodTpl">
   {% verbatim %}{{#  if(d.method === 'get'){ }}{% endverbatim %}
@@ -409,6 +589,7 @@
 <script type="text/html" id="casenameTpl">
 	<a href="/detail/?id={% verbatim %}{{d.caseid}}{% endverbatim %}" class="layui-table-link" target="_blank" style="color: blueviolet;">{% verbatim %}{{d.casename}}{% endverbatim %}</a>
 </script>
+
 
 
 
@@ -466,6 +647,7 @@ layui.use('table', function() {
 			, {field: 'depend_key', title: '依赖的key', width: 100,align:"center"}
 			, {field: 'replace_key', title: '替换的key', width: 100,align:"center"}
 			, {field: 'replace_position', title: '替换的位置', width: 100,align:"center"}
+			//, {field: 'belong', title: 'a', width: 100,align:"center"}
             , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 135,align:"center"}
         ]]
 		,id: 'testReload'
@@ -595,18 +777,51 @@ layui.use('table', function() {
                     }
                 });
             }
-
-
 		  break;
-		};
+			//执行定时任务按钮
+		  case "Timingtask":
+		    var data = checkStatus.data;
+		    var ids = "";
+			for (i = 0; i < data.length; i++) {
+				ids += data[i]["caseid"] + ",";
+				console.log(ids);
+			}
+		  	layer.open({
+				//layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+				type:1,
+				title:"设置定时任务",
+				area: ['30%','50%'],
+				trigger: 'click',
+				content:$("#popSearchRoleTest4").html(),
+				success:function (layero,index) {
+					layui.use(['laydate','form'],function(){
+					  var laydate = layui.laydate;
+					  var form = layui.form;
+					  lay('.test-item').each(function(){
+						laydate.render({
+						  elem: this
+						  ,type:'time'
+						  ,trigger: 'click'
+						});
+					  });
+					  form.val("example",{
+						  "caseid":ids
+						});
+					});
+
+					//。。。CreateUpdate
+				}
+			});
+		  break;
+
+		}
 	  });
 	  //监听行工具事件
 	  table.on('tool(test)', function(obj){
 		var data = obj.data;
-		//console.log(obj);
+		//查看result信息
 		if(obj.event === 'detail') {
             console.log(data.result);
-            //var strjson = JSON.parse(data.result);
             layer.prompt({
                 formType: 2,//多行文本
                 value: data.result,
@@ -615,8 +830,7 @@ layui.use('table', function() {
                 area: ['600px', '400px'] //自定义文本域宽高
             });
         }
-      	  //layer.msg('ID：'+ data.caseid + ' 的查看操作')}
-
+		//删除一条记录
 		else if(obj.event === 'del'){
 		  layer.confirm('真的删除行么', function(index){
 		      console.log(obj.data);
@@ -699,7 +913,7 @@ layui.use('table', function() {
 			layer.close(index);
 
 		  });
-		}else if(obj.event === 'edit1'){
+		}else if(obj.event === 'edit2'){
 		  layer.prompt({
 			formType: 2
 			,value: data.body
@@ -744,6 +958,36 @@ layui.use('table', function() {
 			layer.close(index);
 
 		  });
+		}else if(obj.event==='edit1'){
+		    console.log(obj.data);
+		    layer.open({
+				//layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+				type:1,
+				title:"编辑用例",
+				area: ['40%','90%'],
+				content:$("#updatecacase").html(),
+				success:function (layero,index) {
+					layui.use('form',function(){
+					  var form = layui.form;
+					  form.val("CreateUpdate",{
+					      "identity":obj.data['identity'],
+						  "casename":obj.data['casename'],
+						  "url":obj.data['url'],
+						  "method":obj.data['method'],
+						  "belong":obj.data['belong'],
+						  "params":obj.data['params'],
+						  "isprocess":obj.data['isprocess'],
+						  "body":obj.data['body'],
+						  "orderno":obj.data['order_no'],
+						  "dependid":obj.data['depend_id'],
+						  "dependkey":obj.data['depend_key'],
+						  "replacekey":obj.data['replace_key'],
+						  "replaceposition":obj.data['replace_position'],
+						});
+					});
+					//。。。CreateUpdate
+				}
+			});
 		}
 
 	  });
@@ -753,6 +997,7 @@ layui.use('table', function() {
 </script>
 
 <script>
+
 function selectRole(){
         layer.open({
             //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
@@ -861,10 +1106,12 @@ function gettoken(){
 layui.use('form', function(){
   var form = layui.form;
 
-  //监听提交
-  form.on('submit(formDemo)', function(data){
-    layer.msg(JSON.stringify(data.field));
-    return true;
+  //监听提交formDemo
+  form.on('submit(*)', function(data){
+    layer.alert(JSON.stringify(data.field),{
+        title:"最终提交信息"
+	});
+    return false;
   });
 
 });
@@ -880,8 +1127,6 @@ layui.use('element', function(){
   });
 });
 </script>
-
-
 
 
 </body>

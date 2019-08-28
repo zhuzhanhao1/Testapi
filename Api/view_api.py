@@ -8,7 +8,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from .forms import *
 from Api.interfacetest.run_method import RequestMethod
-from Api.interfacetest.get_header import ReqParam
+from Api.interfacetest.get_header import ReqParam, GetToken
 from Api.webuitest.DingDing import send_ding
 
 currentUrl = os.path.dirname(__file__)
@@ -97,6 +97,7 @@ def apilist_view(request):
     for weblist in apilists:
         data = {
             "caseid": weblist.caseid,
+            "belong":weblist.belong,
             "processid":weblist.isprocess,
             "identity": weblist.identity,
             "casename": weblist.casename,
@@ -188,6 +189,20 @@ def update_userinfo_api_views(request):
 
     else:
         return HttpResponse("必须输入用户名和用户密码！！！")
+
+
+
+#更改数据库存储的token
+def update_token_api_views(request):
+    role = request.POST.get("identity","")
+    print(role)
+    if role == "sysadmin":
+        GetToken().get_token_by_role("sysadmin")
+    if role == "admin":
+        GetToken().get_token_by_role("admin")
+    if role == "ast":
+        GetToken().get_token_by_role("ast")
+    return HttpResponseRedirect("/apiindex/")
 
 
 #执行用例

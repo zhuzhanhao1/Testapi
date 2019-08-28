@@ -46,6 +46,12 @@
 
 	<div style="text-align: center;margin-top: 40px;">
 		<h3 href="#" class="layui-anim">🌹Automated Test System欢迎您</h3>
+	<div class="layui-inline">
+      <label class="layui-form-label">年选择器</label>
+      <div class="layui-input-inline">
+        <input type="text" class="layui-input" id="test2" placeholder="yyyy">
+      </div>
+    </div>
 
 	</div>
 	<div style="padding-top: 50px">
@@ -80,44 +86,21 @@
 
 			</div>
 		</div>
-		<div class="col-md-4 col-md-3 main">
-			<div class="thumbnail">
-				<img src="./../static/images/13.png" alt="">
-				<div class="caption">
-					<p><a href="/performance/" class="layui-btn layui-btn-normal layui-anim layui-anim-up" role="button" style="margin-left:95px;">性能测试</a></p>
-				</div>
 
-			</div>
-		</div>
-		<div class="col-md-5 col-md-3 main">
-			<div class="thumbnail" >
-				<img src="./../static/images/12.png" alt="">
-				<div class="caption">
-
-					<p><a href="http://localhost:8080/" target="_blank" class="layui-btn layui-btn-normal layui-anim layui-anim-up" role="button" style="margin-left:95px;">定时任务</a></p>
-				</div>
-
-			</div>
-		</div>
-	</div>
-	<div  style="margin-top: 30px;margin-left: 1100px;">
-		<span class="glyphicon glyphicon-hand-down" style="font-size: 30px;margin-left: 150px;color: black;"></span>
-		<a href="/timing/" class="layui-btn layui-btn-danger  layui-btn-lg" role="button">java -jar /Users/zhuzhanhao/jenkins.war</a>
-	</div>
 
 	<script src="./../static/js/layui/layui.js"></script>
 	<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
 	<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
 	<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
 	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-{#	<script>#}
-{#		layui.use('laydate', function(){#}
-{#			var laydate = layui.laydate;#}
-{#			 laydate.render({#}
-{#				elem: '#test2',#}
-{#				type: 'year'#}
-{#			 });#}
-{#		});#}
-{#	</script>#}
+	<script>
+		layui.use('laydate', function(){
+			var laydate = layui.laydate;
+			 laydate.render({
+				elem: '#test2',
+				type: 'datetime'
+			 });
+		});
+	</script>
 </body>
 </html>

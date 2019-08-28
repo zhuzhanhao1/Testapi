@@ -257,7 +257,9 @@ def weblist_view(request):
             "premise": weblist.webpremise,
             "teststep": weblist.webteststep,
             "exceptres": weblist.webexceptres,
-            "result": weblist.webresult
+            "result": weblist.webresult,
+            "identity":weblist.webidentity,
+            "webbelong":weblist.webbelong
         }
         L.append(data)
     print(len(L))
@@ -385,7 +387,19 @@ def update_webcase_views(request):
             else:
                 Webcase.objects.filter(webcaseid=ids).update(webresult=result)
             return HttpResponse("编辑成功")
-
+    else:
+        mainbelong = request.POST.get("mainbelong","")
+        belong = request.POST.get("belong", "")
+        funpoint = request.POST.get("funpoint", "")
+        title = request.POST.get("title", "")
+        premise = request.POST.get("premise", "")
+        steps = request.POST.get("steps", "")
+        exceptres = request.POST.get("except", "")
+        caseID = request.POST.get("caseID","")
+        Webcase.objects.filter(webcaseid=caseID).update(webteststep=steps,webcase_models=belong,webcasename=title,
+                                                         webfunpoint=funpoint, webpremise=premise,
+                                                     webexceptres=exceptres,webbelong=mainbelong)
+        return HttpResponseRedirect("/webindex/")
 
 #更新webauto用例
 def update_autocase_views(request):
@@ -417,9 +431,19 @@ def update_autocase_views(request):
             else:
                 Autocase.objects.filter(autoid=ids).update(autoresult=result)
             return HttpResponse("编辑成功")
+    else:
+        belong = request.POST.get("belong", "")
+        identity = request.POST.get("identity","")
+        dataready = request.POST.get("dataready", "")
+        title = request.POST.get("title", "")
+        steps = request.POST.get("steps", "")
+        exceptres = request.POST.get("except", "")
+        caseID = request.POST.get("caseID","")
+        Autocase.objects.filter(autoid=caseID).update(autostep=steps,autoname=title,autoidentity=identity,
+                autobelong=belong,autoexceptres=exceptres,autodataready=dataready)
+        return HttpResponseRedirect("/webindex/")
 
-
-
+#更新webauto数据准备
 def update_dataready_views(request):
     ids = request.POST.get("ids", "")
     dataready = request.POST.get("body","")
@@ -431,8 +455,6 @@ def update_dataready_views(request):
     else:
         Autocase.objects.filter(autoid=ids).update(autodataready=data)
     return HttpResponse("编辑成功")
-
-
 
 #导入用例
 def import_webcase_views(request):
@@ -465,11 +487,9 @@ def import_webcase_views(request):
             print('上传文件类型错误！')
             return JsonResponse({"status":200,"message":"导入数据失败"})
 
-
 #测试报告
 def report_webcase_views(request):
     return render(request,"TestReport.html")
-
 
 #更改用户信息
 def update_userinfo_views(request):
@@ -487,7 +507,6 @@ def update_userinfo_views(request):
 
     else:
         return HttpResponse("必须输入用户名和用户密码！！！")
-
 
 #获取当前用户信息
 def get_userinfo_views(request):
