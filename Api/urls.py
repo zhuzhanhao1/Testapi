@@ -31,6 +31,7 @@ urlpatterns = [
     url(r'^update_apicase/$', update_apicase_views),
     url(r'^run_apicase/$', run_apicase_views),
     url(r'^update_token_api/$',update_token_api_views),
+    url(r'^detail_api',detail_api_views),
 
 #----------------------Api_process  url-----------------------------
     url(r'^ProcessIndex/$', process_interface_view),
@@ -42,6 +43,7 @@ urlpatterns = [
     url(r'^get_tokeninfo/$',get_tokeninfo_views),
     url(r'^update_token/$',update_token_views),
     url(r'^timetask/$',timetask_views),
+    url(r'^detail',detail_views),
 
     #----------------------web url-----------------------------
     url(r'^weblist/$',weblist_view),
@@ -62,7 +64,7 @@ urlpatterns = [
     url(r'^update_userinfo/$',update_userinfo_views),
     url(r'^get_userinfo/$',get_userinfo_views),
     url(r'^update_userinfo_api/$',update_userinfo_api_views),
-    url(r'^detail',detail_views),
+
 
 
     #----------------------timing url-----------------------------

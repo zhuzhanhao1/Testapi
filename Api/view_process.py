@@ -169,6 +169,7 @@ def update_processcase_views(request):
         return HttpResponse("编辑成功")
     elif request.method == "POST":
         print("全部修改")
+        caseid = request.POST.get("caseID","")
         casename = request.POST.get("casename", "")
         url = request.POST.get("url", "")
         method = request.POST.get("method", "")
@@ -188,13 +189,13 @@ def update_processcase_views(request):
             print(a)
             b = a.replace(">", "＞")
             print(b)
-            Processapi.objects.filter(order_no=orderno).update(casename=casename, identity=identity, url=url,
-                                  method=method, params=params, body=b, belong=belong,
+            Processapi.objects.filter(caseid=caseid).update(casename=casename, identity=identity, url=url,
+                                  method=method, params=params, body=b, belong=belong,order_no=orderno,
                                   isprocess=isprocess, depend_id=dependid, depend_key=dependkey,
                                   replace_key=replacekey, replace_position=replaceposition)
             return HttpResponseRedirect("/ProcessIndex/")
         else:
-            Processapi.objects.filter(order_no=orderno).update(casename=casename, identity=identity, url=url,
+            Processapi.objects.filter(caseid=caseid).update(casename=casename, identity=identity, url=url,
                                   method=method, params=params, body=body, belong=belong,
                                   isprocess=isprocess, depend_id=dependid, depend_key=dependkey,
                                   replace_key=replacekey, replace_position=replaceposition)
@@ -226,16 +227,19 @@ def get_tokeninfo_views(request):
 
 #更改数据库存储的token
 def update_token_views(request):
-    role = request.POST.get("identity","")
-    print(role)
-    if role == "sysadmin":
+    role1 = request.POST.get("identity1","")
+    role2 = request.POST.get("identity2", "")
+    role3 = request.POST.get("identity3", "")
+    print(role1)
+    print(role2)
+    print(role3)
+    if role1 == "sysadmin":
         GetToken().get_token_by_role("sysadmin")
-    if role == "admin":
+    if role2 == "admin":
         GetToken().get_token_by_role("admin")
-    if role == "ast":
+    if role3 == "ast":
         GetToken().get_token_by_role("ast")
     return HttpResponseRedirect("/ProcessIndex/")
-
 
 
 #执行用例
@@ -493,7 +497,7 @@ def run_processcase_views(request):
         #将JSON数据返回给前端
         return HttpResponse(djson_new)
 
-
+#用例详情
 def detail_views(request):
     res = request.GET.get("id","")
     id = Processapi.objects.get(caseid=res)
@@ -545,7 +549,7 @@ def detail_views(request):
     }
     return render(request,"detail.html",{"dic":dic})
 
-
+#定时任务
 def timetask_views(request):
     con = ConnDataBase()
     URL = str(con.get_logininfo("sysadmin")[2], 'utf-8')

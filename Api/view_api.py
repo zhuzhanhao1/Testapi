@@ -1,4 +1,5 @@
 import os,sys
+import time
 from datetime import datetime
 import json
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -85,6 +86,25 @@ def apilist_view(request):
         apilists = Case.objects.filter(belong__contains="公共操作相关接口")
     elif belong == "common_folder":
         apilists = Case.objects.filter(belong__contains="通用文件夹管理接口")
+
+
+    elif belong == "record_yj":
+        apilists = Case.objects.filter(belong__contains="档案管理接口")
+    elif belong == "resource_yj":
+        apilists = Case.objects.filter(belong__contains="资源管理接口")
+    elif belong == "yuwen":
+        apilists = Case.objects.filter(belong__contains="导航管理接口")
+    elif belong == "navigation_yj":
+        apilists = Case.objects.filter(belong__contains="数据表单管理接口")
+    elif belong == "comments":
+        apilists = Case.objects.filter(belong__contains="文件计划管理接口")
+    elif belong == "attribute_mapping_scheme_yj":
+        apilists = Case.objects.filter(belong__contains="公共操作相关接口")
+    elif belong == "common_folder":
+        apilists = Case.objects.filter(belong__contains="通用文件夹管理接口")
+
+
+
     elif belong == "metadata":
         apilists = Case.objects.filter(belong__contains="元数据管理平台接口")
     elif belong == "deposit_form":
@@ -170,8 +190,76 @@ def update_apicase_views(request):
             else:
                 Case.objects.filter(caseid=ids).update(body=body)
         return HttpResponse("编辑成功")
+    else:
+        caseid = request.POST.get("caseID","")
+        casename = request.POST.get("casename", "")
+        url = request.POST.get("url", "")
+        identity = request.POST.get("identity", "")
+        method = request.POST.get("method", "")
+        belong = request.POST.get("belong", "")
+        params = request.POST.get("params", "")
+        body = request.POST.get("body", "")
+        identity = request.POST.get("identity", "")
+        if "<" in body or ">" in body:
+            print('存在需要替换的符号')
+            a = body.replace("<", "＜")
+            print(a)
+            b = a.replace(">", "＞")
+            print(b)
+            Case.objects.filter(caseid=caseid).update(casename=casename, identity=identity, url=url,
+                                  method=method, params=params, body=b, belong=belong)
+        else:
+            Case.objects.filter(caseid=caseid).update(casename=casename, identity=identity, url=url,
+                                  method=method, params=params, body=body, belong=belong)
+        return HttpResponseRedirect("/apiindex/")
 
 
+def detail_api_views(request):
+    res = request.GET.get("id","")
+    id = Case.objects.get(caseid=res)
+    identity = id.identity
+    url =  id.url
+    method = id.method
+    params = id.params
+    body = id.body
+    casename = id.casename
+
+    head = id.exceptres
+    belong = id.belong
+    result = id.result
+    forward = str(int(res) + 1)
+    print(forward)
+    back = str(int(res) - 1)
+    if identity == "sysadmin":
+        identity = "系统管理员"
+    if identity == "admin":
+        identity = "单位管理员"
+    if identity == "ast":
+        identity = "单位档案员"
+    if params == "":
+        params = {
+            "surprise":"params没有传参数哦!"
+        }
+        params = json.dumps(params, ensure_ascii=False, sort_keys=True, indent=2)
+    if body == "":
+        body = {
+            "surprise": "body没有传参数哦!"
+        }
+        body = json.dumps(body, ensure_ascii=False, sort_keys=True, indent=2)
+    dic = {
+        "identity": identity,
+        "belong": belong,
+        "casename": casename,
+        "url": url,
+        "method": method,
+        "params": params,
+        "body" : body,
+        "result" : result,
+        "head" : head,
+        "forward" : forward,
+        "back" : back
+    }
+    return render(request,"detail.html",{"dic":dic})
 
 #更改用户信息
 def update_userinfo_api_views(request):
@@ -191,22 +279,27 @@ def update_userinfo_api_views(request):
         return HttpResponse("必须输入用户名和用户密码！！！")
 
 
-
 #更改数据库存储的token
 def update_token_api_views(request):
-    role = request.POST.get("identity","")
-    print(role)
-    if role == "sysadmin":
+    role1 = request.POST.get("identity1","")
+    role2 = request.POST.get("identity2", "")
+    role3 = request.POST.get("identity3", "")
+    print(role1)
+    print(role2)
+    print(role3)
+    if role1 == "sysadmin":
         GetToken().get_token_by_role("sysadmin")
-    if role == "admin":
+    if role2 == "admin":
         GetToken().get_token_by_role("admin")
-    if role == "ast":
+    if role3 == "ast":
         GetToken().get_token_by_role("ast")
     return HttpResponseRedirect("/apiindex/")
 
 
 #执行用例
 def run_apicase_views(request):
+    con = ConnDataBase()
+
     ids= request.GET.get("caseid").split(",")[:-1]
     print(ids)
     if len(ids) == 1:
@@ -214,152 +307,136 @@ def run_apicase_views(request):
         d = {}
         for ucaseid in ids:
             id = Case.objects.get(caseid=ucaseid)
+
             identity = id.identity
+            if identity == "ast" or identity == "admin" or identity == "sysadmin":
+                URL = str(con.get_logininfo("sysadmin")[2], 'utf-8')
+            else:
+                URL = str(con.get_logininfo("yjadmin")[2], 'utf-8')
             Runmethod = RequestMethod(identity)
-            url = "http://demo.amberdata.cn/ermsapi/v2"+id.url
+            url = URL + id.url
             method = id.method
             params = id.params
             body = id.body
             casename = id.casename
-            casename = casename
+            head = id.exceptres
             #eval()字符串转字典
-            starttime = datetime.now()
-            if body != "" and params == "":
-                body = eval(body)
-                response = Runmethod.run_main(method,url,params,body)
 
-            elif body != "" and params != "":
+            starttime = time.time()
+            if body != "":
+                if "＜" in body or "＞" in body:
+                    print('body存在需要替换的符号')
+                    a = body.replace("＜", "<")
+                    b = a.replace("＞", ">")
+                    body = b
                 body = eval(body)
-                params = eval(params)
-                response = Runmethod.run_main(method,url,params,body)
-
-            elif body == '':
                 if params:
                     params = eval(params)
-                    response = Runmethod.run_main(method, url, params, body)
-
-                else:
-                    response = Runmethod.run_main(method, url, params, body)
-
-            #将结果存到列表返回前端
-            # for i in range(1,len(ids)+1):
-            #     L.append(str(i)+"."+casename+"---->")
-            #     L.append(response)
-
-            #存为字典，转换为json格式
-            endtime = datetime.now()
-            runtime = endtime - starttime
-            print(runtime)
-
-            runtime_a = str(runtime).split('.')
-            runtime_b = runtime_a[0].split(":")
-
-            d[casename] = response
-            if runtime_b[2] > "00" and runtime_b[2] <= "03":
-                d[casename+"---＞"+"运行一般"] = str(runtime)
-            elif runtime_b[2] > "03":
-                d[casename +"---＞"+ "运行缓慢"] = str(runtime)
-            else:
-                d[casename +"---＞"+ "运行迅速"] = str(runtime)
-            print(d)
-            #json格式化
-            djson = json.dumps(d, ensure_ascii=False,sort_keys=True, indent=2)
-            if "<" in djson or ">" in djson:
-                print('存在需要替换的符号')
-                a = djson.replace("<","＜")
-                print(a)
-                b = a.replace(">","＞")
-                print(b)
-                Case.objects.filter(caseid=ucaseid).update(result=b)
-            else:
-                Case.objects.filter(caseid=ucaseid).update(result=djson)
-
-        print(djson)
-        # print(type(djson))//str
-        #发送钉钉消息
-        #send_ding(djson)
-        return HttpResponse(djson)
-
-    #多个接口测试的情况
-    else:
-        print("多个接口测试")
-        #将每次运行的字典结果集用列表存储
-        L = []
-        for ucaseid in ids:
-            #每次循环创建一个字典，存储每次运行结束的接口，KEY以用例名字，Value以响应结果
-            d = {}
-            id = Case.objects.get(caseid=ucaseid)
-            identity = id.identity
-            Runmethod = RequestMethod(identity)
-            # Header = ReqParam().get_user_power(identity)['accessToken']
-            url = "http://demo.amberdata.cn/ermsapi/v2" + id.url
-            method = id.method
-            params = id.params
-            body = id.body
-            casename = id.casename
-            casename = casename
-            #计算运行前的时间
-            starttime = datetime.now()
-            if body != "" and params == "":
-                # eval()字符串转字典
-                body = eval(body)
-                response = Runmethod.run_main(method, url, params, body)
-
-            elif body != "" and params != "":
-                body = eval(body)
-                params = eval(params)
                 response = Runmethod.run_main(method, url, params, body)
 
             elif body == '':
                 if params:
                     params = eval(params)
-                    response = Runmethod.run_main(method, url, params, body)
+                response = Runmethod.run_main(method, url, params, body)
 
-                else:
-                    response = Runmethod.run_main(method, url, params, body)
-
-            #计算运行结束的时间
-            endtime = datetime.now()
-            #计算前后两次时间差
-            runtime = endtime - starttime
-            #获取请求前后的时间差
-            print(runtime)
-
-
-            runtime_a = str(runtime).split('.')
-            runtime_b = runtime_a[0].split(":")
-            # 所有内容所在一个字典里
+            endtime = time.time()
+            runtime = round(endtime - starttime, 3)
+            # 存为字典，转换为json格式
             d[casename] = response
-            if runtime_b[2] > "00" and runtime_b[2] <= "03":
-                d[casename+"---＞"+"运行一般"] = str(runtime)
-            elif runtime_b[2] > "03":
-                d[casename +"---＞"+ "运行缓慢"] = str(runtime)
+            if runtime > 0.5 and runtime <= 1.0:
+                d[casename+"运行时间为"] = str(runtime)+"秒"
+            elif runtime > 3.0:
+                d[casename +"运行缓慢"] = str(runtime)+"秒"
             else:
-                d[casename +"---＞"+ "运行迅速"] = str(runtime)
-
-            #将每个结果的字典存放在一个列表中
-            L.append(d)
+                d[casename +"运行时间为"] = str(runtime)+"秒"
+            d["＜"+ucaseid+"＞"+"负责人"] = head
+            # print(d)
             # json格式化
             djson = json.dumps(d, ensure_ascii=False, sort_keys=True, indent=2)
             if "<" in djson or ">" in djson:
-                print('存在需要替换的符号')
+                print('result存在需要替换的符号')
                 a = djson.replace("<", "＜")
                 print(a)
                 b = a.replace(">", "＞")
                 print(b)
                 Case.objects.filter(caseid=ucaseid).update(result=b)
             else:
-                #每次运行结束将每个接口返回的数据JOSN格式化存入数据库
                 Case.objects.filter(caseid=ucaseid).update(result=djson)
+            print(djson)
+            # 发送钉钉消息
+            # send_ding(djson)
+            return HttpResponse(djson)
 
-        #print(L)
-        #创建一个字典存储包含所有字典的列表
+    else:
+        #多个接口测试的情况
+        print("多个接口测试")
+        # 将每次运行的字典结果集用列表存储
+        L = []
+        for ucaseid in ids:
+            # 每次循环创建一个字典，存储每次运行结束的接口，KEY以用例名字，Value以响应结果
+            d = {}
+            id = Case.objects.get(caseid=ucaseid)
+            identity = id.identity
+            url = URL + id.url
+            method = id.method
+            params = id.params
+            body = id.body
+            casename = id.casename
+            head = id.exceptres
+
+            #c从数据库获取token
+            Runmethod = RequestMethod(identity)
+
+            # 计算运行前的时间
+            starttime = time.time()
+            if body != "":
+                if "＜" in body or "＞" in body:
+                    print('body存在需要替换的符号')
+                    a = body.replace("＜", "<")
+                    b = a.replace("＞", ">")
+                    body = b
+                body = eval(body)
+                if params:
+                    params = eval(params)
+                response = Runmethod.run_main(method, url, params, body)
+
+            elif body == '':
+                if params:
+                    params = eval(params)
+                response = Runmethod.run_main(method, url, params, body)
+            endtime = time.time()
+            runtime = round(endtime - starttime, 3)
+            print(runtime)
+
+            d[casename] = response
+            if runtime > 0.5 and runtime <= 1.0:
+                d[casename + "运行时间为"] = str(runtime) + "秒"
+            elif runtime > 3.0:
+                d[casename + "运行缓慢"] = str(runtime) + "秒"
+            else:
+                d[casename + "运行时间为"] = str(runtime) + "秒"
+            d["＜" + ucaseid + "＞" + "负责人"] = head
+
+            # 将每个结果的字典存放在一个列表中
+            L.append(d)
+            # json格式化
+            djson = json.dumps(d, ensure_ascii=False, sort_keys=True, indent=2)
+            if "<" in djson or ">" in djson:
+                print('result存在需要替换的符号')
+                a = djson.replace("<", "＜")
+                b = a.replace(">", "＞")
+                Case.objects.filter(caseid=ucaseid).update(result=b)
+            else:
+                # 每次运行结束将每个接口返回的数据JOSN格式化存入数据库
+                Case.objects.filter(caseid=ucaseid).update(result=djson)
+            # print(L)
+            # 创建一个字典存储包含所有字典的列表
         dict = {}
-        dict["Response"] = L
-        #转换为JSON格式，且格式化
+        dict["流程接口响应结果"] = L
+        # 转换为JSON格式，且格式化
         djson_new = json.dumps(dict, ensure_ascii=False, sort_keys=True, indent=2)
         print(djson_new)
         # 发送钉钉消息
-        #send_ding(djson_new)
-        #将JSON数据返回给前端
+        # send_ding(djson_new)
+        # 将JSON数据返回给前端
         return HttpResponse(djson_new)

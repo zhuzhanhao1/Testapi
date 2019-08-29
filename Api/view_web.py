@@ -219,7 +219,9 @@ def webindex_views(request):
 #weB列表页
 def weblist_view(request):
     module = request.GET.get("key[id]", "")
+    print(module)
     caseid= request.GET.get("key[id1]","")
+    print(caseid)
     a = request.GET.get("belong","")
     if module == "" and a == "" and caseid == "":
         weblists = Webcase.objects.filter()
@@ -243,6 +245,7 @@ def weblist_view(request):
         weblists = Webcase.objects.filter(webcase_models="访问控制策略管理")
     elif a == "transfer":
         weblists = Webcase.objects.filter(webcase_models="移交操作")
+
     elif module:
         weblists = Webcase.objects.filter(webcase_models__contains=module)
     elif caseid:
@@ -518,15 +521,18 @@ def get_userinfo_views(request):
     dic = {
         "系统管理员":{
             "账号":sysadmin[0],
-            "密码":sysadmin[1]
+            "密码":sysadmin[1],
+            "令牌":sysadmin[3]
         },
         "单位管理员":{
             "账号":admin[0],
-            "密码":admin[1]
+            "密码":admin[1],
+            "令牌": ast[3]
         },
         "单位档案员":{
             "账号":ast[0],
-            "密码":ast[1]
+            "密码":ast[1],
+            "令牌": ast[3]
         },
         "访问路径":URL
     }
