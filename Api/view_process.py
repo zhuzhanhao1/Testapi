@@ -220,11 +220,6 @@ def update_userinfo_api_views(request):
         return HttpResponse("必须输入用户名和用户密码！！！")
 
 
-#获取token信息
-def get_tokeninfo_views(request):
-    pass
-
-
 #更改数据库存储的token
 def update_token_views(request):
     role1 = request.POST.get("identity1","")
@@ -240,7 +235,6 @@ def update_token_views(request):
     if role3 == "ast":
         GetToken().get_token_by_role("ast")
     return HttpResponseRedirect("/ProcessIndex/")
-
 
 #执行用例
 def run_processcase_views(request):

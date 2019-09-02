@@ -204,7 +204,6 @@ def run_autocase_views(request):
     return HttpResponse("操作完成")
 
 
-
 #-----------------------------------------------------------------------------------
 #web首页
 def webindex_views(request):
@@ -213,7 +212,6 @@ def webindex_views(request):
     a = request.GET.get("belong","")
     case_count = Webcase.objects.all().count()
     return render(request,"webindex.html",{"user":uname,"abq":a,"case_count":case_count})
-
 
 
 #weB列表页

@@ -24,6 +24,10 @@ class Case(models.Model):
     belong = models.CharField(max_length=50,verbose_name="所属模块")
     create_time = models.DateTimeField(auto_now=True,null=True)
     isprocess = models.CharField(max_length=50, verbose_name="是否为流程测试")
+    # belong_system = models.CharField(max_length=60,verbose_name="所属系统")
+    #python3 manage.py migrate Api --fake
+    system = models.CharField(max_length=50, verbose_name="所属系统")
+
 
 
     def __str__(self):

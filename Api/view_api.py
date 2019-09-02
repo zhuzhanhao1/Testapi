@@ -19,7 +19,7 @@ sys.path.append(cur_path)
 from webuitest.conn_database import ConnDataBase
 
 
-#接口api用例首页
+#接口erms用例首页
 def apiindex_view(request):
     id = request.session.get('id')
     uname = User.objects.get(id=id).uname
@@ -28,7 +28,16 @@ def apiindex_view(request):
     return render(request,"apiindex.html",{"user":uname,"abq":a,"case_count":case_count})
 
 
-#用例列表
+#接口transfer用例首页
+def transferindex_view(request):
+    id = request.session.get('id')
+    uname = User.objects.get(id=id).uname
+    a = request.GET.get("belong","")
+    case_count = Case.objects.all().count()
+    return render(request,"transferindex.html",{"user":uname,"abq":a,"case_count":case_count})
+
+
+#erms用例列表
 def apilist_view(request):
     casename = request.GET.get("key[casename]","")
     if casename:
@@ -115,19 +124,20 @@ def apilist_view(request):
         apilists = Case.objects.filter(casename__contains=casename)
     L = []
     for weblist in apilists:
-        data = {
-            "caseid": weblist.caseid,
-            "belong":weblist.belong,
-            "processid":weblist.isprocess,
-            "identity": weblist.identity,
-            "casename": weblist.casename,
-            "url": weblist.url,
-            "method": weblist.method,
-            "params": weblist.params,
-            "body": weblist.body,
-            "result": weblist.result
-        }
-        L.append(data)
+        if weblist.system == 'erms':
+            data = {
+                "caseid": weblist.caseid,
+                "belong":weblist.belong,
+                "processid":weblist.isprocess,
+                "identity": weblist.identity,
+                "casename": weblist.casename,
+                "url": weblist.url,
+                "method": weblist.method,
+                "params": weblist.params,
+                "body": weblist.body,
+                "result": weblist.result
+            }
+            L.append(data)
     print("此模块的用例个数为:"+str(len(L)))
     pageindex = request.GET.get('page', "")
     pagesize = request.GET.get("limit", "")
@@ -141,6 +151,69 @@ def apilist_view(request):
     return JsonResponse(datas)
 
 
+#transfer用例列表
+def transferlist_view(request):
+    casename = request.GET.get("key[casename]","")
+    if casename:
+        print("搜索的用例名是:"+casename)
+    belong = request.GET.get('belong',"")
+    print("请求进入的模块是:"+belong)
+    if casename == "" and belong == "":
+        apilists = Case.objects.filter()
+
+    elif belong == "record_yj":
+        apilists = Case.objects.filter(belong__contains="Record接口")
+    elif belong == "resource_yj":
+        apilists = Case.objects.filter(belong__contains="资源管理接口")
+    elif belong == "yuwen_yj":
+        apilists = Case.objects.filter(belong__contains="原文接口")
+    elif belong == "navigation_yj":
+        apilists = Case.objects.filter(belong__contains="导航接口")
+    elif belong == "comments_yj":
+        apilists = Case.objects.filter(belong__contains="意见接口")
+    elif belong == "attribute_mapping_scheme_yj":
+        apilists = Case.objects.filter(belong__contains="映射规则接口")
+    elif belong == "volume_yj":
+        apilists = Case.objects.filter(belong__contains="案卷相关接口")
+    elif belong == "archives_yj":
+        apilists = Case.objects.filter(belong__contains="档案相关接口")
+    elif belong == "report_yj":
+        apilists = Case.objects.filter(belong__contains="检测报告相关接口")
+    elif belong == "transfer_form_yj":
+        apilists = Case.objects.filter(belong__contains="移交表单相关接口")
+    elif belong == "metadata_yj":
+        apilists = Case.objects.filter(belong__contains="元数据平台接口")
+
+    elif casename:
+        apilists = Case.objects.filter(casename__contains=casename)
+    L = []
+    for weblist in apilists:
+        if weblist.system == "transfer":
+            data = {
+                "caseid": weblist.caseid,
+                "belong":weblist.belong,
+                "processid":weblist.isprocess,
+                "identity": weblist.identity,
+                "casename": weblist.casename,
+                "url": weblist.url,
+                "method": weblist.method,
+                "params": weblist.params,
+                "body": weblist.body,
+                "result": weblist.result
+            }
+            L.append(data)
+    print("此模块的用例个数为:"+str(len(L)))
+    pageindex = request.GET.get('page', "")
+    pagesize = request.GET.get("limit", "")
+    pageInator = Paginator(L, pagesize)
+    # 分页
+    contacts = pageInator.page(pageindex)
+    res = []
+    for contact in contacts:
+        res.append(contact)
+    datas = {"code": 0, "msg": "", "count": len(L), "data": res}
+    return JsonResponse(datas)
+
 
 # 创建api用例
 def create_apicase_views(request):
@@ -152,9 +225,16 @@ def create_apicase_views(request):
         params = request.POST.get("params", "")
         body = request.POST.get("body", "")
         identity = request.POST.get("identity", "")
-        Case.objects.create(casename=casename, identity=identity, url=url,
+        system = request.POST.get("system","")
+        print(system)
+        Case.objects.create(casename=casename, identity=identity, url=url,system=system,
                                method=method, params=params, body=body, belong=belong)
-        return HttpResponseRedirect("/apiindex/")
+        if system == "erms":
+            return HttpResponse("操作成功")
+
+        else:
+            return HttpResponse("操作成功")
+
 
 
 
@@ -166,7 +246,6 @@ def delete_apicase_views(request):
             print(ids)
             Case.objects.filter(caseid=ids).delete()
             return HttpResponse("删除成功")
-
 
 
 #更新api用例
@@ -199,21 +278,29 @@ def update_apicase_views(request):
         belong = request.POST.get("belong", "")
         params = request.POST.get("params", "")
         body = request.POST.get("body", "")
-        identity = request.POST.get("identity", "")
+        system = request.POST.get('system',"")
+
+
         if "<" in body or ">" in body:
             print('存在需要替换的符号')
             a = body.replace("<", "＜")
             print(a)
             b = a.replace(">", "＞")
             print(b)
-            Case.objects.filter(caseid=caseid).update(casename=casename, identity=identity, url=url,
+            Case.objects.filter(caseid=caseid).update(casename=casename, identity=identity, url=url,system=system,
                                   method=method, params=params, body=b, belong=belong)
         else:
-            Case.objects.filter(caseid=caseid).update(casename=casename, identity=identity, url=url,
+            Case.objects.filter(caseid=caseid).update(casename=casename, identity=identity, url=url,system=system,
                                   method=method, params=params, body=body, belong=belong)
-        return HttpResponseRedirect("/apiindex/")
+        if system == "erms":
+            return HttpResponse("操作成功")
+            # return HttpResponseRedirect("/apiindex/")
+        else:
+            return HttpResponse("操作成功")
+            # return HttpResponseRedirect("/transferindex/")
 
 
+#接口详情
 def detail_api_views(request):
     res = request.GET.get("id","")
     id = Case.objects.get(caseid=res)
@@ -261,16 +348,69 @@ def detail_api_views(request):
     }
     return render(request,"detail.html",{"dic":dic})
 
+#获取当前用户信息
+def get_userinfo_transfer_views(request):
+    con = ConnDataBase()
+    sysadmin = con.get_logininfo("yjadmin")
+    a = request.GET.get("ids","")
+    if a == "transfer":
+        # admin = con.get_logininfo("admin")
+        # ast = con.get_logininfo("ast")
+        URL = str(con.get_logininfo("yjadmin")[2], 'utf-8')
+        dic = {
+            "系统管理员":{
+                "账号":sysadmin[0],
+                "密码":sysadmin[1],
+                "令牌":sysadmin[3]
+            },
+            "访问路径":URL
+        }
+        dic1 = json.dumps(dic,ensure_ascii=False,sort_keys=True, indent=2)
+        print(dic1)
+        return HttpResponse(dic1)
+    elif a == "erms":
+        sysadmin = con.get_logininfo("sysadmin")
+        admin = con.get_logininfo("admin")
+        ast = con.get_logininfo("ast")
+        URL = str(con.get_logininfo("sysadmin")[2], 'utf-8')
+        dic = {
+            "系统管理员": {
+                "账号": sysadmin[0],
+                "密码": sysadmin[1],
+                "令牌": sysadmin[3]
+            },
+            "单位管理员": {
+                "账号": admin[0],
+                "密码": admin[1],
+                "令牌": ast[3]
+            },
+            "单位档案员": {
+                "账号": ast[0],
+                "密码": ast[1],
+                "令牌": ast[3]
+            },
+            "访问路径": URL
+        }
+        dic1 = json.dumps(dic, ensure_ascii=False, sort_keys=True, indent=2)
+        print(dic1)
+        return HttpResponse(dic1)
+
+
+
 #更改用户信息
 def update_userinfo_api_views(request):
     role = request.POST.get("identity","")
+    print(role)
     username = request.POST.get("username","")
+    print(username)
     password = request.POST.get("password","")
+    print(password)
     if username:
         try:
             con = ConnDataBase()
             con.update_logininfo(username,password,role)
-            return HttpResponseRedirect("/apiindex/")
+            return HttpResponse("操作成功")
+            # return HttpResponseRedirect("/apiindex/")
         except:
             print("修改用户信息失败")
             return HttpResponse("链接数据库失败、修改用户信息失败")
@@ -281,25 +421,36 @@ def update_userinfo_api_views(request):
 
 #更改数据库存储的token
 def update_token_api_views(request):
+    system = request.POST.get("system","")
+    role = request.POST.get("identity", "")
     role1 = request.POST.get("identity1","")
     role2 = request.POST.get("identity2", "")
     role3 = request.POST.get("identity3", "")
+    print(role)
     print(role1)
     print(role2)
     print(role3)
-    if role1 == "sysadmin":
-        GetToken().get_token_by_role("sysadmin")
-    if role2 == "admin":
-        GetToken().get_token_by_role("admin")
-    if role3 == "ast":
-        GetToken().get_token_by_role("ast")
-    return HttpResponseRedirect("/apiindex/")
+    print(system)
+    if system == "erms":
+        if role1 == "sysadmin":
+            GetToken().get_token_by_role("sysadmin")
+        if role2 == "admin":
+            GetToken().get_token_by_role("admin")
+        if role3 == "ast":
+            GetToken().get_token_by_role("ast")
+        return HttpResponse("操作成功")
+        # return HttpResponseRedirect("/apiindex/")
+
+    elif system == "transfer":
+        if role == "yjadmin":
+            print("更新移交系统的token")
+            return HttpResponse("操作成功")
+            # return HttpResponseRedirect("/transferindex/")
 
 
 #执行用例
 def run_apicase_views(request):
     con = ConnDataBase()
-
     ids= request.GET.get("caseid").split(",")[:-1]
     print(ids)
     if len(ids) == 1:
@@ -307,14 +458,15 @@ def run_apicase_views(request):
         d = {}
         for ucaseid in ids:
             id = Case.objects.get(caseid=ucaseid)
-
-            identity = id.identity
-            if identity == "ast" or identity == "admin" or identity == "sysadmin":
+            #判断当前请求的系统，给对应的系统匹配上对应的URL
+            if id.system == "erms":
                 URL = str(con.get_logininfo("sysadmin")[2], 'utf-8')
             else:
                 URL = str(con.get_logininfo("yjadmin")[2], 'utf-8')
+            identity = id.identity
             Runmethod = RequestMethod(identity)
             url = URL + id.url
+            # print(url)
             method = id.method
             params = id.params
             body = id.body

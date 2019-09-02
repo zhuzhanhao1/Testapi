@@ -21,7 +21,8 @@ ast = con.get_logininfo("ast")
 class GetToken:
     def __init__(self):
         self.con = ConnDataBase()
-        self.sysaadmin = self.con.get_logininfo("sysadmin")
+        self.yjadmin = self.con.get_logininfo("yjadmin")
+        self.sysadmin = self.con.get_logininfo("sysadmin")
         self.admin = self.con.get_logininfo("admin")
         self.ast = self.con.get_logininfo("ast")
 
@@ -39,8 +40,13 @@ class GetToken:
             }
         elif role == "sysadmin":
             params = {
-                "loginName": self.sysaadmin[0],
-                "password": self.sysaadmin[1]
+                "loginName": self.sysadmin[0],
+                "password": self.sysadmin[1]
+            }
+        elif role == "yjadmin":
+            params = {
+                "loginName": self.yjadmin[0],
+                "password": self.yjadmin[1]
             }
         headers = {
             "Content-Type": "application/json"
@@ -49,8 +55,6 @@ class GetToken:
         res = response.json()['accessToken']
         result = self.con.update_token(res,role)
         return result
-
-
 
 #单位档案员登录
 def ast_login():
@@ -63,7 +67,6 @@ def ast_login():
     }
     response = requests.post(url,headers=headers,data=json.dumps(params))
     return response.json()['accessToken']
-
 
 #系统管理员登录
 def sysadmin_login():
@@ -89,7 +92,6 @@ def admin_login():
     response = requests.post(url,headers=headers,data=json.dumps(params))
     return response.json()['accessToken']
 
-
 class ReqParam:
     #获取请求头数据
     def get_user_power(self,val):
@@ -114,7 +116,7 @@ if __name__ == "__main__":
     start_time = time.time()
     a = GetToken()
     # print(a.get_json(a.get_user_power("ast")))
-    print(a.get_token_by_role("ast"))
+    print(a.get_token_by_role("sysadmin"))
     end_time = time.time()
     print(round(end_time-start_time,3))
 
