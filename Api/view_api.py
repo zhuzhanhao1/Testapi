@@ -9,7 +9,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from .forms import *
 from Api.interfacetest.run_method import RequestMethod
-from Api.interfacetest.get_header import ReqParam, GetToken
+from Api.interfacetest.get_header import  GetToken
 from Api.webuitest.DingDing import send_ding
 
 currentUrl = os.path.dirname(__file__)
@@ -227,15 +227,27 @@ def create_apicase_views(request):
         identity = request.POST.get("identity", "")
         system = request.POST.get("system","")
         print(system)
-        Case.objects.create(casename=casename, identity=identity, url=url,system=system,
-                               method=method, params=params, body=body, belong=belong)
+
         if system == "erms":
-            return HttpResponse("操作成功")
+            try:
+                Case.objects.create(casename=casename, identity=identity, url=url, system=system,
+                                    method=method, params=params, body=body, belong=belong)
+            except Exception as e:
+                return HttpResponse(e)
+
+        elif system == "transfer":
+            try:
+                Case.objects.create(casename=casename, identity=identity, url=url, system=system,
+                                    method=method, params=params, body=body, belong=belong)
+            except Exception as e:
+                return HttpResponse(e)
 
         else:
-            return HttpResponse("操作成功")
+            return HttpResponse("接口库没有此系统")
 
-
+        return HttpResponse("操作成功")
+    else:
+        return HttpResponse("请求方式有误")
 
 
 #删除api用例
@@ -245,7 +257,11 @@ def delete_apicase_views(request):
         if ids:
             print(ids)
             Case.objects.filter(caseid=ids).delete()
-            return HttpResponse("删除成功")
+            return HttpResponse("操作成功")
+        else:
+            return HttpResponse("没有获取请求的ID")
+    else:
+        return HttpResponse("请求方式有误")
 
 
 #更新api用例
@@ -254,6 +270,8 @@ def update_apicase_views(request):
         params = request.GET.get('params',"")
         body =request.GET.get("body","")
         ids = request.GET.get("ids","")
+        if ids == "":
+            return HttpResponse("没有获取请求的ID")
         print(ids)
         if params:
             print(params)
@@ -271,6 +289,8 @@ def update_apicase_views(request):
         return HttpResponse("编辑成功")
     else:
         caseid = request.POST.get("caseID","")
+        if caseid == "":
+            return HttpResponse("没有获取请求的ID")
         casename = request.POST.get("casename", "")
         url = request.POST.get("url", "")
         identity = request.POST.get("identity", "")
@@ -279,7 +299,6 @@ def update_apicase_views(request):
         params = request.POST.get("params", "")
         body = request.POST.get("body", "")
         system = request.POST.get('system',"")
-
 
         if "<" in body or ">" in body:
             print('存在需要替换的符号')
@@ -294,59 +313,60 @@ def update_apicase_views(request):
                                   method=method, params=params, body=body, belong=belong)
         if system == "erms":
             return HttpResponse("操作成功")
-            # return HttpResponseRedirect("/apiindex/")
         else:
             return HttpResponse("操作成功")
-            # return HttpResponseRedirect("/transferindex/")
 
 
 #接口详情
 def detail_api_views(request):
     res = request.GET.get("id","")
-    id = Case.objects.get(caseid=res)
-    identity = id.identity
-    url =  id.url
-    method = id.method
-    params = id.params
-    body = id.body
-    casename = id.casename
+    if res:
+        id = Case.objects.get(caseid=res)
+        identity = id.identity
+        url =  id.url
+        method = id.method
+        params = id.params
+        body = id.body
+        casename = id.casename
+        head = id.exceptres
+        belong = id.belong
+        result = id.result
+        forward = str(int(res) + 1)
+        print(forward)
+        back = str(int(res) - 1)
+        if identity == "sysadmin":
+            identity = "系统管理员"
+        if identity == "admin":
+            identity = "单位管理员"
+        if identity == "ast":
+            identity = "单位档案员"
+        if params == "":
+            params = {
+                "surprise":"params没有传参数哦!"
+            }
+            params = json.dumps(params, ensure_ascii=False, sort_keys=True, indent=2)
+        if body == "":
+            body = {
+                "surprise": "body没有传参数哦!"
+            }
+            body = json.dumps(body, ensure_ascii=False, sort_keys=True, indent=2)
+        dic = {
+            "identity": identity,
+            "belong": belong,
+            "casename": casename,
+            "url": url,
+            "method": method,
+            "params": params,
+            "body" : body,
+            "result" : result,
+            "head" : head,
+            "forward" : forward,
+            "back" : back
+        }
+        return render(request,"detail.html",{"dic":dic})
+    else:
+        return HttpResponse("没有传ID参数！")
 
-    head = id.exceptres
-    belong = id.belong
-    result = id.result
-    forward = str(int(res) + 1)
-    print(forward)
-    back = str(int(res) - 1)
-    if identity == "sysadmin":
-        identity = "系统管理员"
-    if identity == "admin":
-        identity = "单位管理员"
-    if identity == "ast":
-        identity = "单位档案员"
-    if params == "":
-        params = {
-            "surprise":"params没有传参数哦!"
-        }
-        params = json.dumps(params, ensure_ascii=False, sort_keys=True, indent=2)
-    if body == "":
-        body = {
-            "surprise": "body没有传参数哦!"
-        }
-        body = json.dumps(body, ensure_ascii=False, sort_keys=True, indent=2)
-    dic = {
-        "identity": identity,
-        "belong": belong,
-        "casename": casename,
-        "url": url,
-        "method": method,
-        "params": params,
-        "body" : body,
-        "result" : result,
-        "head" : head,
-        "forward" : forward,
-        "back" : back
-    }
-    return render(request,"detail.html",{"dic":dic})
 
 #获取当前用户信息
 def get_userinfo_transfer_views(request):
@@ -394,7 +414,8 @@ def get_userinfo_transfer_views(request):
         dic1 = json.dumps(dic, ensure_ascii=False, sort_keys=True, indent=2)
         print(dic1)
         return HttpResponse(dic1)
-
+    else:
+        return HttpResponse("没有你需要的信息")
 
 
 #更改用户信息
@@ -405,18 +426,13 @@ def update_userinfo_api_views(request):
     print(username)
     password = request.POST.get("password","")
     print(password)
-    if username:
-        try:
-            con = ConnDataBase()
-            con.update_logininfo(username,password,role)
-            return HttpResponse("操作成功")
-            # return HttpResponseRedirect("/apiindex/")
-        except:
-            print("修改用户信息失败")
-            return HttpResponse("链接数据库失败、修改用户信息失败")
+    try:
+        con = ConnDataBase()
+        con.update_logininfo(username,password,role)
+        return HttpResponse("操作成功")
+    except:
+        return HttpResponse("链接数据库失败、修改用户信息失败")
 
-    else:
-        return HttpResponse("必须输入用户名和用户密码！！！")
 
 
 #更改数据库存储的token
@@ -426,26 +442,40 @@ def update_token_api_views(request):
     role1 = request.POST.get("identity1","")
     role2 = request.POST.get("identity2", "")
     role3 = request.POST.get("identity3", "")
-    print(role)
-    print(role1)
-    print(role2)
-    print(role3)
     print(system)
+    print(role3)
     if system == "erms":
         if role1 == "sysadmin":
-            GetToken().get_token_by_role("sysadmin")
+            try:
+                GetToken().get_token_by_role("sysadmin")
+            except Exception as e:
+                print(e)
+                return HttpResponse("Failed to return "+ str(e))
+
         if role2 == "admin":
-            GetToken().get_token_by_role("admin")
+            try:
+                GetToken().get_token_by_role("admin")
+            except Exception as e:
+                print(e)
+                return HttpResponse("Failed to return "+ str(e))
+
         if role3 == "ast":
-            GetToken().get_token_by_role("ast")
+            try:
+                GetToken().get_token_by_role("ast")
+            except Exception as e:
+                print(e)
+                return HttpResponse("Failed to return "+ str(e))
+
         return HttpResponse("操作成功")
-        # return HttpResponseRedirect("/apiindex/")
 
     elif system == "transfer":
         if role == "yjadmin":
-            print("更新移交系统的token")
-            return HttpResponse("操作成功")
-            # return HttpResponseRedirect("/transferindex/")
+            try:
+                GetToken().get_token_by_role("yjadmin")
+            except Exception as e:
+                print(e)
+                return HttpResponse("Failed to return "+ str(e))
+        return HttpResponse("操作成功")
 
 
 #执行用例
@@ -529,6 +559,10 @@ def run_apicase_views(request):
             d = {}
             id = Case.objects.get(caseid=ucaseid)
             identity = id.identity
+            if id.system == "erms":
+                URL = str(con.get_logininfo("sysadmin")[2], 'utf-8')
+            else:
+                URL = str(con.get_logininfo("yjadmin")[2], 'utf-8')
             url = URL + id.url
             method = id.method
             params = id.params

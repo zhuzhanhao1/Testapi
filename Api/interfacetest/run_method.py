@@ -4,7 +4,6 @@ cur_path = os.path.dirname(os.path.realpath(__file__))
 cur_path1 = os.path.dirname(os.path.realpath(cur_path))
 sys.path.append(cur_path1)
 
-from .get_header import ReqParam
 from Api.webuitest.conn_database import ConnDataBase
 
 

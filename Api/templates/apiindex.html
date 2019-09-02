@@ -9,12 +9,13 @@
   <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
   <link href="./../static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
   <script src="./../static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+  <script src="./../static/js/layui/layui.js"></script>
 	<style>
 		#casetitle{
 			font-size: 24px;
 			padding: 0px;
 			margin-left: 5px;
-			margin-right: 508px;
+			margin-right: 528px;
 			color: white;"
 		}
 		#casetitle:hover{
@@ -67,7 +68,7 @@
     </ul>
   </div>
 
-	<!-- style="background-image: url('./../static/images/35.gif')"-->
+	<!--左侧导航栏-->
     <div id = "navlist" class="layui-side layui-bg-black">
     <div class="layui-side-scroll">
       <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
@@ -135,7 +136,8 @@
     </div>
   </div>
 
-    <div id= "layuibody" class="layui-body" style="background-color:lightslategrey;margin-bottom: -45px;">
+	<!--主题内容-table-->
+    <div id= "layuibody" class="layui-body" style="background-color:lightslategrey;margin-bottom: -50px;">
     <!-- 内容主体区域 -->
     <div style="padding: 15px;">
 		<div class="demoTable">
@@ -151,6 +153,7 @@
 		<table class="layui-hide" id="test" lay-filter="test"></table>
 	</div>
   </div>
+
 	<!--创建用例-->
 	<div class="layui-row" id="popSearchRoleTest">
 			<div class="layui-col-md11">
@@ -388,7 +391,7 @@
 	<!--更新用户信息-->
 	<div class="layui-row" id="popSearchRoleTest2">
 			<div class="layui-col-md11">
-				<form class="layui-form">
+				<form class="layui-form" lay-filter="update_userinfo_api">
 
 				  <div class="layui-form-item" style="margin-top: 20px;">
 					<button type="button" class="layui-btn layui-btn-warm"  onclick="get_user_info()" style="float: right;">点我获取当前用户信息</button>
@@ -472,13 +475,13 @@
 	<button id = "Runcase" class="layui-btn layui-btn-sm layui-btn-danger" lay-event="runcase">执行用例</button>
   </div>
 </script>
+
 <script type="text/html" id="barDemo">
   <a class="layui-icon layui-icon-about" style="color:#74777b;font-size: 24px;" lay-event="detail"></a>
   <a class="layui-icon-edit layui-icon" lay-event="edit" style="color:#74777b;font-size: 24px;"></a>
   <a class="layui-icon-survey layui-icon" lay-event="edit1" style="color:#74777b;font-size: 21px;"></a>
   <a class="layui-icon-delete layui-icon" lay-event="del" style="color: #74777b;font-size: 24px;"></a>
 </script>
-
 
 <script>
 	function showlist() {
@@ -489,18 +492,16 @@
 		if(a.style.display == "block"){
 		    a.style.display = "none";
 		    b.style.left = "0px";
-		    c.style.marginRight = "708px";
+		    c.style.marginRight = "728px";
 		    d.setAttribute("class","layui-icon layui-icon-spread-left");
 		}else{
 		    a.style.display = "block";
 		    b.style.left = "200px";
-		    c.style.marginRight = "508px";
+		    c.style.marginRight = "528px";
 		    d.setAttribute("class","layui-icon layui-icon-shrink-right");
 		}
     }
-
 </script>
-<script src="./../static/js/layui/layui.js"></script>
 
 <script type="text/html" id="casenameTpl">
 	<a href="/detail_api/?id={% verbatim %}{{d.caseid}}{% endverbatim %}" class="layui-table-link" target="_blank" style="color: blueviolet;">{% verbatim %}{{d.casename}}{% endverbatim %}</a>
@@ -534,9 +535,6 @@
 
   {% verbatim %}{{#  } }}{% endverbatim %}
 </script>
-
-
-
 
 <script>
 layui.use('table', function() {
@@ -580,7 +578,8 @@ layui.use('table', function() {
 			  }}
             , {field: 'body', title: 'Data参数', width: 220, sort: true,align:"center",edit: 'text',templet: function(res){
                 if(res.body.indexOf("<") != -1 || res.body.indexOf(">") != -1){
-					    console.log("bbbbbbbbbb");
+					    console.log("存在需要替换的符号");
+					    //layer.msg("存在需要替换的符号");
 					    var reg = /</g;
 					    var a = res.body.replace(reg,"小于");
 					    var reg1 = />/g;
@@ -594,8 +593,9 @@ layui.use('table', function() {
 			  }}
 			//, {field: 'processid', title: '流程序号', width: 100, sort: true, align:"center"}
 			, {field: 'result', title: '响应内容', width: 220, sort: true,align:"center",templet:function (res) {
-					if(res.result.indexOf("error") != -1){
-					    console.log("aaaaaaaaaaaaa");
+					if(res.result.indexOf("error") != -1 && res.result.indexOf("timestamp") != -1){
+					    console.log("存在错误的结果");
+					    layer.msg("当前页存在错误的结果",{time:1000});
 					    return '<span style="color: red;">' +res.result + '</span>'
 					    return '<span>' +res.result+ '</span>'
 					}else if(res.result.indexOf("运行缓慢") != -1){
@@ -726,7 +726,7 @@ layui.use('table', function() {
 						return false;//阻止表单跳转
 					  });
 					});
-					//。。。CreateUpdate
+					//CreateUpdate
 				}
 			});
 
@@ -776,7 +776,6 @@ layui.use('table', function() {
 		                  });
 		            },
                     success: function (data) {
-
                         console.log(data);
                         var strjson = JSON.stringify(data, null, 4);
                         console.log(strjson);
@@ -787,7 +786,7 @@ layui.use('table', function() {
                             anim: 4,//从左滚动进来
 							//监听取消按钮
 							btn:["关闭后刷新列表"],
-							yes: function(index, layro) {//这里就是你要的
+							yes: function(index) {//这里就是你要的
 								//layer.alert('关闭并刷新');
 								layer.closeAll();
 								//return false;
@@ -997,19 +996,29 @@ function gettoken() {
                 //async: false,
                 data: {
                     "identity1": data.field.identity1,
+
 					"identity2": data.field.identity2,
 					"identity3": data.field.identity3,
                     "system": data.field.system
                 },
                 success: function (data) {
-                    console.log("ssssssss");
-                    layer.msg(data, {
-                        icon: 6,
-                        offset: 't',
-                        anim: 2,
-                        time: 3000//默认三秒
-                        //area:["200px","50px"],
-                    });
+                    if(data.indexOf("Failed") != -1) {
+                        layer.msg(data, {
+                            icon: 5,
+                            offset: 't',
+                            anim: 2,
+                            time: 3000//默认三秒
+                            //area:["200px","50px"],
+                        });
+                    }else{
+                         layer.msg(data, {
+                            icon: 6,
+                            offset: 't',
+                            anim: 2,
+                            time: 3000//默认三秒
+                            //area:["200px","50px"],
+                        });
+					}
                 },
                 error: function (data) {
                     console.log(data);
@@ -1095,6 +1104,7 @@ function selectRole(){
 		});
 
     }
+//导入用例
 function importcase(){
         layer.open({
             //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
@@ -1104,63 +1114,72 @@ function importcase(){
             content:$("#importCase").html()
         });
     }
+//编辑用户信息
 function loginuser(){
-        layer.open({
+        var update_userinfo_api = layer.open({
             //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
             type:1,
             title:"编辑用户信息",
             area: ['40%','50%'],
             content:$("#popSearchRoleTest2").html(),
+			success:function () {
+			layui.use('form', function() {
+				var form = layui.form;
+				form.val("update_userinfo_api",{
+				  "identity":"sysadmin",
+				  "username":"admin@amberdata.cn",
+				  "password":"Y+zilsR88g9SZI8WOeHJlA=="
+				});
+
+				//监听编辑用户信息，
+				form.on('submit(update_userinfo_api)', function (data) {
+					console.log(data.field.identity);
+					console.log(data.field.username);
+					console.log(data.field.password);
+					$.ajax({
+						cache: false,
+						url: "/update_userinfo_api/",
+						dataType: 'text',
+						type: 'POST',
+						//async: false,
+						data: {
+							"identity": data.field.identity,
+							"username": data.field.username,
+							"password": data.field.password
+						},
+						success: function (data) {
+							layer.msg(data, {
+								icon: 6,
+								offset: 't',
+								anim: 2,
+								time: 3000//默认三秒
+								//area:["200px","50px"],
+							});
+						},
+						error: function (data) {
+							console.log(data);
+							layer.msg(data, {
+								icon: 5,
+								offset: 't',
+								anim: 2,
+								//area:["200px","50px"],
+							});
+						},
+						complete: function () {
+							layer.close(update_userinfo_api)
+
+						}
+					});
+					return false;//阻止表单跳转
+				});
+
+
+			});
+            }
         });
-        layui.use('form', function() {
-            var form = layui.form;
 
-            //监听编辑用户信息，
-            form.on('submit(update_userinfo_api)', function (data) {
-                console.log(data.field.identity);
-                console.log(data.field.username);
-                console.log(data.field.password);
-                $.ajax({
-                    cache: false,
-                    url: "/update_userinfo_api/",
-                    dataType: 'text',
-                    type: 'POST',
-                    //async: false,
-                    data: {
-                        "identity": data.field.identity,
-                        "username": data.field.username,
-                        "password": data.field.password
-                    },
-                    success: function (data) {
-                        console.log("ssssssss");
-                        layer.msg(data, {
-                            icon: 6,
-                            offset: 't',
-                            anim: 2,
-                            time: 3000//默认三秒
-                            //area:["200px","50px"],
-                        });
-                    },
-                    error: function (data) {
-                        console.log(data);
-                        layer.msg(data, {
-                            icon: 5,
-                            offset: 't',
-                            anim: 2,
-                            //area:["200px","50px"],
-                        });
-                    },
-                    complete: function () {
-                        layer.close(update_userinfo_api)
-
-                    }
-                });
-                return false;//阻止表单跳转
-            });
-
-
-        });
     }
+//获取用户信息
 function get_user_info(){
 	$.ajax({
 		cache: false,
@@ -1178,8 +1197,11 @@ function get_user_info(){
 				value: data,
 				title: '用户信息',
 				anim: 4,//从左滚动进来
-				area: ['500px', '380px'] //自定义文本域宽高
-				//$("#username").val("ssssss");
+				area: ['500px', '380px'], //自定义文本域宽高
+				btn:["关闭"],
+				yes:function (index) {
+					layer.close(index);
+                }
 			});
 		},
 		error: function (data) {
@@ -1195,6 +1217,7 @@ function get_user_info(){
 </script>
 
 <script>
+//监听导航点击
 layui.use('element', function(){
   var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
 

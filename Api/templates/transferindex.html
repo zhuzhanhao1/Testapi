@@ -9,13 +9,14 @@
   <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
   <link href="./../static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
   <script src="./../static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+  <script src="./../static/js/layui/layui.js"></script>
 </head>
 	<style>
 		#casetitle{
 			font-size: 24px;
 			padding: 0px;
 			margin-left: 5px;
-			margin-right: 477px;
+			margin-right: 497px;
 			color: white;"
 		}
 		#casetitle:hover{
@@ -98,7 +99,7 @@
     </div>
   </div>
 
-    <div id= "layuibody" class="layui-body" style="background-color:lightslategrey;margin-bottom: -45px;">
+    <div id= "layuibody" class="layui-body" style="background-color:lightslategrey;margin-bottom: -50px;">
     <!-- 内容主体区域 -->
     <div style="padding: 15px;">
 		<div class="demoTable">
@@ -327,7 +328,7 @@
 	<!--更新用户信息 action="/update_userinfo_api/" method="post"-->
 	<div class="layui-row" id="popSearchRoleTest2">
 			<div class="layui-col-md11">
-				<form class="layui-form">
+				<form class="layui-form" lay-filter="update_userinfo_api">
 
 				  <div class="layui-form-item" style="margin-top: 20px;">
 					<button type="button" class="layui-btn layui-btn-warm"  onclick="get_user_info()" style="float: right;">点我获取当前用户信息</button>
@@ -413,6 +414,7 @@
 	<button id = "Runcase" class="layui-btn layui-btn-sm layui-btn-danger" lay-event="runcase">执行用例</button>
   </div>
 </script>
+
 <script type="text/html" id="barDemo">
   <a class="layui-icon layui-icon-about" style="color:#74777b;font-size: 24px;" lay-event="detail"></a>
   <a class="layui-icon-edit layui-icon" lay-event="edit" style="color:#74777b;font-size: 24px;"></a>
@@ -429,18 +431,17 @@
 		if(a.style.display == "block"){
 		    a.style.display = "none";
 		    b.style.left = "0px";
-		    c.style.marginRight = "677px";
+		    c.style.marginRight = "697px";
 		    d.setAttribute("class","layui-icon layui-icon-spread-left");
 		}else{
 		    a.style.display = "block";
 		    b.style.left = "200px";
-		    c.style.marginRight = "477px";
+		    c.style.marginRight = "497px";
 		    d.setAttribute("class","layui-icon layui-icon-shrink-right");
 		}
     }
 
 </script>
-<script src="./../static/js/layui/layui.js"></script>
 
 <script type="text/html" id="casenameTpl">
 	<a href="/detail_api/?id={% verbatim %}{{d.caseid}}{% endverbatim %}" class="layui-table-link" target="_blank" style="color: blueviolet;">{% verbatim %}{{d.casename}}{% endverbatim %}</a>
@@ -474,9 +475,6 @@
 
   {% verbatim %}{{#  } }}{% endverbatim %}
 </script>
-
-
-
 
 <script>
 layui.use('table', function() {
@@ -534,8 +532,9 @@ layui.use('table', function() {
 			  }}
 			//, {field: 'processid', title: '流程序号', width: 100, sort: true, align:"center"}
 			, {field: 'result', title: '响应内容', width: 220, sort: true,align:"center",templet:function (res) {
-					if(res.result.indexOf("error") != -1){
-					    console.log("aaaaaaaaaaaaa");
+					if(res.result.indexOf("error") != -1 && res.result.indexOf("timestamp") != -1){
+					    console.log("存在错误的结果");
+					    layer.msg("当前页存在错误的结果",{time:1000});
 					    return '<span style="color: red;">' +res.result + '</span>'
 					    return '<span>' +res.result+ '</span>'
 					}else if(res.result.indexOf("运行缓慢") != -1){
@@ -942,14 +941,23 @@ function gettoken() {
                     "system": data.field.system
                 },
                 success: function (data) {
-                    console.log("ssssssss");
-                    layer.msg(data, {
-                        icon: 6,
-                        offset: 't',
-                        anim: 2,
-                        time: 3000//默认三秒
-                        //area:["200px","50px"],
-                    });
+                    if(data.indexOf("Failed") != -1) {
+                        layer.msg(data, {
+                            icon: 5,
+                            offset: 't',
+                            anim: 2,
+                            time: 3000//默认三秒
+                            //area:["200px","50px"],
+                        });
+                    }else{
+                         layer.msg(data, {
+                            icon: 6,
+                            offset: 't',
+                            anim: 2,
+                            time: 3000//默认三秒
+                            //area:["200px","50px"],
+                        });
+					}
                 },
                 error: function (data) {
                     console.log(data);
@@ -1045,7 +1053,7 @@ function importcase(){
             content:$("#importCase").html()
         });
     }
-//编辑和获取用户信息
+//编辑用户信息
 function loginuser(){
         var update_userinfo_api = layer.open({
             //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
@@ -1053,57 +1061,63 @@ function loginuser(){
             title:"编辑用户信息",
             area: ['40%','50%'],
             content:$("#popSearchRoleTest2").html(),
-        });
-        layui.use('form', function() {
-            var form = layui.form;
+			success:function () {
+			layui.use('form', function() {
+				var form = layui.form;
+				form.val("update_userinfo_api",{
+				  "identity":"yjadmin",
+				  "username":"liuhx@amberdata.cn",
+				  "password":"Y+zilsR88g9SZI8WOeHJlA=="
+				});
 
-            //监听编辑用户信息，
-            form.on('submit(update_userinfo_api)', function (data) {
-                console.log(data.field.identity);
-                console.log(data.field.username);
-                console.log(data.field.password);
-                $.ajax({
-                    cache: false,
-                    url: "/update_userinfo_api/",
-                    dataType: 'text',
-                    type: 'POST',
-                    //async: false,
-                    data: {
-                        "identity": data.field.identity,
-                        "username": data.field.username,
-                        "password": data.field.password
-                    },
-                    success: function (data) {
-                        console.log("ssssssss");
-                        layer.msg(data, {
-                            icon: 6,
-                            offset: 't',
-                            anim: 2,
-                            time: 3000//默认三秒
-                            //area:["200px","50px"],
-                        });
-                        //layer.close(update_userinfo_api);
-                    },
-                    error: function (data) {
-                        console.log(data);
-                        layer.msg(data, {
-                            icon: 5,
-                            offset: 't',
-                            anim: 2,
-                            //area:["200px","50px"],
-                        });
-                    },
-                    complete: function () {
-                        layer.close(update_userinfo_api)
+				//监听编辑用户信息，
+				form.on('submit(update_userinfo_api)', function (data) {
+					console.log(data.field.identity);
+					console.log(data.field.username);
+					console.log(data.field.password);
+					$.ajax({
+						cache: false,
+						url: "/update_userinfo_api/",
+						dataType: 'text',
+						type: 'POST',
+						//async: false,
+						data: {
+							"identity": data.field.identity,
+							"username": data.field.username,
+							"password": data.field.password
+						},
+						success: function (data) {
+							layer.msg(data, {
+								icon: 6,
+								offset: 't',
+								anim: 2,
+								time: 3000//默认三秒
+								//area:["200px","50px"],
+							});
+						},
+						error: function (data) {
+							console.log(data);
+							layer.msg(data, {
+								icon: 5,
+								offset: 't',
+								anim: 2
+								//area:["200px","50px"],
+							});
+						},
+						complete: function () {
+							layer.close(update_userinfo_api)
 
-                    }
-                });
-                return false;//阻止表单跳转
-            });
+						}
+					});
+					return false;//阻止表单跳转
+				});
 
 
+			});
+            }
         });
     }
+//获取用户信息
 function get_user_info(){
 	$.ajax({
 		cache: false,
@@ -1121,22 +1135,26 @@ function get_user_info(){
 				value: data,
 				title: '用户信息',
 				anim: 4,//从左滚动进来
-				area: ['500px', '350px'] //自定义文本域宽高
+				area: ['500px', '350px'], //自定义文本域宽高
+				btn:["关闭"],
+				yes:function (index) {
+					layer.close(index);
+                }
 			});
 		},
 		error: function (data) {
 			console.log(data);
 			layer.msg(data, {
+			    icon: 5,
 				offset: 't',
-				anim: 6,
-				area: ["200px", "50px"],
+				anim: 6
+				//area: ["200px", "50px"],
 			});
 		}
 	});
 }
 
 </script>
-
 
 <script>
 layui.use('element', function(){
@@ -1149,8 +1167,6 @@ layui.use('element', function(){
   });
 });
 </script>
-
-
 
 
 </body>

@@ -9,7 +9,6 @@ from .models import *
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from .forms import *
 from Api.interfacetest.run_method import RequestMethod
-from Api.interfacetest.get_header import ReqParam
 import time
 import json
 from django.core import serializers
