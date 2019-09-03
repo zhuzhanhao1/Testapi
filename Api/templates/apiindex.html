@@ -21,6 +21,9 @@
 		#casetitle:hover{
 			color: red;
 		}
+		.layui-form-item{
+			margin-bottom: 10px;
+		}
 	</style>
 </head>
 <body class="layui-layout-body">
@@ -359,7 +362,7 @@
 				  <div class="layui-form-item">
 					<div class="layui-input-block">
 					  <button class="layui-btn" lay-submit lay-filter="update_apicase" style="margin-left: 245px;background-color: yellowgreen;">立即提交</button>
-					  <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+{#					  <button type="reset" class="layui-btn layui-btn-primary">重置</button>#}
 					</div>
 				  </div>
 				</form>
@@ -657,7 +660,7 @@ layui.use('table', function() {
 				//layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
 				type:1,
 				title:"编辑用例",
-				area: ['40%','99%'],
+				area: ['40%','95%'],
 				content:$("#UpdateCase").html(),
 				success:function () {
 					layui.use('form',function(){
@@ -1045,7 +1048,7 @@ function selectRole(){
             //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
             type:1,
             title:"新建用例",
-            area: ['40%','95%'],
+            area: ['40%','90%'],
             content:$("#popSearchRoleTest").html(),
         });
         layui.use('form', function(){

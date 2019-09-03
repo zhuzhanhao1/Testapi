@@ -29,17 +29,19 @@ class RequestMethod():
 
     def post(self,url,params,data=None):
         data = json.dumps(data)
+        token = self.con.get_logininfo(self.val)[3]
+        headers = {
+            "accessToken": token,
+            "Content-Type": "application/json"
+        }
+        r = requests.post(url, params=params, data=data, headers=headers)
         try:
-            token = self.con.get_logininfo(self.val)[3]
-            headers = {
-                "accessToken":token,
-                "Content-Type": "application/json"
-            }
-            r =requests.post(url,params=params,data=data,headers=headers)
             json_response = r.json()
             return json_response
         except Exception as e:
-            print("POST请求出错",e)
+            print("POST请求出错", e)
+            return r.text
+
 
 
 
@@ -91,6 +93,7 @@ class RequestMethod():
         elif method == "put" and data != None:
             res = self.putfile(url, params, data)
         return res
+
 
 if __name__ == "__main__":
     a = RequestMethod("ast")

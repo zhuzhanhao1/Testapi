@@ -22,6 +22,9 @@
 		#casetitle:hover{
 			color: rebeccapurple;
 		}
+		.layui-form-item{
+			margin-bottom: 10px;
+		}
 	</style>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
@@ -132,6 +135,7 @@
 						<option value="意见接口">意见接口</option>
 						<option value="案卷相关接口">案卷相关接口</option>
 						<option value="档案相关接口">档案相关接口</option>
+						<option value="映射规则接口">映射规则接口</option>
 						<option value="检测报告相关接口">检测报告相关接口</option>
 						<option value="移交表单相关接口">移交表单相关接口</option>
 						<option value="元数据平台接口">元数据平台接口</option>
@@ -222,6 +226,7 @@
 						<option value="意见接口">意见接口</option>
 						<option value="案卷相关接口">案卷相关接口</option>
 						<option value="档案相关接口">档案相关接口</option>
+						<option value="映射规则接口">映射规则接口</option>
 						<option value="检测报告相关接口">检测报告相关接口</option>
 						<option value="移交表单相关接口">移交表单相关接口</option>
 						<option value="元数据平台接口">元数据平台接口</option>
@@ -516,20 +521,7 @@ layui.use('table', function() {
 			,{field:'params', title:'Params参数', width:220,align:"center", edit: 'text', templet: function(res){
 				return '<span>'+ res.params +'</span>'
 			  }}
-            , {field: 'body', title: 'Data参数', width: 220, sort: true,align:"center",edit: 'text',templet: function(res){
-                if(res.body.indexOf("<") != -1 || res.body.indexOf(">") != -1){
-					    console.log("bbbbbbbbbb");
-					    var reg = /</g;
-					    var a = res.body.replace(reg,"小于");
-					    var reg1 = />/g;
-					    var b = a.replace(reg1,'大于');
-					    return '<span style="color: yellow;">' + b + '</span>'
-					    //return '<span style="color: red;">' +res.result + '</span>'
-					}else{
-                    return '<span>'+ res.body +'</span>'
-				}
-
-			  }}
+            , {field: 'body', title: 'Data参数', width: 220, sort: true,align:"center",edit: 'text'}
 			//, {field: 'processid', title: '流程序号', width: 100, sort: true, align:"center"}
 			, {field: 'result', title: '响应内容', width: 220, sort: true,align:"center",templet:function (res) {
 					if(res.result.indexOf("error") != -1 && res.result.indexOf("timestamp") != -1){
@@ -554,7 +546,7 @@ layui.use('table', function() {
     });
 
 	//搜索
-	var $ = layui.$, active = {
+	layui.$, active = {
 
 		reload: function(){
 		  var demoReload = $('#demoReload');
@@ -594,7 +586,7 @@ layui.use('table', function() {
 				//layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
 				type:1,
 				title:"编辑用例",
-				area: ['40%','99%'],
+				area: ['40%','95%'],
 				content:$("#UpdateCase").html(),
 				success:function () {
 					layui.use('form',function(){
@@ -984,7 +976,7 @@ function selectRole(){
             //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
             type:1,
             title:"新建用例",
-            area: ['40%','95%'],
+            area: ['40%','90%'],
             content:$("#popSearchRoleTest").html(),
         });
         layui.use('form', function(){

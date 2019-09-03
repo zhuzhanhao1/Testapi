@@ -119,9 +119,41 @@ def apilist_view(request):
     elif belong == "deposit_form":
         apilists = Case.objects.filter(belong__contains="续存记录接口")
 
-
     elif casename:
         apilists = Case.objects.filter(casename__contains=casename)
+        print(apilists)
+        if apilists.count() == 0:
+            apilists = Case.objects.filter()
+            L = []
+            for weblist in apilists:
+                if weblist.system == "erms" and "error" in weblist.result and "timestamp" in weblist.result:
+                    # print("存在的啊")
+                    data = {
+                        "caseid": weblist.caseid,
+                        "belong": weblist.belong,
+                        "processid": weblist.isprocess,
+                        "identity": weblist.identity,
+                        "casename": weblist.casename,
+                        "url": weblist.url,
+                        "method": weblist.method,
+                        "params": weblist.params,
+                        "body": weblist.body,
+                        "result": weblist.result
+                    }
+                    L.append(data)
+            print("此模块的用例个数为:" + str(len(L)))
+            pageindex = request.GET.get('page', "")
+            pagesize = request.GET.get("limit", "")
+            pageInator = Paginator(L, pagesize)
+            # 分页
+            contacts = pageInator.page(pageindex)
+            res = []
+            for contact in contacts:
+                res.append(contact)
+            datas = {"code": 0, "msg": "", "count": len(L), "data": res}
+            return JsonResponse(datas)
+
+
     L = []
     for weblist in apilists:
         if weblist.system == 'erms':
@@ -186,6 +218,38 @@ def transferlist_view(request):
 
     elif casename:
         apilists = Case.objects.filter(casename__contains=casename)
+        print(apilists)
+        if apilists.count() == 0:
+            apilists = Case.objects.filter()
+            L = []
+            for weblist in apilists:
+                if weblist.system == "transfer" and "error" in weblist.result and "timestamp" in weblist.result:
+                    # print("存在的啊")
+                    data = {
+                        "caseid": weblist.caseid,
+                        "belong": weblist.belong,
+                        "processid": weblist.isprocess,
+                        "identity": weblist.identity,
+                        "casename": weblist.casename,
+                        "url": weblist.url,
+                        "method": weblist.method,
+                        "params": weblist.params,
+                        "body": weblist.body,
+                        "result": weblist.result
+                    }
+                    L.append(data)
+            print("此模块的用例个数为:" + str(len(L)))
+            pageindex = request.GET.get('page', "")
+            pagesize = request.GET.get("limit", "")
+            pageInator = Paginator(L, pagesize)
+            # 分页
+            contacts = pageInator.page(pageindex)
+            res = []
+            for contact in contacts:
+                res.append(contact)
+            datas = {"code": 0, "msg": "", "count": len(L), "data": res}
+            return JsonResponse(datas)
+
     L = []
     for weblist in apilists:
         if weblist.system == "transfer":
@@ -524,6 +588,7 @@ def run_apicase_views(request):
             endtime = time.time()
             runtime = round(endtime - starttime, 3)
             # 存为字典，转换为json格式
+            print(response,"Ssssssssssssssssss")
             d[casename] = response
             if runtime > 0.5 and runtime <= 1.0:
                 d[casename+"运行时间为"] = str(runtime)+"秒"

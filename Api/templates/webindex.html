@@ -10,6 +10,11 @@
   <link href="./../static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
   <script src="./../static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
   <script src="./../static/js/layui/layui.js"></script>
+  <style>
+	  	.layui-form-item{
+			margin-bottom: 10px;
+		}
+  </style>
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
@@ -778,7 +783,7 @@ layui.use('table', function() {
 				//layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
 				type:1,
 				title:"编辑用例",
-				area: ['40%','100%'],
+				area: ['40%','95%'],
 				content:$("#UpdateCase").html(),
 				success:function () {
 					layui.use('form',function(){

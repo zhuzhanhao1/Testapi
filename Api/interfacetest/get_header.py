@@ -57,7 +57,7 @@ class GetToken:
             }
         response = requests.post(url, headers=headers, data=json.dumps(params))
         res = response.json()['accessToken']
-        print(res)
+        # print(res)
         result = self.con.update_token(res, role)
         return result  # None
 

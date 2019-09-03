@@ -255,9 +255,9 @@
 		</div>
 
 	<!--编辑用例id="demoadd" -->
-	<div class="layui-row" id="updatecacase"  style="display:none;">
+	<div class="layui-row" id="updatecacase">
 			<div class="layui-col-md11">
-				<form class="layui-form"  action="/update_processcase/" method="post" lay-filter="CreateUpdate">
+				<form class="layui-form" lay-filter="CreateUpdate">
 				  <div class="layui-form-item" style="margin-top: 20px;">
 					<label class="layui-form-label">所属模块</label>
 					<div class="layui-input-block">
@@ -376,11 +376,10 @@
 
 				<div class="layui-form-item">
 					<div class="layui-input-block">
-					  <button class="layui-btn" lay-submit lay-filter="formDemo" id="upload"  style="margin-left: 225px;background-color: yellowgreen;">立即提交</button>
+					  <button class="layui-btn" lay-submit lay-filter="update_processcase" id="upload"  style="margin-left: 225px;background-color: yellowgreen;">立即提交</button>
 					  <button type="reset" class="layui-btn layui-btn-primary">重置</button>
 					</div>
 				</div>
-
 				</form>
 			</div>
 		</div>
@@ -627,7 +626,9 @@ layui.use('table', function() {
 			, {field:'params', title:'Params参数', width:150,align:"center", edit: 'text'}
             , {field: 'body', title: 'Data参数', width: 150, align:"center",edit: 'text'}
 			, {field: 'result', title: '响应内容', width: 160, sort: true,align:"center",templet:function (res) {
-					if(res.result.indexOf("error") != -1){
+					if(res.result.indexOf("error") != -1 && res.result.indexOf("timestamp") != -1){
+					    console.log("存在错误的结果");
+					    layer.msg("当前页存在错误的结果",{time:1000});
 					    return '<span style="color: red;">' +res.result + '</span>'
 					}else if(res.result.indexOf("运行缓慢") != -1){
 					    return '<span style="color: deeppink;">' +res.result + '</span>'
@@ -652,7 +653,7 @@ layui.use('table', function() {
     });
 
 
-	var $ = layui.$, active = {
+	layui.$, active = {
 	reload: function(){
 	  var demoReload = $('#demoReload');
 	  console.log(demoReload.val());
@@ -689,7 +690,7 @@ layui.use('table', function() {
 			case 'getCheckData':
 			var data = checkStatus.data;
 			console.log(data[0]);
-			layer.open({
+			var a = layer.open({
 				//layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
 				type:1,
 				title:"编辑流程接口用例",
@@ -714,6 +715,58 @@ layui.use('table', function() {
 						  "replacekey":data[0]['replace_key'],
 						  "replaceposition":data[0]['replace_position'],
 						});
+					  form.on('submit(update_apicase)', function(data){
+						console.log(data.field);
+
+						$.ajax({
+							cache: false,
+							url: "/update_apicase/",
+							dataType: 'text',
+							type: 'POST',
+							//async: false,
+							data: {
+								"belong":data.field.belong,
+								"body":data.field.body,
+								"caseID":data.field.caseID,
+								"casename":data.field.casename,
+								"identity":data.field.identity,
+								"method":data.field.method,
+								"params":data.field.params,
+								"system":data.field.system,
+								"url":data.field.url
+							},
+							beforeSend:function(){
+								l_index = layer.load(0, {shade: [0.5,'#DBDBDB'] });
+							},
+							success: function (data) {
+								console.log("ssssssss");
+								layer.msg(data, {
+								 icon:6,
+								 offset: 't',
+								 anim: 2,
+								 time:3000//默认三秒
+								 //area:["200px","50px"],
+								});
+
+							},
+							error:function (data) {
+								console.log(data);
+								layer.msg(data, {
+								 icon:5,
+								 offset: 't',
+								 anim: 2,
+								 //area:["200px","50px"],
+								});
+							},
+							complete:function () {
+								layer.close(l_index);
+								layer.close(a)
+								//window.location.reload();
+							}
+
+						});
+						return false;//阻止表单跳转
+					  });
 					});
 					//。。。CreateUpdate
 				}
