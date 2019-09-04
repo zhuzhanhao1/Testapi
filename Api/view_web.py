@@ -488,6 +488,9 @@ def import_webcase_views(request):
             print('上传文件类型错误！')
             return JsonResponse({"status":200,"message":"导入数据失败"})
 
+
+
+
 #测试报告
 def report_webcase_views(request):
     return render(request,"TestReport.html")

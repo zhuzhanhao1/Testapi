@@ -31,7 +31,7 @@ urlpatterns = [
     url(r'^run_apicase/$', run_apicase_views),
     url(r'^update_token_api/$',update_token_api_views),
     url(r'^detail_api',detail_api_views),
-
+    url(r'^export_data',export_data_views),
 
     url(r'^transferindex/$', transferindex_view),
     url(r'^transferlist/$', transferlist_view),

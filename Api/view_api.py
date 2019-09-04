@@ -1,3 +1,5 @@
+import io
+from xlwt import *
 import os,sys
 import time
 from datetime import datetime
@@ -691,3 +693,80 @@ def run_apicase_views(request):
         # send_ding(djson_new)
         # 将JSON数据返回给前端
         return HttpResponse(djson_new)
+
+
+
+#导出数据
+def export_data_views(request):
+    System = request.GET.get("system","")
+    Content = request.GET.get("content","")
+    print(System,Content)
+    list_obj = Case.objects.filter(system=System)
+    if list_obj:
+        # 创建工作薄
+        ws = Workbook(encoding='utf-8')
+        w = ws.add_sheet("错误接口")
+        w.write(0, 0, "id")
+        w.write(0, 1, "用例名称")
+        w.write(0, 2, "请求地址")
+        w.write(0, 3, "请求方式")
+        w.write(0, 4, "params")
+        w.write(0, 5, "body")
+        w.write(0, 6, "结果")
+        # 写入数据
+        excel_row = 1
+        if Content == "errorData":
+            for obj in list_obj:
+                if  "error" in obj.result and "timestamp" in obj.result:
+                    data_id = obj.caseid
+                    data_name = obj.casename
+                    data_url = obj.url
+                    data_method = obj.method
+                    dada_params= obj.params
+                    data_body = obj.body
+                    data_result = obj.result
+                    w.write(excel_row, 0, data_id)
+                    w.write(excel_row, 1, data_name)
+                    w.write(excel_row, 2, data_url)
+                    w.write(excel_row, 3, data_method)
+                    w.write(excel_row, 4, dada_params)
+                    w.write(excel_row, 5, data_body)
+                    w.write(excel_row, 6, data_result)
+                    excel_row += 1
+        elif Content == "allData":
+            for obj in list_obj:
+                data_id = obj.caseid
+                data_name = obj.casename
+                data_url = obj.url
+                data_method = obj.method
+                dada_params= obj.params
+                data_body = obj.body
+                data_result = obj.result
+                w.write(excel_row, 0, data_id)
+                w.write(excel_row, 1, data_name)
+                w.write(excel_row, 2, data_url)
+                w.write(excel_row, 3, data_method)
+                w.write(excel_row, 4, dada_params)
+                w.write(excel_row, 5, data_body)
+                w.write(excel_row, 6, data_result)
+                excel_row += 1
+        # 检测文件是够存在
+        # 方框中代码是保存本地文件使用，如不需要请删除该代码
+        ###########################
+        exist_file = os.path.exists("/Users/zhuzhanhao/Desktop/error_report.xls")
+        if exist_file:
+            os.remove(r"/Users/zhuzhanhao/Desktop/error_report.xls")
+        ws.save("/Users/zhuzhanhao/Desktop/error_report.xls")
+        ############################
+        # sio = StringIO.StringIO()
+        # BytesIO操作的数据类型为bytes
+        sio = io.BytesIO()
+        print(sio)
+        ws.save(sio)
+        sio.seek(0)
+        response = HttpResponse(sio.getvalue(), content_type='application/vnd.ms-excel')
+        print(response)
+        response['Content-Disposition'] = 'attachment; filename=error_report.xls'
+        response.write(sio.getvalue())#返回对象s中的所有数据
+        print(response)
+        return HttpResponse("操作成功")

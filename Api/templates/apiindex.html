@@ -464,18 +464,50 @@
 		</div>
 	</div>
 
+	<!--导出错误报告-->
+	<div class="layui-row" id="exportData">
+		<div class="layui-col-md11">
+			<form class="layui-form">
+
+			  <div class="layui-form-item" style="margin-top: 20px;">
+				<label class="layui-form-label">所属系统</label>
+				<div class="layui-input-block" >
+				  <input type="radio" name="system" value="erms" title="ERMS档案室" checked>
+				  <input type="radio" name="system" value="transfer" title="Transfer移交接收系统">
+				</div>
+			  </div>
+
+
+			  <div class="layui-form-item">
+				<label class="layui-form-label">内容信息</label>
+				<div class="layui-input-block" >
+				  <input type="radio" name="content" value="allData" title="所有信息">
+				  <input type="radio" name="content" value="errorData" title="错误信息" checked>
+				</div>
+			  </div>
+
+			  <div class="layui-form-item">
+				<div class="layui-input-block">
+				  <button class="layui-btn" lay-submit lay-filter="export_data" style="margin-left: 225px;background-color: yellowgreen;">立即提交</button>
+				  <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+				</div>
+			  </div>
+			</form>
+		</div>
+	</div>
 
 </div>
 
 <script type="text/html" id="toolbarDemo">
   <div class="layui-btn-container">
 	<button type="button" onclick="selectRole()" class="layui-btn layui-btn-sm layui-btn-warm">新建用例</button>
-    <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="getCheckData">编辑选中行</button>
-    <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="getCheckLength">获取选中数目</button>
-    <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="isAll">验证是否全选</button>
+    <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="getCheckData">编辑用例</button>
+{#    <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="getCheckLength">获取选中数目</button>#}
+{#    <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="isAll">验证是否全选</button>#}
 	<button type="button" onclick="loginuser()" class="layui-btn layui-btn-sm layui-btn-normal">用户信息</button>
-	<button type="button" onclick="gettoken()" class="layui-btn layui-btn-sm layui-btn-danger">获取令牌</button>
+	<button type="button" onclick="gettoken()" class="layui-btn layui-btn-sm layui-btn-normal">获取令牌</button>
 	<button id = "Runcase" class="layui-btn layui-btn-sm layui-btn-danger" lay-event="runcase">执行用例</button>
+	<button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="exportData">导出报告</button>
   </div>
 </script>
 
@@ -816,6 +848,57 @@ layui.use('table', function() {
                 });
             }
 		  break;
+
+		  case "exportData":
+		      var exportData = layer.open({
+					type: 1,
+					title: "导出报告",
+					area: ['40%', '35%'],
+					content: $("#exportData").html()
+				});
+				  layui.use('form', function() {
+					var form = layui.form;
+					//监听编辑用户信息，
+					form.on('submit(export_data)', function (data) {
+						$.ajax({
+							cache: false,
+							url: "/export_data/",
+							dataType: 'text',
+							type: 'GET',
+							async: false,//同步
+							data:{
+								"content": data.field.content,
+                    			"system": data.field.system
+							},
+							success: function (data) {
+								console.log(data);
+								layer.msg(data, {
+								 icon : 6,
+								 offset: 't',
+								 anim: 6,
+								});
+							},
+							error:function (data) {
+								console.log(data);
+
+								layer.msg(data, {
+								 icon : 5,
+								 offset: 't',
+								 anim: 6,
+								});
+							},
+							complete:function () {
+								layer.close(exportData);
+                            }
+						});
+					return false;//阻止表单跳转
+				});
+			})
+
+
+
+		  break;
+
 		};
 	  });
 	  //监听行工具事件

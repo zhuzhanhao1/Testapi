@@ -75,6 +75,26 @@ class RequestMethod():
 
 
 
+    def uploadfile(self,url,params,data):
+        print(data['path'])
+        print(type(data['path']))
+        print(params)
+        print(type(params))
+        try:
+            token = self.con.get_logininfo(self.val)[3]
+            headers = {
+                "accessToken":token
+            }
+            files = {"file":open(data['path'],"rb")}
+            r =requests.post(url,params=params,files=files,headers=headers)
+            print(r.text)
+            json_response = r.json()
+            return json_response
+        except Exception as e:
+            print("上传文件失败",e)
+
+
+
     def run_main(self,method,url,params,data=None):
         res = None
         if method == "get":
@@ -92,7 +112,13 @@ class RequestMethod():
             res = self.putfile(url, params)
         elif method == "put" and data != None:
             res = self.putfile(url, params, data)
+
+        elif method == "file":
+            res = self.uploadfile(url,params,data)
+
         return res
+
+
 
 
 if __name__ == "__main__":
