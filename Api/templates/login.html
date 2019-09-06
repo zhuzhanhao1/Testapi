@@ -240,18 +240,20 @@ a:hover {
 						<img src="./../static/images/1566729636_199993.png" style="margin-left: 52px;">
 					</span>
                     <div class="form-group">
-                        <input type="text" name="uphone" class="form-control"  placeholder="用户名">
-                        <i class="fa fa-user"></i>
+						<i class="fa fa-user"></i>
+                        <input type="text" name="username" class="form-control"  placeholder="用户名">
+
                     </div>
                     <div class="form-group help">
-                        <input type="password" name="upwd" class="form-control" id="user-pass" placeholder="密　码">
+                        <input type="password" name="password" class="form-control" id="user-pass" placeholder="密　码">
                         <i class="fa fa-lock"></i>
+						<a href="/admin/" class="fa fa-question-circle"></a>
                     </div>
                     <div class="form-group">
 						<label style="float: left;color: #447e9b;margin-left: 20px;">
 							<input type="checkbox" id="checkbox1" value="None" name="check" style="font-size: 20px;margin-right: 1px;border: 1px solid #11a3fc;"/>记住密码
 						</label>
-						<a class="btn btn-default" href="/registered/" style="float:left;margin: 30px 0 0 66px;">注册</a>
+						<a class="btn btn-default" href="/admin/" style="float:left;margin: 30px 0 0 66px;">注册</a>
 						<button type="submit" class="btn btn-default pull-right" style="margin: 30px 30px 0 10px;">登录</button>
                     </div>
                     <!-- {% csrf_token %} -->

@@ -1,6 +1,11 @@
 <component name="ProjectCodeStyleConfiguration">
   <code_scheme name="Project" version="173">
+    <JSCodeStyleSettings version="0">
+      <option name="SPACE_BEFORE_UNARY_NOT" value="true" />
+      <option name="SPACE_AFTER_UNARY_NOT" value="true" />
+    </JSCodeStyleSettings>
     <codeStyleSettings language="HTML">
+      <option name="SOFT_MARGINS" value="3" />
       <indentOptions>
         <option name="USE_TAB_CHARACTER" value="true" />
       </indentOptions>

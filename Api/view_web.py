@@ -3,17 +3,18 @@ import unittest
 import sys
 import os
 import xlrd
+from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 
-#本文件路径
+# 本文件路径
 from Api.models import Webcase, User, Autocase
 
 currentUrl = os.path.dirname(__file__)
-#父文件路径
-cur_path = os.path.abspath(os.path.join(currentUrl,os.pardir))
+# 父文件路径
+cur_path = os.path.abspath(os.path.join(currentUrl, os.pardir))
 sys.path.append(cur_path)
 
 from Api.webuitest.A_sysadmin_test import SystemManagement
@@ -29,47 +30,49 @@ class AllTest:
     def __init__(self):
         self.cur_path = os.path.dirname(os.path.realpath(__file__))
 
-    def add_case(self,caseName='case',rule='*test.py'):
-        #加载所有用例
+    def add_case(self, caseName='case', rule='*test.py'):
+        # 加载所有用例
         case_path = os.path.join(self.cur_path, caseName)
-        #如果不存在这个case文件夹，就自动创建一个
+        # 如果不存在这个case文件夹，就自动创建一个
         if not os.path.exists(case_path):
             os.mkdir(case_path)
-        print('测试用例的路径为:%s'%case_path)
-        discover = unittest.defaultTestLoader.discover(case_path,pattern=rule,top_level_dir=None)
+        print('测试用例的路径为:%s' % case_path)
+        discover = unittest.defaultTestLoader.discover(case_path, pattern=rule, top_level_dir=None)
         print(discover)
         return discover
 
-    def run_case(self,all_case,reportName='templates'):
+    def run_case(self, all_case, reportName='templates'):
         # 报告文件夹
-        report_path = os.path.join(self.cur_path,reportName)
+        report_path = os.path.join(self.cur_path, reportName)
         if not os.path.exists(report_path):
             os.mkdir(report_path)
-        report_abspath = os.path.join(report_path,'TestReport.html')
+        report_abspath = os.path.join(report_path, 'TestReport.html')
         print("测试报告的路径为:{}".format(report_abspath))
-        with open(report_abspath,'wb') as report_file:
-            runner= Api.webuitest.htmlCN.HTMLTestRunner(stream=report_file,
-                                          title=u"ERMS自动化测试报告",
-                                          verbosity=2,
-                                          description='Web Automation Testingweb',
-                                          tester=u"朱占豪")
+        with open(report_abspath, 'wb') as report_file:
+            runner = Api.webuitest.htmlCN.HTMLTestRunner(stream=report_file,
+                                                         title=u"ERMS自动化测试报告",
+                                                         verbosity=2,
+                                                         description='Web Automation Testingweb',
+                                                         tester=u"朱占豪")
             runner.run(all_case)
 
-#运行web测试用例
+
+# 运行web测试用例
+@login_required
 def run_webcase_views(request):
     ids = request.GET.get("ids").split(",")[:-1]
     print(ids)
     suite = unittest.TestSuite()
     for id in ids:
         data = Webcase.objects.get(webcaseid=id)
-        #入驻单位管理
+        # 入驻单位管理
         if data.webfunpoint == "新建单位":
             suite.addTest(SystemManagement('test_a_unit_create'))
         elif data.webfunpoint == "编辑单位":
             suite.addTest(SystemManagement('test_b_unit_update'))
         elif data.webfunpoint == "删除单位":
             suite.addTest(SystemManagement('test_c_unit_delete'))
-        #保留处置策略管理
+        # 保留处置策略管理
         elif data.webfunpoint == "新建保留处置策略":
             suite.addTest(SystemManagement('test_d_policy_create'))
         elif data.webfunpoint == "编辑保留处置策略":
@@ -77,20 +80,20 @@ def run_webcase_views(request):
         elif data.webfunpoint == "删除保留处置策略":
             suite.addTest(SystemManagement('test_f_policy_delete'))
 
-        #数据表单设置
+        # 数据表单设置
         elif data.webfunpoint == "新建数据表单":
             suite.addTest(SystemManagement('test_a_forms_create'))
         elif data.webfunpoint == "删除数据表单":
             suite.addTest(SystemManagement('test_a_forms_delete'))
 
-        #部门管理
+        # 部门管理
         elif data.webfunpoint == "新建部门":
             suite.addTest(UnitManagement('test_b_create_dept'))
         elif data.webfunpoint == "编辑部门":
             suite.addTest(UnitManagement('test_c_update_dept'))
         elif data.webfunpoint == "删除部门":
             suite.addTest(UnitManagement('test_d_delete_dept'))
-        #用户管理
+        # 用户管理
         elif data.webfunpoint == "新建用户":
             suite.addTest(UnitManagement('test_e_user_create'))
         elif data.webfunpoint == "编辑用户":
@@ -103,14 +106,14 @@ def run_webcase_views(request):
             suite.addTest(UnitManagement('test_h_user_restore'))
         elif data.webfunpoint == "搜索用户":
             suite.addTest(UnitManagement('test_i_user_search'))
-        #访问控制策略管理
+        # 访问控制策略管理
         elif data.webfunpoint == "新建访问控制策略":
             suite.addTest(AstManagement('test_ca_access_create'))
         elif data.webfunpoint == "编辑访问控制策略":
             suite.addTest(AstManagement('test_cb_access_update'))
         elif data.webfunpoint == "删除访问控制策略":
             suite.addTest(AstManagement('test_cc_access_delete'))
-        #档案员保留处置策略
+        # 档案员保留处置策略
         # elif data.webfunpoint == "新建保留处置策略":
         #     suite.addTest(AstManagement('test_da_policy_create'))
         # elif data.webfunpoint == "编辑保留处置策略":
@@ -123,14 +126,15 @@ def run_webcase_views(request):
 
     # 执行用例生成报告
     AllTest().run_case(suite)
-    #发送钉钉消息
+    # 发送钉钉消息
     # send_ding("自动化测试已完成，具体内容请查收邮件")
-    #发送QQ邮件
+    # 发送QQ邮件
     # SendEmail().send_main("自动化测试")
     return HttpResponse("操作完成")
 
 
-#运行webAuto测试用例
+# 运行webAuto测试用例
+@login_required
 def run_autocase_views(request):
     ids = request.GET.get("ids").split(",")[:-1]
     print(ids)
@@ -138,33 +142,33 @@ def run_autocase_views(request):
     for id in ids:
         data = Autocase.objects.get(autoid=id)
         print(data.autoname)
-        #入驻单位管理
+        # 入驻单位管理
         if data.autoname == "新建单位":
             suite.addTest(SystemManagement('test_a_unit_create'))
         elif data.autoname == "编辑单位":
             suite.addTest(SystemManagement('test_b_unit_update'))
         elif data.autoname == "删除单位":
             suite.addTest(SystemManagement('test_c_unit_delete'))
-        #保留处置策略管理
+        # 保留处置策略管理
         elif data.autoname == "新建保留处置策略":
             suite.addTest(SystemManagement('test_d_policy_create'))
         elif data.autoname == "编辑保留处置策略":
             suite.addTest(SystemManagement('test_e_policy_update'))
         elif data.autoname == "删除保留处置策略":
             suite.addTest(SystemManagement('test_f_policy_delete'))
-        #数据表单设置
+        # 数据表单设置
         elif data.autoname == "新建数据表单":
             suite.addTest(SystemManagement('test_a_forms_create'))
         elif data.autoname == "删除数据表单":
             suite.addTest(SystemManagement('test_a_forms_delete'))
-        #部门管理
+        # 部门管理
         elif data.autoname == "新建部门":
             suite.addTest(UnitManagement('test_b_create_dept'))
         elif data.autoname == "编辑部门":
             suite.addTest(UnitManagement('test_c_update_dept'))
         elif data.autoname == "删除部门":
             suite.addTest(UnitManagement('test_d_delete_dept'))
-        #用户管理
+        # 用户管理
         elif data.autoname == "新建用户":
             suite.addTest(UnitManagement('test_e_user_create'))
         elif data.autoname == "编辑用户":
@@ -177,14 +181,14 @@ def run_autocase_views(request):
             suite.addTest(UnitManagement('test_h_user_restore'))
         elif data.autoname == "搜索用户":
             suite.addTest(UnitManagement('test_i_user_search'))
-        #访问控制策略管理
+        # 访问控制策略管理
         elif data.autoname == "新建访问控制策略":
             suite.addTest(AstManagement('test_ca_access_create'))
         elif data.autoname == "编辑访问控制策略":
             suite.addTest(AstManagement('test_cb_access_update'))
         elif data.autoname == "删除访问控制策略":
             suite.addTest(AstManagement('test_cc_access_delete'))
-        #档案员保留处置策略
+        # 档案员保留处置策略
         # elif data.webfunpoint == "新建保留处置策略":
         #     suite.addTest(AstManagement('test_da_policy_create'))
         # elif data.webfunpoint == "编辑保留处置策略":
@@ -197,30 +201,32 @@ def run_autocase_views(request):
 
     # 执行用例生成报告
     AllTest().run_case(suite)
-    #发送钉钉消息
+    # 发送钉钉消息
     # send_ding("自动化测试已完成，具体内容请查收邮件")
-    #发送QQ邮件
+    # 发送QQ邮件
     # SendEmail().send_main("自动化测试")
     return HttpResponse("操作完成")
 
 
-#-----------------------------------------------------------------------------------
-#web首页
+# -----------------------------------------------------------------------------------
+# web首页
+@login_required
 def webindex_views(request):
-    id = request.session.get('id')
-    uname = User.objects.get(id=id).uname
-    a = request.GET.get("belong","")
+    # id = request.session.get('id')
+    # uname = User.objects.get(id=id).uname
+    a = request.GET.get("belong", "")
     case_count = Webcase.objects.all().count()
-    return render(request,"webindex.html",{"user":uname,"abq":a,"case_count":case_count})
+    return render(request, "webindex.html", {"user": "朱占豪", "abq": a, "case_count": case_count})
 
 
-#weB列表页
+# weB列表页
+@login_required
 def weblist_view(request):
     module = request.GET.get("key[id]", "")
     print(module)
-    caseid= request.GET.get("key[id1]","")
+    caseid = request.GET.get("key[id1]", "")
     print(caseid)
-    a = request.GET.get("belong","")
+    a = request.GET.get("belong", "")
     if module == "" and a == "" and caseid == "":
         weblists = Webcase.objects.filter()
     elif a == "policy":
@@ -259,8 +265,8 @@ def weblist_view(request):
             "teststep": weblist.webteststep,
             "exceptres": weblist.webexceptres,
             "result": weblist.webresult,
-            "identity":weblist.webidentity,
-            "webbelong":weblist.webbelong
+            "identity": weblist.webidentity,
+            "webbelong": weblist.webbelong
         }
         L.append(data)
     print(len(L))
@@ -276,8 +282,8 @@ def weblist_view(request):
     return JsonResponse(datas)
 
 
-
-#Auto列表页
+# Auto列表页
+@login_required
 def antolist_view(request):
     weblists = Autocase.objects.filter()
     L = []
@@ -286,7 +292,7 @@ def antolist_view(request):
             "caseid": weblist.autoid,
             "module": weblist.autobelong,
             "casename": weblist.autoname,
-            "identity":weblist.autoidentity,
+            "identity": weblist.autoidentity,
             "dataready": weblist.autodataready,
             "teststep": weblist.autostep,
             "exceptres": weblist.autoexceptres,
@@ -306,61 +312,67 @@ def antolist_view(request):
     return JsonResponse(datas)
 
 
-#创建web用例
+# 创建web用例
+@login_required
 def create_webcase_views(request):
     if request.method == 'POST':
-        webname = request.POST.get("title","")
+        webname = request.POST.get("title", "")
         funpoint = request.POST.get("funpoint", "")
-        mainbelong = request.POST.get("mainbelong","")
-        belong = request.POST.get("belong","")
-        idnetity = request.POST.get("identity","")
-        premise = request.POST.get("premise","")
-        steps = request.POST.get("steps","")
-        exceptres =request.POST.get("except","")
-        Webcase.objects.create(webcasename=webname,webbelong=mainbelong,webcase_models=belong,webidentity=idnetity,\
-                               webfunpoint=funpoint,webpremise=premise,webteststep=steps,webexceptres=exceptres)
+        mainbelong = request.POST.get("mainbelong", "")
+        belong = request.POST.get("belong", "")
+        idnetity = request.POST.get("identity", "")
+        premise = request.POST.get("premise", "")
+        steps = request.POST.get("steps", "")
+        exceptres = request.POST.get("except", "")
+        Webcase.objects.create(webcasename=webname, webbelong=mainbelong, webcase_models=belong, webidentity=idnetity, \
+                               webfunpoint=funpoint, webpremise=premise, webteststep=steps, webexceptres=exceptres)
         return HttpResponseRedirect("/webindex/")
 
 
-#创建webAuto用例
+# 创建webAuto用例
+@login_required
 def create_autocase_views(request):
     if request.method == 'POST':
-        autoname = request.POST.get("title","")
-        belong = request.POST.get("belong","")
-        idnetity = request.POST.get("identity","")
-        dataready = request.POST.get("dataready","")
-        steps = request.POST.get("steps","")
-        exceptres =request.POST.get("except","")
-        Autocase.objects.create(autoname=autoname,autobelong=belong,autoidentity=idnetity,autodataready=dataready,autostep=steps,autoexceptres=exceptres)
+        autoname = request.POST.get("title", "")
+        belong = request.POST.get("belong", "")
+        idnetity = request.POST.get("identity", "")
+        dataready = request.POST.get("dataready", "")
+        steps = request.POST.get("steps", "")
+        exceptres = request.POST.get("except", "")
+        Autocase.objects.create(autoname=autoname, autobelong=belong, autoidentity=idnetity, autodataready=dataready,
+                                autostep=steps, autoexceptres=exceptres)
         return HttpResponseRedirect("/webindex/")
 
 
-#删除web用例
+# 删除web用例
+@login_required
 def delete_webcase_views(request):
     if request.method == "GET":
-        ids = request.GET.get("ids","")
+        ids = request.GET.get("ids", "")
         if ids:
             print(ids)
             Webcase.objects.filter(webcaseid=ids).delete()
             return HttpResponse("删除成功")
 
 
-#删除webAuto用例
+# 删除webAuto用例
+@login_required
 def delete_autocase_views(request):
     if request.method == "GET":
-        ids = request.GET.get("ids","")
+        ids = request.GET.get("ids", "")
         if ids:
             print(ids)
             Autocase.objects.filter(autoid=ids).delete()
             return HttpResponse("删除成功")
 
 
-#更新web用例
+# 更新web用例
+@login_required
 def update_webcase_views(request):
     if request.method == "GET":
-        steps = request.GET.get('steps',"")
-        result =request.GET.get("result","")
-        ids = request.GET.get("ids","")
+        steps = request.GET.get('steps', "")
+        result = request.GET.get("result", "")
+        ids = request.GET.get("ids", "")
         print(ids)
         if steps:
             a = eval(steps)
@@ -378,8 +390,9 @@ def update_webcase_views(request):
             print(premise)
             print(exceptres)
             print(result)
-            Webcase.objects.filter(webcaseid=ids).update(webteststep=step,webcasename=webname,\
-            webcase_models=belong,webfunpoint=funpoint,webpremise=premise,webexceptres=exceptres,webresult=result)
+            Webcase.objects.filter(webcaseid=ids).update(webteststep=step, webcasename=webname, \
+                                                         webcase_models=belong, webfunpoint=funpoint,
+                                                         webpremise=premise, webexceptres=exceptres, webresult=result)
             return HttpResponse("编辑成功")
         elif result:
             print(result)
@@ -389,25 +402,27 @@ def update_webcase_views(request):
                 Webcase.objects.filter(webcaseid=ids).update(webresult=result)
             return HttpResponse("编辑成功")
     else:
-        mainbelong = request.POST.get("mainbelong","")
+        mainbelong = request.POST.get("mainbelong", "")
         belong = request.POST.get("belong", "")
         funpoint = request.POST.get("funpoint", "")
         title = request.POST.get("title", "")
         premise = request.POST.get("premise", "")
         steps = request.POST.get("steps", "")
         exceptres = request.POST.get("except", "")
-        caseID = request.POST.get("caseID","")
-        Webcase.objects.filter(webcaseid=caseID).update(webteststep=steps,webcase_models=belong,webcasename=title,
-                                                         webfunpoint=funpoint, webpremise=premise,
-                                                     webexceptres=exceptres,webbelong=mainbelong)
+        caseID = request.POST.get("caseID", "")
+        Webcase.objects.filter(webcaseid=caseID).update(webteststep=steps, webcase_models=belong, webcasename=title,
+                                                        webfunpoint=funpoint, webpremise=premise,
+                                                        webexceptres=exceptres, webbelong=mainbelong)
         return HttpResponseRedirect("/webindex/")
 
-#更新webauto用例
+
+# 更新webauto用例
+@login_required
 def update_autocase_views(request):
     if request.method == "GET":
-        steps = request.GET.get('steps',"")
-        result =request.GET.get("result","")
-        ids = request.GET.get("ids","")
+        steps = request.GET.get('steps', "")
+        result = request.GET.get("result", "")
+        ids = request.GET.get("ids", "")
         print(ids)
         if steps:
             a = eval(steps)
@@ -422,8 +437,8 @@ def update_autocase_views(request):
             print(belong)
             print(exceptres)
             print(result)
-            Autocase.objects.filter(autoid=ids).update(autostep=step,autoname=webname,autoidentity=identity,\
-                autobelong=belong,autoexceptres=exceptres,autoresult=result)
+            Autocase.objects.filter(autoid=ids).update(autostep=step, autoname=webname, autoidentity=identity, \
+                                                       autobelong=belong, autoexceptres=exceptres, autoresult=result)
             return HttpResponse("编辑成功")
         elif result:
             print(result)
@@ -434,50 +449,58 @@ def update_autocase_views(request):
             return HttpResponse("编辑成功")
     else:
         belong = request.POST.get("belong", "")
-        identity = request.POST.get("identity","")
+        identity = request.POST.get("identity", "")
         dataready = request.POST.get("dataready", "")
         title = request.POST.get("title", "")
         steps = request.POST.get("steps", "")
         exceptres = request.POST.get("except", "")
-        caseID = request.POST.get("caseID","")
-        Autocase.objects.filter(autoid=caseID).update(autostep=steps,autoname=title,autoidentity=identity,
-                autobelong=belong,autoexceptres=exceptres,autodataready=dataready)
+        caseID = request.POST.get("caseID", "")
+        Autocase.objects.filter(autoid=caseID).update(autostep=steps, autoname=title, autoidentity=identity,
+                                                      autobelong=belong, autoexceptres=exceptres,
+                                                      autodataready=dataready)
         return HttpResponseRedirect("/webindex/")
 
-#更新webauto数据准备
+
+# 更新webauto数据准备
+@login_required
 def update_dataready_views(request):
     ids = request.POST.get("ids", "")
-    dataready = request.POST.get("body","")
+    dataready = request.POST.get("body", "")
     print(type(dataready))
     # data = eval(dataready)
-    data = json.dumps(eval(dataready),ensure_ascii=False,sort_keys=True, indent=2)
+    data = json.dumps(eval(dataready), ensure_ascii=False, sort_keys=True, indent=2)
     if dataready == "null":
         Autocase.objects.filter(autoid=ids).update(autodataready="")
     else:
         Autocase.objects.filter(autoid=ids).update(autodataready=data)
     return HttpResponse("编辑成功")
 
-#导入用例
+
+# 导入用例
+@login_required
 def import_webcase_views(request):
     if request.method == 'POST':
         f = request.FILES.get('file')
         print(f)
         excel_type = f.name.split('.')[1]
-        if excel_type in ['xlsx','xls']:
+        if excel_type in ['xlsx', 'xls']:
             # 开始解析上传的excel表格
-            wb = xlrd.open_workbook(filename=None,file_contents=f.read())
+            wb = xlrd.open_workbook(filename=None, file_contents=f.read())
             table = wb.sheets()[0]
             rows = table.nrows  # 总行数
             print(rows)
             try:
                 with transaction.atomic():  # 控制数据库事务交易
-                    for i in range(1,rows):
+                    for i in range(1, rows):
                         rowVlaues = table.row_values(i)
                         print(rowVlaues)
                         print(int(rowVlaues[0]))
                         # major = models.TMajor.objects.filter(majorid=rowVlaues[1]).first()
-                        Webcase.objects.create(webcaseid=int(rowVlaues[0]),webbelong=rowVlaues[1],webcase_models=rowVlaues[2],\
-                        webfunpoint=rowVlaues[3],webcasename=rowVlaues[4],webpremise=rowVlaues[5],webteststep=rowVlaues[6],webexceptres=rowVlaues[7])
+                        Webcase.objects.create(webcaseid=int(rowVlaues[0]), webbelong=rowVlaues[1],
+                                               webcase_models=rowVlaues[2], \
+                                               webfunpoint=rowVlaues[3], webcasename=rowVlaues[4],
+                                               webpremise=rowVlaues[5], webteststep=rowVlaues[6],
+                                               webexceptres=rowVlaues[7])
                         print('插入成功')
             except:
                 print('解析excel文件或者数据插入错误')
@@ -486,24 +509,25 @@ def import_webcase_views(request):
             # return JsonResponse({"status":200,"message":"导入数据成功"})
         else:
             print('上传文件类型错误！')
-            return JsonResponse({"status":200,"message":"导入数据失败"})
+            return JsonResponse({"status": 200, "message": "导入数据失败"})
 
 
-
-
-#测试报告
+# 测试报告
+@login_required
 def report_webcase_views(request):
-    return render(request,"TestReport.html")
+    return render(request, "TestReport.html")
 
-#更改用户信息
+
+# 更改用户信息
+@login_required
 def update_userinfo_views(request):
-    role = request.POST.get("identity","")
-    username = request.POST.get("username","")
-    password = request.POST.get("password","")
+    role = request.POST.get("identity", "")
+    username = request.POST.get("username", "")
+    password = request.POST.get("password", "")
     if username:
         try:
             con = ConnDataBase()
-            con.update_logininfo(username,password,role)
+            con.update_logininfo(username, password, role)
             return HttpResponseRedirect("/webindex/")
         except:
             print("修改用户信息失败")
@@ -512,7 +536,9 @@ def update_userinfo_views(request):
     else:
         return HttpResponse("必须输入用户名和用户密码！！！")
 
-#获取当前用户信息
+
+# 获取当前用户信息
+@login_required
 def get_userinfo_views(request):
     con = ConnDataBase()
     sysadmin = con.get_logininfo("sysadmin")
@@ -520,31 +546,23 @@ def get_userinfo_views(request):
     ast = con.get_logininfo("ast")
     URL = str(con.get_logininfo("sysadmin")[2], 'utf-8')
     dic = {
-        "系统管理员":{
-            "账号":sysadmin[0],
-            "密码":sysadmin[1],
-            "令牌":sysadmin[3]
+        "系统管理员": {
+            "账号": sysadmin[0],
+            "密码": sysadmin[1],
+            "令牌": sysadmin[3]
         },
-        "单位管理员":{
-            "账号":admin[0],
-            "密码":admin[1],
+        "单位管理员": {
+            "账号": admin[0],
+            "密码": admin[1],
             "令牌": ast[3]
         },
-        "单位档案员":{
-            "账号":ast[0],
-            "密码":ast[1],
+        "单位档案员": {
+            "账号": ast[0],
+            "密码": ast[1],
             "令牌": ast[3]
         },
-        "访问路径":URL
+        "访问路径": URL
     }
-    dic1 = json.dumps(dic,ensure_ascii=False,sort_keys=True, indent=2)
+    dic1 = json.dumps(dic, ensure_ascii=False, sort_keys=True, indent=2)
     print(dic1)
     return HttpResponse(dic1)
-
-
-
-
-
-
-
-

@@ -29,7 +29,6 @@ class Case(models.Model):
     system = models.CharField(max_length=50, verbose_name="所属系统")
 
 
-
     def __str__(self):
         return self.casename
 
@@ -53,6 +52,7 @@ class Processapi(models.Model):
     replace_key = models.CharField(max_length=100,verbose_name="替换的key")
     replace_position = models.CharField(max_length=50,verbose_name="替换的内容区域",default="params")
     order_no = models.CharField(verbose_name="排序号",max_length=20)
+    system = models.CharField(max_length=50, verbose_name="所属系统")
 
     def __str__(self):
         return self.casename

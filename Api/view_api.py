@@ -4,6 +4,7 @@ import os,sys
 import time
 from datetime import datetime
 import json
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import transaction
 from django.db.models import Q
@@ -22,24 +23,23 @@ from webuitest.conn_database import ConnDataBase
 
 
 #接口erms用例首页
+@login_required
 def apiindex_view(request):
-    id = request.session.get('id')
-    uname = User.objects.get(id=id).uname
     a = request.GET.get("belong","")
     case_count = Case.objects.all().count()
-    return render(request,"apiindex.html",{"user":uname,"abq":a,"case_count":case_count})
+    return render(request,"apiindex.html",{"user":"朱占豪","abq":a,"case_count":case_count})
 
 
 #接口transfer用例首页
+@login_required
 def transferindex_view(request):
-    id = request.session.get('id')
-    uname = User.objects.get(id=id).uname
     a = request.GET.get("belong","")
     case_count = Case.objects.all().count()
-    return render(request,"transferindex.html",{"user":uname,"abq":a,"case_count":case_count})
+    return render(request,"transferindex.html",{"user":"朱占豪","abq":a,"case_count":case_count})
 
 
 #erms用例列表
+@login_required
 def apilist_view(request):
     casename = request.GET.get("key[casename]","")
     if casename:
@@ -186,6 +186,7 @@ def apilist_view(request):
 
 
 #transfer用例列表
+@login_required
 def transferlist_view(request):
     casename = request.GET.get("key[casename]","")
     if casename:
@@ -282,6 +283,7 @@ def transferlist_view(request):
 
 
 # 创建api用例
+@login_required
 def create_apicase_views(request):
     if request.method == 'POST':
         casename = request.POST.get("casename", "")
@@ -317,6 +319,7 @@ def create_apicase_views(request):
 
 
 #删除api用例
+@login_required
 def delete_apicase_views(request):
     if request.method == "GET":
         ids = request.GET.get("ids","")
@@ -331,6 +334,7 @@ def delete_apicase_views(request):
 
 
 #更新api用例
+@login_required
 def update_apicase_views(request):
     if request.method == "GET":
         params = request.GET.get('params',"")
@@ -384,6 +388,7 @@ def update_apicase_views(request):
 
 
 #接口详情
+@login_required
 def detail_api_views(request):
     res = request.GET.get("id","")
     if res:
@@ -435,6 +440,7 @@ def detail_api_views(request):
 
 
 #获取当前用户信息
+@login_required
 def get_userinfo_transfer_views(request):
     con = ConnDataBase()
     sysadmin = con.get_logininfo("yjadmin")
@@ -485,6 +491,7 @@ def get_userinfo_transfer_views(request):
 
 
 #更改用户信息
+@login_required
 def update_userinfo_api_views(request):
     role = request.POST.get("identity","")
     print(role)
@@ -500,8 +507,8 @@ def update_userinfo_api_views(request):
         return HttpResponse("链接数据库失败、修改用户信息失败")
 
 
-
 #更改数据库存储的token
+@login_required
 def update_token_api_views(request):
     system = request.POST.get("system","")
     role = request.POST.get("identity", "")
@@ -545,6 +552,7 @@ def update_token_api_views(request):
 
 
 #执行用例
+@login_required
 def run_apicase_views(request):
     con = ConnDataBase()
     ids= request.GET.get("caseid").split(",")[:-1]
@@ -695,8 +703,8 @@ def run_apicase_views(request):
         return HttpResponse(djson_new)
 
 
-
 #导出数据
+@login_required
 def export_data_views(request):
     System = request.GET.get("system","")
     Content = request.GET.get("content","")

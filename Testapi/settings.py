@@ -141,9 +141,9 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'),)
 # ]
 
 # 设置sessionid存活时间为30分钟
-SESSION_COOKIE_AGE = 60*30*10
+# SESSION_COOKIE_AGE = 60*30*10
 #设置关闭浏览器时则清空对应的session空间
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 LOG_FILE = "./all.log"
 
