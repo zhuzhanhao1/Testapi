@@ -285,7 +285,12 @@ def weblist_view(request):
 # Auto列表页
 @login_required
 def antolist_view(request):
+    caseid = request.GET.get("key[id1]", "")
+    print("啊啊啊啊啊"+caseid)
     weblists = Autocase.objects.filter()
+    if caseid:
+        print("aaaaaaaa")
+        weblists = Webcase.objects.filter(webcaseid=caseid)
     L = []
     for weblist in weblists:
         data = {
@@ -320,13 +325,12 @@ def create_webcase_views(request):
         funpoint = request.POST.get("funpoint", "")
         mainbelong = request.POST.get("mainbelong", "")
         belong = request.POST.get("belong", "")
-        idnetity = request.POST.get("identity", "")
         premise = request.POST.get("premise", "")
         steps = request.POST.get("steps", "")
         exceptres = request.POST.get("except", "")
-        Webcase.objects.create(webcasename=webname, webbelong=mainbelong, webcase_models=belong, webidentity=idnetity, \
+        Webcase.objects.create(webcasename=webname, webbelong=mainbelong, webcase_models=belong,
                                webfunpoint=funpoint, webpremise=premise, webteststep=steps, webexceptres=exceptres)
-        return HttpResponseRedirect("/webindex/")
+        return HttpResponse("操作成功")
 
 
 # 创建webAuto用例
@@ -341,7 +345,7 @@ def create_autocase_views(request):
         exceptres = request.POST.get("except", "")
         Autocase.objects.create(autoname=autoname, autobelong=belong, autoidentity=idnetity, autodataready=dataready,
                                 autostep=steps, autoexceptres=exceptres)
-        return HttpResponseRedirect("/webindex/")
+        return HttpResponse("操作成功")
 
 
 # 删除web用例
@@ -369,39 +373,7 @@ def delete_autocase_views(request):
 # 更新web用例
 @login_required
 def update_webcase_views(request):
-    if request.method == "GET":
-        steps = request.GET.get('steps', "")
-        result = request.GET.get("result", "")
-        ids = request.GET.get("ids", "")
-        print(ids)
-        if steps:
-            a = eval(steps)
-            step = a["teststep"]
-            webname = a["casename"]
-            belong = a["module"]
-            funpoint = a["funpoint"]
-            premise = a["premise"]
-            exceptres = a["exceptres"]
-            result = a["result"]
-            print(step)
-            print(webname)
-            print(belong)
-            print(funpoint)
-            print(premise)
-            print(exceptres)
-            print(result)
-            Webcase.objects.filter(webcaseid=ids).update(webteststep=step, webcasename=webname, \
-                                                         webcase_models=belong, webfunpoint=funpoint,
-                                                         webpremise=premise, webexceptres=exceptres, webresult=result)
-            return HttpResponse("编辑成功")
-        elif result:
-            print(result)
-            if result == "null":
-                Webcase.objects.filter(webcaseid=ids).update(webresult="")
-            else:
-                Webcase.objects.filter(webcaseid=ids).update(webresult=result)
-            return HttpResponse("编辑成功")
-    else:
+    if request.method == "POST":
         mainbelong = request.POST.get("mainbelong", "")
         belong = request.POST.get("belong", "")
         funpoint = request.POST.get("funpoint", "")
@@ -413,7 +385,7 @@ def update_webcase_views(request):
         Webcase.objects.filter(webcaseid=caseID).update(webteststep=steps, webcase_models=belong, webcasename=title,
                                                         webfunpoint=funpoint, webpremise=premise,
                                                         webexceptres=exceptres, webbelong=mainbelong)
-        return HttpResponseRedirect("/webindex/")
+        return HttpResponse("操作成功")
 
 
 # 更新webauto用例
@@ -424,23 +396,7 @@ def update_autocase_views(request):
         result = request.GET.get("result", "")
         ids = request.GET.get("ids", "")
         print(ids)
-        if steps:
-            a = eval(steps)
-            step = a["teststep"]
-            webname = a["casename"]
-            belong = a["module"]
-            identity = a["identity"]
-            exceptres = a["exceptres"]
-            result = a["result"]
-            print(step)
-            print(webname)
-            print(belong)
-            print(exceptres)
-            print(result)
-            Autocase.objects.filter(autoid=ids).update(autostep=step, autoname=webname, autoidentity=identity, \
-                                                       autobelong=belong, autoexceptres=exceptres, autoresult=result)
-            return HttpResponse("编辑成功")
-        elif result:
+        if result:
             print(result)
             if result == "null":
                 Autocase.objects.filter(autoid=ids).update(autoresult="")
@@ -458,7 +414,7 @@ def update_autocase_views(request):
         Autocase.objects.filter(autoid=caseID).update(autostep=steps, autoname=title, autoidentity=identity,
                                                       autobelong=belong, autoexceptres=exceptres,
                                                       autodataready=dataready)
-        return HttpResponseRedirect("/webindex/")
+        return HttpResponse("操作成功")
 
 
 # 更新webauto数据准备

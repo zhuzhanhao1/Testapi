@@ -15,8 +15,7 @@
 		#casetitle {
 			font-size: 24px;
 			padding: 0px;
-			margin-left: 5px;
-			margin-right: 528px;
+			margin-left: -5px;
 			color: white;
 		}
 
@@ -63,13 +62,25 @@
 
 	<!-- 头部区域（可配合layui已有的水平导航） -->
 	<div class="layui-header">
-		<div class="layui-logo layui-icon layui-icon-website kit-side-fold" style="color: white;font-size: 20px;">Api Single Testing
+		<div class="layui-logo layui-icon layui-icon-website kit-side-fold" style="color: white;font-size: 20px;">Api
+			Single Testing
 		</div>
 		<ul class="layui-nav layui-layout-left">
-{#			<li class="layui-nav-item"><a type="button" onclick="showlist()">#}
-{#					<span id="daohang" class="layui-icon layui-icon-shrink-right"#}
-{#						  style="font-size: 23px;color: snow;"></span>#}
-{#				切换</a></li>#}
+			{#			<li class="layui-nav-item"><a type="button" onclick="showlist()">#}
+			{#					<span id="daohang" class="layui-icon layui-icon-shrink-right"#}
+			{#						  style="font-size: 23px;color: snow;"></span>#}
+			{#				切换</a></li>#}
+			<li class="layui-nav-item">
+				<a href="javascript:;"><i class="fa fa-superpowers"
+										  style="font-size: 23px;color: white;font-weight: bolder;"></i>
+					切换系统</a>
+				<dl class="layui-nav-child">
+					<dd class="layui-this"><a href="/apiindex/">ERMS接口测试</a></dd>
+					<dd><a href="/ProcessIndex/">ERMS接口流程测试</a></dd>
+					<dd><a href="/webindex/">功能测试用例</a></dd>
+					<dd><a href="/webindex/">UI自动化测试</a></dd>
+				</dl>
+			</li>
 			<li class="layui-nav-item">
 				<a href="/transferindex/">
 					<span class="layui-badge layui-bg-orange pull-right"
@@ -78,7 +89,6 @@
 					   style="font-size: 23px;color: white;"></i>&nbsp;用例库
 				</a>
 			</li>
-
 		</ul>
 		<ul class="layui-nav layui-layout-right">
 			<li class="layui-nav-item">
@@ -91,7 +101,7 @@
 						<i class="fa fa-cloud-upload" style="font-size: 23px;"></i>
 						&nbsp;导入用例
 					</a></dd>
-					<dd><a type="button" onclick="export_data()">
+					<dd class="layui-this"><a type="button" onclick="export_data()">
 						<i class="fa fa-cloud-download" style="font-size: 23px;"></i>
 						&nbsp;导出用例
 					</a></dd>
@@ -104,7 +114,7 @@
 				</a>
 				<dl class="layui-nav-child">
 					<dd><a href="https://mail.qq.com/" target="_blank">邮件通知</a></dd>
-					<dd><a href="#" target="_blank">钉钉通知</a></dd>
+					<dd class="layui-this"><a href="#" target="_blank">钉钉通知</a></dd>
 				</dl>
 			</li>
 			<li class="layui-nav-item">
@@ -143,7 +153,8 @@
 					<a href="?belong=archives_yj"><i class="fa fa-archive fa-lg"></i><span>&nbsp;档案相关接口</span></a>
 				</li>
 				<li class="layui-nav-item">
-					<a href="?belong=attribute_mapping_scheme_yj"><i class="fa fa-list-alt fa-lg"></i><span>&nbsp;映射规则接口</span></a>
+					<a href="?belong=attribute_mapping_scheme_yj"><i
+							class="fa fa-list-alt fa-lg"></i><span>&nbsp;映射规则接口</span></a>
 				</li>
 				<li class="layui-nav-item">
 					<a href="?belong=comments_yj"><i class="fa fa-etsy fa-lg"></i><span>&nbsp;意见相关接口</span></a>
@@ -152,7 +163,8 @@
 					<a href="?belong=report_yj"><i class="fa fa-file-archive-o fa-lg"></i><span>&nbsp;检测报告接口</span></a>
 				</li>
 				<li class="layui-nav-item">
-					<a href="?belong=transfer_form_yj"><i class="fa fa-file-text fa-lg"></i><span>&nbsp;移交表单接口</span></a>
+					<a href="?belong=transfer_form_yj"><i
+							class="fa fa-file-text fa-lg"></i><span>&nbsp;移交表单接口</span></a>
 				</li>
 				<li class="layui-nav-item">
 					<a href="?belong=resource_yj"><i class="fa fa-gears fa-lg"></i><span>&nbsp;资源管理接口</span></a>

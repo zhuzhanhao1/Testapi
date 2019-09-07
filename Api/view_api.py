@@ -26,7 +26,7 @@ from webuitest.conn_database import ConnDataBase
 @login_required
 def apiindex_view(request):
     a = request.GET.get("belong","")
-    case_count = Case.objects.all().count()
+    case_count = Case.objects.filter(system="erms").count()
     return render(request,"apiindex.html",{"user":"朱占豪","abq":a,"case_count":case_count})
 
 
@@ -34,7 +34,7 @@ def apiindex_view(request):
 @login_required
 def transferindex_view(request):
     a = request.GET.get("belong","")
-    case_count = Case.objects.all().count()
+    case_count = Case.objects.filter(system="transfer").count()
     return render(request,"transferindex.html",{"user":"朱占豪","abq":a,"case_count":case_count})
 
 

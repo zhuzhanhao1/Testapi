@@ -13,11 +13,10 @@
 	<link rel="stylesheet" href="./../static/font-awesome-4.7.0/css/font-awesome.min.css">
 	<style>
 		#casetitle {
-			font-size: 24px;
+			font-size: 22px;
 			padding: 0px;
-			margin-left: 5px;
-			margin-right: 528px;
 			color: white;
+			margin-left: -5px;
 		}
 
 		#casetitle:hover {
@@ -66,15 +65,27 @@
 		<div class="layui-logo layui-icon layui-icon-website kit-side-fold" style="color: white;font-size: 20px;">Api
 			Single Testing
 		</div>
+
 		<ul class="layui-nav layui-layout-left">
 			{#			<li class="layui-nav-item"><a type="button" onclick="showlist()">#}
 			{#				<i id="daohang" class="layui-icon layui-icon-shrink-right"#}
 			{#				   style="font-size: 23px;color: snow;"></i>#}
 			{#				切换</a></li>#}
 			<li class="layui-nav-item">
+				<a href="javascript:;"><i class="fa fa-superpowers"
+										  style="font-size: 23px;color: white;font-weight: bolder;"></i>
+					切换系统</a>
+				<dl class="layui-nav-child">
+					<dd class="layui-this"><a href="/transferindex/">Transfer接口测试</a></dd>
+					<dd><a href="/ProcessIndex/">ERMS接口流程测试</a></dd>
+					<dd><a href="/webindex/">功能测试用例</a></dd>
+					<dd><a href="/webindex/">UI自动化测试</a></dd>
+				</dl>
+			</li>
+			<li class="layui-nav-item">
 				<a href="/apiindex/">
-					<span class="layui-badge layui-bg-orange pull-right"
-						  style="margin-left: 75px;">{{ case_count }}</span>
+					<i class="layui-badge layui-bg-orange pull-right"
+						  style="margin-left: 75px;">{{ case_count }}</i>
 					<i class="layui-icon layui-icon-template-1"
 					   style="font-size: 23px;color: white;"></i>&nbsp;用例库
 				</a>
@@ -200,7 +211,7 @@
 			<div class="demoTable">
 				<span class="fa fa-home fa-lg" style="font-size: 40px;color: whitesmoke;">
 					<a id="casetitle" class="layui-anim layui-anim-up" href="/apiindex/">
-						http://amberdata.cn/transferapi/v2
+						http://amberdata.cn/ermsapi/v2
 					</a>
 				</span></span>
 				<div id="sousuo">
@@ -703,7 +714,7 @@
                             title: "编辑用例",
                             area: ['40%', '95%'],
                             skin: "layui-layer-molv",
-                            //shade:0.3,
+                            shade:0.6,
                             content: $("#UpdateCase").html(),
                             success: function () {
                                 layui.use('form', function () {

@@ -50,7 +50,7 @@ urlpatterns = [
     url(r'^autolist/$',antolist_view),
     url(r'^create_autocase/$',create_autocase_views),
     url(r'^run_autocase/$',run_autocase_views),
-    url(r'^del_webcase/$',delete_autocase_views),
+    url(r'^del_autocase/$',delete_autocase_views),
     url(r'^update_autocase/$',update_autocase_views),
     url(r'^update_dataready/$',update_dataready_views),
     url(r'^update_userinfo/$',update_userinfo_views),
