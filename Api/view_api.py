@@ -195,7 +195,8 @@ def transferlist_view(request):
     print("请求进入的模块是:"+belong)
     if casename == "" and belong == "":
         apilists = Case.objects.filter()
-
+    elif belong == "user_yj":
+        apilists = Case.objects.filter(belong__contains="用户模块接口")
     elif belong == "record_yj":
         apilists = Case.objects.filter(belong__contains="Record接口")
     elif belong == "resource_yj":

@@ -7,48 +7,105 @@
 	<link rel="icon" href="./../static/images/favicon%202.ico">
 	<link rel="stylesheet" href="./../static/css/layui.css">
 	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="./../static/font-awesome-4.7.0/css/font-awesome.min.css">
 	<link href="./../static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
 	<script src="./../static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 	<script src="./../static/js/layui/layui.js"></script>
+	<style>
+		#casetitle {
+			font-size: 24px;
+			padding: 0px;
+			margin-left: 5px;
+			margin-right: 528px;
+			color: white;
+		}
+
+		#casetitle:hover {
+			color: #1E9FFF;
+		}
+
+		.layui-form-item {
+			margin-bottom: 10px;
+		}
+
+		.layui-bg-black {
+			background-color: #23262E !important;
+		}
+
+		.layui-nav {
+			background-color: #23262E;
+		}
+
+		.kit-side-fold {
+			font-size: 18px;
+			text-align: center;
+		}
+
+		#sousuo {
+			position: fixed;
+			right: 15px;
+			bottom: 610px;
+		}
+
+		.layui-laypage .layui-laypage-curr .layui-laypage-em {
+			background-color: #1E9FFF;
+		}
+
+		.layui-layout-admin .layui-header {
+			background-color: black;
+		}
+
+
+	</style>
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
-
 	<!-- 头部区域（可配合layui已有的水平导航） -->
 	<div class="layui-header">
-		<div class="layui-logo layui-icon layui-icon-website" style="color: white;font-size: 20px;">Api Process Auto
+		<div class="layui-logo layui-icon layui-icon-website kit-side-fold" style="color: white;font-size: 20px;">Api Process Test
 		</div>
 		<ul class="layui-nav layui-layout-left">
-			<li class="layui-nav-item"><a type="button" onclick="showlist()">
-				<span id="daohang" class="layui-icon layui-icon-shrink-right"
-					  style="font-size: 23px;color: snow;"></span>
-				切换</a></li>
+{#			<li class="layui-nav-item"><a type="button" onclick="showlist()">#}
+{#				<span id="daohang" class="layui-icon layui-icon-shrink-right"#}
+{#					  style="font-size: 23px;color: snow;"></span>#}
+{#				切换</a></li>#}
 			<li class="layui-nav-item">
 				<a href="/ProcessIndex/">
 					<span class="layui-badge layui-bg-blue pull-right"
-						  style="margin-left: 68px;">{{ case_count }}</span>
-					<span class="layui-icon layui-icon-read"
-						  style="font-size: 23px;color: antiquewhite;margin-right: 1px;"></span>用例库
+						  style="margin-left: 75px;">{{ case_count }}</span>
+					<i class="layui-icon layui-icon-template-1"
+					   style="font-size: 23px;color: white;"></i>&nbsp;用例库
 				</a>
 			</li>
 
-
-			<li class="layui-nav-item"><a type="button" onclick="importcase()" style="margin-left: 40px;">
-				<span class="layui-icon layui-icon-upload-drag" style="font-size: 23px;color: lightpink;"></span>
-				导入用例</a></li>
-
+		</ul>
+		<ul class="layui-nav layui-layout-right">
+			<li class="layui-nav-item">
+				<a href="javascript:;"><i class="fa fa-ravelry"
+										  style="font-size: 23px;color: white;font-weight: bolder;"></i>
+					导入导出
+				</a>
+				<dl class="layui-nav-child"> <!-- 二级菜单 -->
+					<dd><a type="button" onclick="importcase()">
+						<i class="fa fa-cloud-upload" style="font-size: 23px;"></i>
+						&nbsp;导入用例
+					</a></dd>
+					<dd><a type="button" onclick="export_data()">
+						<i class="fa fa-cloud-download" style="font-size: 23px;"></i>
+						&nbsp;导出用例
+					</a></dd>
+				</dl>
+			</li>
 			<li class="layui-nav-item">
 				<a href="javascript:;">
-					<span class="layui-icon layui-icon-notice"
-						  style="font-size: 23px;color: rebeccapurple;font-weight: bolder;"></span>
+					<i class="fa fa-send-o" style="font-size: 23px;color: white;font-weight: bolder;"></i>
 					通知
 				</a>
 				<dl class="layui-nav-child">
-					<dd><a href="https://mail.qq.com/" target="_blank">邮件管理</a></dd>
+					<dd><a href="https://mail.qq.com/" target="_blank">邮件通知</a></dd>
+					<dd><a href="#" target="_blank">钉钉通知</a></dd>
 				</dl>
 			</li>
-		</ul>
-		<ul class="layui-nav layui-layout-right">
 			<li class="layui-nav-item">
 				<a href="javascript:;">
 					<img src="./../static/images/1.png" class="layui-nav-img">
@@ -68,62 +125,65 @@
 			<!-- 左侧导航区域（可配合layui已有的垂直导航） -->
 			<ul class="layui-nav layui-nav-tree layui-inline" lay-filter="demo">
 
-				<li class="layui-nav-item layui-nav-itemed"><!-- layui-nav-itemed -->
-					<a href="#">系统管理</a>
+				<li class="layui-nav-item"><!-- layui-nav-itemed -->
+					<a href="#"><i class="fa fa-gears fa-lg"></i><span>&nbsp;系统管理</span></a>
 					<dl class="layui-nav-child">
-						<dd><a href="?belong=unit">单位接口</a></dd>
-						<dd><a href="?belong=policy">保留处置策略接口</a></dd>
-						<dd><a href="?belong=data_form_config">数据表单配置接口</a></dd>
-						<dd><a href="?belong=dept">部门管理接口</a></dd>
-						<dd><a href="?belong=user">用户管理接口</a></dd>
+						<dd><a href="?belong=unit"><i class="fa fa-user-circle fa-lg"></i><span>&nbsp;单位接口</span></a></dd>
+{#						<dd><a href="?belong=policy">保留处置策略接口</a></dd>#}
+						<dd><a href="?belong=data_form_config"><i class="fa fa-file-text fa-lg"></i><span>&nbsp;数据表单配置接口</span></a></dd>
+						<dd><a href="?belong=dept"><i class="fa fa fa-users fa-lg"></i><span>&nbsp;部门管理接口</span></a></dd>
+						<dd><a href="?belong=user"><i class="fa fa-user fa-lg"></i><span>&nbsp;用户管理接口</span></a></dd>
 					</dl>
 				</li>
 				<li class="layui-nav-item">
-					<a href="javascript:;">业务规则</a>
+					<a href="javascript:;"><i class="fa fa-briefcase fa-lg"></i><span>&nbsp;业务规则</span></a>
 					<dl class="layui-nav-child">
-						<dd><a href="?belong=category">类目保管期限设定</a></dd>
-						<dd><a href="?belong=policy">保留处置策略管理</a></dd>
-						<dd><a href="?belong=alc">访问控制策略管理</a></dd>
-						<dd><a href="?belong=view">视图自定义</a></dd>
+						<dd><a href="?belong=category"><i class="fa fa-amazon fa-lg"></i><span>&nbsp;类目保管期限设定</span></a></dd>
+						<dd><a href="?belong=policy"><i class="fa fa-android fa-lg"></i><span>&nbsp;保留处置策略管理</span></a></dd>
+						<dd><a href="?belong=alc"><i class="fa fa-angellist fa-lg"></i><span>&nbsp;访问控制策略管理</span></a></dd>
+						<dd><a href="?belong=view"><i class="fa fa-apple fa-lg"></i><span>&nbsp;视图自定义</span></a></dd>
 					</dl>
 				</li>
 				<li class="layui-nav-item">
-					<a href="javascript:;">收集整理</a>
+					<a href="javascript:;"<i class="fa fa-star-half-o fa-lg"></i><span>&nbsp;收集整理</span></a>
 					<dl class="layui-nav-child">
-						<dd><a href="?belong=deptdocument">部门文件</a></dd>
-						<dd><a href="?belong=file_plan">整理任务</a></dd>
+						<dd><a href="?belong=deptdocument"><i class="fa fa-folder-open fa-lg"></i><span>&nbsp;部门文件</span></a></dd>
+						<dd><a href="?belong=file_plan"><i class="fa fa-tasks fa-lg"></i><span>&nbsp;整理任务</span></a></dd>
 					</dl>
 				</li>
 				<li class="layui-nav-item">
-					<a href="javascript:;">档案管理</a>
+					<a href="javascript:;"><i class="fa fa-archive fa-lg"></i><span>&nbsp;档案管理</span></a>
 					<dl class="layui-nav-child">
-						<dd><a href="?belong=views">多视图</a></dd>
-						<dd><a href="?belong=rearrange">重新整理</a></dd>
+						<dd><a href="?belong=views"><i class="fa fa-map-signs fa-lg"></i><span>&nbsp;多视图</span></a></dd>
+						<dd><a href="?belong=rearrange"><i class="fa fa-reorder fa-lg"></i><span>&nbsp;重新整理</span></a></dd>
 					</dl>
 				</li>
 				<li class="layui-nav-item">
-					<a href="?belong=all_process">ERMS总流程</a>
+					<a href="?belong=all_process"><i class="fa fa-optin-monster fa-lg"></i><span>&nbsp;ERMS总流程</span></a>
 				</li>
 
 			</ul>
 		</div>
 	</div>
 
-	<div id="layuibody" class="layui-body" style="background-color: slategray;margin-bottom: -49px;">
+	<div id="layuibody" class="layui-body" style="background-color: #494A5F;margin-bottom: -49px;">
 		<!-- 内容主体区域 -->
 		<div style="padding: 15px;">
 			<div class="demoTable">
-				<span id="casetitle"
-					  style="font-size: 24px;padding: 0px;margin-left: 5px;margin-right: 528px;color: white;"
-					  class="layui-anim layui-anim-up layui-icon layui-icon-link">http://amberdata.cn/ermsapi/v2</span>
-
-				<div class="layui-inline" style="margin-top: -7px;">
-					<input class="layui-input" name="id" id="demoReload" autocomplete="off" placeholder="请输入用例名称"
-						   style="width:200px;">
+				<span class="fa fa-home fa-lg" style="font-size: 40px;color: whitesmoke;">
+					<a id="casetitle" class="layui-anim layui-anim-up" href="/apiindex/">
+						http://amberdata.cn/ermsapi/v2
+					</a>
+				</span>
+				<div id="sousuo">
+					<div class="layui-inline" style="margin-top: -7px;">
+						<input class="layui-input" name="id" id="demoReload" autocomplete="off" placeholder="请输入用例名称"
+							   style="width:200px;">
+					</div>
+					<button class="layui-btn layui-icon layui-icon-search layui-btn-normal" data-type="reload"
+							style="margin-top: -7px;">搜索
+					</button>
 				</div>
-				<button class="layui-btn layui-icon layui-icon-search" data-type="reload"
-						style="background-color: lightpink;margin-top: -7px;">搜索
-				</button>
 			</div>
 
 
@@ -496,7 +556,7 @@
 						<input type="checkbox" name="identity3" value="ast" title="单位档案员" checked>
 					</div>
 				</div>
-				<div class="layui-form-item">
+				<div class="layui-form-item" style="margin-top: 30px;">
 					<div class="layui-input-block">
 						<button class="layui-btn" lay-submit lay-filter="update_token_api"
 								style="margin-left: 225px;background-color: yellowgreen;">立即提交
@@ -601,14 +661,13 @@
 		{#    <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="isAll">验证是否全选</button>#}
 		<button id="Runcase" class="layui-btn layui-btn-sm layui-btn-danger" lay-event="runcase">执行用例</button>
 		<button id="task" class="layui-btn layui-btn-sm layui-btn-danger" lay-event="Timingtask">定时任务</button>
-		<button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="exportData">导出报告</button>
 	</div>
 </script>
 <!--行内按钮-->
 <script type="text/html" id="barDemo">
-	<a class="layui-icon layui-icon-about" style="color:#74777b;font-size: 24px;" lay-event="detail"></a>
-	<a class="layui-icon-edit layui-icon" lay-event="edit" style="color:#74777b;font-size: 24px;"></a>
-	<a class="layui-icon-survey layui-icon" lay-event="edit1" style="color:#74777b;font-size: 21px;"></a>
+	<a class="layui-icon layui-icon-about" style="color:#74777b;font-size: 21px;" lay-event="detail"></a>
+	<a class="layui-icon-edit layui-icon" lay-event="edit" style="color:#74777b;font-size: 21px;"></a>
+	<a class="layui-icon-survey layui-icon" lay-event="edit1" style="color:#74777b;font-size: 20px;"></a>
 	<a class="layui-icon-delete layui-icon" lay-event="del" style="color: #74777b;font-size: 24px;"></a>
 </script>
 <!--请求方式模板-->
@@ -671,15 +730,16 @@
             }
             , cols: [[ //表头
                 {type: 'checkbox', fixed: 'left'}
-                , {field: 'caseid', title: 'ID', width: 60, sort: true, fixed: 'left', align: "center"}
+                , {field: 'order_no', title: '序号',fixed: 'left', width: 80, sort: true, align: "center"}
+                //, {field: 'caseid', title: 'ID', width: 60, sort: true, fixed: 'left', align: "center"}
                 , {field: 'identity', title: 'User', width: 60, align: "center", templet: "#identityTpl"}
-                , {field: 'casename', title: '用例名字', width: 150, align: "center", templet: "#casenameTpl"}
+                , {field: 'casename', title: '用例名字', width: 200, align: "center", templet: "#casenameTpl"}
                 , {field: 'url', title: '请求地址', width: 180, align: "center"}
                 , {field: 'method', title: '请求方式', width: 90, align: "center", templet: "#methodTpl"}
                 , {field: 'params', title: 'Params参数', width: 150, align: "center", edit: 'text'}
-                , {field: 'body', title: 'Data参数', width: 150, align: "center", edit: 'text'}
+                , {field: 'body', title: 'Data参数', width: 200, align: "center", edit: 'text'}
                 , {
-                    field: 'result', title: '响应内容', width: 160, sort: true, align: "center", templet: function (res) {
+                    field: 'result', title: '响应内容', width: 220, sort: true, align: "center", templet: function (res) {
                         if (res.result.indexOf("error") != -1 && res.result.indexOf("timestamp") != -1) {
                             return '<span style="color: red;">' + res.result + '</span>'
                         } else if (res.result.indexOf("运行缓慢") != -1) {
@@ -689,13 +749,13 @@
                         }
                     }
                 }
-                , {field: 'order_no', title: '流程序号', width: 100, sort: true, align: "center"}
+
                 , {field: 'depend_id', title: '依赖的ID', width: 100, align: "center"}
                 , {field: 'depend_key', title: '依赖的key', width: 100, align: "center"}
                 , {field: 'replace_key', title: '替换的key', width: 100, align: "center"}
                 , {field: 'replace_position', title: '替换的位置', width: 100, align: "center"}
                 //, {field: 'belong', title: 'a', width: 100,align:"center"}
-                , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 135, align: "center"}
+                , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 130, align: "center"}
             ]]
             , id: 'testReload'
             , done: function (res) {   //返回数据执行回调函数
@@ -944,54 +1004,6 @@
                         }
                     });
                     break;
-                //导出报告
-                case "exportData":
-                    var exportData = layer.open({
-                        type: 1,
-                        title: "导出报告",
-                        skin: 'layui-layer-molv',
-                        shade: 0.6,
-                        area: ['40%', '35%'],
-                        content: $("#exportData").html()
-                    });
-                    layui.use('form', function () {
-                        var form = layui.form;
-                        //监听编辑用户信息，
-                        form.on('submit(export_data)', function (data) {
-                            $.ajax({
-                                cache: false,
-                                url: "/export_data_process/",
-                                dataType: 'text',
-                                type: 'GET',
-                                async: false,//同步
-                                data: {
-                                    "content": data.field.content,
-                                    "system": data.field.system
-                                },
-                                success: function (data) {
-                                    console.log(data);
-                                    layer.msg(data, {
-                                        icon: 6,
-                                        offset: 't',
-                                        anim: 6,
-                                    });
-                                },
-                                error: function (data) {
-                                    console.log(data);
-                                    layer.msg(data, {
-                                        icon: 5,
-                                        offset: 't',
-                                        anim: 6,
-                                    });
-                                },
-                                complete: function () {
-                                    layer.close(exportData);
-                                }
-                            });
-                            return false;//阻止表单跳转
-                        });
-                    });
-                    break;
             }
         });
         //监听行工具事件
@@ -1152,9 +1164,44 @@
     //监听导航点击
     layui.use('element', function () {
         var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+        //监听导航点击
         element.on('nav(demo)', function (elem) {
             //console.log(elem)
             layer.msg(elem.text());
+        });
+        var isShow = true;  //定义一个标志位
+        $('.kit-side-fold').click(function () {
+            //选择出所有的span，并判断是不是hidden
+            $('.layui-nav-item span').each(function () {
+                if ($(this).is(':hidden')) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+            //判断isshow的状态
+            if (isShow) {
+                $('.layui-side.layui-bg-black').width(60); //设置宽度
+                $('.kit-side-fold i').css('margin-right', '70%');  //修改图标的位置
+                //将footer和body的宽度修改
+                $('.layui-body').css('left', 60 + 'px');
+                $('.layui-footer').css('left', 60 + 'px');
+                //将二级导航栏隐藏
+                $('dd span').each(function () {
+                    $(this).hide();
+                });
+                //修改标志位
+                isShow = false;
+            } else {
+                $('.layui-side.layui-bg-black').width(200);
+                $('.kit-side-fold i').css('margin-right', '10%');
+                $('.layui-body').css('left', 200 + 'px');
+                $('.layui-footer').css('left', 200 + 'px');
+                $('dd span').each(function () {
+                    $(this).show();
+                });
+                isShow = true;
+            }
         });
     });
 </script>
@@ -1423,6 +1470,55 @@
             c.style.marginRight = "528px";
             d.setAttribute("class", "layui-icon layui-icon-shrink-right");
         }
+    }
+
+    //导出报告
+    function export_data() {
+        var exportData = layer.open({
+            type: 1,
+            title: "导出报告",
+            area: ['40%', '35%'],
+            skin: "layui-layer-rim",
+            shade: 0.6,
+            content: $("#exportData").html()
+        });
+        layui.use('form', function () {
+            var form = layui.form;
+            //监听编辑用户信息，
+            form.on('submit(export_data)', function (data) {
+                $.ajax({
+                    cache: false,
+                    url: "/export_data/",
+                    dataType: 'text',
+                    type: 'GET',
+                    async: false,//同步
+                    data: {
+                        "content": data.field.content,
+                        "system": data.field.system
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        layer.msg(data, {
+                            icon: 6,
+                            offset: 't',
+                            anim: 6,
+                        });
+                    },
+                    error: function (data) {
+                        console.log(data);
+                        layer.msg(data, {
+                            icon: 5,
+                            offset: 't',
+                            anim: 6,
+                        });
+                    },
+                    complete: function () {
+                        layer.close(exportData);
+                    }
+                });
+                return false;//阻止表单跳转
+            });
+        });
     }
 </script>
 </body>

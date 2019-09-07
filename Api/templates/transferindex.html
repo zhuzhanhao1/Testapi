@@ -10,19 +10,49 @@
 	<link href="./../static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
 	<script src="./../static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 	<script src="./../static/js/layui/layui.js"></script>
+	<link rel="stylesheet" href="./../static/font-awesome-4.7.0/css/font-awesome.min.css">
 	<style>
 		#casetitle {
 			font-size: 24px;
 			padding: 0px;
 			margin-left: 5px;
-			margin-right: 497px;
+			margin-right: 528px;
 			color: white;
 		}
+
 		#casetitle:hover {
-			color: rebeccapurple;
+			color: #FFB800;
 		}
+
 		.layui-form-item {
 			margin-bottom: 10px;
+		}
+
+		.layui-bg-black {
+			background-color: #23262E !important;
+		}
+
+		.layui-nav {
+			background-color: #23262E;
+		}
+
+		.kit-side-fold {
+			font-size: 18px;
+			text-align: center;
+		}
+
+		#sousuo {
+			position: fixed;
+			right: 15px;
+			bottom: 610px;
+		}
+
+		.layui-laypage .layui-laypage-curr .layui-laypage-em {
+			background-color: #FFB800;
+		}
+
+		.layui-layout-admin .layui-header {
+			background-color: black;
 		}
 	</style>
 </head>
@@ -33,36 +63,50 @@
 
 	<!-- 头部区域（可配合layui已有的水平导航） -->
 	<div class="layui-header">
-		<div class="layui-logo layui-icon layui-icon-website" style="color: white;font-size: 20px;">Api Single Testing
+		<div class="layui-logo layui-icon layui-icon-website kit-side-fold" style="color: white;font-size: 20px;">Api Single Testing
 		</div>
 		<ul class="layui-nav layui-layout-left">
-			<li class="layui-nav-item"><a type="button" onclick="showlist()">
-					<span id="daohang" class="layui-icon layui-icon-shrink-right"
-						  style="font-size: 23px;color: snow;"></span>
-				切换</a></li>
+{#			<li class="layui-nav-item"><a type="button" onclick="showlist()">#}
+{#					<span id="daohang" class="layui-icon layui-icon-shrink-right"#}
+{#						  style="font-size: 23px;color: snow;"></span>#}
+{#				切换</a></li>#}
 			<li class="layui-nav-item">
 				<a href="/transferindex/">
-					<span class="layui-badge layui-bg-red pull-right" style="margin-left: 68px;">{{ case_count }}</span>
-					<span class="layui-icon layui-icon-read"
-						  style="font-size: 23px;color: antiquewhite;margin-right: 1px;"></span>用例库
+					<span class="layui-badge layui-bg-orange pull-right"
+						  style="margin-left: 75px;">{{ case_count }}</span>
+					<i class="layui-icon layui-icon-template-1"
+					   style="font-size: 23px;color: white;"></i>&nbsp;用例库
 				</a>
 			</li>
-			<li class="layui-nav-item"><a type="button" onclick="importcase()" style="margin-left: 40px;">
-				<span class="layui-icon layui-icon-upload-drag" style="font-size: 23px;color: deepskyblue;"></span>
-				导入用例</a></li>
 
+		</ul>
+		<ul class="layui-nav layui-layout-right">
+			<li class="layui-nav-item">
+				<a href="javascript:;"><i class="fa fa-ravelry"
+										  style="font-size: 23px;color: white;font-weight: bolder;"></i>
+					导入导出
+				</a>
+				<dl class="layui-nav-child"> <!-- 二级菜单 -->
+					<dd><a type="button" onclick="importcase()">
+						<i class="fa fa-cloud-upload" style="font-size: 23px;"></i>
+						&nbsp;导入用例
+					</a></dd>
+					<dd><a type="button" onclick="export_data()">
+						<i class="fa fa-cloud-download" style="font-size: 23px;"></i>
+						&nbsp;导出用例
+					</a></dd>
+				</dl>
+			</li>
 			<li class="layui-nav-item">
 				<a href="javascript:;">
-						<span class="layui-icon layui-icon-notice"
-							  style="font-size: 23px;color: yellow;font-weight: bolder;"></span>
+					<i class="fa fa-send-o" style="font-size: 23px;color: white;font-weight: bolder;"></i>
 					通知
 				</a>
 				<dl class="layui-nav-child">
-					<dd><a href="https://mail.qq.com/" target="_blank">邮件管理</a></dd>
+					<dd><a href="https://mail.qq.com/" target="_blank">邮件通知</a></dd>
+					<dd><a href="#" target="_blank">钉钉通知</a></dd>
 				</dl>
 			</li>
-		</ul>
-		<ul class="layui-nav layui-layout-right">
 			<li class="layui-nav-item">
 				<a href="javascript:;">
 					<img src="./../static/images/1.png" class="layui-nav-img">
@@ -80,45 +124,69 @@
 	<div id="navlist" class="layui-side layui-bg-black">
 		<div class="layui-side-scroll">
 			<ul class="layui-nav layui-nav-tree layui-inline" lay-filter="demo">
-				<li class="layui-nav-item layui-nav-itemed">
-					<a href="javascript:;">移交相关接口</a>
-					<dl class="layui-nav-child">
-						<dd><a href="?belong=record_yj">Record接口</a></dd>
-						<dd><a href="?belong=resource_yj">资源管理</a></dd>
-						<dd><a href="?belong=yuwen_yj">原文接口</a></dd>
-						<dd><a href="?belong=navigation_yj">导航接口</a></dd>
-						<dd><a href="?belong=comments_yj">意见接口</a></dd>
-						<dd><a href="?belong=attribute_mapping_scheme_yj">映射规则接口</a></dd>
-						<dd><a href="?belong=volume_yj">案卷相关接口</a></dd>
-						<dd><a href="?belong=archives_yj">档案相关接口</a></dd>
-						<dd><a href="?belong=report_yj">检测报告相关接口</a></dd>
-						<dd><a href="?belong=transfer_form_yj">移交表单相关接口</a></dd>
-					</dl>
+				<li class="layui-nav-item">
+					<a href="?belong=user_yj"><i class="fa fa-user-circle fa-lg"></i><span>&nbsp;用户模块接口</span></a>
 				</li>
 				<li class="layui-nav-item">
-					<a href="?belong=metadata_yj">元数据平台接口</a>
+					<a href="?belong=yuwen_yj"><i class="fa fa-file-word-o fa-lg"></i><span>&nbsp;原文接口接口</span></a>
+				</li>
+				<li class="layui-nav-item">
+					<a href="?belong=navigation_yj"><i class="fa fa-navicon fa-lg"></i><span>&nbsp;导航管理接口</span></a>
+				</li>
+				<li class="layui-nav-item">
+					<a href="?belong=record_yj"><i class="fa fa-file-excel-o fa-lg"></i><span>&nbsp;Record接口</span></a>
+				</li>
+				<li class="layui-nav-item">
+					<a href="?belong=volume_yj"><i class="fa fa-files-o fa-lg"></i><span>&nbsp;案卷管理接口</span></a>
+				</li>
+				<li class="layui-nav-item">
+					<a href="?belong=archives_yj"><i class="fa fa-archive fa-lg"></i><span>&nbsp;档案相关接口</span></a>
+				</li>
+				<li class="layui-nav-item">
+					<a href="?belong=attribute_mapping_scheme_yj"><i class="fa fa-list-alt fa-lg"></i><span>&nbsp;映射规则接口</span></a>
+				</li>
+				<li class="layui-nav-item">
+					<a href="?belong=comments_yj"><i class="fa fa-etsy fa-lg"></i><span>&nbsp;意见相关接口</span></a>
+				</li>
+				<li class="layui-nav-item">
+					<a href="?belong=report_yj"><i class="fa fa-file-archive-o fa-lg"></i><span>&nbsp;检测报告接口</span></a>
+				</li>
+				<li class="layui-nav-item">
+					<a href="?belong=transfer_form_yj"><i class="fa fa-file-text fa-lg"></i><span>&nbsp;移交表单接口</span></a>
+				</li>
+				<li class="layui-nav-item">
+					<a href="?belong=resource_yj"><i class="fa fa-gears fa-lg"></i><span>&nbsp;资源管理接口</span></a>
+				</li>
+				<li class="layui-nav-item">
+					<a href="?belong=metadata_yj"><i class="fa fa-assistive-listening-systems fa-lg"></i><span>&nbsp;元数据平台接口</span></a>
 				</li>
 			</ul>
 		</div>
 	</div>
 
 	<!-- 内容主体区域 -->
-	<div id="layuibody" class="layui-body" style="background-color:lightslategrey;margin-bottom: -50px;">
+	<div id="layuibody" class="layui-body" style="background-color:#494A5F;margin-bottom: -50px;">
 		<div style="padding: 15px;">
 			<div class="demoTable">
-				<span><a href="/apiindex/" class="layui-anim layui-anim-up layui-icon layui-icon-list" id="casetitle">http://amberdata.cn/transferapi/v2</a></span>
-
-				<div class="layui-inline" style="margin-top: -7px;">
-					<input class="layui-input" name="id" id="demoReload" autocomplete="off" placeholder="请输入用例名称"
-						   style="width:200px;">
+				<span class="fa fa-home fa-lg" style="font-size: 40px;color: whitesmoke;">
+					<a id="casetitle" class="layui-anim layui-anim-up" href="/transferindex/">
+						http://amberdata.cn/transferapi/v2
+					</a>
+				</span></span>
+				<div id="sousuo">
+					<div class="layui-inline" style="margin-top: -7px;">
+						<input class="layui-input" name="id" id="demoReload" autocomplete="off" placeholder="请输入用例名称"
+							   style="width:200px;">
+					</div>
+					<button class="layui-btn layui-icon layui-icon-search layui-btn-warm" data-type="reload"
+							style="margin-top: -7px;">搜索
+					</button>
 				</div>
-				<button class="layui-btn layui-icon layui-icon-search" data-type="reload"
-						style="background-color: lightpink;margin-top: -7px;">搜索
-				</button>
 			</div>
 			<table class="layui-hide" id="test" lay-filter="test"></table>
 		</div>
 	</div>
+
 	<!--创建用例-->
 	<div class="layui-row" id="popSearchRoleTest">
 		<div class="layui-col-md11">
@@ -127,6 +195,7 @@
 					<label class="layui-form-label">所属模块</label>
 					<div class="layui-input-block">
 						<select name="belong" lay-verify="required">
+							<option value="用户模块接口">用户模块接口</option>
 							<option value="Record接口">Record接口</option>
 							<option value="资源管理接口">资源管理接口</option>
 							<option value="原文接口">原文接口</option>
@@ -212,6 +281,7 @@
 					<label class="layui-form-label">所属模块</label>
 					<div class="layui-input-block">
 						<select name="belong" lay-verify="required">
+							<option value="用户管理接口">用户管理接口</option>
 							<option value="Record接口">Record接口</option>
 							<option value="资源管理接口">资源管理接口</option>
 							<option value="原文接口">原文接口</option>
@@ -430,20 +500,19 @@
 		<button type="button" onclick="loginuser()" class="layui-btn layui-btn-sm layui-btn-normal">用户信息</button>
 		<button type="button" onclick="gettoken()" class="layui-btn layui-btn-sm layui-btn-normal">获取令牌</button>
 		<button id="Runcase" class="layui-btn layui-btn-sm layui-btn-danger" lay-event="runcase">执行用例</button>
-		<button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="exportData">导出报告</button>
 	</div>
 </script>
 <!--行内按钮-->
 <script type="text/html" id="barDemo">
-	<a class="layui-icon layui-icon-about" style="color:#74777b;font-size: 24px;" lay-event="detail"></a>
-	<a class="layui-icon-edit layui-icon" lay-event="edit" style="color:#74777b;font-size: 24px;"></a>
+	<a class="layui-icon layui-icon-about" style="color:#74777b;font-size: 21px;" lay-event="detail"></a>
+	<a class="layui-icon-edit layui-icon" lay-event="edit" style="color:#74777b;font-size: 21px;"></a>
 	<a class="layui-icon-survey layui-icon" lay-event="edit1" style="color:#74777b;font-size: 21px;"></a>
 	<a class="layui-icon-delete layui-icon" lay-event="del" style="color: #74777b;font-size: 24px;"></a>
 </script>
 <!--用例名字超链接模板-->
 <script type="text/html" id="casenameTpl">
 	<a href="/detail_api/?id={% verbatim %}{{d.caseid}}{% endverbatim %}" class="layui-table-link" target="_blank"
-	   style="color: blueviolet;">{% verbatim %}{{d.casename}}{% endverbatim %}</a>
+	   style="color: rebeccapurple;">{% verbatim %}{{d.casename}}{% endverbatim %}</a>
 </script>
 <!--请求方式模板-->
 <script type="text/html" id="methodTpl">
@@ -509,11 +578,11 @@
                 {type: 'checkbox', fixed: 'left'}
                 , {field: 'caseid', title: 'ID', width: 60, sort: true, fixed: 'left', align: "center"}
                 , {field: 'identity', title: 'User', width: 60, align: "center", templet: "#identityTpl"}
-                , {field: 'casename', title: '用例名字', width: 150, align: "center", templet: "#casenameTpl"}
+                , {field: 'casename', title: '用例名字', width: 160, align: "center", templet: "#casenameTpl"}
                 , {field: 'url', title: '请求地址', width: 200, align: "center"}
                 , {field: 'method', title: '请求方式', width: 90, align: "center", templet: "#methodTpl"}
-                , {field: 'params', title: 'Params参数', width: 220, align: "center", edit: 'text'}
-                , {field: 'body', title: 'Data参数', width: 220, sort: true, align: "center", edit: 'text'}
+                , {field: 'params', title: 'Params参数', width: 200, align: "center", edit: 'text'}
+                , {field: 'body', title: 'Data参数', width: 200, sort: true, align: "center", edit: 'text'}
                 , {
                     field: 'result',
                     title: '响应内容',
@@ -531,7 +600,7 @@
                         }
                     }
                 }
-                , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150, align: "center"}
+                , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 130, align: "center"}
             ]]
             , id: 'testReload'
             , done: function (res) {   //返回数据执行回调函数
@@ -730,54 +799,6 @@
                         });
                     }
                     break;
-
-                case "exportData":
-                    var exportData = layer.open({
-                        type: 1,
-                        title: "导出报告",
-                        area: ['40%', '35%'],
-                        skin: "layui-layer-molv",
-                        shade: 0.6,
-                        content: $("#exportData").html()
-                    });
-                    layui.use('form', function () {
-                        var form = layui.form;
-                        //监听编辑用户信息，
-                        form.on('submit(export_data)', function (data) {
-                            $.ajax({
-                                cache: false,
-                                url: "/export_data/",
-                                dataType: 'text',
-                                type: 'GET',
-                                async: false,//同步
-                                data: {
-                                    "content": data.field.content,
-                                    "system": data.field.system
-                                },
-                                success: function (data) {
-                                    console.log(data);
-                                    layer.msg(data, {
-                                        icon: 6,
-                                        offset: 't',
-                                        anim: 6,
-                                    });
-                                },
-                                error: function (data) {
-                                    console.log(data);
-                                    layer.msg(data, {
-                                        icon: 5,
-                                        offset: 't',
-                                        anim: 6,
-                                    });
-                                },
-                                complete: function () {
-                                    layer.close(exportData);
-                                }
-                            });
-                            return false;//阻止表单跳转
-                        });
-                    });
-                    break;
             }
         });
         //监听行工具事件
@@ -936,6 +957,41 @@
             //console.log(elem)
             layer.msg(elem.text());
         });
+        var isShow = true;  //定义一个标志位
+        $('.kit-side-fold').click(function () {
+            //选择出所有的span，并判断是不是hidden
+            $('.layui-nav-item span').each(function () {
+                if ($(this).is(':hidden')) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+            //判断isshow的状态
+            if (isShow) {
+                $('.layui-side.layui-bg-black').width(60); //设置宽度
+                $('.kit-side-fold i').css('margin-right', '70%');  //修改图标的位置
+                //将footer和body的宽度修改
+                $('.layui-body').css('left', 60 + 'px');
+                $('.layui-footer').css('left', 60 + 'px');
+                //将二级导航栏隐藏
+                $('dd span').each(function () {
+                    $(this).hide();
+                });
+                //修改标志位
+                isShow = false;
+            } else {
+                $('.layui-side.layui-bg-black').width(200);
+                $('.kit-side-fold i').css('margin-right', '10%');
+                $('.layui-body').css('left', 200 + 'px');
+                $('.layui-footer').css('left', 200 + 'px');
+                $('dd span').each(function () {
+                    $(this).show();
+                });
+                isShow = true;
+            }
+        });
+
     });
 </script>
 <script>
@@ -1184,6 +1240,55 @@
             c.style.marginRight = "497px";
             d.setAttribute("class", "layui-icon layui-icon-shrink-right");
         }
+    }
+
+    //导出报告
+    function export_data() {
+        var exportData = layer.open({
+            type: 1,
+            title: "导出报告",
+            area: ['40%', '35%'],
+            skin: "layui-layer-rim",
+            shade: 0.6,
+            content: $("#exportData").html()
+        });
+        layui.use('form', function () {
+            var form = layui.form;
+            //监听编辑用户信息，
+            form.on('submit(export_data)', function (data) {
+                $.ajax({
+                    cache: false,
+                    url: "/export_data/",
+                    dataType: 'text',
+                    type: 'GET',
+                    async: false,//同步
+                    data: {
+                        "content": data.field.content,
+                        "system": data.field.system
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        layer.msg(data, {
+                            icon: 6,
+                            offset: 't',
+                            anim: 6,
+                        });
+                    },
+                    error: function (data) {
+                        console.log(data);
+                        layer.msg(data, {
+                            icon: 5,
+                            offset: 't',
+                            anim: 6,
+                        });
+                    },
+                    complete: function () {
+                        layer.close(exportData);
+                    }
+                });
+                return false;//阻止表单跳转
+            });
+        });
     }
 </script>
 </body>
