@@ -142,8 +142,9 @@ class SystemManagement(unittest.TestCase):
     def test_d_policy_create(self):
         '''保留处置策略-新建保留处置策略'''
         d = self.d
+        time.sleep(10)
         d.click(policymodel)                   #进入到保留处置策略模块
-        time.sleep(1)
+        # time.sleep(1)
         self.alert(CreatePolicy)               #显示alert弹框
 
         d.js_element(policy_create)                 #点击新建按钮

@@ -1,10 +1,17 @@
-from .my_base import Base
+
 # from steps.my_config import erms
 import time
 from selenium import webdriver
-from .conn_database import ConnDataBase
+import os,sys
 
-erms = {"url":"http://demo.amberdata.cn/erms/v2"}
+currentUrl = os.path.dirname(__file__)
+cur_path = os.path.abspath(os.path.join(currentUrl,os.pardir))
+sys.path.append(cur_path)
+
+from .conn_database import ConnDataBase
+from .my_base import Base
+
+erms = {"url":"http://amberdata.cn/erms/v2"}
 
 class Login(Base):
     uname = ("css selector", "[name='username']")
@@ -47,4 +54,4 @@ class Login(Base):
 if __name__ == "__main__":
     d = webdriver.Chrome()
     a= Login(d)
-    a.login("ast")
+    a.login("sysadmin")

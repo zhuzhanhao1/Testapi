@@ -285,12 +285,12 @@ def weblist_view(request):
 # Auto列表页
 @login_required
 def antolist_view(request):
-    caseid = request.GET.get("key[id1]", "")
-    print("啊啊啊啊啊"+caseid)
+    caseid = request.GET.get("key[id]", "")
+    print("啊啊啊啊啊" + caseid)
     weblists = Autocase.objects.filter()
     if caseid:
         print("aaaaaaaa")
-        weblists = Webcase.objects.filter(webcaseid=caseid)
+        weblists = Autocase.objects.filter(autoid=caseid)
     L = []
     for weblist in weblists:
         data = {

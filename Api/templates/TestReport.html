@@ -116,19 +116,19 @@ function html_escape(s) {
 <div class='heading'>
 <h1 style="font-family: Microsoft YaHei">ERMS自动化测试报告</h1>
 <p class='attribute'><strong>测试人员 : </strong> 朱占豪</p>
-<p class='attribute'><strong>开始时间 : </strong> 2019-08-29 07:50:5908:00:00</p>
-<p class='attribute'><strong>合计耗时 : </strong> 0:00:17.206520</p>
-<p class='attribute'><strong>测试结果 : </strong> 共 5，错误 5，通过率= 0.00%</p>
+<p class='attribute'><strong>开始时间 : </strong> 2019-09-08 03:29:3108:00:00</p>
+<p class='attribute'><strong>合计耗时 : </strong> 0:00:36.382336</p>
+<p class='attribute'><strong>测试结果 : </strong> 共 1，通过 1，通过率= 100.00%</p>
 
 <p class='description'>Web Automation Testingweb</p>
 </div>
 
 
 <p id='show_detail_line'>
-<a class="btn btn-primary" href='javascript:showCase(0)'>概要{ 0.00% }</a>
+<a class="btn btn-primary" href='javascript:showCase(0)'>概要{ 100.00% }</a>
 <a class="btn btn-danger" href='javascript:showCase(1)'>失败{ 0 }</a>
-<a class="btn btn-success" href='javascript:showCase(2)'>通过{ 0 }</a>
-<a class="btn btn-info" href='javascript:showCase(3)'>所有{ 5 }</a>
+<a class="btn btn-success" href='javascript:showCase(2)'>通过{ 1 }</a>
+<a class="btn btn-info" href='javascript:showCase(3)'>所有{ 1 }</a>
 </p>
 <table id='result_table' class="table table-condensed table-bordered table-hover">
 <colgroup>
@@ -148,193 +148,28 @@ function html_escape(s) {
     <td>详细</td>
 </tr>
 
-<tr class='errorClass warning'>
+<tr class='passClass warning'>
     <td>Api.webuitest.A_sysadmin_test.SystemManagement</td>
-    <td class="text-center">4</td>
-    <td class="text-center">0</td>
-    <td class="text-center">0</td>
-    <td class="text-center">4</td>
-    <td class="text-center"><a href="javascript:showClassDetail('c1',4)" class="detail" id='c1'>详细</a></td>
-</tr>
-
-<tr id='ft1_1' class='none'>
-    <td class='errorCase'><div class='testcase'>test_a_forms_create: 数据表单设置-新建数据表单</div></td>
-    <td colspan='5' align='center'>
-    <!--默认收起错误信息 -Findyou
-    <button id='btn_ft1_1' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_ft1_1'>错误</button>
-    <div id='div_ft1_1' class="collapse">  -->
-    <!-- 默认展开错误信息 -Findyou -->
-    <button id='btn_ft1_1' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_ft1_1'>错误</button>
-    <div id='div_ft1_1' class="collapse in">
-    <pre>
-    
-ft1_1: 正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//span[text()='数据表单设置']/..
-Traceback (most recent call last):
-  File "/Users/zhuzhanhao/Testapi/Api/webuitest/A_sysadmin_test.py", line 252, in test_a_forms_create
-    d.click(formsmodel)            #进入到数据表单模块
-  File "/Users/zhuzhanhao/Testapi/Api/webuitest/my_base.py", line 48, in click
-    ele = self.findElement(locator)
-  File "/Users/zhuzhanhao/Testapi/Api/webuitest/my_base.py", line 29, in findElement
-    ele = WebDriverWait(self.driver, self.timeout, self.t).until(lambda x: x.find_element(*locator))
-  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/support/wait.py", line 77, in until
-    value = method(self._driver)
-  File "/Users/zhuzhanhao/Testapi/Api/webuitest/my_base.py", line 29, in &lt;lambda&gt;
-    ele = WebDriverWait(self.driver, self.timeout, self.t).until(lambda x: x.find_element(*locator))
-  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/webdriver.py", line 1014, in find_element
-    'value': value})['value']
-  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/webdriver.py", line 318, in execute
-    self.error_handler.check_response(response)
-  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchWindowException: Message: no such window: window was already closed
-  (Session info: chrome=74.0.3729.108)
-  (Driver info: chromedriver=74.0.3729.6 (255758eccf3d244491b8a1317aa76e1ce10d57e9-refs/branch-heads/3729@{#29}),platform=Mac OS X 10.14.6 x86_64)
-
-
-
-    </pre>
-    </div>
-    </td>
-</tr>
-
-<tr id='ft1_2' class='none'>
-    <td class='errorCase'><div class='testcase'>test_a_forms_create: 数据表单设置-新建数据表单</div></td>
-    <td colspan='5' align='center'>
-    <!--默认收起错误信息 -Findyou
-    <button id='btn_ft1_2' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_ft1_2'>错误</button>
-    <div id='div_ft1_2' class="collapse">  -->
-    <!-- 默认展开错误信息 -Findyou -->
-    <button id='btn_ft1_2' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_ft1_2'>错误</button>
-    <div id='div_ft1_2' class="collapse in">
-    <pre>
-    
-ft1_2: 正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//span[text()='数据表单设置']/..
-Traceback (most recent call last):
-  File "/Users/zhuzhanhao/Testapi/Api/webuitest/A_sysadmin_test.py", line 32, in tearDown
-    self.driver.refresh()
-  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/webdriver.py", line 851, in refresh
-    self.execute(Command.REFRESH)
-  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/webdriver.py", line 318, in execute
-    self.error_handler.check_response(response)
-  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchWindowException: Message: no such window: window was already closed
-  (Session info: chrome=74.0.3729.108)
-  (Driver info: chromedriver=74.0.3729.6 (255758eccf3d244491b8a1317aa76e1ce10d57e9-refs/branch-heads/3729@{#29}),platform=Mac OS X 10.14.6 x86_64)
-
-
-
-    </pre>
-    </div>
-    </td>
-</tr>
-
-<tr id='ft1_3' class='none'>
-    <td class='errorCase'><div class='testcase'>test_a_forms_delete: 数据表单设置-删除数据表单</div></td>
-    <td colspan='5' align='center'>
-    <!--默认收起错误信息 -Findyou
-    <button id='btn_ft1_3' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_ft1_3'>错误</button>
-    <div id='div_ft1_3' class="collapse">  -->
-    <!-- 默认展开错误信息 -Findyou -->
-    <button id='btn_ft1_3' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_ft1_3'>错误</button>
-    <div id='div_ft1_3' class="collapse in">
-    <pre>
-    
-ft1_3: 正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//span[text()='数据表单设置']/..
-Traceback (most recent call last):
-  File "/Users/zhuzhanhao/Testapi/Api/webuitest/A_sysadmin_test.py", line 275, in test_a_forms_delete
-    d.click(formsmodel)            #进入到数据表单模块
-  File "/Users/zhuzhanhao/Testapi/Api/webuitest/my_base.py", line 48, in click
-    ele = self.findElement(locator)
-  File "/Users/zhuzhanhao/Testapi/Api/webuitest/my_base.py", line 29, in findElement
-    ele = WebDriverWait(self.driver, self.timeout, self.t).until(lambda x: x.find_element(*locator))
-  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/support/wait.py", line 77, in until
-    value = method(self._driver)
-  File "/Users/zhuzhanhao/Testapi/Api/webuitest/my_base.py", line 29, in &lt;lambda&gt;
-    ele = WebDriverWait(self.driver, self.timeout, self.t).until(lambda x: x.find_element(*locator))
-  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/webdriver.py", line 1014, in find_element
-    'value': value})['value']
-  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/webdriver.py", line 318, in execute
-    self.error_handler.check_response(response)
-  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchWindowException: Message: no such window: window was already closed
-  (Session info: chrome=74.0.3729.108)
-  (Driver info: chromedriver=74.0.3729.6 (255758eccf3d244491b8a1317aa76e1ce10d57e9-refs/branch-heads/3729@{#29}),platform=Mac OS X 10.14.6 x86_64)
-
-
-
-    </pre>
-    </div>
-    </td>
-</tr>
-
-<tr id='ft1_4' class='none'>
-    <td class='errorCase'><div class='testcase'>test_a_forms_delete: 数据表单设置-删除数据表单</div></td>
-    <td colspan='5' align='center'>
-    <!--默认收起错误信息 -Findyou
-    <button id='btn_ft1_4' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_ft1_4'>错误</button>
-    <div id='div_ft1_4' class="collapse">  -->
-    <!-- 默认展开错误信息 -Findyou -->
-    <button id='btn_ft1_4' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_ft1_4'>错误</button>
-    <div id='div_ft1_4' class="collapse in">
-    <pre>
-    
-ft1_4: 正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//span[text()='数据表单设置']/..
-Traceback (most recent call last):
-  File "/Users/zhuzhanhao/Testapi/Api/webuitest/A_sysadmin_test.py", line 32, in tearDown
-    self.driver.refresh()
-  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/webdriver.py", line 851, in refresh
-    self.execute(Command.REFRESH)
-  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/webdriver.py", line 318, in execute
-    self.error_handler.check_response(response)
-  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchWindowException: Message: no such window: window was already closed
-  (Session info: chrome=74.0.3729.108)
-  (Driver info: chromedriver=74.0.3729.6 (255758eccf3d244491b8a1317aa76e1ce10d57e9-refs/branch-heads/3729@{#29}),platform=Mac OS X 10.14.6 x86_64)
-
-
-
-    </pre>
-    </div>
-    </td>
-</tr>
-
-<tr class='errorClass warning'>
-    <td>unittest.suite._ErrorHolder</td>
+    <td class="text-center">1</td>
     <td class="text-center">1</td>
     <td class="text-center">0</td>
     <td class="text-center">0</td>
-    <td class="text-center">1</td>
-    <td class="text-center"><a href="javascript:showClassDetail('c2',1)" class="detail" id='c2'>详细</a></td>
+    <td class="text-center"><a href="javascript:showClassDetail('c1',1)" class="detail" id='c1'>详细</a></td>
 </tr>
 
-<tr id='ft2_1' class='none'>
-    <td class='errorCase'><div class='testcase'>SystemManagement)</div></td>
+<tr id='pt1_1' class='hiddenRow'>
+    <td class='passCase'><div class='testcase'>test_e_policy_update: 保留处置策略-编辑保留处置策略</div></td>
     <td colspan='5' align='center'>
     <!--默认收起错误信息 -Findyou
-    <button id='btn_ft2_1' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_ft2_1'>错误</button>
-    <div id='div_ft2_1' class="collapse">  -->
+    <button id='btn_pt1_1' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_pt1_1'>通过</button>
+    <div id='div_pt1_1' class="collapse">  -->
     <!-- 默认展开错误信息 -Findyou -->
-    <button id='btn_ft2_1' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_ft2_1'>错误</button>
-    <div id='div_ft2_1' class="collapse in">
+    <button id='btn_pt1_1' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_pt1_1'>通过</button>
+    <div id='div_pt1_1' class="collapse in">
     <pre>
     
-ft2_1: 正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//span[text()='数据表单设置']/..
-Traceback (most recent call last):
-  File "/Users/zhuzhanhao/Testapi/Api/webuitest/A_sysadmin_test.py", line 36, in tearDownClass
-    cls.driver.delete_all_cookies()
-  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/webdriver.py", line 906, in delete_all_cookies
-    self.execute(Command.DELETE_ALL_COOKIES)
-  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/webdriver.py", line 318, in execute
-    self.error_handler.check_response(response)
-  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchWindowException: Message: no such window: window was already closed
-  (Session info: chrome=74.0.3729.108)
-  (Driver info: chromedriver=74.0.3729.6 (255758eccf3d244491b8a1317aa76e1ce10d57e9-refs/branch-heads/3729@{#29}),platform=Mac OS X 10.14.6 x86_64)
-
+pt1_1: 正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//span[text()='保留处置策略管理']/..
+正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//div[@class='mat-select-trigger'][1]
 
 
     </pre>
@@ -344,11 +179,11 @@ selenium.common.exceptions.NoSuchWindowException: Message: no such window: windo
 
 <tr id='total_row' class="text-center active">
     <td>总计</td>
-    <td>5</td>
+    <td>1</td>
+    <td>1</td>
     <td>0</td>
     <td>0</td>
-    <td>5</td>
-    <td>通过率：0.00%</td>
+    <td>通过率：100.00%</td>
 </tr>
 </table>
 

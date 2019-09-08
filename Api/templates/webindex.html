@@ -76,9 +76,9 @@
 			</li>
 			<li class="layui-nav-item">
 				<a href="/webindex/">
-					<span class="layui-badge layui-bg-orange pull-right"
-						  style="margin-left: 68px;">{{ case_count }}</span>
-					<span class="layui-icon layui-icon-template" style="font-size: 23px;color: white;"></span>用例库
+					<i class="layui-badge layui-bg-orange pull-right"
+						  style="margin-left: 68px;">{{ case_count }}</i>
+					<i class="layui-icon layui-icon-template" style="font-size: 23px;color: white;"></i>用例库
 				</a>
 			</li>
 
@@ -102,8 +102,8 @@
 			</li>
 			<li class="layui-nav-item">
 				<a href="javascript:;">
-				<span class="fa fa-send-o"
-					  style="font-size: 23px;color: white;"></span>
+				<i class="fa fa-send-o"
+					  style="font-size: 23px;color: white;"></i>
 					通知
 				</a>
 				<dl class="layui-nav-child">
@@ -226,18 +226,6 @@
 				<li class="layui-this" style="color: whitesmoke;">功能用例-功能测试</li>
 				<li style="color: whitesmoke;">功能自动化用例-自动化测试</li>
 				<li style="color: whitesmoke;">测试累了欣赏一下图片</li>
-				{#				<li>#}
-				{#					<div class="demoTable" id="Searchcase">#}
-				{#						<div class="layui-inline">#}
-				{#							<input class="layui-input" name="id1" id="demoReload" autocomplete="off"#}
-				{#								   placeholder="请输入模块名称"#}
-				{#								   style="width:230px;">#}
-				{#						</div>#}
-				{#						<button class="layui-btn layui-icon layui-icon-search" data-type="reload"#}
-				{#								style="background-color: lightpink;">搜索#}
-				{#						</button>#}
-				{#					</div>#}
-				{#				</li>#}
 				<li style="right: 5px;position: fixed;">
 					<div class="demoTable" id="Searchcase" style="margin-top: -2px;">
 						<div class="layui-inline">
@@ -685,8 +673,8 @@
 			</form>
 		</div>
 	</div>
-
 </div>
+
 
 <!--功能测试-表头按钮-->
 <script type="text/html" id="toolbarDemo">
@@ -1070,7 +1058,6 @@
             reload: function () {
                 var demoReload = $('#demoReload1').val();
                 console.log(demoReload);
-                console.log(demoReload);
                 //执行重载
                 table.reload('testReload1', {
                     page: {
@@ -1078,13 +1065,17 @@
                     }
                     , where: {
                         key: {
-                            id1: demoReload.val()
+                            id: demoReload
                         }
                     }
                 }, 'data');
             }
 
         };
+        $('.demoTable .layui-btn').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
 
         //头工具栏事件
         table.on('toolbar(test1)', function (obj) {
@@ -1296,7 +1287,7 @@
                         success: function (data) {
                             layer.msg(data, {
                                 offset: 't',
-                                anim: 6,
+                                anim: 2,
                                 icon: 6,
                             });
                         },
@@ -1341,7 +1332,7 @@
                         success: function (data) {
                             layer.msg(data, {
                                 offset: 't',
-                                anim: 6,
+                                anim: 2,
                                 icon: 6,
                             });
                         },
@@ -1356,7 +1347,7 @@
                     });
                     //同步更新缓存对应的值
                     obj.update({
-                        body: value
+                        dataready: value
                     });
                     layer.close(index);
 
