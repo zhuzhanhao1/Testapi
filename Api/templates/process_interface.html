@@ -615,7 +615,7 @@
 	<!--设置定时任务-->
 	<div class="layui-row" id="popSearchRoleTest4" style="display:none;">
 		<div class="layui-col-md11">
-			<form class="layui-form" action="/timetask/" method="post" lay-filter="example">
+			<form class="layui-form" lay-filter="example">
 
 				<div class="layui-form-item" style="margin-top: 20px;">
 					<label class="layui-form-label">选择时间</label>
@@ -648,7 +648,7 @@
 
 				<div class="layui-form-item">
 					<div class="layui-input-block">
-						<button class="layui-btn" id="time" lay-submit lay-filter="formDemo"
+						<button class="layui-btn" id="time" lay-submit lay-filter="example"
 								style="margin-left: 265px;background-color: yellowgreen;">确定
 						</button>
 						<button type="reset" class="layui-btn layui-btn-primary">重置</button>
@@ -988,7 +988,7 @@
                         ids += data[i]["caseid"] + ",";
                         console.log(ids);
                     }
-                    layer.open({
+                    var timetask = layer.open({
                         type: 1,
                         title: "设置定时任务",
                         area: ['40%', '50%'],
@@ -1009,6 +1009,45 @@
                                 });
                                 form.val("example", {
                                     "caseid": ids
+                                });
+                                form.on('submit(example)', function (data) {
+                                    console.log(data.field.date);
+                                    console.log(data.field.date1);
+                                    console.log(data.field.number);
+                                    console.log(data.field.caseid);
+                                    $.ajax({
+                                        cache: false,
+                                        url: "/timetask/",
+                                        dataType: 'text',
+                                        type: 'POST',
+                                        //async: false,
+                                        data: {
+                                            "date": data.field.date,
+                                            "date1": data.field.date1,
+                                            "number": data.field.number,
+											"caseid":data.field.caseid,
+                                        },
+                                        success: function (data) {
+                                            layer.msg(data, {
+                                                icon: 6,
+                                                offset: 't',
+                                                anim: 2,
+                                            });
+                                        },
+                                        error: function (data) {
+                                            console.log(data);
+                                            layer.msg(data, {
+                                                icon: 5,
+                                                offset: 't',
+                                                anim: 2,
+                                            });
+                                        },
+                                        complete: function () {
+                                            layer.close(timetask)
+
+                                        }
+                                    });
+                                    return false;//阻止表单跳转
                                 });
                             });
                         }

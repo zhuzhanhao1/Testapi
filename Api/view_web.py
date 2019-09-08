@@ -474,50 +474,27 @@ def report_webcase_views(request):
     return render(request, "TestReport.html")
 
 
-# 更改用户信息
-@login_required
-def update_userinfo_views(request):
-    role = request.POST.get("identity", "")
-    username = request.POST.get("username", "")
-    password = request.POST.get("password", "")
-    if username:
-        try:
-            con = ConnDataBase()
-            con.update_logininfo(username, password, role)
-            return HttpResponseRedirect("/webindex/")
-        except:
-            print("修改用户信息失败")
-            return HttpResponse("链接数据库失败、修改用户信息失败")
-
-    else:
-        return HttpResponse("必须输入用户名和用户密码！！！")
-
 
 # 获取当前用户信息
 @login_required
 def get_userinfo_views(request):
     con = ConnDataBase()
-    sysadmin = con.get_logininfo("sysadmin")
-    admin = con.get_logininfo("admin")
-    ast = con.get_logininfo("ast")
-    URL = str(con.get_logininfo("sysadmin")[2], 'utf-8')
+    sysadmin = con.get_logininfo("uisysadmin")
+    admin = con.get_logininfo("uiadmin")
+    ast = con.get_logininfo("uiast")
     dic = {
         "系统管理员": {
             "账号": sysadmin[0],
             "密码": sysadmin[1],
-            "令牌": sysadmin[3]
         },
         "单位管理员": {
             "账号": admin[0],
             "密码": admin[1],
-            "令牌": ast[3]
         },
         "单位档案员": {
             "账号": ast[0],
             "密码": ast[1],
-            "令牌": ast[3]
         },
-        "访问路径": URL
     }
     dic1 = json.dumps(dic, ensure_ascii=False, sort_keys=True, indent=2)
     print(dic1)

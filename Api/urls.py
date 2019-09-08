@@ -53,7 +53,7 @@ urlpatterns = [
     url(r'^del_autocase/$',delete_autocase_views),
     url(r'^update_autocase/$',update_autocase_views),
     url(r'^update_dataready/$',update_dataready_views),
-    url(r'^update_userinfo/$',update_userinfo_views),
+    # url(r'^update_userinfo/$',update_userinfo_views),
     url(r'^get_userinfo/$',get_userinfo_views),
     url(r'^update_userinfo_api/$',update_userinfo_api_views),
 

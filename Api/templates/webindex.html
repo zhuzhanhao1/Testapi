@@ -643,9 +643,9 @@
 				<div class="layui-form-item" style="margin-top: 20px;">
 					<label class="layui-form-label">角色</label>
 					<div class="layui-input-block">
-						<input type="radio" name="identity" value="sysadmin" title="系统管理员" checked>
-						<input type="radio" name="identity" value="admin" title="单位管理员">
-						<input type="radio" name="identity" value="ast" title="单位档案员">
+						<input type="radio" name="identity" value="uisysadmin" title="系统管理员" checked>
+						<input type="radio" name="identity" value="uiadmin" title="单位管理员">
+						<input type="radio" name="identity" value="uiast" title="单位档案员">
 					</div>
 				</div>
 				<div class="layui-form-item">
@@ -1544,9 +1544,9 @@
                 layui.use('form', function () {
                     var form = layui.form;
                     form.val("update_userinfo_api", {
-                        "identity": "sysadmin",
+                        "identity": "uisysadmin",
                         "username": "admin@amberdata.cn",
-                        "password": "Y+zilsR88g9SZI8WOeHJlA=="
+                        "password": "Dctm@1234"
                     });
 
                     //监听编辑用户信息，
@@ -1599,15 +1599,14 @@
     function get_user_info() {
         $.ajax({
             cache: false,
-            url: "/get_userinfo_transfer/",
+            url: "/get_userinfo/",
             dataType: 'text',
             type: 'GET',
             async: false,
-            data: {
-                "ids": "erms",
-            },
             success: function (data) {
                 //var strjson = JSON.stringify(data, null, 4);
+				layer.msg("操作成功",{icon:6,anim:2,offset:'t'}
+				);
                 layer.prompt({
                     formType: 2,//多行文本
                     value: data,
@@ -1615,7 +1614,7 @@
                     anim: 4,//从左滚动进来
                     skin: "layui-layer-rim",
                     shade: 0.6,
-                    area: ['500px', '380px'], //自定义文本域宽高
+                    area: ['400px', '250px'], //自定义文本域宽高
                     btn: ["关闭"],
                     yes: function (index) {
                         layer.close(index);

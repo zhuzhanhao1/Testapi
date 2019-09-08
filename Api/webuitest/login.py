@@ -22,9 +22,9 @@ class Login(Base):
         db = ConnDataBase()
         return db.get_logininfo(data)
 
-    def login(self,flag='sysadmin'):
+    def login(self,flag='uisysadmin'):
         self.driver.get(erms["url"])
-        if flag == "sysadmin":
+        if flag == "uisysadmin":
             a = self.get_info(flag)
             self.clear(self.uname)
             self.sendKeys(self.uname,a[0])
@@ -32,7 +32,7 @@ class Login(Base):
             self.click(self.button)
             time.sleep(1)
 
-        elif flag == "admin":
+        elif flag == "uiadmin":
             b = self.get_info(flag)
             self.clear(self.uname)
             self.sendKeys(self.uname,b[0])
@@ -41,7 +41,8 @@ class Login(Base):
             self.click(self.button)
             time.sleep(1)
 
-        else:
+
+        elif flag == "uiast":
             c = self.get_info(flag)
             self.clear(self.uname)
             self.sendKeys(self.uname,c[0])
