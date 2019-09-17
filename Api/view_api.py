@@ -779,3 +779,23 @@ def export_data_views(request):
         response.write(sio.getvalue())#返回对象s中的所有数据
         print(response)
         return HttpResponse("操作成功")
+
+
+#钉钉通知
+def ding_ding_view(request):
+    ids = request.GET.get("caseid","").split(",")[:-1]
+    print(ids)
+    if ids:
+        for id in ids:
+            caseid = Case.objects.get(caseid=id)
+            if caseid:
+                casename = caseid.casename
+                head = caseid.exceptres
+                result = caseid.result
+                error_content = json.loads(result)[casename]["message"]
+                dic = {casename:error_content}
+                dic_json = json.dumps(dic, ensure_ascii=False, sort_keys=True, indent=2)
+                send_ding(dic_json,head)
+        return HttpResponse("操作成功")
+    else:
+        return HttpResponse("操作失败")

@@ -8,11 +8,13 @@ urlpatterns = [
     url(r'^login/$',login_views),
     url(r'^welcome/$',welcome_views),
     url(r'^logout/$',logout_views),
-
     # url(r'^import_case/$',import_case_views),
+
 #----------------------Api_v2 url-----------------------------
     url(r'^apiindex/$', apiindex_view),
     url(r'^apilist/$', apilist_view),
+    url(r'^transferindex/$', transferindex_view),
+    url(r'^transferlist/$', transferlist_view),
     url(r'^create_apicase/$', create_apicase_views),
     url(r'^del_apicase/$', delete_apicase_views),
     url(r'^update_apicase/$', update_apicase_views),
@@ -20,8 +22,8 @@ urlpatterns = [
     url(r'^update_token_api/$',update_token_api_views),
     url(r'^detail_api/$',detail_api_views),
     url(r'^export_data/$',export_data_views),
-    url(r'^transferindex/$', transferindex_view),
-    url(r'^transferlist/$', transferlist_view),
+    url(r'^ding_ding/$',ding_ding_view),
+
 
 #----------------------Api_process  url-----------------------------
     url(r'^ProcessIndex/$', process_interface_view),
@@ -53,7 +55,6 @@ urlpatterns = [
     url(r'^del_autocase/$',delete_autocase_views),
     url(r'^update_autocase/$',update_autocase_views),
     url(r'^update_dataready/$',update_dataready_views),
-    # url(r'^update_userinfo/$',update_userinfo_views),
     url(r'^get_userinfo/$',get_userinfo_views),
     url(r'^update_userinfo_api/$',update_userinfo_api_views),
 

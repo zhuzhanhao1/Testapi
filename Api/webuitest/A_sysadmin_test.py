@@ -172,6 +172,10 @@ class SystemManagement(unittest.TestCase):
         time.sleep(1)
         d.js_element(cpolicy_determine)        #点击确定
         time.sleep(5)
+        self.driver.save_screenshot("./jieguo.png")
+        time.sleep(1)
+
+
 
 
     def test_e_policy_update(self):

@@ -1,121 +1,41 @@
-2019-09-04 03:14:31,566 INFO o.a.j.u.JMeterUtils: Setting Locale to zh_CN_#Hans
-2019-09-04 03:14:31,665 INFO o.a.j.u.JMeterUtils: Could not find resources for 'zh_CN_#Hans', using 'zh_CN'
-2019-09-04 03:14:31,670 INFO o.a.j.JMeter: Loading user properties from: /Users/zhuzhanhao/apache-jmeter-5.1/bin/user.properties
-2019-09-04 03:14:31,673 INFO o.a.j.JMeter: Loading system properties from: /Users/zhuzhanhao/apache-jmeter-5.1/bin/system.properties
-2019-09-04 03:14:31,692 INFO o.a.j.JMeter: Copyright (c) 1998-2019 The Apache Software Foundation
-2019-09-04 03:14:31,692 INFO o.a.j.JMeter: Version 5.1 r1853635
-2019-09-04 03:14:31,692 INFO o.a.j.JMeter: java.version=11.0.2
-2019-09-04 03:14:31,692 INFO o.a.j.JMeter: java.vm.name=Java HotSpot(TM) 64-Bit Server VM
-2019-09-04 03:14:31,692 INFO o.a.j.JMeter: os.name=Mac OS X
-2019-09-04 03:14:31,693 INFO o.a.j.JMeter: os.arch=x86_64
-2019-09-04 03:14:31,693 INFO o.a.j.JMeter: os.version=10.14.6
-2019-09-04 03:14:31,693 INFO o.a.j.JMeter: file.encoding=UTF-8
-2019-09-04 03:14:31,693 INFO o.a.j.JMeter: java.awt.headless=null
-2019-09-04 03:14:31,693 INFO o.a.j.JMeter: Max memory     =2147483648
-2019-09-04 03:14:31,694 INFO o.a.j.JMeter: Available Processors =4
-2019-09-04 03:14:31,722 INFO o.a.j.JMeter: Default Locale=中文 (简体，中国)
-2019-09-04 03:14:31,723 INFO o.a.j.JMeter: JMeter  Locale=中文 (简体，中国)
-2019-09-04 03:14:31,723 INFO o.a.j.JMeter: JMeterHome=/Users/zhuzhanhao/apache-jmeter-5.1
-2019-09-04 03:14:31,723 INFO o.a.j.JMeter: user.dir  =/Users/zhuzhanhao/Testapi
-2019-09-04 03:14:31,724 INFO o.a.j.JMeter: PWD       =/Users/zhuzhanhao/Testapi
-2019-09-04 03:14:31,726 INFO o.a.j.JMeter: IP: 192.168.10.234 Name: zhuzhanhaodeMacBook-Air.local FullName: 192.168.10.234
-2019-09-04 03:14:35,493 INFO o.a.j.g.a.LookAndFeelCommand: Installing Darcula LAF
-2019-09-04 03:14:35,553 INFO o.a.j.g.a.LookAndFeelCommand: Using look and feel: com.bulenkov.darcula.DarculaLaf [Darcula]
-2019-09-04 03:14:35,554 INFO o.a.j.JMeter: Setting LAF to: com.bulenkov.darcula.DarculaLaf
-2019-09-04 03:14:35,860 INFO o.a.j.JMeter: Loaded icon properties from org/apache/jmeter/images/icon.properties
-2019-09-04 03:14:37,429 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must contain the string: '.functions.'
-2019-09-04 03:14:37,431 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must not contain the string: '.gui.'
-2019-09-04 03:14:42,699 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/html is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
-2019-09-04 03:14:42,701 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xhtml+xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
-2019-09-04 03:14:42,701 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
-2019-09-04 03:14:42,701 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
-2019-09-04 03:14:42,701 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/vnd.wap.wml is org.apache.jmeter.protocol.http.parser.RegexpHTMLParser
-2019-09-04 03:14:42,702 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/css is org.apache.jmeter.protocol.http.parser.CssParser
-2019-09-04 03:14:44,485 INFO o.a.j.e.KeyToolUtils: keytool found at 'keytool'
-2019-09-04 03:14:44,487 INFO o.a.j.p.h.p.ProxyControl: HTTP(S) Test Script Recorder SSL Proxy will use keys that support embedded 3rd party resources in file /Users/zhuzhanhao/apache-jmeter-5.1/bin/proxyserver.jks
-2019-09-04 03:14:44,904 INFO o.a.j.s.FileServer: Default base='/Users/zhuzhanhao/Testapi'
-2019-09-04 03:14:46,263 INFO o.a.j.s.SampleResult: Note: Sample TimeStamps are START times
-2019-09-04 03:14:46,263 INFO o.a.j.s.SampleResult: sampleresult.default.encoding is set to ISO-8859-1
-2019-09-04 03:14:46,265 INFO o.a.j.s.SampleResult: sampleresult.useNanoTime=true
-2019-09-04 03:14:46,266 INFO o.a.j.s.SampleResult: sampleresult.nanoThreadSleep=5000
-2019-09-04 03:14:46,334 INFO o.a.j.v.ViewResultsFullVisualizer: Add JavaFX to your Java installation if you want to use renderer: org.apache.jmeter.visualizers.RenderInBrowser
-2019-09-04 03:14:57,738 INFO o.a.j.e.StandardJMeterEngine: Running the test!
-2019-09-04 03:14:57,740 INFO o.a.j.s.SampleEvent: List of sample_variables: []
-2019-09-04 03:14:57,741 INFO o.a.j.s.SampleEvent: List of sample_variables: []
-2019-09-04 03:14:57,747 INFO o.a.j.g.u.JMeterMenuBar: setRunning(true, *local*)
-2019-09-04 03:14:57,855 INFO o.a.j.e.StandardJMeterEngine: No enabled thread groups found
-2019-09-04 03:14:57,855 INFO o.a.j.e.StandardJMeterEngine: Notifying test listeners of end of test
-2019-09-04 03:14:57,856 INFO o.a.j.g.u.JMeterMenuBar: setRunning(false, *local*)
-2019-09-04 03:17:44,924 INFO o.a.j.g.a.Load: Loading file: /Users/zhuzhanhao/Downloads/上传文件.jmx
-2019-09-04 03:17:44,926 INFO o.a.j.s.FileServer: Set new base='/Users/zhuzhanhao/Downloads'
-2019-09-04 03:17:45,403 INFO o.a.j.s.SaveService: Testplan (JMX) version: 2.2. Testlog (JTL) version: 2.2
-2019-09-04 03:17:45,480 INFO o.a.j.s.SaveService: Using SaveService properties version 5.0
-2019-09-04 03:17:45,484 INFO o.a.j.s.SaveService: Using SaveService properties file encoding UTF-8
-2019-09-04 03:17:45,489 INFO o.a.j.s.SaveService: Loading file: /Users/zhuzhanhao/Downloads/上传文件.jmx
-2019-09-04 03:17:45,491 WARN o.a.j.g.a.Load: Error reading file. java.io.FileNotFoundException: /Users/zhuzhanhao/Downloads/上传文件.jmx (No such file or directory)
-2019-09-04 03:17:54,107 INFO o.a.j.g.a.Load: Loading file: /Users/zhuzhanhao/Desktop/zzh/ERMS.jmx
-2019-09-04 03:17:54,108 INFO o.a.j.s.FileServer: Set new base='/Users/zhuzhanhao/Desktop/zzh'
-2019-09-04 03:17:54,108 INFO o.a.j.s.SaveService: Loading file: /Users/zhuzhanhao/Desktop/zzh/ERMS.jmx
-2019-09-04 03:17:54,480 INFO o.a.j.v.ViewResultsFullVisualizer: Add JavaFX to your Java installation if you want to use renderer: org.apache.jmeter.visualizers.RenderInBrowser
-2019-09-04 03:17:54,607 INFO o.a.j.v.ViewResultsFullVisualizer: Add JavaFX to your Java installation if you want to use renderer: org.apache.jmeter.visualizers.RenderInBrowser
-2019-09-04 03:17:54,728 INFO o.a.j.v.ViewResultsFullVisualizer: Add JavaFX to your Java installation if you want to use renderer: org.apache.jmeter.visualizers.RenderInBrowser
-2019-09-04 03:17:55,069 INFO o.a.j.v.ViewResultsFullVisualizer: Add JavaFX to your Java installation if you want to use renderer: org.apache.jmeter.visualizers.RenderInBrowser
-2019-09-04 03:17:55,354 INFO o.a.j.s.FileServer: Set new base='/Users/zhuzhanhao/Desktop/zzh'
-2019-09-04 03:18:02,457 INFO o.a.j.e.StandardJMeterEngine: Running the test!
-2019-09-04 03:18:02,458 INFO o.a.j.s.SampleEvent: List of sample_variables: []
-2019-09-04 03:18:02,480 INFO o.a.j.g.u.JMeterMenuBar: setRunning(true, *local*)
-2019-09-04 03:18:02,580 INFO o.a.j.e.StandardJMeterEngine: Starting ThreadGroup: 1 : 测试著录专业record
-2019-09-04 03:18:02,580 INFO o.a.j.e.StandardJMeterEngine: Starting 1 threads for group 测试著录专业record.
-2019-09-04 03:18:02,581 INFO o.a.j.e.StandardJMeterEngine: Thread will stop on error
-2019-09-04 03:18:02,581 INFO o.a.j.t.ThreadGroup: Starting thread group... number=1 threads=1 ramp-up=0 perThread=0.0 delayedStart=false
-2019-09-04 03:18:02,587 INFO o.a.j.t.ThreadGroup: Started thread group number 1
-2019-09-04 03:18:02,589 INFO o.a.j.e.StandardJMeterEngine: All thread groups have been started
-2019-09-04 03:18:02,593 INFO o.a.j.t.JMeterThread: Thread started: 测试著录专业record 1-1
-2019-09-04 03:18:02,644 INFO o.a.j.p.h.s.HTTPHCAbstractImpl: Local host = zhuzhanhaodeMacBook-Air.local
-2019-09-04 03:18:02,662 INFO o.a.j.p.h.s.HTTPHC4Impl: HTTP request retry count = 0
-2019-09-04 03:18:03,878 INFO o.a.j.g.a.Start: Shutting test down
-2019-09-04 03:18:03,913 INFO o.a.j.t.JMeterThread: Stopping: 测试著录专业record 1-1
-2019-09-04 03:18:39,053 INFO o.a.j.g.a.Start: Shutting test down
-2019-09-04 03:18:41,606 INFO o.a.j.g.a.Start: Stopping test
-2019-09-04 03:18:41,641 INFO o.a.j.t.JMeterThread: Stopping: 测试著录专业record 1-1
-2019-09-04 03:18:41,642 WARN o.a.j.t.JMeterThread: Interrupting: 测试著录专业record 1-1 sampler: 著录
-2019-09-04 03:18:41,656 INFO o.a.j.t.JMeterThread: Stop Thread detected by thread: 测试著录专业record 1-1
-2019-09-04 03:18:41,657 INFO o.a.j.t.JMeterThread: Thread finished: 测试著录专业record 1-1
-2019-09-04 03:18:41,658 INFO o.a.j.e.StandardJMeterEngine: Notifying test listeners of end of test
-2019-09-04 03:18:41,659 INFO o.a.j.g.u.JMeterMenuBar: setRunning(false, *local*)
-2019-09-04 03:18:48,924 INFO o.a.j.e.StandardJMeterEngine: Running the test!
-2019-09-04 03:18:48,925 INFO o.a.j.s.SampleEvent: List of sample_variables: []
-2019-09-04 03:18:48,943 INFO o.a.j.g.u.JMeterMenuBar: setRunning(true, *local*)
-2019-09-04 03:18:49,036 INFO o.a.j.e.StandardJMeterEngine: Starting ThreadGroup: 1 : 测试著录专业record
-2019-09-04 03:18:49,037 INFO o.a.j.e.StandardJMeterEngine: Starting 1 threads for group 测试著录专业record.
-2019-09-04 03:18:49,037 INFO o.a.j.e.StandardJMeterEngine: Thread will stop on error
-2019-09-04 03:18:49,037 INFO o.a.j.t.ThreadGroup: Starting thread group... number=1 threads=1 ramp-up=0 perThread=0.0 delayedStart=false
-2019-09-04 03:18:49,041 INFO o.a.j.t.JMeterThread: Thread started: 测试著录专业record 1-1
-2019-09-04 03:18:49,040 INFO o.a.j.t.ThreadGroup: Started thread group number 1
-2019-09-04 03:18:49,044 INFO o.a.j.e.StandardJMeterEngine: All thread groups have been started
-2019-09-04 03:18:57,075 INFO o.a.j.g.a.Start: Stopping test
-2019-09-04 03:18:57,105 INFO o.a.j.t.JMeterThread: Stopping: 测试著录专业record 1-1
-2019-09-04 03:18:57,106 WARN o.a.j.t.JMeterThread: Interrupting: 测试著录专业record 1-1 sampler: 著录
-2019-09-04 03:18:57,113 INFO o.a.j.t.JMeterThread: Stop Thread detected by thread: 测试著录专业record 1-1
-2019-09-04 03:18:57,113 INFO o.a.j.t.JMeterThread: Thread finished: 测试著录专业record 1-1
-2019-09-04 03:18:57,114 INFO o.a.j.e.StandardJMeterEngine: Notifying test listeners of end of test
-2019-09-04 03:18:57,114 INFO o.a.j.g.u.JMeterMenuBar: setRunning(false, *local*)
-2019-09-04 03:19:00,683 INFO o.a.j.e.StandardJMeterEngine: Running the test!
-2019-09-04 03:19:00,684 INFO o.a.j.s.SampleEvent: List of sample_variables: []
-2019-09-04 03:19:00,702 INFO o.a.j.g.u.JMeterMenuBar: setRunning(true, *local*)
-2019-09-04 03:19:00,815 INFO o.a.j.e.StandardJMeterEngine: Starting ThreadGroup: 1 : 测试著录专业record
-2019-09-04 03:19:00,816 INFO o.a.j.e.StandardJMeterEngine: Starting 1 threads for group 测试著录专业record.
-2019-09-04 03:19:00,816 INFO o.a.j.e.StandardJMeterEngine: Thread will stop on error
-2019-09-04 03:19:00,817 INFO o.a.j.t.ThreadGroup: Starting thread group... number=1 threads=1 ramp-up=0 perThread=0.0 delayedStart=false
-2019-09-04 03:19:00,821 INFO o.a.j.t.ThreadGroup: Started thread group number 1
-2019-09-04 03:19:00,823 INFO o.a.j.e.StandardJMeterEngine: All thread groups have been started
-2019-09-04 03:19:00,822 INFO o.a.j.t.JMeterThread: Thread started: 测试著录专业record 1-1
-2019-09-04 03:19:02,047 INFO o.a.j.g.a.Start: Shutting test down
-2019-09-04 03:19:02,073 INFO o.a.j.t.JMeterThread: Stopping: 测试著录专业record 1-1
-2019-09-04 03:19:26,107 INFO o.a.j.g.a.Start: Stopping test
-2019-09-04 03:19:26,137 INFO o.a.j.t.JMeterThread: Stopping: 测试著录专业record 1-1
-2019-09-04 03:19:26,138 WARN o.a.j.t.JMeterThread: Interrupting: 测试著录专业record 1-1 sampler: 著录
-2019-09-04 03:19:26,140 INFO o.a.j.t.JMeterThread: Stop Thread detected by thread: 测试著录专业record 1-1
-2019-09-04 03:19:26,141 INFO o.a.j.t.JMeterThread: Thread finished: 测试著录专业record 1-1
-2019-09-04 03:19:26,142 INFO o.a.j.e.StandardJMeterEngine: Notifying test listeners of end of test
-2019-09-04 03:19:26,142 INFO o.a.j.g.u.JMeterMenuBar: setRunning(false, *local*)
+2019-09-16 08:07:14,007 INFO o.a.j.u.JMeterUtils: Setting Locale to zh_CN_#Hans
+2019-09-16 08:07:14,167 INFO o.a.j.u.JMeterUtils: Could not find resources for 'zh_CN_#Hans', using 'zh_CN'
+2019-09-16 08:07:14,170 INFO o.a.j.JMeter: Loading user properties from: /Users/zhuzhanhao/apache-jmeter-5.1/bin/user.properties
+2019-09-16 08:07:14,188 INFO o.a.j.JMeter: Loading system properties from: /Users/zhuzhanhao/apache-jmeter-5.1/bin/system.properties
+2019-09-16 08:07:14,211 INFO o.a.j.JMeter: Copyright (c) 1998-2019 The Apache Software Foundation
+2019-09-16 08:07:14,212 INFO o.a.j.JMeter: Version 5.1 r1853635
+2019-09-16 08:07:14,212 INFO o.a.j.JMeter: java.version=11.0.2
+2019-09-16 08:07:14,212 INFO o.a.j.JMeter: java.vm.name=Java HotSpot(TM) 64-Bit Server VM
+2019-09-16 08:07:14,212 INFO o.a.j.JMeter: os.name=Mac OS X
+2019-09-16 08:07:14,212 INFO o.a.j.JMeter: os.arch=x86_64
+2019-09-16 08:07:14,212 INFO o.a.j.JMeter: os.version=10.14.6
+2019-09-16 08:07:14,213 INFO o.a.j.JMeter: file.encoding=UTF-8
+2019-09-16 08:07:14,213 INFO o.a.j.JMeter: java.awt.headless=null
+2019-09-16 08:07:14,213 INFO o.a.j.JMeter: Max memory     =2147483648
+2019-09-16 08:07:14,213 INFO o.a.j.JMeter: Available Processors =4
+2019-09-16 08:07:14,245 INFO o.a.j.JMeter: Default Locale=中文 (简体，中国)
+2019-09-16 08:07:14,247 INFO o.a.j.JMeter: JMeter  Locale=中文 (简体，中国)
+2019-09-16 08:07:14,247 INFO o.a.j.JMeter: JMeterHome=/Users/zhuzhanhao/apache-jmeter-5.1
+2019-09-16 08:07:14,247 INFO o.a.j.JMeter: user.dir  =/Users/zhuzhanhao/Testapi
+2019-09-16 08:07:14,248 INFO o.a.j.JMeter: PWD       =/Users/zhuzhanhao/Testapi
+2019-09-16 08:07:14,250 INFO o.a.j.JMeter: IP: 192.168.10.234 Name: zhuzhanhaodeMacBook-Air.local FullName: 192.168.10.234
+2019-09-16 08:07:20,669 INFO o.a.j.g.a.LookAndFeelCommand: Installing Darcula LAF
+2019-09-16 08:07:20,699 INFO o.a.j.g.a.LookAndFeelCommand: Using look and feel: com.bulenkov.darcula.DarculaLaf [Darcula]
+2019-09-16 08:07:20,699 INFO o.a.j.JMeter: Setting LAF to: com.bulenkov.darcula.DarculaLaf
+2019-09-16 08:07:21,015 INFO o.a.j.JMeter: Loaded icon properties from org/apache/jmeter/images/icon.properties
+2019-09-16 08:07:22,855 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must contain the string: '.functions.'
+2019-09-16 08:07:22,875 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must not contain the string: '.gui.'
+2019-09-16 08:07:28,110 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/html is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2019-09-16 08:07:28,113 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xhtml+xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2019-09-16 08:07:28,114 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2019-09-16 08:07:28,114 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2019-09-16 08:07:28,114 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/vnd.wap.wml is org.apache.jmeter.protocol.http.parser.RegexpHTMLParser
+2019-09-16 08:07:28,115 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/css is org.apache.jmeter.protocol.http.parser.CssParser
+2019-09-16 08:07:32,352 INFO o.a.j.e.KeyToolUtils: keytool found at 'keytool'
+2019-09-16 08:07:32,353 INFO o.a.j.p.h.p.ProxyControl: HTTP(S) Test Script Recorder SSL Proxy will use keys that support embedded 3rd party resources in file /Users/zhuzhanhao/apache-jmeter-5.1/bin/proxyserver.jks
+2019-09-16 08:07:32,651 INFO o.a.j.s.FileServer: Default base='/Users/zhuzhanhao/Testapi'
+2019-09-16 08:07:33,900 INFO o.a.j.s.SampleResult: Note: Sample TimeStamps are START times
+2019-09-16 08:07:33,901 INFO o.a.j.s.SampleResult: sampleresult.default.encoding is set to ISO-8859-1
+2019-09-16 08:07:33,902 INFO o.a.j.s.SampleResult: sampleresult.useNanoTime=true
+2019-09-16 08:07:33,902 INFO o.a.j.s.SampleResult: sampleresult.nanoThreadSleep=5000
+2019-09-16 08:07:33,988 INFO o.a.j.v.ViewResultsFullVisualizer: Add JavaFX to your Java installation if you want to use renderer: org.apache.jmeter.visualizers.RenderInBrowser

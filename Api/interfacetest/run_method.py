@@ -21,9 +21,11 @@ class RequestMethod():
             }
             r = requests.get(url, params=params,headers=headers)
             json_response = r.json()
+            # print(r.content,"aaaa")
             return json_response
         except Exception as e:
             print("GET请求出错",e)
+            # return r.content
 
 
 
