@@ -13,8 +13,13 @@ urlpatterns = [
 #----------------------Api_v2 url-----------------------------
     url(r'^apiindex/$', apiindex_view),
     url(r'^apilist/$', apilist_view),
+
     url(r'^transferindex/$', transferindex_view),
     url(r'^transferlist/$', transferlist_view),
+
+    url(r'^adminindex/$', adminindex_view),
+    url(r'^adminlist/$', adminlist_view),
+
     url(r'^create_apicase/$', create_apicase_views),
     url(r'^del_apicase/$', delete_apicase_views),
     url(r'^update_apicase/$', update_apicase_views),

@@ -37,6 +37,13 @@ def transferindex_view(request):
     case_count = Case.objects.filter(system="transfer").count()
     return render(request,"transferindex.html",{"user":"朱占豪","abq":a,"case_count":case_count})
 
+#接口admin用例首页
+@login_required
+def adminindex_view(request):
+    a = request.GET.get("belong","")
+    case_count = Case.objects.filter(system="admin").count()
+    return render(request,"adminindex.html",{"user":"朱占豪","abq":a,"case_count":case_count})
+
 
 #erms用例列表
 @login_required
@@ -48,13 +55,10 @@ def apilist_view(request):
     print("请求进入的模块是:"+belong)
     if casename == "" and belong == "":
         apilists = Case.objects.filter()
-
     #流程接口
-    elif belong == "process":
+    # elif belong == "process":
         #匹配流程字段的值不能等于空
-        apilists = Case.objects.filter(~Q(isprocess= ''))
-
-
+        # apilists = Case.objects.filter(~Q(isprocess= ''))
     elif belong == "unit":
         apilists = Case.objects.filter(belong__contains="单位接口")
     elif belong == "dept":
@@ -97,25 +101,6 @@ def apilist_view(request):
         apilists = Case.objects.filter(belong__contains="公共操作相关接口")
     elif belong == "common_folder":
         apilists = Case.objects.filter(belong__contains="通用文件夹管理接口")
-
-
-    elif belong == "record_yj":
-        apilists = Case.objects.filter(belong__contains="档案管理接口")
-    elif belong == "resource_yj":
-        apilists = Case.objects.filter(belong__contains="资源管理接口")
-    elif belong == "yuwen":
-        apilists = Case.objects.filter(belong__contains="导航管理接口")
-    elif belong == "navigation_yj":
-        apilists = Case.objects.filter(belong__contains="数据表单管理接口")
-    elif belong == "comments":
-        apilists = Case.objects.filter(belong__contains="文件计划管理接口")
-    elif belong == "attribute_mapping_scheme_yj":
-        apilists = Case.objects.filter(belong__contains="公共操作相关接口")
-    elif belong == "common_folder":
-        apilists = Case.objects.filter(belong__contains="通用文件夹管理接口")
-
-
-
     elif belong == "metadata":
         apilists = Case.objects.filter(belong__contains="元数据管理平台接口")
     elif belong == "deposit_form":
@@ -154,7 +139,6 @@ def apilist_view(request):
                 res.append(contact)
             datas = {"code": 0, "msg": "", "count": len(L), "data": res}
             return JsonResponse(datas)
-
 
     L = []
     for weblist in apilists:
@@ -283,6 +267,105 @@ def transferlist_view(request):
     return JsonResponse(datas)
 
 
+#adminn用例列表
+@login_required
+def adminlist_view(request):
+    casename = request.GET.get("key[casename]","")
+    if casename:
+        print("搜索的用例名是:"+casename)
+    belong = request.GET.get('belong',"")
+    print("请求进入的模块是:"+belong)
+    if casename == "" and belong == "":
+        apilists = Case.objects.filter()
+    elif belong == "user_yj":
+        apilists = Case.objects.filter(belong__contains="用户管理接口")
+    elif belong == "record_yj":
+        apilists = Case.objects.filter(belong__contains="Record接口")
+    elif belong == "resource_yj":
+        apilists = Case.objects.filter(belong__contains="资源管理接口")
+    elif belong == "yuwen_yj":
+        apilists = Case.objects.filter(belong__contains="原文接口")
+    elif belong == "navigation_yj":
+        apilists = Case.objects.filter(belong__contains="导航接口")
+    elif belong == "comments_yj":
+        apilists = Case.objects.filter(belong__contains="意见接口")
+    elif belong == "attribute_mapping_scheme_yj":
+        apilists = Case.objects.filter(belong__contains="映射规则接口")
+    elif belong == "volume_yj":
+        apilists = Case.objects.filter(belong__contains="案卷相关接口")
+    elif belong == "archives_yj":
+        apilists = Case.objects.filter(belong__contains="档案相关接口")
+    elif belong == "report_yj":
+        apilists = Case.objects.filter(belong__contains="检测报告相关接口")
+    elif belong == "transfer_form_yj":
+        apilists = Case.objects.filter(belong__contains="移交表单相关接口")
+    elif belong == "metadata_yj":
+        apilists = Case.objects.filter(belong__contains="元数据平台接口")
+
+    elif casename:
+        apilists = Case.objects.filter(casename__contains=casename)
+        print(apilists)
+        if apilists.count() == 0:
+            apilists = Case.objects.filter()
+            L = []
+            for weblist in apilists:
+                if weblist.system == "admin" and "error" in weblist.result and "timestamp" in weblist.result:
+                    # print("存在的啊")
+                    data = {
+                        "caseid": weblist.caseid,
+                        "belong": weblist.belong,
+                        "processid": weblist.isprocess,
+                        "identity": weblist.identity,
+                        "casename": weblist.casename,
+                        "url": weblist.url,
+                        "method": weblist.method,
+                        "params": weblist.params,
+                        "body": weblist.body,
+                        "result": weblist.result
+                    }
+                    L.append(data)
+            print("此模块的用例个数为:" + str(len(L)))
+            pageindex = request.GET.get('page', "")
+            pagesize = request.GET.get("limit", "")
+            pageInator = Paginator(L, pagesize)
+            # 分页
+            contacts = pageInator.page(pageindex)
+            res = []
+            for contact in contacts:
+                res.append(contact)
+            datas = {"code": 0, "msg": "", "count": len(L), "data": res}
+            return JsonResponse(datas)
+
+    L = []
+    for weblist in apilists:
+        if weblist.system == "admin":
+            data = {
+                "caseid": weblist.caseid,
+                "belong":weblist.belong,
+                "processid":weblist.isprocess,
+                "identity": weblist.identity,
+                "casename": weblist.casename,
+                "url": weblist.url,
+                "method": weblist.method,
+                "params": weblist.params,
+                "body": weblist.body,
+                "result": weblist.result
+            }
+            L.append(data)
+    print("此模块的用例个数为:"+str(len(L)))
+    pageindex = request.GET.get('page', "")
+    pagesize = request.GET.get("limit", "")
+    pageInator = Paginator(L, pagesize)
+    # 分页
+    contacts = pageInator.page(pageindex)
+    res = []
+    for contact in contacts:
+        res.append(contact)
+    datas = {"code": 0, "msg": "", "count": len(L), "data": res}
+    return JsonResponse(datas)
+
+
+
 # 创建api用例
 @login_required
 def create_apicase_views(request):
@@ -305,6 +388,13 @@ def create_apicase_views(request):
                 return HttpResponse(e)
 
         elif system == "transfer":
+            try:
+                Case.objects.create(casename=casename, identity=identity, url=url, system=system,
+                                    method=method, params=params, body=body, belong=belong)
+            except Exception as e:
+                return HttpResponse(e)
+
+        elif system == "admin":
             try:
                 Case.objects.create(casename=casename, identity=identity, url=url, system=system,
                                     method=method, params=params, body=body, belong=belong)
@@ -382,10 +472,10 @@ def update_apicase_views(request):
         else:
             Case.objects.filter(caseid=caseid).update(casename=casename, identity=identity, url=url,system=system,
                                   method=method, params=params, body=body, belong=belong)
-        if system == "erms":
-            return HttpResponse("操作成功")
-        else:
-            return HttpResponse("操作成功")
+        # if system == "erms":
+        #     return HttpResponse("操作成功")
+        # else:
+        return HttpResponse("操作成功")
 
 
 #接口详情
@@ -793,8 +883,10 @@ def ding_ding_view(request):
                 head = caseid.exceptres
                 result = caseid.result
                 error_content = json.loads(result)[casename]["message"]
-                dic = {casename:error_content}
+                # dic_json = casename + "错误提示为 : " + error_content
+                dic = {casename + "错误提示为":error_content}
                 dic_json = json.dumps(dic, ensure_ascii=False, sort_keys=True, indent=2)
+                print(dic_json)
                 send_ding(dic_json,head)
         return HttpResponse("操作成功")
     else:
