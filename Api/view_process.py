@@ -87,7 +87,8 @@ def processlist_view(request):
                         "depend_key": weblist.depend_key,
                         "replace_key": weblist.replace_key,
                         "replace_position": weblist.replace_position,
-                        "belong": weblist.belong
+                        "belong": weblist.belong,
+                        "head":weblist.header
                     }
                     L.append(data)
             print("此模块的用例个数为:" + str(len(L)))
@@ -118,7 +119,8 @@ def processlist_view(request):
             "depend_key": weblist.depend_key,
             "replace_key": weblist.replace_key,
             "replace_position": weblist.replace_position,
-            "belong": weblist.belong
+            "belong": weblist.belong,
+            "head": weblist.header
         }
         L.append(data)
     print(len(L))
@@ -197,16 +199,17 @@ def update_processcase_views(request):
         params = request.GET.get('params', "")
         body = request.GET.get("body", "")
         ids = request.GET.get("ids", "")
+        head = request.GET.get("head","")
         print(ids)
         if params:
             print(params)
-            if params == "null":
+            if params == "1":
                 Processapi.objects.filter(caseid=ids).update(params="")
             else:
                 Processapi.objects.filter(caseid=ids).update(params=params)
 
         elif body:
-            if body == "null":
+            if body == "1":
                 Processapi.objects.filter(caseid=ids).update(body="")
             elif "<" in body or ">" in body:
                 print('存在需要替换的符号')
@@ -217,6 +220,10 @@ def update_processcase_views(request):
                 Processapi.objects.filter(caseid=ids).update(body=b)
             else:
                 Processapi.objects.filter(caseid=ids).update(body=body)
+        elif head:
+            print(head)
+            Processapi.objects.filter(caseid=ids).update(header=head)
+
         return HttpResponse("编辑成功")
     elif request.method == "POST":
         print("全部修改")
@@ -374,7 +381,7 @@ def run_processcase_views(request):
         # 存为字典，转换为json格式
         d[casename] = response
         d[casename + "运行时间为"] = str(runtime) + "秒"
-        d["＜" + ucaseid + "＞" + "负责人"] = head
+        # d["＜" + ucaseid + "＞" + "负责人"] = head
         print(d)
         # json格式化
         djson = json.dumps(d, ensure_ascii=False, sort_keys=True, indent=2)

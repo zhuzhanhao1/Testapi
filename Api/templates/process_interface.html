@@ -54,6 +54,10 @@
 		.layui-layout-admin .layui-header {
 			background-color: black;
 		}
+		.layui-layer-input{
+			padding:20px;
+		}
+
 
 
 	</style>
@@ -183,7 +187,7 @@
 		<div style="padding: 15px;">
 			<div class="demoTable">
 				<span class="fa fa-home fa-lg" style="font-size: 40px;color: whitesmoke;">
-					<a id="casetitle" class="layui-anim layui-anim-up" href="/processindex/">
+					<a id="casetitle" class="layui-anim layui-anim-up kit-side-fold">
 						http://amberdata.cn/ermsapi/v2
 					</a>
 				</span>
@@ -207,8 +211,6 @@
 	<div class="layui-row" id="popSearchRoleTest" style="display:none;">
 		<div class="layui-col-md11">
 			<form class="layui-form" lay-filter="createProcess">
-
-
 				<div class="layui-form-item" style="margin-top: 20px;">
 					<label class="layui-form-label">所属模块</label>
 					<div class="layui-input-block">
@@ -659,6 +661,35 @@
 		</div>
 	</div>
 
+	<!--负责人-->
+	<div class="layui-row" id="requestParams">
+		<div class="layui-col-md11">
+			<form class="layui-form">
+				<div class="layui-form-item" style="margin-top: 50px;">
+					<label class="layui-form-label">负责人</label>
+					<div class="layui-input-block">
+						<select name="head" lay-verify="required">
+							<option value="老张">老张</option>
+							<option value="老王">老王</option>
+							<option value="老李">老李</option>
+							<option value="老江">老江</option>
+							<option value="老刘">老刘</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="layui-form-item" style="margin-top: 50px;">
+					<div class="layui-input-block">
+						<button class="layui-btn" lay-submit lay-filter="update_apicase"
+								style="margin-left: 175px;background-color: yellowgreen;">立即提交
+						</button>
+						<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
 </div>
 
 <!--表头按钮-->
@@ -668,8 +699,6 @@
 		<button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="getCheckData">编辑用例</button>
 		<button type="button" onclick="loginuser()" class="layui-btn layui-btn-sm layui-btn-normal">用户信息</button>
 		<button type="button" onclick="gettoken()" class="layui-btn layui-btn-sm layui-btn-normal">获取令牌</button>
-		{#    <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="getCheckLength">获取选中数目</button>#}
-		{#    <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="isAll">验证是否全选</button>#}
 		<button id="Runcase" class="layui-btn layui-btn-sm layui-btn-danger" lay-event="runcase">执行用例</button>
 		<button id="Dingding" class="layui-btn layui-btn-sm layui-btn-danger" lay-event="dingding">钉钉通知</button>
 		<button id="task" class="layui-btn layui-btn-sm layui-btn-danger" lay-event="Timingtask">定时任务</button>
@@ -677,10 +706,10 @@
 </script>
 <!--行内按钮-->
 <script type="text/html" id="barDemo">
-	<a class="layui-icon layui-icon-about" style="color:#74777b;font-size: 21px;" lay-event="detail"></a>
-	<a class="layui-icon-edit layui-icon" lay-event="edit" style="color:#74777b;font-size: 21px;"></a>
-	<a class="layui-icon-survey layui-icon" lay-event="edit1" style="color:#74777b;font-size: 20px;"></a>
-	<a class="layui-icon-delete layui-icon" lay-event="del" style="color: #74777b;font-size: 24px;"></a>
+	<a class="layui-icon layui-icon-tips" style="color:#797979;font-size: 20px;padding:0 2px;vertical-align:middle;font-weight: lighter;" lay-event="requestparams"></a>
+{#	<a class="fa fa-edit" lay-event="edit" style="color:#797979;font-size: 20px;padding:0 2px;vertical-align:middle;font-weight: lighter;"></a>#}
+{#	<a class="layui-icon-survey layui-icon" lay-event="edit1" style="color:#797979;font-size: 20px;padding:0 2px;vertical-align:middle;font-weight: lighter;"></a>#}
+	<a class="fa fa-trash-o" lay-event="del" style="color: #797979;font-size: 20px;padding:0 2px;vertical-align:middle;font-weight: lighter;"></a>
 </script>
 <!--请求方式模板-->
 <script type="text/html" id="methodTpl">
@@ -692,6 +721,12 @@
 	<span style="color: cornflowerblue;">{% verbatim %}{{ d.method }}{% endverbatim %}</span>
 	{% verbatim %}{{# } else if(d.method=== 'delete') { }} {% endverbatim %}
 	<span style="color: deeppink;">{% verbatim %}{{ d.method }}{% endverbatim %}</span>
+
+	{% verbatim %}{{# } else if(d.isMust.indexOf("false") != -1) { }} {% endverbatim %}
+	<span style="color: lightslategrey;">{% verbatim %}{{ d.isMust }}{% endverbatim %}</span>
+
+	{% verbatim %}{{# } else if(d.isMust.indexOf("true") != -1) { }} {% endverbatim %}
+	<span style="color: deeppink;">{% verbatim %}{{ d.isMust }}{% endverbatim %}</span>
 	{% verbatim %}{{#  } }}{% endverbatim %}
 </script>
 <!--用户身份模板-->
@@ -718,12 +753,15 @@
         var index = layer.load(0); //添加laoding,0-2两种方式
         table.render({
             elem: '#test'
-            , height: 577
+            , height: 'full-140'
             , url: '/processlist/' //数据接口
             , toolbar: '#toolbarDemo'
-            , title: '自动化测试用例'
+            , title: 'ERMS流程接口测试'
             , page: {groups: 5} //开启分页
-            , limit: 11
+            //, limit: 10
+			, loading: false
+			, size: 'lg'	//大尺寸 /sm小尺寸
+			, skin: 'line' //行边框风格 /row列表框风格 /nob无边框风格
             , limits: [10, 20, 30, 40, 50, 100, 200]
             , where: {//额外参数
                 belong: '{{ abq }}'
@@ -741,20 +779,25 @@
                 , dataName: 'data' //规定数据列表的字段名称，默认：data
             }
             , cols: [[ //表头
-                {type: 'checkbox', fixed: 'left'}
-                , {field: 'order_no', title: '序号',fixed: 'left', width: 80, sort: true, align: "center"}
-                //, {field: 'caseid', title: 'ID', width: 60, sort: true, fixed: 'left', align: "center"}
-                , {field: 'identity', title: 'User', width: 60, align: "center", templet: "#identityTpl"}
-                , {field: 'casename', title: '用例名字', width: 200, align: "center", templet: "#casenameTpl"}
-                , {field: 'url', title: '请求地址', width: 180, align: "center"}
-                , {field: 'method', title: '请求方式', width: 90, align: "center", templet: "#methodTpl"}
-                , {field: 'params', title: 'Params参数', width: 150, align: "center", edit: 'text'}
-                , {field: 'body', title: 'Data参数', width: 200, align: "center", edit: 'text'}
-                , {
-                    field: 'result', title: '响应内容', width: 220, sort: true, align: "center", templet: function (res) {
-                        if (res.result.indexOf("error") != -1 && res.result.indexOf("timestamp") != -1) {
-                            return '<span style="color: red;">' + res.result + '</span>'
-                        } else if (res.result.indexOf("运行缓慢") != -1) {
+        	{type: 'checkbox'}
+                , {title: '操作', toolbar: '#barDemo', width: 80, align: "left"}
+                //, {field: 'caseid', title: 'ID', width: 60, sort: true, fixed: 'left', align: "left"}
+                , {field: 'identity', title: '', width: 60, align: "center", templet: "#identityTpl", }
+                , {field: 'casename', title: '用例名字', width: 220, align: "left", templet: "#casenameTpl", }
+                , {field: 'url', title: '请求地址', width: 240, align: "left",}
+                , {field: 'method', title: '请求方式', width: 90, align: "left", templet: "#methodTpl", }
+                , {field: 'params', title: 'Params参数', width: 160, align: "left", event: 'params',}
+                , {field: 'body', title: 'Data参数', width: 160, event: 'body',  align: "left", }
+                , {field: 'head', title: '负责人', width: 80, align: "left", event:"head"}
+            , {
+                    field: 'result', title: '响应内容', align: "left", width: 200, event:"detail", templet: function (res) {
+                        if (res.result.indexOf("message") != -1 && res.result.indexOf("error") != -1) {
+                            var a = res.casename;
+                            var b = JSON.parse(res.result);
+                            //console.log(typeof(a));
+                            //console.log(b[a]["message"]);
+                            return '<span style="color: red;">' + JSON.stringify(b[a]["message"]) + '</span>'
+                        } else if (res.result.indexOf("B.") != -1) {
                             return '<span style="color: deeppink;">' + res.result + '</span>'
                         } else {
                             return '<span>' + res.result + '</span>'
@@ -767,7 +810,7 @@
                 , {field: 'replace_key', title: '替换的key', width: 100, align: "center"}
                 , {field: 'replace_position', title: '替换的位置', width: 100, align: "center"}
                 //, {field: 'belong', title: 'a', width: 100,align:"center"}
-                , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 130, align: "center"}
+                //, {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 130, align: "center"}
             ]]
             , id: 'testReload'
             , done: function (res) {   //返回数据执行回调函数
@@ -1147,13 +1190,13 @@
                 layer.prompt({
                     formType: 2,//多行文本
                     value: data.result,
-                    title: false,
-                    anim: 2,//从左滚动进来
-                    skin: "layui-layer-lan",
                     shade: 0.6,
-                    maxmin: true,
+					title:"响应结果",
+                    //anim: 4,//从左滚动进来
+					maxmin:true,
+                    skin: "layui-layer-rim",//hui
+                    closeBtn: 0,
                     area: ['700px', '400px'], //自定义文本域宽高
-                    //closeBtn: 0,
                     btn: ["详情", "关闭"],
                     yes: function () {
                         location.href = "http://127.0.0.1:8000/detail/?id=" + data.caseid
@@ -1181,11 +1224,10 @@
                         data: {
                             "ids": id,
                         },
-                        success: function (data, tableId) {
+                        success: function (data) {
                             layer.msg(data, {
                                 icon: 6,
                                 offset: 't',
-                                anim: 6,
                             });
                             $(".layui-laypage-btn").click();
                         },
@@ -1193,13 +1235,12 @@
                             console.log(data);
                             layer.msg(data, {
                                 offset: 't',
-                                anim: 6,
-                                area: ["200px", "50px"],
+                                icon: 5,
                             });
                         }
                     });
                 });
-            } else if (obj.event === 'edit') {
+            } else if (obj.event === 'params') {
                 layer.prompt({
                     formType: 2
                     , value: data.params
@@ -1243,7 +1284,7 @@
                     });
                     layer.close(index);
                 });
-            } else if (obj.event === 'edit1') {
+            } else if (obj.event === 'body') {
                 layer.prompt({
                     formType: 2
                     , value: data.body,
@@ -1269,7 +1310,7 @@
                         success: function (data) {
                             layer.msg(data, {
                                 offset: 't',
-                                anim: 6,
+                                anim: 2,
                                 icon: 6,
                             });
                         },
@@ -1277,7 +1318,7 @@
                             console.log(data);
                             layer.msg(data, {
                                 offset: 't',
-                                anim: 6,
+                                anim: 2,
                                 icon: 5,
                             });
                         }
@@ -1289,6 +1330,93 @@
                     layer.close(index);
 
                 });
+            } else if (obj.event === 'requestparams') {
+                layui.use('table', function () {
+                    layer.open({
+                        type: 1,
+                        title: "请求参数",
+                        area: ['60%',"75%"],
+                        skin: 'layui-layer-molv',
+                        shade: 0.6,
+                        content: '<div style="padding:15px;"><table id="templateTable"></table></div>',
+                        success: function () {
+                            var table = layui.table;
+                            table.render({
+                                elem: '#templateTable'
+                                , url: "/field_apilist/"
+                                , where: {"caseid": obj.data['caseid']}
+                                //, limit: 11
+								//, height: 'full-200'
+								//,page:true
+								, initSort:{
+                                    field:"isMust",
+									type:"desc"
+								}
+                                , cols: [[
+                                    {field: 'parameterName', title: '参数名称', width: 220, align: "left"}
+                                    , {field: 'parameterThat', title: '参数说明', width: 220, align: "left"}
+                                    , {field: 'requestType', title: '请求类型', width: 100, align: "left"}
+                                    , {field: 'isMust', title: '是否必须', width: 100, align: "left",templet: "#methodTpl"}
+                                    , {field: 'dataType', title: '请求类型', width: 200, align: "left"}
+                                ]]
+                            });
+                        },
+                        btn: ['关闭'],
+                        yes: function () {
+                            layer.closeAll()
+                        }
+
+                    });
+                });
+
+            } else if (obj.event === 'head') {
+                var update_apicase = layer.open({
+                    type: 1
+                    , value: data.head
+                    , title: ["编辑负责人"]
+                    , skin: "layui-layer-lan"
+                    , shade: 0.6
+					,content:$("#requestParams").html()
+                    , area: ['500px', '300px'] //自定义文本域宽高
+                });
+                layui.use('form', function () {
+					var form = layui.form;
+					//监听编辑用户信息，
+					form.on('submit(update_apicase)', function (data) {
+						$.ajax({
+							cache: false,
+							url: "/update_processcase/",
+							dataType: 'text',
+							type: 'GET',
+							//async: false,
+							data: {
+							    "ids":obj.data['caseid'],
+								"head": data.field.head
+							},
+							success: function (data) {
+								layer.msg(data, {
+									icon: 6,
+									offset: 't',
+									anim: 2,
+								});
+								$(".layui-laypage-btn").click();
+							},
+							error: function (data) {
+								console.log(data);
+								layer.msg(data, {
+									icon: 5,
+									offset: 't',
+									anim: 2,
+								});
+							},
+							complete: function () {
+								layer.close(update_apicase);
+							}
+
+						});
+						return false;//阻止表单跳转
+					});
+				})
             }
         });
     });

@@ -48,6 +48,9 @@
 		.layui-layout-admin .layui-header {
 			background-color: black;
 		}
+		.layui-layer-input{
+			padding:20px;
+		}
 
 	</style>
 </head>
@@ -72,6 +75,7 @@
 					<dd class="layui-this"><a href="/transferindex/">Transfer接口测试</a></dd>
 					<dd><a href="/ProcessIndex/">ERMS接口流程测试</a></dd>
 					<dd><a href="/apiindex/">ERMS接口测试</a></dd>
+					<dd><a href="/adminindex/">Admin接口测试</a></dd>
 				</dl>
 			</li>
 			<li class="layui-nav-item">
@@ -709,8 +713,8 @@
 <!--行按钮-->
 <script type="text/html" id="barDemonew">
 	{#  <a class="layui-icon-about layui-icon" lay-event="edit" style="color:#74777b;font-size: 24px;"></a>#}
-	<a class="layui-icon-edit layui-icon" lay-event="edit2" style="color:#74777b;font-size: 24px;"></a>
-	<a class="layui-icon-survey layui-icon" lay-event="edit1" style="color:#74777b;font-size: 21px;"></a>
+{#	<a class="layui-icon-edit layui-icon" lay-event="edit2" style="color:#74777b;font-size: 24px;"></a>#}
+{#	<a class="layui-icon-survey layui-icon" lay-event="edit1" style="color:#74777b;font-size: 21px;"></a>#}
 	<a class="layui-icon-delete layui-icon" lay-event="del" style="color: #74777b;font-size: 24px;"></a>
 </script>
 
@@ -760,12 +764,15 @@
         var index = layer.load(0); //添加laoding,0-2两种方式
         table.render({
             elem: '#test'
-            , height: 577
+            , height: 'full-140'
             , url: '/weblist/' //数据接口
             , toolbar: '#toolbarDemo'
             , title: '功能测试用例'
             , page: true //开启分页
-            , limit: 11
+			, loading: false
+			, size: 'lg'	//大尺寸 /sm小尺寸
+			, skin: 'line' //行边框风格 /row列表框风格 /nob无边框风格
+			, even : true
             , limits: [10, 20, 30, 40, 50, 100, 200]
             , where: {
                 belong: '{{ abq }}'
@@ -783,27 +790,27 @@
                 , dataName: 'data' //规定数据列表的字段名称，默认：data
             }
             , cols: [[ //表头
-                {type: 'checkbox', fixed: 'left'}
-                , {field: 'caseid', title: 'ID', width: 60, sort: true, fixed: 'left', align: "center"}
-                , {field: 'module', title: '所属模块', width: 120, align: "center"}
-                , {field: 'funpoint', title: '功能点', width: 120, align: "center"}
+                {type: 'checkbox'}
+                , {title: '操作', toolbar: '#barDemo', width: 60, align: "left"}
+                , {field: 'caseid', title: 'ID', width: 60, sort: true, align: "left"}
+                , {field: 'module', title: '所属模块', width: 120, align: "left"}
+                , {field: 'funpoint', title: '功能点', width: 120, align: "left"}
                 , {
                     field: 'casename',
                     title: '测试用例名称',
-                    width: 210,
-                    align: "center",
-                    style: 'background-color: lightyellow;'
+                    width: 224,
+                    align: "left",
+                    //style: 'background-color: lightyellow;'
                 }
-                , {field: 'premise', title: '前提条件', width: 150, align: "center"}
-                , {field: 'teststep', title: '测试步骤', width: 220, align: "center", edit: 'text'}
-                , {field: 'exceptres', title: '期望结果', width: 220, sort: true, align: "center"}
+                , {field: 'premise', title: '前提条件', width: 150, align: "left"}
+                , {field: 'teststep', title: '测试步骤', width: 220, align: "left",}
+                , {field: 'exceptres', title: '期望结果', width: 220, align: "left"}
                 , {
                     field: 'result',
                     title: '执行结果',
                     width: 130,
                     sort: true,
-                    align: "center",
-                    edit: 'text',
+                    align: "left",
                     templet: function (res) {
                         if (res.result.indexOf("Failed") != -1) {
                             return '<span style="color: red;">' + res.result + '</span>'
@@ -814,7 +821,7 @@
                         }
                     }
                 }
-                , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 60, align: "center"}
+
             ]]
             , id: 'testReload'
             , done: function (res) {   //返回数据执行回调函数
@@ -965,7 +972,6 @@
                         success: function (data) {
                             layer.msg(data, {
                                 offset: 't',
-                                anim: 6,
                                 icon: 6,
                             });
                         },
@@ -973,7 +979,7 @@
                             console.log(data);
                             layer.msg(data, {
                                 offset: 't',
-                                anim: 6,
+								icon:5
                             });
                         }
                     });
@@ -992,12 +998,15 @@
         var index = layer.load(0); //添加laoding,0-2两种方式
         table.render({
             elem: '#test1'
-            , height: 577
             , url: '/autolist/' //数据接口
             , toolbar: '#toolbarDemo1'
             , title: '自动化功能测试用例'
-            , page: true //开启分页
-            , limit: 11
+            , page: {groups: 5} //开启分页
+			, loading: false
+			, height: 'full-140'
+			//, size: 'lg'	//大尺寸 /sm小尺寸
+			, skin: 'line' //行边框风格 /row列表框风格 /nob无边框风格
+			//,limit:7
             , limits: [10, 20, 30, 40, 50, 100, 200]
             , where: {
                 belong: '{{ abq }}'
@@ -1015,27 +1024,29 @@
                 , dataName: 'data' //规定数据列表的字段名称，默认：data
             }
             , cols: [[ //表头
-                {type: 'checkbox', fixed: 'left'}
-                , {field: 'caseid', title: 'ID', width: 60, sort: true, fixed: 'left', align: "center"}
-                , {field: 'identity', title: 'User', width: 60, align: "center", templet: "#identityTpl"}
+                {type: 'checkbox'}
+                , {title: '操作', toolbar: '#barDemonew', width: 60, align: "left"}
+                , {field: 'caseid', title: 'ID', width: 60, sort: true, align: "left"}
+                , {field: 'identity', title: 'User', width: 60, align: "left", templet: "#identityTpl"}
                 //, {field: 'module', title: '所属模块', width: 120,align:"center"}
                 , {
                     field: 'casename',
                     title: '测试用例名称',
-                    width: 170,
-                    align: "center",
-                    style: 'background-color: lightyellow;'
+                    width: 180,
+                    align: "left",
+                    //style: 'background-color: lightyellow;'
                 }
-                , {field: 'dataready', title: '数据准备', width: 370, align: "center"}
-                , {field: 'teststep', title: '测试步骤', width: 200, align: "center", edit: 'text'}
-                , {field: 'exceptres', title: '期望结果', width: 200, align: "center"}
+                , {field: 'dataready', title: '数据准备', width: 430, align: "left",event:"dataready"}
+                , {field: 'teststep', title: '测试步骤', width: 200, align: "left"}
+                , {field: 'exceptres', title: '期望结果', width: 200, align: "left"}
                 , {
                     field: 'result',
                     title: '执行结果',
-                    width: 120,
+                    width: 100,
                     sort: true,
-                    align: "center",
-                    edit: 'text',
+                    align: "left",
+                    //edit: 'text',
+					event:"result",
                     templet: function (res) {
                         if (res.result.indexOf("Failed") != -1) {
                             return '<span style="color: red;">' + res.result + '</span>'
@@ -1046,7 +1057,7 @@
                         }
                     }
                 }
-                , {fixed: 'right', title: '操作', toolbar: '#barDemonew', width: 110, align: "center"}
+
             ]]
             , id: 'testReload1'
             , done: function (res) {   //返回数据执行回调函数
@@ -1169,14 +1180,6 @@
                     }
                     break;
 
-                case 'getCheckLength1':
-                    var data = checkStatus.data;
-                    layer.msg('选中了：' + data.length + ' 个');
-                    break;
-
-                case 'isAll1':
-                    layer.msg(checkStatus.isAll ? '全选' : '未全选');
-                    break;
 
                 case 'runcase1':
                     var data = checkStatus.data;
@@ -1216,8 +1219,7 @@
                             console.log(data);
                             layer.msg(data, {
                                 offset: 't',
-                                anim: 6,
-                                area: ["200px", "50px"]
+                                icon:5 ,
                             });
                         },
                         complete:function () {
@@ -1267,7 +1269,7 @@
                     });
                 });
 
-            } else if (obj.event === 'edit1') {
+            } else if (obj.event === 'result') {
                 layer.prompt({
                     formType: 2
                     , title: "测试结果"
@@ -1307,7 +1309,7 @@
                     });
                     layer.close(index);
                 });
-            } else if (obj.event === 'edit2') {
+            } else if (obj.event === 'dataready') {
                 layer.prompt({
                     formType: 2
                     , value: data.dataready

@@ -27,6 +27,12 @@ class Case(models.Model):
     # belong_system = models.CharField(max_length=60,verbose_name="所属系统")
     #python3 manage.py migrate Api --fake
     system = models.CharField(max_length=50, verbose_name="所属系统")
+    parameterName = models.CharField(max_length=250, verbose_name="参数名称")
+    parameterThat = models.CharField(max_length=250, verbose_name="参数说明")
+    requestType = models.CharField(max_length=50, verbose_name="请求类型")
+    isMust = models.CharField(max_length=50, verbose_name="是否必须")
+    dataType = models.CharField(max_length=150, verbose_name="数据类型")
+
 
 
     def __str__(self):

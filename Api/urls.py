@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^detail_api/$',detail_api_views),
     url(r'^export_data/$',export_data_views),
     url(r'^ding_ding/$',ding_ding_view),
+    url(r'^field_apilist/$',field_apilist_views),
 
 
 #----------------------Api_process  url-----------------------------
@@ -41,6 +42,7 @@ urlpatterns = [
     url(r'^detail/$',detail_views),
     url(r'^get_userinfo_transfer/$',get_userinfo_transfer_views),
     url(r'^export_data_process/$', export_data_process_views),
+
 
     #----------------------web url-----------------------------
     url(r'^webindex/$',webindex_views),

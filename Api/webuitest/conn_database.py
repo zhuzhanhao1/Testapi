@@ -76,16 +76,24 @@ class ConnDataBase:
         res = self.fetchCount(sql)
         return res
 
+    def get_requestParams(self,id):
+        sql = "select parameterName,parameterThat,requestType,isMust,dataType from ERMS.requestParams where id={};".format(id)
+        self.execute_sql(sql)
+        return self.cursor.fetchall()
+
 
 if __name__ == "__main__":
     data = ConnDataBase()
     # print(data.update_logininfo("haoyi@amberdata.cn","Dctm@1234","admin"))
-    # print(data.get_logininfo("sysadmin")[2])
+    # print(data.get_logininfo("sysadmin")[2])id
     # print(type(data.get_logininfo("sysadmin")[2]))
     # print(str(data.get_logininfo("sysadmin")[2],'utf-8'))
     # print(type(str(data.get_logininfo("sysadmin")[2],'utf-8')))
     # print(data.get_logininfo("admin"))
-    print(data.get_logininfo("uisysadmin"))
+    # print(data.get_logininfo("uisysadmin"))
     # print(data.update_token("saffqewgwrguehrgo","ast"))
+    # print(data.get_requestParams(2))
+    # for i in data.get_requestParams(2):
+    #     print(i[0])
 
     # print(data.update_logininfo("zeh@amberdata.cn","Dctm@1234","ast"))

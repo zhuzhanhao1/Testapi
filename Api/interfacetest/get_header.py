@@ -55,6 +55,12 @@ class GetToken:
                 "loginName": self.yjadmin[0],
                 "password": self.yjadmin[1]
             }
+        #Admin管理员
+        elif role == "adminadmin":
+            params = {
+                "loginName": self.yjadmin[0],
+                "password": self.yjadmin[1]
+            }
         response = requests.post(url, headers=headers, data=json.dumps(params))
         res = response.json()['accessToken']
         # print(res)

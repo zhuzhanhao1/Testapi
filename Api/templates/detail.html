@@ -115,49 +115,49 @@
 			<div class="layui-card">
 				<div class="layui-card-header">Params:</div>
 				<div class="layui-card-body">
-					<textarea id="detail" rows="6" cols="80" readonly="readonly">{{ dic.params }}</textarea>
+					<textarea id="detail" rows="8" cols="80" readonly="readonly">{{ dic.params }}</textarea>
 				</div>
 			</div>
 		</div>
-
 		<div class="layui-col-md12">
-			<div class="layui-card">
-				<div class="layui-card-header">Body:</div>
-				<div class="layui-card-body">
-					<textarea id="detail" rows="6" cols="80" readonly="readonly">{{ dic.body }}</textarea>
-
-				</div>
-			</div>
-		</div>
-
-		<div class="layui-col-md12" style="width: 82%">
 			<div class="layui-card">
 				<div class="layui-card-header">响应内容:</div>
 				<div class="layui-card-body">
+					<textarea id="detail" rows="20" cols="80" readonly="readonly">{{ dic.result }}</textarea>
 
-					<textarea id="detail" rows="9" cols="140" readonly="readonly">{{ dic.result }}</textarea>
+
 				</div>
 			</div>
 		</div>
-
-		<div class="layui-col-md12" style="width: 18%;margin-bottom: 3px;">
+		<div class="layui-col-md12" style="margin-top: -278px;">
 			<div class="layui-card">
-				<div class="layui-card-header">上个结果:</div>
+				<div class="layui-card-header">Body:</div>
 				<div class="layui-card-body">
-					<a type="button" href="/detail/?id={{ dic.back }}" style="color: darkmagenta">点击即将跳转到上个接口的详细信息页</a>
+
+					<textarea id="detail" rows="8" cols="80" readonly="readonly">{{ dic.body }}</textarea>
 				</div>
 			</div>
 		</div>
 
-		<div class="layui-col-md12" style="width: 18%">
-			<div class="layui-card">
-				<div class="layui-card-header">下个结果:</div>
-				<div class="layui-card-body">
-					<a type="button" href="/detail/?id={{ dic.forward }}"
-					   style="color: darkmagenta">点击即将跳转到下个接口的详细信息页</a>
-				</div>
-			</div>
-		</div>
+
+{#		<div class="layui-col-md12" style="width: 18%;margin-bottom: 3px;">#}
+{#			<div class="layui-card">#}
+{#				<div class="layui-card-header">上个结果:</div>#}
+{#				<div class="layui-card-body">#}
+{#					<a type="button" href="/detail/?id={{ dic.back }}" style="color: darkmagenta">点击即将跳转到上个接口的详细信息页</a>#}
+{#				</div>#}
+{#			</div>#}
+{#		</div>#}
+{##}
+{#		<div class="layui-col-md12" style="width: 18%">#}
+{#			<div class="layui-card">#}
+{#				<div class="layui-card-header">下个结果:</div>#}
+{#				<div class="layui-card-body">#}
+{#					<a type="button" href="/detail/?id={{ dic.forward }}"#}
+{#					   style="color: darkmagenta">点击即将跳转到下个接口的详细信息页</a>#}
+{#				</div>#}
+{#			</div>#}
+{#		</div>#}
 
 
 	</div>

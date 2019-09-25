@@ -1,4 +1,6 @@
 import io
+import threading
+
 from xlwt import *
 import os,sys
 import time
@@ -37,6 +39,7 @@ def transferindex_view(request):
     case_count = Case.objects.filter(system="transfer").count()
     return render(request,"transferindex.html",{"user":"朱占豪","abq":a,"case_count":case_count})
 
+
 #接口admin用例首页
 @login_required
 def adminindex_view(request):
@@ -74,7 +77,7 @@ def apilist_view(request):
     elif belong == "data_form_config":
         apilists = Case.objects.filter(belong__contains="数据表单配置管理接口")
     elif belong == "category":
-        apilists = Case.objects.filter(belong__contains="门类模块接口")
+        apilists = Case.objects.filter(belong__contains="门类管理接口")
     elif belong == "class":
         apilists = Case.objects.filter(belong__contains="类目模块接口")
     elif belong == "acl":
@@ -105,7 +108,10 @@ def apilist_view(request):
         apilists = Case.objects.filter(belong__contains="元数据管理平台接口")
     elif belong == "deposit_form":
         apilists = Case.objects.filter(belong__contains="续存记录接口")
-
+    elif belong == "attribute_mapping_scheme":
+        apilists = Case.objects.filter(belong__contains="映射规则接口")
+    elif belong == "transfer_form":
+        apilists = Case.objects.filter(belong__contains="移交表单信息接口")
     elif casename:
         apilists = Case.objects.filter(casename__contains=casename)
         print(apilists)
@@ -122,6 +128,7 @@ def apilist_view(request):
                         "identity": weblist.identity,
                         "casename": weblist.casename,
                         "url": weblist.url,
+                        "head":weblist.exceptres,
                         "method": weblist.method,
                         "params": weblist.params,
                         "body": weblist.body,
@@ -150,6 +157,7 @@ def apilist_view(request):
                 "identity": weblist.identity,
                 "casename": weblist.casename,
                 "url": weblist.url,
+                "head": weblist.exceptres,
                 "method": weblist.method,
                 "params": weblist.params,
                 "body": weblist.body,
@@ -220,6 +228,7 @@ def transferlist_view(request):
                         "identity": weblist.identity,
                         "casename": weblist.casename,
                         "url": weblist.url,
+                        "head": weblist.exceptres,
                         "method": weblist.method,
                         "params": weblist.params,
                         "body": weblist.body,
@@ -248,6 +257,7 @@ def transferlist_view(request):
                 "identity": weblist.identity,
                 "casename": weblist.casename,
                 "url": weblist.url,
+                "head": weblist.exceptres,
                 "method": weblist.method,
                 "params": weblist.params,
                 "body": weblist.body,
@@ -277,30 +287,28 @@ def adminlist_view(request):
     print("请求进入的模块是:"+belong)
     if casename == "" and belong == "":
         apilists = Case.objects.filter()
-    elif belong == "user_yj":
-        apilists = Case.objects.filter(belong__contains="用户管理接口")
-    elif belong == "record_yj":
-        apilists = Case.objects.filter(belong__contains="Record接口")
-    elif belong == "resource_yj":
-        apilists = Case.objects.filter(belong__contains="资源管理接口")
-    elif belong == "yuwen_yj":
-        apilists = Case.objects.filter(belong__contains="原文接口")
-    elif belong == "navigation_yj":
-        apilists = Case.objects.filter(belong__contains="导航接口")
-    elif belong == "comments_yj":
-        apilists = Case.objects.filter(belong__contains="意见接口")
-    elif belong == "attribute_mapping_scheme_yj":
-        apilists = Case.objects.filter(belong__contains="映射规则接口")
-    elif belong == "volume_yj":
-        apilists = Case.objects.filter(belong__contains="案卷相关接口")
-    elif belong == "archives_yj":
-        apilists = Case.objects.filter(belong__contains="档案相关接口")
-    elif belong == "report_yj":
-        apilists = Case.objects.filter(belong__contains="检测报告相关接口")
-    elif belong == "transfer_form_yj":
-        apilists = Case.objects.filter(belong__contains="移交表单相关接口")
-    elif belong == "metadata_yj":
-        apilists = Case.objects.filter(belong__contains="元数据平台接口")
+    elif belong == "business_system":
+        apilists = Case.objects.filter(belong__contains="业务系统接口")
+    elif belong == "common":
+        apilists = Case.objects.filter(belong__contains="公共操作接口")
+    elif belong == "resource_relation":
+        apilists = Case.objects.filter(belong__contains="权限分配接口")
+    elif belong == "event_log":
+        apilists = Case.objects.filter(belong__contains="日志接口")
+    elif belong == "unit":
+        apilists = Case.objects.filter(belong__contains="单位接口")
+    elif belong == "user":
+        apilists = Case.objects.filter(belong__contains="用户接口")
+    elif belong == "org":
+        apilists = Case.objects.filter(belong__contains="组织接口")
+    elif belong == "resource":
+        apilists = Case.objects.filter(belong__contains="菜单接口")
+    elif belong == "role":
+        apilists = Case.objects.filter(belong__contains="角色接口")
+    elif belong == "department":
+        apilists = Case.objects.filter(belong__contains="部门组接口")
+    elif belong == "group":
+        apilists = Case.objects.filter(belong__contains="部门用户接口")
 
     elif casename:
         apilists = Case.objects.filter(casename__contains=casename)
@@ -378,12 +386,13 @@ def create_apicase_views(request):
         body = request.POST.get("body", "")
         identity = request.POST.get("identity", "")
         system = request.POST.get("system","")
+        head = request.POST.get("head","")
         print(system)
 
         if system == "erms":
             try:
                 Case.objects.create(casename=casename, identity=identity, url=url, system=system,
-                                    method=method, params=params, body=body, belong=belong)
+                                    method=method, params=params, body=body, belong=belong, exceptres=head)
             except Exception as e:
                 return HttpResponse(e)
 
@@ -430,24 +439,35 @@ def update_apicase_views(request):
     if request.method == "GET":
         params = request.GET.get('params',"")
         body =request.GET.get("body","")
+        head = request.GET.get("head","")
         ids = request.GET.get("ids","")
         if ids == "":
             return HttpResponse("没有获取请求的ID")
         print(ids)
         if params:
             print(params)
-            if params == "null":
+            if params == "1":
                 Case.objects.filter(caseid=ids).update(params="")
             else:
                 Case.objects.filter(caseid=ids).update(params=params)
 
         elif body:
             print(body)
-            if body == "null":
+            if body == "1":
                 Case.objects.filter(caseid=ids).update(body="")
+            elif "<" in body or ">" in body:
+                print('存在需要替换的符号')
+                a = body.replace("<", "＜")
+                print(a)
+                b = a.replace(">", "＞")
+                print(b)
+                Case.objects.filter(caseid=ids).update(body=b)
             else:
                 Case.objects.filter(caseid=ids).update(body=body)
-        return HttpResponse("编辑成功")
+
+        elif head:
+            Case.objects.filter(caseid=ids).update(exceptres=head)
+        return HttpResponse("操作成功")
     else:
         caseid = request.POST.get("caseID","")
         if caseid == "":
@@ -460,6 +480,7 @@ def update_apicase_views(request):
         params = request.POST.get("params", "")
         body = request.POST.get("body", "")
         system = request.POST.get('system',"")
+        head = request.POST.get("head","")
 
         if "<" in body or ">" in body:
             print('存在需要替换的符号')
@@ -468,10 +489,10 @@ def update_apicase_views(request):
             b = a.replace(">", "＞")
             print(b)
             Case.objects.filter(caseid=caseid).update(casename=casename, identity=identity, url=url,system=system,
-                                  method=method, params=params, body=b, belong=belong)
+                                  method=method, params=params, body=b, belong=belong, exceptres=head)
         else:
             Case.objects.filter(caseid=caseid).update(casename=casename, identity=identity, url=url,system=system,
-                                  method=method, params=params, body=body, belong=belong)
+                                  method=method, params=params, body=body, belong=belong, exceptres=head)
         # if system == "erms":
         #     return HttpResponse("操作成功")
         # else:
@@ -641,6 +662,14 @@ def update_token_api_views(request):
                 return HttpResponse("Failed to return "+ str(e))
         return HttpResponse("操作成功")
 
+    elif system == "admin":
+        if role == "adminadmin":
+            try:
+                GetToken().get_token_by_role("adminadmin")
+            except Exception as e:
+                print(e)
+                return HttpResponse("Failed to return "+ str(e))
+        return HttpResponse("操作成功")
 
 #执行用例
 @login_required
@@ -656,6 +685,8 @@ def run_apicase_views(request):
             #判断当前请求的系统，给对应的系统匹配上对应的URL
             if id.system == "erms":
                 URL = str(con.get_logininfo("sysadmin")[2], 'utf-8')
+            elif id.system == "admin":
+                URL = str(con.get_logininfo("adminadmin")[2], 'utf-8')
             else:
                 URL = str(con.get_logininfo("yjadmin")[2], 'utf-8')
             identity = id.identity
@@ -676,14 +707,28 @@ def run_apicase_views(request):
                     a = body.replace("＜", "<")
                     b = a.replace("＞", ">")
                     body = b
-                body = eval(body)
+                try:
+                    body = eval(body)
+                except Exception as e:
+                    print(e)
+                    print(type(e))
+                    return HttpResponse("NameError")
                 if params:
-                    params = eval(params)
+                    try:
+                        params = eval(params)
+                    except Exception as e:
+                        print(e)
+                        print(type(e))
+                        return HttpResponse("NameError")
                 response = Runmethod.run_main(method, url, params, body)
 
             elif body == '':
                 if params:
-                    params = eval(params)
+                    try:
+                        params = eval(params)
+                    except Exception as e:
+                        print(e)
+                        return HttpResponse(e)
                 response = Runmethod.run_main(method, url, params, body)
 
             endtime = time.time()
@@ -692,12 +737,12 @@ def run_apicase_views(request):
             print(response,"Ssssssssssssssssss")
             d[casename] = response
             if runtime > 0.5 and runtime <= 1.0:
-                d[casename+"运行时间为"] = str(runtime)+"秒"
+                d["A.运行时间为"] = str(runtime) + "秒"
             elif runtime > 3.0:
-                d[casename +"运行缓慢"] = str(runtime)+"秒"
+                d["B.运行时间为"] = str(runtime) + "秒"
             else:
-                d[casename +"运行时间为"] = str(runtime)+"秒"
-            d["＜"+ucaseid+"＞"+"负责人"] = head
+                d["S.运行时间为"] = str(runtime) + "秒"
+            # d["＜"+ucaseid+"＞"+"负责人"] = head
             # print(d)
             # json格式化
             djson = json.dumps(d, ensure_ascii=False, sort_keys=True, indent=2)
@@ -727,6 +772,8 @@ def run_apicase_views(request):
             identity = id.identity
             if id.system == "erms":
                 URL = str(con.get_logininfo("sysadmin")[2], 'utf-8')
+            elif id.system == "admin":
+                URL = str(con.get_logininfo("adminadmin")[2], 'utf-8')
             else:
                 URL = str(con.get_logininfo("yjadmin")[2], 'utf-8')
             url = URL + id.url
@@ -735,10 +782,8 @@ def run_apicase_views(request):
             body = id.body
             casename = id.casename
             head = id.exceptres
-
-            #c从数据库获取token
+            #从数据库获取token
             Runmethod = RequestMethod(identity)
-
             # 计算运行前的时间
             starttime = time.time()
             if body != "":
@@ -762,12 +807,12 @@ def run_apicase_views(request):
 
             d[casename] = response
             if runtime > 0.5 and runtime <= 1.0:
-                d[casename + "运行时间为"] = str(runtime) + "秒"
+                d["A.运行时间为"] = str(runtime) + "秒"
             elif runtime > 3.0:
-                d[casename + "运行缓慢"] = str(runtime) + "秒"
+                d["B.运行时间为"] = str(runtime) + "秒"
             else:
-                d[casename + "运行时间为"] = str(runtime) + "秒"
-            d["＜" + ucaseid + "＞" + "负责人"] = head
+                d["S.运行时间为"] = str(runtime) + "秒"
+            # d["＜" + ucaseid + "＞" + "负责人"] = head
 
             # 将每个结果的字典存放在一个列表中
             L.append(d)
@@ -882,12 +927,139 @@ def ding_ding_view(request):
                 casename = caseid.casename
                 head = caseid.exceptres
                 result = caseid.result
-                error_content = json.loads(result)[casename]["message"]
-                # dic_json = casename + "错误提示为 : " + error_content
-                dic = {casename + "错误提示为":error_content}
-                dic_json = json.dumps(dic, ensure_ascii=False, sort_keys=True, indent=2)
-                print(dic_json)
-                send_ding(dic_json,head)
+                try:
+                    error_content = json.loads(result)[casename]["message"]
+                    # dic_json = casename + "错误提示为 : " + error_content
+                    dic = {casename + "错误提示为":error_content}
+                    dic_json = json.dumps(dic, ensure_ascii=False, sort_keys=True, indent=2)
+                    print(dic_json)
+                    send_ding(dic_json,head)
+                except:
+                    send_ding(result,head)
         return HttpResponse("操作成功")
     else:
         return HttpResponse("操作失败")
+
+
+def thread_view(request):
+    id = request.GET.get("caseid","")
+    iterations = request.GET.get("iterations","")
+    concurrency = request.GET.get("concurrency","")
+    if concurrency == "":
+        L = {0:iterations}
+        thread = []
+        for start,end in L.items():
+            t = threading.Thread(target=run_apicase,args=(start,end))
+            thread.append(t)
+
+        start_time = datetime.now()
+        for i in range(len(thread)):
+            thread[i].start()
+
+        for w in range(len(thread)):
+            thread[w].join()
+        end_time = datetime.now()
+
+        run_time = end_time - start_time
+        print(run_time)
+
+        print("运行已结束")
+
+
+def run_apicase(caseid):
+    con = ConnDataBase()
+    id = Case.objects.get(caseid=caseid)
+    d = {}
+    #判断当前请求的系统，给对应的系统匹配上对应的URL
+    if id.system == "erms":
+        URL = str(con.get_logininfo("sysadmin")[2], 'utf-8')
+    elif id.system == "admin":
+        URL = str(con.get_logininfo("adminadmin")[2], 'utf-8')
+    else:
+        URL = str(con.get_logininfo("yjadmin")[2], 'utf-8')
+    identity = id.identity
+    Runmethod = RequestMethod(identity)
+    url = URL + id.url
+    # print(url)
+    method = id.method
+    params = id.params
+    body = id.body
+    casename = id.casename
+    head = id.exceptres
+    #eval()字符串转字典
+    starttime = time.time()
+    if body != "":
+        if "＜" in body or "＞" in body:
+            print('body存在需要替换的符号')
+            a = body.replace("＜", "<")
+            b = a.replace("＞", ">")
+            body = b
+        body = eval(body)
+        if params:
+            params = eval(params)
+        response = Runmethod.run_main(method, url, params, body)
+
+    elif body == '':
+        if params:
+            params = eval(params)
+        response = Runmethod.run_main(method, url, params, body)
+
+    endtime = time.time()
+    runtime = round(endtime - starttime, 3)
+    # 存为字典，转换为json格式
+    print(response,"Ssssssssssssssssss")
+    d[casename] = response
+    if runtime > 0.5 and runtime <= 1.0:
+        d[casename+"运行时间为"] = str(runtime)+"秒"
+    elif runtime > 3.0:
+        d[casename +"运行缓慢"] = str(runtime)+"秒"
+    else:
+        d[casename +"运行时间为"] = str(runtime)+"秒"
+    d["＜"+caseid+"＞"+"负责人"] = head
+    # print(d)
+    # json格式化
+    djson = json.dumps(d, ensure_ascii=False, sort_keys=True, indent=2)
+    if "<" in djson or ">" in djson:
+        print('result存在需要替换的符号')
+        a = djson.replace("<", "＜")
+        print(a)
+        b = a.replace(">", "＞")
+        print(b)
+        Case.objects.filter(caseid=caseid).update(result=b)
+    else:
+        Case.objects.filter(caseid=caseid).update(result=djson)
+    print(djson)
+    # 发送钉钉消息
+    # send_ding(djson)
+
+
+
+def field_apilist_views(request):
+    id = request.GET.get("caseid","")
+    print("详情查看的ID是:"+id)
+    if id:
+        L = []
+        data = ConnDataBase()
+        res = data.get_requestParams(int(id))
+        for i in res:
+            data = {
+                "parameterName":i[0],
+                "parameterThat": i[1],
+                "requestType": i[2],
+                "isMust":i[3],
+                "dataType":i[4]
+            }
+            L.append(data)
+            print(L)
+        # pageindex = request.GET.get('page', "")
+        # pagesize = request.GET.get("limit", "")
+        # pageInator = Paginator(L, pagesize)
+        # # 分页
+        # contacts = pageInator.page(pageindex)
+        # res = []
+        # for contact in contacts:
+        #     res.append(contact)
+        datas = {"code": 0, "msg": "", "count": len(L), "data": L}
+        return JsonResponse(datas)
+
+
