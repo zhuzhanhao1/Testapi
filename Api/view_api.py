@@ -553,7 +553,7 @@ def detail_api_views(request):
 
 #获取当前用户信息
 @login_required
-def get_userinfo_transfer_views(request):
+def get_userinfo_transfer_views1(request):
     con = ConnDataBase()
     sysadmin = con.get_logininfo("yjadmin")
     a = request.GET.get("ids","")
@@ -627,8 +627,6 @@ def update_token_api_views(request):
     role1 = request.POST.get("identity1","")
     role2 = request.POST.get("identity2", "")
     role3 = request.POST.get("identity3", "")
-    print(system)
-    print(role3)
     if system == "erms":
         if role1 == "sysadmin":
             try:
@@ -736,12 +734,12 @@ def run_apicase_views(request):
             # 存为字典，转换为json格式
             print(response,"Ssssssssssssssssss")
             d[casename] = response
-            if runtime > 0.5 and runtime <= 1.0:
-                d["A.运行时间为"] = str(runtime) + "秒"
+            if runtime > 0.5 and runtime <= 3.0:
+                d["A.响应时长"] = str(runtime) + "秒"
             elif runtime > 3.0:
-                d["B.运行时间为"] = str(runtime) + "秒"
+                d["B.响应时长"] = str(runtime) + "秒"
             else:
-                d["S.运行时间为"] = str(runtime) + "秒"
+                d["S.响应时长"] = str(runtime) + "秒"
             # d["＜"+ucaseid+"＞"+"负责人"] = head
             # print(d)
             # json格式化
@@ -752,7 +750,11 @@ def run_apicase_views(request):
                 print(a)
                 b = a.replace(">", "＞")
                 print(b)
-                Case.objects.filter(caseid=ucaseid).update(result=b)
+                try:
+                    Case.objects.filter(caseid=ucaseid).update(result=b)
+                except Exception as e:
+                    print(e)
+                    return HttpResponse(e)
             else:
                 Case.objects.filter(caseid=ucaseid).update(result=djson)
             print(djson)
@@ -806,12 +808,12 @@ def run_apicase_views(request):
             print(runtime)
 
             d[casename] = response
-            if runtime > 0.5 and runtime <= 1.0:
-                d["A.运行时间为"] = str(runtime) + "秒"
+            if runtime > 0.5 and runtime <= 3.0:
+                d["A.响应时长"] = str(runtime) + "秒"
             elif runtime > 3.0:
-                d["B.运行时间为"] = str(runtime) + "秒"
+                d["B.响应时长"] = str(runtime) + "秒"
             else:
-                d["S.运行时间为"] = str(runtime) + "秒"
+                d["S.响应时长"] = str(runtime) + "秒"
             # d["＜" + ucaseid + "＞" + "负责人"] = head
 
             # 将每个结果的字典存放在一个列表中
@@ -940,7 +942,7 @@ def ding_ding_view(request):
     else:
         return HttpResponse("操作失败")
 
-
+#多线程运行
 def thread_view(request):
     id = request.GET.get("caseid","")
     iterations = request.GET.get("iterations","")
@@ -964,8 +966,6 @@ def thread_view(request):
         print(run_time)
 
         print("运行已结束")
-
-
 def run_apicase(caseid):
     con = ConnDataBase()
     id = Case.objects.get(caseid=caseid)
@@ -1033,7 +1033,7 @@ def run_apicase(caseid):
     # send_ding(djson)
 
 
-
+#请求详情
 def field_apilist_views(request):
     id = request.GET.get("caseid","")
     print("详情查看的ID是:"+id)
@@ -1062,4 +1062,22 @@ def field_apilist_views(request):
         datas = {"code": 0, "msg": "", "count": len(L), "data": L}
         return JsonResponse(datas)
 
+
+#获取当前用户信息
+@login_required
+def get_userinfo_transfer_views(request):
+    con = ConnDataBase()
+    datas = con.get_logininfos()
+    L = []
+    for data in datas:
+        dict = {
+            "identity":data[2],
+            "username":data[0],
+            "password":data[1],
+            "url":str(data[3],"utf-8"),
+            "accessToken":data[4]
+        }
+        L.append(dict)
+    res = {"code": 0, "msg": "", "count": len(L), "data": L}
+    return JsonResponse(res)
 

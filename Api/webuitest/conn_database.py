@@ -63,6 +63,10 @@ class ConnDataBase:
         res = self.fetchCount(sql)
         return res
 
+    def get_logininfos(self):
+        sql = "select * from ERMS.userinfo;"
+        self.execute_sql(sql)
+        return self.cursor.fetchall()
 
     def update_logininfo(self,username,password,identity):
         sql = "update ERMS.userinfo set username='{zhanghao}',password='{mima}'  where identity='{shenfeng}';".format(zhanghao=username,mima=password,shenfeng=identity)
@@ -81,6 +85,10 @@ class ConnDataBase:
         self.execute_sql(sql)
         return self.cursor.fetchall()
 
+    def insert_requestParams(self,id,parameterName,parameterThat,requestType,isMust,dataType):
+        sql = "insert into ERMS.requestParams (id,parameterName,parameterThat,requestType,isMust,dataType) values('{0}','{1}','{2}','{3}','{4}','{5}');".format(id,parameterName,parameterThat,requestType,isMust,dataType)
+        res = self.fetchCount(sql)
+        return res
 
 if __name__ == "__main__":
     data = ConnDataBase()
@@ -96,4 +104,8 @@ if __name__ == "__main__":
     # for i in data.get_requestParams(2):
     #     print(i[0])
 
-    # print(data.update_logininfo("zeh@amberdata.cn","Dctm@1234","ast"))
+    # print(data.insert_requestParams(123,"id","表单配置id","query","true","string"))
+    # print(data.get_requestParams(203))
+    # print(data.get_logininfos())
+    for  i in data.get_logininfos():
+        print(str(i[3],"utf-8"))

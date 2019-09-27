@@ -531,7 +531,7 @@
 	<!--负责人-->
 	<div class="layui-row" id="requestParams">
 		<div class="layui-col-md11">
-			<form class="layui-form">
+			<form class="layui-form" lay-filter="head">
 				<div class="layui-form-item" style="margin-top: 50px;">
 					<label class="layui-form-label">负责人</label>
 					<div class="layui-input-block">
@@ -606,10 +606,10 @@
                 , {field: 'method', title: '请求方式', width: 90, align: "left", templet: "#methodTpl"}
                 , {field: 'params', title: 'Params参数', width: 160, event: 'params', align: "left"}
                 , {field: 'body', title: 'Data参数', width: 160, event: 'body', align: "left"}
-                , {field: 'head', title: '负责人', width: 80,align: "left"}
+                , {field: 'head', title: '负责人', width: 80,align: "left",event: 'head',}
                 , {
                     field: 'result', title: '响应内容', align: "left" ,width: 200, event:"detail", templet: function (res) {
-                        if (res.result.indexOf("message") != -1 && res.result.indexOf("error") != -1) {
+                        if (res.result.indexOf("message") != -1 && res.result.indexOf("error") != -1 && res.result.indexOf(res.casename) != -1) {
                             var a = res.casename;
                             var b = JSON.parse(res.result);
                             //console.log(typeof(a));
@@ -665,16 +665,17 @@
                     value: data.result,
 					title:"响应结果",
                     anim: 2,//从左滚动进来
-					shade :0.6,
+					shade :false,
 					maxmin:true,
+					zIndex:layer.zIndex,
                     skin: "layui-layer-rim",
                     area: ['700px', '400px'], //自定义文本域宽高
                     btn: ["详情", "关闭"],
                     yes: function () {
                         location.href = "http://127.0.0.1:8000/detail_api/?id=" + data.caseid
                     },
-                    btn2: function () {
-                        layer.closeAll();
+                    btn2: function (index) {
+                        layer.close(index);
                     }
                 });
             } else if (obj.event === 'del') {
@@ -791,7 +792,7 @@
                                 area: ["200px", "50px"],
                             });
                         }
-                    })
+                    });
                     //同步更新缓存对应的值
                     obj.update({
                         body: value
@@ -845,47 +846,53 @@
                     , title: ["编辑负责人"]
                     , skin: "layui-layer-lan"
                     , shade: 0.6
-					,content:$("#requestParams").html()
+					, content:$("#requestParams").html()
                     , area: ['500px', '300px'] //自定义文本域宽高
-                });
-                layui.use('form', function () {
-					var form = layui.form;
-					//监听编辑用户信息，
-					form.on('submit(update_apicase)', function (data) {
-						$.ajax({
-							cache: false,
-							url: "/update_apicase/",
-							dataType: 'text',
-							type: 'GET',
-							//async: false,
-							data: {
-							    "ids":obj.data['caseid'],
-								"head": data.field.head
-							},
-							success: function (data) {
-								layer.msg(data, {
-									icon: 6,
-									offset: 't',
-									anim: 2,
-								});
-								$(".layui-laypage-btn").click();
-							},
-							error: function (data) {
-								console.log(data);
-								layer.msg(data, {
-									icon: 5,
-									offset: 't',
-									anim: 2,
-								});
-							},
-							complete: function () {
-								layer.close(update_apicase);
-							}
+                    , success: function () {
+                        layui.use('form', function () {
+                            var form = layui.form;
+                            form.val("head", {
+								//我是对了对抗重置按钮来的
+							});
+                            //监听编辑用户信息，
+                            form.on('submit(update_apicase)', function (data) {
+                                $.ajax({
+                                    cache: false,
+                                    url: "/update_apicase/",
+                                    dataType: 'text',
+                                    type: 'GET',
+                                    //async: false,
+                                    data: {
+                                        "ids": obj.data['caseid'],
+                                        "head": data.field.head
+                                    },
+                                    success: function (data) {
+                                        layer.msg(data, {
+                                            icon: 6,
+                                            offset: 't',
+                                            anim: 2,
+                                        });
+                                        $(".layui-laypage-btn").click();
+                                    },
+                                    error: function (data) {
+                                        console.log(data);
+                                        layer.msg(data, {
+                                            icon: 5,
+                                            offset: 't',
+                                            anim: 2,
+                                        });
+                                    },
+                                    complete: function () {
+                                        layer.close(update_apicase);
+                                    }
 
-						});
-						return false;//阻止表单跳转
-					});
-				})
+                                });
+                                return false;//阻止表单跳转
+                            });
+                        })
+                    }
+                });
+
             }
         });
 

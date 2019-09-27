@@ -14,18 +14,17 @@ class RequestMethod():
 
 
     def get(self,url,params):
+        token = self.con.get_logininfo(self.val)[3]
+        headers = {
+            "accessToken": token
+        }
+        r = requests.get(url, params=params, headers=headers)
         try:
-            token = self.con.get_logininfo(self.val)[3]
-            headers = {
-                "accessToken":token
-            }
-            r = requests.get(url, params=params,headers=headers)
             json_response = r.json()
-            # print(r.content,"aaaa")
             return json_response
         except Exception as e:
             print("GET请求出错",e)
-            # return r.content
+            return r.text
 
 
 
@@ -42,10 +41,25 @@ class RequestMethod():
             return json_response
         except Exception as e:
             print("POST请求出错", e)
+            print("zzh测试啊"+r.text)
+            print(type(r.text))
             return r.text
 
 
-
+    def delfiles(self,url,data=None):
+        data = json.dumps(data)
+        token = self.con.get_logininfo(self.val)[3]
+        headers = {
+            "accessToken": token,
+            "Content-Type": "application/json"
+        }
+        r = requests.delete(url, data=data, headers=headers)
+        try:
+            json_response = r.json()
+            return json_response
+        except Exception as e:
+            print("POST请求出错", e)
+            return r.text
 
     def delfile(self,url,params):
         try:
@@ -59,23 +73,20 @@ class RequestMethod():
         except Exception as e:
             print("DELETE请求出错",e)
 
-
-
     def putfile(self,url,params,data=None):
         data = json.dumps(data)
+        token = self.con.get_logininfo(self.val)[3]
+        headers = {
+            "accessToken": token,
+            "Content-Type": "application/json"
+        }
+        r = requests.put(url, params=params, data=data, headers=headers)
         try:
-            token = self.con.get_logininfo(self.val)[3]
-            headers = {
-                "accessToken":token,
-                "Content-Type":"application/json"
-            }
-            r =requests.put(url,params=params,data=data,headers=headers)
             json_response = r.json()
             return json_response
         except Exception as e:
             print("PUT请求出错",e)
-
-
+            return r.text
 
     def uploadfile(self,url,params,data):
         print(data['path'])
@@ -109,6 +120,8 @@ class RequestMethod():
 
         elif method == 'delete':
             res = self.delfile(url, params)
+        elif method == "Delete":
+            res = self.delfiles(url, data)
 
         elif method == 'put' and data == None:
             res = self.putfile(url, params)
