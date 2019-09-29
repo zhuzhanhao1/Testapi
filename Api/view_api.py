@@ -52,12 +52,57 @@ def adminindex_view(request):
 @login_required
 def apilist_view(request):
     casename = request.GET.get("key[casename]","")
-    if casename:
-        print("搜索的用例名是:"+casename)
+    filterSos = request.GET.get("filterSos","")
     belong = request.GET.get('belong',"")
     print("请求进入的模块是:"+belong)
-    if casename == "" and belong == "":
+    print(filterSos)
+
+    if filterSos:
+        if filterSos == "[]":
+            apilists = Case.objects.filter()
+        else:
+            L = []
+            for i in json.loads(filterSos):
+                filterSos_res = i.get("value")
+                print(filterSos_res)
+
+                apilists = Case.objects.filter(casename__contains=filterSos_res)
+                for weblist in apilists:
+                    if weblist.system == 'erms':
+                        data = {
+                            "caseid": weblist.caseid,
+                            "belong": weblist.belong,
+                            "processid": weblist.isprocess,
+                            "identity": weblist.identity,
+                            "casename": weblist.casename,
+                            "url": weblist.url,
+                            "head": weblist.exceptres,
+                            "method": weblist.method,
+                            "params": weblist.params,
+                            "body": weblist.body,
+                            "result": weblist.result
+                        }
+                        L.append(data)
+            print(L)
+            print("此模块的用例个数为:" + str(len(L)))
+            pageindex = request.GET.get('page', "")
+            pagesize = request.GET.get("limit", "")
+            pageInator = Paginator(L, pagesize)
+            # 分页
+            contacts = pageInator.page(pageindex)
+            res = []
+            for contact in contacts:
+                res.append(contact)
+            datas = {"code": 0, "msg": "", "count": len(L), "data": res}
+            return JsonResponse(datas)
+
+    if casename:
+        print("搜索的用例名是:"+casename)
+
+
+    if casename == "" and belong == "" and filterSos== "":
         apilists = Case.objects.filter()
+
     #流程接口
     # elif belong == "process":
         #匹配流程字段的值不能等于空
@@ -112,6 +157,7 @@ def apilist_view(request):
         apilists = Case.objects.filter(belong__contains="映射规则接口")
     elif belong == "transfer_form":
         apilists = Case.objects.filter(belong__contains="移交表单信息接口")
+
     elif casename:
         apilists = Case.objects.filter(casename__contains=casename)
         print(apilists)
@@ -146,6 +192,7 @@ def apilist_view(request):
                 res.append(contact)
             datas = {"code": 0, "msg": "", "count": len(L), "data": res}
             return JsonResponse(datas)
+
 
     L = []
     for weblist in apilists:
@@ -932,7 +979,7 @@ def ding_ding_view(request):
                 try:
                     error_content = json.loads(result)[casename]["message"]
                     # dic_json = casename + "错误提示为 : " + error_content
-                    dic = {casename + "错误提示为":error_content}
+                    dic = {casename:"error", "message":error_content}
                     dic_json = json.dumps(dic, ensure_ascii=False, sort_keys=True, indent=2)
                     print(dic_json)
                     send_ding(dic_json,head)

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	<title>接口测试平台</title>
+	<title>朱占豪的测试系统</title>
 	<link rel="icon" href="./../static/images/favicon%202.ico">
 	<link rel="stylesheet" href="./../static/css/layui.css">
 	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
@@ -11,6 +11,7 @@
 	<script src="./../static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 	<script src="./../static/js/layui/layui.js"></script>
 	<link rel="stylesheet" href="./../static/font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="./../static/css/soulTable.css">
 	<style>
 		#casetitle {
 			font-size: 22px;
@@ -77,6 +78,20 @@
 		.layui-breadcrumb a+a{
 			color:black!important;
 		}
+		.layui-tab-content{
+			margin-left: 215px;
+			margin-top:-10px;
+		}
+		.layui-tab-title{
+			{#margin-left: 225px;#}
+		}
+		.layui-tab-title>.layui-this{
+			min-width:1200px;
+		}
+		.soul-bottom-contion{
+			border-top:solid 1px #494A5F;
+		}
+
 
 	</style>
 </head>
@@ -109,12 +124,10 @@
 					   style="font-size: 23px;color: white;"></i>&nbsp;用例库
 				</a>
 			</li>
-
 		</ul>
 		<ul class="layui-nav layui-layout-right">
 			<li class="layui-nav-item">
-				<a href="javascript:;"><i class="fa fa-ravelry"
-										  style="font-size: 23px;color: white;font-weight: bolder;"></i>
+				<a href="javascript:;"><i class="fa fa-ravelry" style="font-size: 23px;color: white;font-weight: bolder;"></i>
 					导入导出
 				</a>
 				<dl class="layui-nav-child"> <!-- 二级菜单 -->
@@ -128,16 +141,6 @@
 					</a></dd>
 				</dl>
 			</li>
-{#			<li class="layui-nav-item">#}
-			{#				<a href="javascript:;">#}
-			{#					<i class="fa fa-send-o" style="font-size: 23px;color: white;font-weight: bolder;"></i>#}
-			{#					通知#}
-			{#				</a>#}
-			{#				<dl class="layui-nav-child">#}
-			{#					<dd><a href="https://mail.qq.com/" target="_blank">邮件通知</a></dd>#}
-			{#					<dd><a type="button" lay-event="getCheckLength">钉钉通知</a></dd>#}
-			{#				</dl>#}
-			{#			</li>#}
 			<li class="layui-nav-item">
 				<a href="javascript:;">
 					<img src="./../static/images/1.png" class="layui-nav-img">
@@ -322,8 +325,6 @@
 							   autocomplete="off" class="layui-input">
 					</div>
 				</div>
-
-
 				<div class="layui-form-item">
 					<label class="layui-form-label">请求地址</label>
 					<div class="layui-input-block">
@@ -331,6 +332,7 @@
 							   autocomplete="off" class="layui-input">
 					</div>
 				</div>
+
 
 				<div class="layui-form-item layui-form-text">
 					<label class="layui-form-label">Query Params</label>
@@ -575,7 +577,7 @@
 	<!--导出错误报告-->
 	<div class="layui-row" id="exportData">
 		<div class="layui-col-md11">
-			<form class="layui-form">
+			<form class="layui-form" lay-filter="export_data">
 				<div class="layui-form-item" style="margin-top: 20px;">
 					<label class="layui-form-label">所属系统</label>
 					<div class="layui-input-block">
@@ -633,81 +635,42 @@
 
 </div>
 
-<!--表头按钮-->
-<script type="text/html" id="toolbarDemo">
-	<div class="layui-btn-container">
-		<button type="button" onclick="selectRole()" class="layui-btn layui-btn-sm layui-btn-warm">新建用例</button>
-		<button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="getCheckData">编辑用例</button>
-		<button type="button" onclick="loginuser()" class="layui-btn layui-btn-sm layui-btn-normal">用户信息</button>
-		<button type="button" onclick="gettoken()" class="layui-btn layui-btn-sm layui-btn-normal">获取令牌</button>
-		<button id="Runcase" class="layui-btn layui-btn-sm layui-btn-danger" lay-event="runcase">执行用例</button>
-		<button id="Dingding" class="layui-btn layui-btn-sm layui-btn-danger" lay-event="dingding">钉钉通知</button>
-	</div>
-</script>
-<!--行内按钮-->
-<script type="text/html" id="barDemo">
-	<a class="layui-icon layui-icon-tips" style="color:#797979;font-size: 20px;padding:0 2px;vertical-align:middle;font-weight: lighter;" lay-event="requestparams"></a>
-{#	<a class="fa fa-edit" lay-event="edit" style="color:#797979;font-size: 20px;padding:0 2px;vertical-align:middle;font-weight: lighter;"></a>#}
-{#	<a class="layui-icon-survey layui-icon" lay-event="edit1" style="color:#797979;font-size: 20px;padding:0 2px;vertical-align:middle;font-weight: lighter;"></a>#}
-	<a class="fa fa-trash-o" lay-event="del" style="color: #797979;font-size: 20px;padding:0 2px;vertical-align:middle;font-weight: lighter;"></a>
-</script>
-<!--用例名字超链接模板-->
-<script type="text/html" id="casenameTpl">
-	<a href="/detail_api/?id={% verbatim %}{{d.caseid}}{% endverbatim %}" class="layui-table-link" target="_blank"
-	   style="color: blueviolet;">{% verbatim %}{{d.casename}}{% endverbatim %}</a>
-</script>
-<!--请求方式模板-->
-<script type="text/html" id="methodTpl">
-	{% verbatim %}{{#  if(d.method === 'get'){ }}{% endverbatim %}
-	<span style="color: mediumpurple;">{% verbatim %}{{ d.method }}{% endverbatim %}</span>
-
-	{% verbatim %}{{# } else if(d.method=== 'post') { }} {% endverbatim %}
-	<span style="color: yellowgreen;">{% verbatim %}{{ d.method }}{% endverbatim %}</span>
-
-	{% verbatim %}{{# } else if(d.method=== 'put') { }} {% endverbatim %}
-	<span style="color: #00b4ef;">{% verbatim %}{{ d.method }}{% endverbatim %}</span>
-
-	{% verbatim %}{{# } else if(d.method=== 'delete' || d.method=== 'Delete' ) { }} {% endverbatim %}
-	<span style="color: deeppink;">{% verbatim %}{{ d.method }}{% endverbatim %}</span>
-
-	{% verbatim %}{{# } else if(d.isMust.indexOf("false") != -1) { }} {% endverbatim %}
-	<span style="color: lightslategrey;">{% verbatim %}{{ d.isMust }}{% endverbatim %}</span>
-
-	{% verbatim %}{{# } else if(d.isMust.indexOf("true") != -1) { }} {% endverbatim %}
-	<span style="color: deeppink;">{% verbatim %}{{ d.isMust }}{% endverbatim %}</span>
-
-	{% verbatim %}{{#  } }}{% endverbatim %}
-</script>
-<!--用户身份模板-->
-<script type="text/html" id="identityTpl">
-	{% verbatim %}{{#  if(d.identity === 'sysadmin'){ }}{% endverbatim %}
-	<img src="./../static/images/lufei.png" class="layui-nav-img">
-
-	{% verbatim %}{{# } else if(d.identity=== 'admin') { }} {% endverbatim %}
-	<img src="./../static/images/kenan.png" class="layui-nav-img">
-
-	{% verbatim %}{{# } else if(d.identity=== 'ast') { }} {% endverbatim %}
-	<img src="./../static/images/ast.png" class="layui-nav-img">
-
-	{% verbatim %}{{#  } }}{% endverbatim %}
-</script>
 <!--数据表格JS-->
 <script>
-    layui.use('table', function () {
+    // 自定义模块
+    layui.config({
+        base: './../static/js/layui/lay/modules/',   // 模块目录
+        version: 'v1.3.28'
+    }).extend({             // 模块别名
+        soulTable: 'soulTable'
+    });
+
+    var myTable = layui.use(['table',"soulTable"], function (data) {
         var table = layui.table;
+        soulTable = layui.soulTable;
         //第一个实例
         var layer = layui.layer;
         var index = layer.load(0); //添加laoding,0-2两种方式
         table.render({
             elem: '#test'
-            //, height: 577
             , url: '/apilist/' //数据接口
             , toolbar: '#toolbarDemo'
             , title: 'ERMS接口测试'
             , page: {groups: 5} //开启分页
-            //, limit: 10
+            //, limit: 10 //默认是10
 			, loading: false
 			, height: 'full-140'
+			, drag: {toolbar: true}//实现固定列与非固定列之间的转换
+            , rowDrag: {
+                trigger: 'row', done: function (obj) {
+                    // 完成时（松开时）触发
+                    // 如果拖动前和拖动后无变化，则不会触发此方法
+                    console.log(obj.row);// 当前行数据
+                    console.log(obj.cache); // 改动后全表数据
+                    console.log(obj.oldIndex); // 原来的数据索引
+                    console.log(obj.newIndex); // 改动后数据索引
+                }
+            }
 			, size: 'lg'	//大尺寸 /sm小尺寸
 			, skin: 'line' //行边框风格 /row列表框风格 /nob无边框风格
             , limits: [10, 20, 30, 40, 50, 100, 200]
@@ -717,7 +680,6 @@
             , request: {
                 pageName: 'page' //页码的参数名称，默认：page
                 , limitName: 'limit' //每页数据量的参数名，默认：limit
-                ,
             }
             , response: {
                 statusName: 'code' //规定数据状态的字段名称，默认：code
@@ -726,19 +688,160 @@
                 , countName: 'count' //规定数据总数的字段名称，默认：count
                 , dataName: 'data' //规定数据列表的字段名称，默认：data
             }
+            ,contextmenu: {
+				// 表头右键菜单配置
+				header: [
+					{
+						name: '复制',
+						icon: 'layui-icon layui-icon-template',
+						click: function(obj) {
+							layer.msg('复制操作自行处理。待复制内容: <span class="layui-red">' + obj.text + '</span>')
+						}
+					},
+					{
+						name: '导出excel',
+						click: function() {
+						  soulTable.export(this.id)
+						}
+					},
+					{
+						name: '重载表格',
+						icon: 'layui-icon layui-icon-refresh-1',
+						click: function() {
+							table.reload(this.id)
+						}
+					},
+					{
+						name: '字体颜色',
+						icon: 'layui-icon layui-icon-theme',
+						children: [
+							{
+								 name: '红色',
+								 children: [
+									 {
+										name: '大红色',
+										click: function(obj) {
+										  obj.elem.css('color', 'red')
+										}
+									 },
+									 {
+										name: '粉红色',
+										click: function(obj) {
+										  obj.elem.css('color', 'black')
+										}
+									 },
+								 ]
+							},
+							{
+								 name: '绿色',
+								 click: function(obj) {
+								   obj.elem.css('color', '#009688')
+								 }
+							 }
+						 ]
+					}
+					,
+					{
+						name: '背景色',
+						icon: 'layui-icon layui-icon-theme',
+						children: [
+							{
+								 name: '蓝色',
+								 click: function(obj) {
+									obj.elem.css('background', '#01AAED')
+								 }
+							},
+							{
+								 name: '黄色',
+								 click: function(obj) {
+								   obj.elem.css('background', '#FFB800')
+								 }
+							 }
+						 ]
+					}
+				],
+				// 表格内容右键菜单配置
+				body: [
+					{
+						name: '删除当前行数据',
+						click: function(obj) {
+							obj.del()
+						}
+					},
+					{
+						name: '更新数据',
+						click: function(obj) {
+							obj.update({author: obj.row.author + '+1'})
+						}
+					},
+					{
+						name: '行-蓝色',
+						click: function(obj) {
+							obj.trElem.css('background', '#01AAED')
+						}
+					},
+					{
+						name: '红色',
+						click: function(obj) {
+						  obj.elem.css('color', 'red')
+						}
+					}
+				],
+				// 合计栏右键菜单配置
+				total: [
+					{
+						name: '背景黄色',
+						click: function(obj) {
+						  obj.elem.css('background', '#FFB800')
+						}
+					}
+				]
+			}
+			//,overflow: {
+				//type: 'tips'
+				//,hoverTime: 300 // 悬停时间，单位ms, 悬停 hoverTime 后才会显示，默认为 0
+				//,color: 'black' // 字体颜色
+				//,bgColor: 'white' // 背景色
+				//,minWidth: 100 // 最小宽度
+				//,maxWidth: 500 // 最大宽度
+			//}
             , cols: [[ //表头, fixed: 'left'
                 {type: 'checkbox'}
                 , {title: '操作', toolbar: '#barDemo', width: 80, align: "left"}
                 //, {field: 'caseid', title: 'ID', width: 60,  align: "left"}
                 , {field: 'identity', title: '', width: 60, align: "center", templet: "#identityTpl"}
-                , {field: 'casename', title: '用例名字', width: 228, align: "left", templet: "#casenameTpl"}
-                , {field: 'url', title: '请求地址', width: 240, align: "left"}
-                , {field: 'method', title: '请求方式', width: 90, align: "left", templet: "#methodTpl"}
-                , {field: 'params', title: 'Params参数', width: 160, align: "left", event: 'params'}
-                , {field: 'body', title: 'Data参数', width: 160, event: 'body',  align: "left"}
-                , {field: 'head', title: '负责人', width: 80, align: "left",event:"head"}
+                , {field: 'casename', title: 'CaseName', width: 228, align: "left", filter: true, templet: "#casenameTpl",children:[
+                    {
+						elem: '#templateTable'
+						, url: "/field_apilist/"
+						, where: function (row) {
+							console.log(row);
+							return {caseid:row.caseid}
+                        }
+						, title:"请求参数详情"
+						, skin :'nob'
+						//, size : "sm"
+						, cols: [[
+							{field: 'parameterName', title: '参数名称', width: 220, align: "left"}
+							, {field: 'parameterThat', title: '参数说明', width: 250, align: "left"}
+							, {field: 'requestType', title: '请求类型', width: 100, align: "left"}
+							, {field: 'isMust', title: '是否必须', width: 100, align: "left",templet: "#methodTpl",sort:true}
+							, {field: 'dataType', title: '请求类型', width: 190, align: "left"}
+						]]
+						,done:function (data) {
+						    //console.log(data);
+							soulTable.render(this);
+                        }
+
+					}
+				]}// filter: true
+                , {field: 'url', title: 'Url', width: 220, align: "left"}
+                , {field: 'method', title: 'Method', width: 90, sort:true,align: "left", templet: "#methodTpl"}
+                , {field: 'params', title: 'Query Params', width: 160, align: "left", event: 'params'}
+                , {field: 'body', title: 'Body', width: 160, event: 'body',  align: "left"}
+                , {field: 'head', title: 'Head', width: 80, align: "left",event:"head"}//merge: true行合并
                 , {
-                    field: 'result', title: '响应内容', align: "left", width: 200, event:"detail", templet: function (res) {
+                    field: 'result', title: 'Response', align: "left", width: 200, event:"detail", templet: function (res) {
                         if (res.result.indexOf("message") != -1 && res.result.indexOf("error") != -1 && res.result.indexOf(res.casename) != -1) {
                             var a = res.casename;
                             var b = JSON.parse(res.result);
@@ -754,11 +857,17 @@
                 }
 
             ]]
+            ,filter: {
+            items:['column','editCondition','excel'] // 只显示表格列和导出excel两个菜单项
+        	}
             , id: 'testReload'
             , done: function (res) {   //返回数据执行回调函数
                 layer.close(index);    //返回数据关闭loading
+                soulTable.render(this);
             }
         });
+
+
         //搜索
         layui.$, active = {
             reload: function () {
@@ -975,57 +1084,64 @@
 							offset:"t"
                         });
                     } else {
-                        var ids = "";
-                        for (i = 0; i < data.length; i++) {
-                            ids += data[i]["caseid"] + ",";
-                            console.log(ids);
-                        }
-                        layer.msg(
-							"你选择的用例编号是:"+ids,
-							{anim:1,}
-						);
-                        $.ajax({
-                            cache: false,
-                            url: "/ding_ding/",
-                            dataType: 'text',
-                            type: 'GET',
-                            //async: false,
-                            data: {
-                                "caseid": ids
-                            },
-                            //请求前的处理,加载loading
-                            beforeSend: function () {
-                                document.getElementById("Dingding").setAttribute("disabled", true);
-                                document.getElementById("Dingding").innerHTML = "loading...";
-                                l_index = layer.load(0, {
-                                    shade: [0.5, '#DBDBDB'] //0.1透明度的白色背景
-                                });
-                            },
-                            success: function (data) {
-                                console.log(data);
-                                layer.msg(data, {
-                                    icon: 6,
-                                    offset: 't',
+                        layer.confirm("你确定要发送接口请求结果给相应的负责人吗？\n注意:请求正常发送所有结果信息，请求失败发送错误内容", {
+                                icon: 3,
+                                btn: ["确定", "取消"]
+                            }, function () {
+                                var ids = "";
+                                for (i = 0; i < data.length; i++) {
+                                    ids += data[i]["caseid"] + ",";
+                                    console.log(ids);
+                                }
+                                $.ajax({
+                                    cache: false,
+                                    url: "/ding_ding/",
+                                    dataType: 'text',
+                                    type: 'GET',
+                                    //async: false,
+                                    data: {
+                                        "caseid": ids
+                                    },
+                                    //请求前的处理,加载loading
+                                    beforeSend: function () {
+                                        document.getElementById("Dingding").setAttribute("disabled", true);
+                                        document.getElementById("Dingding").innerHTML = "loading...";
+                                        l_index = layer.load(0, {
+                                            shade: [0.5, '#DBDBDB'] //0.1透明度的白色背景
+                                        });
+                                    },
+                                    success: function (data) {
+                                        console.log(data);
+                                        layer.msg(data, {
+                                            icon: 6,
+                                            offset: 't',
+                                        });
+
+                                    },
+                                    error: function (data) {
+                                        console.log(data);
+                                        layer.msg(data, {
+                                            icon: 5,
+                                            offset: 't',
+                                            anim: 6
+                                        });
+                                    },
+                                    complete: function () {
+                                        document.getElementById("Dingding").removeAttribute("disabled");
+                                        document.getElementById("Dingding").innerHTML = "钉钉通知";
+                                        layer.close(l_index);
+                                    }
                                 });
 
-                            },
-                            error: function (data) {
-                                console.log(data);
-                                layer.msg(data, {
-                                    icon: 5,
-                                    offset: 't',
-                                    anim: 6
-                                });
-                            },
-                            complete: function () {
-                                document.getElementById("Dingding").removeAttribute("disabled");
-                                document.getElementById("Dingding").innerHTML = "钉钉通知";
-                                layer.close(l_index);
+                            }, function () {
+                                layer.msg(
+                                    "取消发送钉钉消息",
+                                    {icon: 1,offset:"t"}
+                                );
                             }
-                        });
+                        );
                     }
                     break;
-
             }
         });
         //监听行工具事件
@@ -1593,45 +1709,51 @@
             area: ['40%', '35%'],
             skin: "layui-layer-rim",
             shade: 0.6,
-            content: $("#exportData").html()
-        });
-        layui.use('form', function () {
-            var form = layui.form;
-            //监听编辑用户信息，
-            form.on('submit(export_data)', function (data) {
-                $.ajax({
-                    cache: false,
-                    url: "/export_data/",
-                    dataType: 'text',
-                    type: 'GET',
-                    async: false,//同步
-                    data: {
-                        "content": data.field.content,
-                        "system": data.field.system
-                    },
-                    success: function (data) {
-                        console.log(data);
-                        layer.msg(data, {
-                            icon: 6,
-                            offset: 't',
-                            anim: 6,
+            content: $("#exportData").html(),
+            success: function () {
+                layui.use('form', function () {
+                    var form = layui.form;
+                    //监听编辑用户信息，
+                    form.val("export_data", {
+                       // "casename": "sysadmin",
+                    });
+                    form.on('submit(export_data)', function (data) {
+                        $.ajax({
+                            cache: false,
+                            url: "/export_data/",
+                            dataType: 'text',
+                            type: 'GET',
+                            async: false,//同步
+                            data: {
+                                "content": data.field.content,
+                                "system": data.field.system
+                            },
+                            success: function (data) {
+                                console.log(data);
+                                layer.msg(data, {
+                                    icon: 6,
+                                    offset: 't',
+                                    anim: 6,
+                                });
+                            },
+                            error: function (data) {
+                                console.log(data);
+                                layer.msg(data, {
+                                    icon: 5,
+                                    offset: 't',
+                                    anim: 6,
+                                });
+                            },
+                            complete: function () {
+                                layer.close(exportData);
+                            }
                         });
-                    },
-                    error: function (data) {
-                        console.log(data);
-                        layer.msg(data, {
-                            icon: 5,
-                            offset: 't',
-                            anim: 6,
-                        });
-                    },
-                    complete: function () {
-                        layer.close(exportData);
-                    }
+                        return false;//阻止表单跳转
+                    });
                 });
-                return false;//阻止表单跳转
-            });
+            }
         });
+
     }
 	//获取用户信息v2
     function get_user_info() {
@@ -1671,7 +1793,7 @@
 
         });
     }
-    //
+    //鼠标移交时间
 	function erms_move_tip() {
 		layer.tips('点我切换左侧导航的收缩。', '.casetitle', {
 		  tips: [2,'#3595CC'],
@@ -1687,8 +1809,84 @@
     function erms_out_tip() {
 		layer.closeAll();
     }
+	//测试tab
+    function tab_test() {
+        var Create_apicase = layer.tab({
+            type: 1,
+            {#skin: "layui-layer-rim",#}
+            area: ['40%', '90%'],
+            tab: [{
+                title: "新建用例",
+                content: $("#popSearchRoleTest").html(),
+
+            },
+                {
+                    title: "tab2",
+                    content: $("#popSearchRoleTesta").html(),
+                }],
+		});
+    }
 </script>
 
+<!--表头按钮-->
+<script type="text/html" id="toolbarDemo">
+	<div class="layui-btn-container">
+{#		<button class="layui-btn" id="export"><i class="layui-icon layui-icon-download-circle"></i>导出</button>#}
+		<button type="button" onclick="selectRole()" class="layui-btn layui-btn-sm layui-btn-warm">新建用例</button>
+		<button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="getCheckData">编辑用例</button>
+		<button type="button" onclick="loginuser()" class="layui-btn layui-btn-sm layui-btn-normal">用户信息</button>
+		<button type="button" onclick="gettoken()" class="layui-btn layui-btn-sm layui-btn-normal">获取令牌</button>
+		<button id="Runcase" class="layui-btn layui-btn-sm layui-btn-danger" lay-event="runcase">执行用例</button>
+		<button id="Dingding" class="layui-btn layui-btn-sm layui-btn-danger" lay-event="dingding">钉钉通知</button>
+	</div>
+</script>
+<!--行内按钮-->
+<script type="text/html" id="barDemo">
+	<a class="layui-icon layui-icon-tips" style="color:#797979;font-size: 20px;padding:0 2px;vertical-align:middle;font-weight: lighter;" lay-event="requestparams"></a>
+{#	<a class="fa fa-edit" lay-event="edit" style="color:#797979;font-size: 20px;padding:0 2px;vertical-align:middle;font-weight: lighter;"></a>#}
+{#	<a class="layui-icon-survey layui-icon" lay-event="edit1" style="color:#797979;font-size: 20px;padding:0 2px;vertical-align:middle;font-weight: lighter;"></a>#}
+	<a class="fa fa-trash-o" lay-event="del" style="color: #797979;font-size: 20px;padding:0 2px;vertical-align:middle;font-weight: lighter;"></a>
+</script>
+<!--用例名字超链接模板-->
+<script type="text/html" id="casenameTpl">
+	<a href="/detail_api/?id={% verbatim %}{{d.caseid}}{% endverbatim %}" class="layui-table-link" target="_blank"
+	   style="color: blueviolet;">{% verbatim %}{{d.casename}}{% endverbatim %}</a>
+</script>
+<!--请求方式模板-->
+<script type="text/html" id="methodTpl">
+	{% verbatim %}{{#  if(d.method === 'get'){ }}{% endverbatim %}
+	<span style="color: mediumpurple;">{% verbatim %}{{ d.method }}{% endverbatim %}</span>
+
+	{% verbatim %}{{# } else if(d.method=== 'post') { }} {% endverbatim %}
+	<span style="color: yellowgreen;">{% verbatim %}{{ d.method }}{% endverbatim %}</span>
+
+	{% verbatim %}{{# } else if(d.method=== 'put') { }} {% endverbatim %}
+	<span style="color: #00b4ef;">{% verbatim %}{{ d.method }}{% endverbatim %}</span>
+
+	{% verbatim %}{{# } else if(d.method=== 'delete' || d.method=== 'Delete' ) { }} {% endverbatim %}
+	<span style="color: deeppink;">{% verbatim %}{{ d.method }}{% endverbatim %}</span>
+
+	{% verbatim %}{{# } else if(d.isMust.indexOf("false") != -1) { }} {% endverbatim %}
+	<span style="color: lightslategrey;">{% verbatim %}{{ d.isMust }}{% endverbatim %}</span>
+
+	{% verbatim %}{{# } else if(d.isMust.indexOf("true") != -1) { }} {% endverbatim %}
+	<span style="color: deeppink;">{% verbatim %}{{ d.isMust }}{% endverbatim %}</span>
+
+	{% verbatim %}{{#  } }}{% endverbatim %}
+</script>
+<!--用户身份模板-->
+<script type="text/html" id="identityTpl">
+	{% verbatim %}{{#  if(d.identity === 'sysadmin'){ }}{% endverbatim %}
+	<img src="./../static/images/lufei.png" class="layui-nav-img">
+
+	{% verbatim %}{{# } else if(d.identity=== 'admin') { }} {% endverbatim %}
+	<img src="./../static/images/kenan.png" class="layui-nav-img">
+
+	{% verbatim %}{{# } else if(d.identity=== 'ast') { }} {% endverbatim %}
+	<img src="./../static/images/ast.png" class="layui-nav-img">
+
+	{% verbatim %}{{#  } }}{% endverbatim %}
+</script>
 
 </body>
 </html>
