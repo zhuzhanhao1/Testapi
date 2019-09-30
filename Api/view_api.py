@@ -975,19 +975,40 @@ def ding_ding_view(request):
             if caseid:
                 casename = caseid.casename
                 head = caseid.exceptres
-                result = caseid.result
-                try:
-                    error_content = json.loads(result)[casename]["message"]
-                    # dic_json = casename + "错误提示为 : " + error_content
-                    dic = {casename:"error", "message":error_content}
-                    dic_json = json.dumps(dic, ensure_ascii=False, sort_keys=True, indent=2)
-                    print(dic_json)
-                    send_ding(dic_json,head)
-                except:
-                    send_ding(result,head)
-        return HttpResponse("操作成功")
-    else:
-        return HttpResponse("操作失败")
+                if caseid.result:
+                    res = json.loads(caseid.result)
+                    result = [res]
+                else:
+                    result = ""
+                if caseid.params:
+                    par = json.loads(caseid.params)
+                    params = [par]
+                else:
+                    params= ""
+                if caseid.body:
+                    bod = json.loads(caseid.body)
+                    body = [bod]
+                else:
+                    body=""
+                url = caseid.url
+                method = caseid.method
+                # error_content = json.loads(result)[casename]["message"]
+                # dic_json = casename + "错误提示为 : " + error_content
+                # dic = {casename:"error", "message":error_content}
+                dic = {
+                    "InterfaceName":casename,
+                    "Url": url,
+                    "Method":method,
+                    "Query":params,
+                    "Body":body,
+                    "Response":result
+                }
+                dic_json = json.dumps(dic, ensure_ascii=False, sort_keys=True, indent=2)#
+                print(dic_json)
+                # send_ding(dic_json,head)
+                return HttpResponse("操作成功")
+            else:
+                return HttpResponse("不存在的ID")
 
 #多线程运行
 def thread_view(request):

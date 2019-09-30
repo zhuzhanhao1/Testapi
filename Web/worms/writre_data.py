@@ -17,10 +17,10 @@ import json
 #     f.close()
 #     a += 1
 
-a = '[{"prefix":"and","field":"casename","mode":"condition","type":"eq","value":"创建","id":1}]'
-f = json.loads(a)[0].get("value")
-print(type(json.loads(a)[0]))
-print(f)
+# a = '[{"prefix":"and","field":"casename","mode":"condition","type":"eq","value":"创建","id":1}]'
+# f = json.loads(a)[0].get("value")
+# print(type(json.loads(a)[0]))
+# print(f)
 # b = list(a)
 # d = a.split(",")
 # for i in d:
@@ -30,5 +30,8 @@ print(f)
 # print(e)
 # c = ",".join(b)
 # print(d)
-
-
+a = "{\n  \"A.响应时长\": \"0.528秒\",\n  \"归档\": {\n    \"data\": null,\n    \"error\": \"Bad Request\",\n    \"message\": \"empty String\",\n    \"path\": \"http://localhost:8080/ermsapi/archives/file\",\n    \"status\": 400,\n    \"timestamp\": 1569556784063\n  }\n}"
+b = json.loads(a)
+d = [b]
+c = json.dumps(b)
+print(d)

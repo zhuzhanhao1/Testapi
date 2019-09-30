@@ -44,7 +44,7 @@
 		#sousuo {
 			position: fixed;
 			right: 15px;
-			bottom: 610px;
+			top: 80px;
 		}
 
 		.layui-laypage .layui-laypage-curr .layui-laypage-em {
@@ -78,20 +78,9 @@
 		.layui-breadcrumb a+a{
 			color:black!important;
 		}
-		.layui-tab-content{
-			margin-left: 215px;
-			margin-top:-10px;
-		}
-		.layui-tab-title{
-			{#margin-left: 225px;#}
-		}
-		.layui-tab-title>.layui-this{
-			min-width:1200px;
-		}
 		.soul-bottom-contion{
 			border-top:solid 1px #494A5F;
 		}
-
 
 	</style>
 </head>
@@ -692,19 +681,6 @@
 				// 表头右键菜单配置
 				header: [
 					{
-						name: '复制',
-						icon: 'layui-icon layui-icon-template',
-						click: function(obj) {
-							layer.msg('复制操作自行处理。待复制内容: <span class="layui-red">' + obj.text + '</span>')
-						}
-					},
-					{
-						name: '导出excel',
-						click: function() {
-						  soulTable.export(this.id)
-						}
-					},
-					{
 						name: '重载表格',
 						icon: 'layui-icon layui-icon-refresh-1',
 						click: function() {
@@ -733,9 +709,9 @@
 								 ]
 							},
 							{
-								 name: '绿色',
+								 name: '黑色',
 								 click: function(obj) {
-								   obj.elem.css('color', '#009688')
+								   obj.elem.css('color', 'black')
 								 }
 							 }
 						 ]
@@ -810,7 +786,7 @@
                 , {title: '操作', toolbar: '#barDemo', width: 80, align: "left"}
                 //, {field: 'caseid', title: 'ID', width: 60,  align: "left"}
                 , {field: 'identity', title: '', width: 60, align: "center", templet: "#identityTpl"}
-                , {field: 'casename', title: 'CaseName', width: 228, align: "left", filter: true, templet: "#casenameTpl",children:[
+                , {field: 'casename', title: '接口名称', width: 228, align: "left", filter: true, templet: "#casenameTpl",children:[
                     {
 						elem: '#templateTable'
 						, url: "/field_apilist/"
@@ -822,11 +798,11 @@
 						, skin :'nob'
 						//, size : "sm"
 						, cols: [[
-							{field: 'parameterName', title: '参数名称', width: 220, align: "left"}
-							, {field: 'parameterThat', title: '参数说明', width: 250, align: "left"}
-							, {field: 'requestType', title: '请求类型', width: 100, align: "left"}
-							, {field: 'isMust', title: '是否必须', width: 100, align: "left",templet: "#methodTpl",sort:true}
-							, {field: 'dataType', title: '请求类型', width: 190, align: "left"}
+							{field: 'parameterName', title: '参数名称', width: 220, align: "left",style:'background-color: #eee;'}
+							, {field: 'parameterThat', title: '参数说明', width: 250, align: "left",style:'background-color: #eee;'}
+							, {field: 'requestType', title: '请求类型', width: 150, align: "left",style:'background-color: #eee;'}
+							, {field: 'isMust', title: '是否必须', width: 150, align: "left",templet: "#methodTpl",sort:true,style:'background-color: #eee;'}
+							, {field: 'dataType', title: '请求类型', width: 190, align: "left",style:'background-color: #eee;'}
 						]]
 						,done:function (data) {
 						    //console.log(data);
@@ -835,13 +811,15 @@
 
 					}
 				]}// filter: true
-                , {field: 'url', title: 'Url', width: 220, align: "left"}
-                , {field: 'method', title: 'Method', width: 90, sort:true,align: "left", templet: "#methodTpl"}
-                , {field: 'params', title: 'Query Params', width: 160, align: "left", event: 'params'}
-                , {field: 'body', title: 'Body', width: 160, event: 'body',  align: "left"}
-                , {field: 'head', title: 'Head', width: 80, align: "left",event:"head"}//merge: true行合并
+                , {field: 'url', title: '请求路径', width: 235, align: "left",templet:function (res) {
+						var a = res.url.split("/");
+						return '<span>' + a[2] + '</span>'
+                    }}
+                , {field: 'method', title: '请求方式', width: 90, align: "left", templet: "#methodTpl"}
+                , {field: 'params', title: 'Query参数', width: 160, align: "left", event: 'params'}
+                , {field: 'body', title: 'Body参数', width: 160, event: 'body',  align: "left"}
                 , {
-                    field: 'result', title: 'Response', align: "left", width: 200, event:"detail", templet: function (res) {
+                    field: 'result', title: '响应结果', align: "left", width: 200, event:"detail", templet: function (res) {
                         if (res.result.indexOf("message") != -1 && res.result.indexOf("error") != -1 && res.result.indexOf(res.casename) != -1) {
                             var a = res.casename;
                             var b = JSON.parse(res.result);
@@ -855,6 +833,7 @@
                         }
                     }
                 }
+                , {field: 'head', title: '负责人', width: 80, align: "left",event:"head"}//merge: true行合并
 
             ]]
             ,filter: {
@@ -1398,11 +1377,11 @@
     layui.use('element', function () {
         var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
         //监听导航点击
-        element.on('nav(demo)', function (elem) {
+        //element.on('nav(demo)', function (elem) {
             //console.log(elem)
-            layer.msg(elem.text());
-        });
-        var isShow = true;  //定义一个标志位
+            //layer.msg(elem.text());
+        //});
+        var isShow = false;  //定义一个标志位
         $('.kit-side-fold').click(function () {
             //选择出所有的span，并判断是不是hidden
             $('.layui-nav-item span').each(function () {
@@ -1430,6 +1409,7 @@
                 $('.kit-side-fold i').css('margin-right', '10%');
                 $('.layui-body').css('left', 200 + 'px');
                 $('.layui-footer').css('left', 200 + 'px');
+                $('.condition-items').css('height',0+'px');
                 $('dd span').each(function () {
                     $(this).show();
                 });
@@ -1826,6 +1806,27 @@
                 }],
 		});
     }
+</script>
+<script>
+	//var isShow = true;  //定义一个标志位
+	$(document).ready(function () {
+		$('.layui-nav-item span').each(function () {
+			if ($(this).is(':hidden')) {
+			    $(this).show();
+				$('.layui-side.layui-bg-black').width(60); //设置宽度
+				$('.kit-side-fold i').css('margin-right', '70%');  //修改图标的位置
+				//将footer和body的宽度修改
+				$('.layui-body').css('left', 60 + 'px');
+				$('.layui-footer').css('left', 60 + 'px');
+				//将二级导航栏隐藏
+				$('dd span').each(function () {
+					$(this).hide();
+				});
+			} else {
+				$(this).hide();
+			}
+		});
+    })
 </script>
 
 <!--表头按钮-->
