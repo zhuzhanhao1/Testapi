@@ -55,34 +55,95 @@ def apilist_view(request):
     filterSos = request.GET.get("filterSos","")
     belong = request.GET.get('belong',"")
     print("请求进入的模块是:"+belong)
-    print(filterSos)
-
-    if filterSos:
+    if casename == "" and belong == "" and filterSos== "":
+        apilists = Case.objects.filter(system='erms')
+    #流程接口
+    # elif belong == "process":
+        #匹配流程字段的值不能等于空
+        # apilists = Case.objects.filter(~Q(isprocess= ''))
+    elif belong:
+        if belong == "unit":
+            apilists = Case.objects.filter(Q(belong__contains="单位接口") & Q(system="erms"))
+        elif belong == "dept":
+            apilists = Case.objects.filter(Q(belong__contains="部门管理接口") & Q(system="erms"))
+        elif belong == "user":
+            apilists = Case.objects.filter(Q(belong__contains="用户管理接口") & Q(system="erms"))
+        elif belong == "views":
+            apilists = Case.objects.filter(Q(belong__contains="视图管理接口") & Q(system="erms"))
+        elif belong == "policy":
+            apilists = Case.objects.filter(Q(belong__contains="保留处置策略接口") & Q(system="erms"))
+        elif belong == "role":
+            apilists = Case.objects.filter(Q(belong__contains="角色管理接口") & Q(system="erms"))
+        elif belong == "data_form_config":
+            apilists = Case.objects.filter(Q(belong__contains="数据表单配置管理接口") & Q(system="erms"))
+        elif belong == "category":
+            apilists = Case.objects.filter(Q(belong__contains="门类管理接口") & Q(system="erms"))
+        elif belong == "class":
+            apilists = Case.objects.filter(Q(belong__contains="类目模块接口") & Q(system="erms"))
+        elif belong == "acl":
+            apilists = Case.objects.filter(Q(belong__contains="访问控制权限接口") & Q(system="erms"))
+        elif belong == "view":
+            apilists = Case.objects.filter(Q(belong__contains="视图自定义接口") & Q(system="erms"))
+        elif belong == "record":
+            apilists = Case.objects.filter(Q(belong__contains="Record接口") & Q(system="erms"))
+        elif belong == "document":
+            apilists = Case.objects.filter(Q(belong__contains="文档管理接口") & Q(system="erms"))
+        elif belong == "volume":
+            apilists = Case.objects.filter(Q(belong__contains="案卷管理接口") & Q(system="erms"))
+        elif belong == "archives":
+            apilists = Case.objects.filter(Q(belong__contains="档案管理接口") & Q(system="erms"))
+        elif belong == "resource":
+            apilists = Case.objects.filter(Q(belong__contains="资源管理接口") & Q(system="erms"))
+        elif belong == "navigation":
+            apilists = Case.objects.filter(Q(belong__contains="导航管理接口") & Q(system="erms"))
+        elif belong == "data_form":
+            apilists = Case.objects.filter(Q(belong__contains="数据表单管理接口") & Q(system="erms"))
+        elif belong == "file_plan":
+            apilists = Case.objects.filter(Q(belong__contains="文件计划管理接口") & Q(system="erms"))
+        elif belong == "common":
+            apilists = Case.objects.filter(Q(belong__contains="公共操作相关接口") & Q(system="erms"))
+        elif belong == "common_folder":
+            apilists = Case.objects.filter(Q(belong__contains="通用文件夹管理接口") & Q(system="erms"))
+        elif belong == "metadata":
+            apilists = Case.objects.filter(Q(belong__contains="元数据管理平台接口") & Q(system="erms"))
+        elif belong == "deposit_form":
+            apilists = Case.objects.filter(Q(belong__contains="续存记录接口") & Q(system="erms"))
+        elif belong == "attribute_mapping_scheme":
+            apilists = Case.objects.filter(Q(belong__contains="映射规则接口") & Q(system="erms"))
+        elif belong == "transfer_form":
+            apilists = Case.objects.filter(Q(belong__contains="移交表单信息接口") & Q(system="erms"))
+    elif casename:
+        apilist = Case.objects.filter(Q(casename__contains=casename) & Q(system="erms"))
+        print(apilist)
+        if apilist.count() == 0:
+            apilists = Case.objects.filter(Q(result__contains="error") & Q(result__contains="message") & Q(system="erms"))
+        else:
+            apilists = apilist
+    elif filterSos:
+        print(filterSos)
         if filterSos == "[]":
-            apilists = Case.objects.filter()
+            apilists = Case.objects.filter(system="erms")
         else:
             L = []
             for i in json.loads(filterSos):
                 filterSos_res = i.get("value")
                 print(filterSos_res)
-
-                apilists = Case.objects.filter(casename__contains=filterSos_res)
+                apilists = Case.objects.filter(Q(casename__contains=filterSos_res) & Q(system="erms"))
                 for weblist in apilists:
-                    if weblist.system == 'erms':
-                        data = {
-                            "caseid": weblist.caseid,
-                            "belong": weblist.belong,
-                            "processid": weblist.isprocess,
-                            "identity": weblist.identity,
-                            "casename": weblist.casename,
-                            "url": weblist.url,
-                            "head": weblist.exceptres,
-                            "method": weblist.method,
-                            "params": weblist.params,
-                            "body": weblist.body,
-                            "result": weblist.result
-                        }
-                        L.append(data)
+                    data = {
+                        "caseid": weblist.caseid,
+                        "belong": weblist.belong,
+                        "processid": weblist.isprocess,
+                        "identity": weblist.identity,
+                        "casename": weblist.casename,
+                        "url": weblist.url,
+                        "head": weblist.exceptres,
+                        "method": weblist.method,
+                        "params": weblist.params,
+                        "body": weblist.body,
+                        "result": weblist.result
+                    }
+                    L.append(data)
             print(L)
             print("此模块的用例个数为:" + str(len(L)))
             pageindex = request.GET.get('page', "")
@@ -96,121 +157,22 @@ def apilist_view(request):
             datas = {"code": 0, "msg": "", "count": len(L), "data": res}
             return JsonResponse(datas)
 
-    if casename:
-        print("搜索的用例名是:"+casename)
-
-
-    if casename == "" and belong == "" and filterSos== "":
-        apilists = Case.objects.filter()
-
-    #流程接口
-    # elif belong == "process":
-        #匹配流程字段的值不能等于空
-        # apilists = Case.objects.filter(~Q(isprocess= ''))
-    elif belong == "unit":
-        apilists = Case.objects.filter(belong__contains="单位接口")
-    elif belong == "dept":
-        apilists = Case.objects.filter(belong__contains="部门管理接口")
-    elif belong == "user":
-        apilists = Case.objects.filter(belong__contains="用户管理接口")
-    elif belong == "views":
-        apilists = Case.objects.filter(belong__contains="视图管理接口")
-    elif belong == "policy":
-        apilists = Case.objects.filter(belong__contains="保留处置策略接口")
-    elif belong == "role":
-        apilists = Case.objects.filter(belong__contains="角色管理接口")
-    elif belong == "data_form_config":
-        apilists = Case.objects.filter(belong__contains="数据表单配置管理接口")
-    elif belong == "category":
-        apilists = Case.objects.filter(belong__contains="门类管理接口")
-    elif belong == "class":
-        apilists = Case.objects.filter(belong__contains="类目模块接口")
-    elif belong == "acl":
-        apilists = Case.objects.filter(belong__contains="访问控制权限接口")
-    elif belong == "view":
-        apilists = Case.objects.filter(belong__contains="视图自定义接口")
-    elif belong == "record":
-        apilists = Case.objects.filter(belong__contains="Record接口")
-    elif belong == "document":
-        apilists = Case.objects.filter(belong__contains="文档管理接口")
-    elif belong == "volume":
-        apilists = Case.objects.filter(belong__contains="案卷管理接口")
-    elif belong == "archives":
-        apilists = Case.objects.filter(belong__contains="档案管理接口")
-    elif belong == "resource":
-        apilists = Case.objects.filter(belong__contains="资源管理接口")
-    elif belong == "navigation":
-        apilists = Case.objects.filter(belong__contains="导航管理接口")
-    elif belong == "data_form":
-        apilists = Case.objects.filter(belong__contains="数据表单管理接口")
-    elif belong == "file_plan":
-        apilists = Case.objects.filter(belong__contains="文件计划管理接口")
-    elif belong == "common":
-        apilists = Case.objects.filter(belong__contains="公共操作相关接口")
-    elif belong == "common_folder":
-        apilists = Case.objects.filter(belong__contains="通用文件夹管理接口")
-    elif belong == "metadata":
-        apilists = Case.objects.filter(belong__contains="元数据管理平台接口")
-    elif belong == "deposit_form":
-        apilists = Case.objects.filter(belong__contains="续存记录接口")
-    elif belong == "attribute_mapping_scheme":
-        apilists = Case.objects.filter(belong__contains="映射规则接口")
-    elif belong == "transfer_form":
-        apilists = Case.objects.filter(belong__contains="移交表单信息接口")
-
-    elif casename:
-        apilists = Case.objects.filter(casename__contains=casename)
-        print(apilists)
-        if apilists.count() == 0:
-            apilists = Case.objects.filter()
-            L = []
-            for weblist in apilists:
-                if weblist.system == "erms" and "error" in weblist.result and "timestamp" in weblist.result:
-                    # print("存在的啊")
-                    data = {
-                        "caseid": weblist.caseid,
-                        "belong": weblist.belong,
-                        "processid": weblist.isprocess,
-                        "identity": weblist.identity,
-                        "casename": weblist.casename,
-                        "url": weblist.url,
-                        "head":weblist.exceptres,
-                        "method": weblist.method,
-                        "params": weblist.params,
-                        "body": weblist.body,
-                        "result": weblist.result
-                    }
-                    L.append(data)
-            print("此模块的用例个数为:" + str(len(L)))
-            pageindex = request.GET.get('page', "")
-            pagesize = request.GET.get("limit", "")
-            pageInator = Paginator(L, pagesize)
-            # 分页
-            contacts = pageInator.page(pageindex)
-            res = []
-            for contact in contacts:
-                res.append(contact)
-            datas = {"code": 0, "msg": "", "count": len(L), "data": res}
-            return JsonResponse(datas)
-
-
     L = []
     for weblist in apilists:
-        if weblist.system == 'erms':
-            data = {
-                "caseid": weblist.caseid,
-                "belong":weblist.belong,
-                "processid":weblist.isprocess,
-                "identity": weblist.identity,
-                "casename": weblist.casename,
-                "url": weblist.url,
-                "head": weblist.exceptres,
-                "method": weblist.method,
-                "params": weblist.params,
-                "body": weblist.body,
-                "result": weblist.result
-            }
-            L.append(data)
+        data = {
+            "caseid": weblist.caseid,
+            "belong":weblist.belong,
+            "processid":weblist.isprocess,
+            "identity": weblist.identity,
+            "casename": weblist.casename,
+            "url": weblist.url,
+            "head": weblist.exceptres,
+            "method": weblist.method,
+            "params": weblist.params,
+            "body": weblist.body,
+            "result": weblist.result
+        }
+        L.append(data)
     print("此模块的用例个数为:"+str(len(L)))
     pageindex = request.GET.get('page', "")
     pagesize = request.GET.get("limit", "")
@@ -228,46 +190,56 @@ def apilist_view(request):
 @login_required
 def transferlist_view(request):
     casename = request.GET.get("key[casename]","")
-    if casename:
-        print("搜索的用例名是:"+casename)
+    filterSos = request.GET.get("filterSos", "")
     belong = request.GET.get('belong',"")
-    print("请求进入的模块是:"+belong)
-    if casename == "" and belong == "":
-        apilists = Case.objects.filter()
-    elif belong == "user_yj":
-        apilists = Case.objects.filter(belong__contains="用户模块接口")
-    elif belong == "record_yj":
-        apilists = Case.objects.filter(belong__contains="Record接口")
-    elif belong == "resource_yj":
-        apilists = Case.objects.filter(belong__contains="资源管理接口")
-    elif belong == "yuwen_yj":
-        apilists = Case.objects.filter(belong__contains="原文接口")
-    elif belong == "navigation_yj":
-        apilists = Case.objects.filter(belong__contains="导航接口")
-    elif belong == "comments_yj":
-        apilists = Case.objects.filter(belong__contains="意见接口")
-    elif belong == "attribute_mapping_scheme_yj":
-        apilists = Case.objects.filter(belong__contains="映射规则接口")
-    elif belong == "volume_yj":
-        apilists = Case.objects.filter(belong__contains="案卷相关接口")
-    elif belong == "archives_yj":
-        apilists = Case.objects.filter(belong__contains="档案相关接口")
-    elif belong == "report_yj":
-        apilists = Case.objects.filter(belong__contains="检测报告相关接口")
-    elif belong == "transfer_form_yj":
-        apilists = Case.objects.filter(belong__contains="移交表单相关接口")
-    elif belong == "metadata_yj":
-        apilists = Case.objects.filter(belong__contains="元数据平台接口")
-
+    if casename == "" and belong == "" and filterSos =="":
+        apilists = Case.objects.filter(system='transfer')
+    #我是左侧的导航链接存在运行的
+    elif belong:
+        if belong == "user":
+            apilists = Case.objects.filter(Q(belong__contains="用户模块接口") & Q(system="transfer"))
+        elif belong == "record":
+            apilists = Case.objects.filter(Q(belong__contains="Record接口") & Q(system="transfer"))
+        elif belong == "resource":
+            apilists = Case.objects.filter(Q(belong__contains="资源管理接口") & Q(system="transfer"))
+        elif belong == "document":
+            apilists = Case.objects.filter(Q(belong__contains="原文接口") & Q(system="transfer"))
+        elif belong == "navigation":
+            apilists = Case.objects.filter(Q(belong__contains="导航接口") & Q(system="transfer"))
+        elif belong == "comments":
+            apilists = Case.objects.filter(Q(belong__contains="意见接口") & Q(system="transfer"))
+        elif belong == "attribute_mapping_scheme":
+            apilists = Case.objects.filter(Q(belong__contains="映射规则接口") & Q(system="transfer"))
+        elif belong == "volume":
+            apilists = Case.objects.filter(Q(belong__contains="案卷相关接口") & Q(system="transfer"))
+        elif belong == "archives":
+            apilists = Case.objects.filter(Q(belong__contains="档案相关接口") & Q(system="transfer"))
+        elif belong == "report":
+            apilists = Case.objects.filter(Q(belong__contains="检测报告相关接口") & Q(system="transfer"))
+        elif belong == "transfer_form":
+            apilists = Case.objects.filter(Q(belong__contains="移交表单相关接口") & Q(system="transfer"))
+        elif belong == "metadata":
+            apilists = Case.objects.filter(Q(belong__contains="元数据平台接口") & Q(system="transfer"))
+    # 我是右上角搜索输入值运行的
     elif casename:
-        apilists = Case.objects.filter(casename__contains=casename)
-        print(apilists)
-        if apilists.count() == 0:
-            apilists = Case.objects.filter()
+        apilist = Case.objects.filter(Q(casename__contains=casename) & Q(system="transfer"))
+        print(apilist)
+        if apilist.count() == 0:
+            apilists = Case.objects.filter(Q(result__contains="error") & Q(result__contains="message") & Q(system="transfer"))
+        else:
+            apilists = apilist
+    # 我是右下角搜索输入值运行的
+    elif filterSos:
+        if filterSos == "[]":
+            apilists = Case.objects.filter(system="transfer")
+        else:
             L = []
-            for weblist in apilists:
-                if weblist.system == "transfer" and "error" in weblist.result and "timestamp" in weblist.result:
-                    # print("存在的啊")
+            for i in json.loads(filterSos):
+                filterSos_res = i.get("value")
+                print(filterSos_res)
+
+                apilists = Case.objects.filter(Q(casename__contains=filterSos_res) & Q(system="transfer"))
+                for weblist in apilists:
                     data = {
                         "caseid": weblist.caseid,
                         "belong": weblist.belong,
@@ -282,6 +254,7 @@ def transferlist_view(request):
                         "result": weblist.result
                     }
                     L.append(data)
+            print(L)
             print("此模块的用例个数为:" + str(len(L)))
             pageindex = request.GET.get('page', "")
             pagesize = request.GET.get("limit", "")
@@ -293,24 +266,22 @@ def transferlist_view(request):
                 res.append(contact)
             datas = {"code": 0, "msg": "", "count": len(L), "data": res}
             return JsonResponse(datas)
-
     L = []
     for weblist in apilists:
-        if weblist.system == "transfer":
-            data = {
-                "caseid": weblist.caseid,
-                "belong":weblist.belong,
-                "processid":weblist.isprocess,
-                "identity": weblist.identity,
-                "casename": weblist.casename,
-                "url": weblist.url,
-                "head": weblist.exceptres,
-                "method": weblist.method,
-                "params": weblist.params,
-                "body": weblist.body,
-                "result": weblist.result
-            }
-            L.append(data)
+        data = {
+            "caseid": weblist.caseid,
+            "belong":weblist.belong,
+            "processid":weblist.isprocess,
+            "identity": weblist.identity,
+            "casename": weblist.casename,
+            "url": weblist.url,
+            "head": weblist.exceptres,
+            "method": weblist.method,
+            "params": weblist.params,
+            "body": weblist.body,
+            "result": weblist.result
+        }
+        L.append(data)
     print("此模块的用例个数为:"+str(len(L)))
     pageindex = request.GET.get('page', "")
     pagesize = request.GET.get("limit", "")

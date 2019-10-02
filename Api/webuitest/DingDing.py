@@ -1,8 +1,9 @@
 import requests,json
 import logging
 from dingtalkchatbot.chatbot import DingtalkChatbot
+url = ''
 
-url = "https://oapi.dingtalk.com/robot/send?access_token=e1790ceab2bf195233dda1cc1063045f4af3c6838c120770e24a5b6e48455e48"
+# url = "https://oapi.dingtalk.com/robot/send?access_token=e1790ceab2bf195233dda1cc1063045f4af3c6838c120770e24a5b6e48455e48"
 # 初始化机器人小丁
 def send_image():
     xiaoding = DingtalkChatbot(url)
