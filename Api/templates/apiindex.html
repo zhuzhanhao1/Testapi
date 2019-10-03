@@ -98,6 +98,9 @@
 			text-align: center;
 			padding: 0px;
 		}
+		#method>div>div>input{
+			background-color: aliceblue;
+		}
 
 	</style>
 </head>
@@ -124,8 +127,8 @@
 			</li>
 			<li class="layui-nav-item">
 				<a type="button" onclick="quickTest()">
-					<i class="layui-icon layui-icon-template-1"
-					   style="font-size: 23px;color: white;"></i>快速测试
+					<i class="fa fa-fighter-jet"
+					   style="font-size: 23px;color: white;"></i>&nbsp;快速测试
 				</a>
 			</li>
 			<li class="layui-nav-item">
@@ -648,16 +651,16 @@
 	<div class="layui-row" id="quickTest">
 		<div class="modal fade">
 			<div class="modal-content">
-				<div class="modal-header">
-					<h6 class="modal-title" id="myModalLabel1" style="margin-top: 20px;font-size: 30px;text-align: center;"><strong>快速测试</strong></h6>
+				<div class="modal-header" style="margin-top: 10px;">
+					<img src="./../static/images/quickTest.png" style="margin-left: 460px;">
 				</div>
 				<div class="modal-body">
-					<form role="form" class="layui-form" method="POST" id="form">
+					<form role="form" class="layui-form"  id="form" lay-filter="quickTest">
 
 						<div class="layui-form-item"  style="margin-top: 20px;">
 							<label class="layui-form-label">Request</label>
 							<div class="layui-inline">
-								<div class="layui-input-inline" style="width: 120px;">
+								<div class="layui-input-inline" id= "method" style="width: 120px;">
 									<select name="addMethod" id="addMethod">
 										<option>GET</option>
 										<option>POST</option>
@@ -671,16 +674,16 @@
 									<input type="text" name="addUrl" class="layui-input" style="width: 790px;margin-left: -25px;" maxlength="300" id="addUrl" placeholder="url">
 								</div>
 							</div>
-							<div class="layui-inline">
+							<div class="layui-inline" style="margin-left: 555px;">
 								<button type="submit" class="layui-btn  layui-btn-warm" data-dismiss="modal"
-										id="addsubmitBtn" style="margin-left: 555px;">Send
+										id="addsubmitBtn" lay-filter="quickTest">Send
 								</button>
 							</div>
 						</div>
 
 {#						<hr class="layui-bg-gray">#}
 
-						<div id="addheadersdiv" style="margin-top: 30px;">
+						<div id="addheadersdiv" name="addheadersdiv" style="margin-top: 30px;">
 							<label class="layui-form-label">Headers</label>
 							<div class="layui-input-inline">
 								<ul id="headers" style="list-style-type: none">
@@ -701,7 +704,7 @@
 							</div>
 						</div>
 {#						<hr class="layui-bg-gray">#}
-						<div id="addformdatadiv" style="margin-top: 30px;">
+						<div id="addformdatadiv" name="addformdatadiv" style="margin-top: 30px;">
 							<label class="layui-form-label">Params</label>
 							<div class="layui-input-inline">
 								<ul id="formdatas" style="list-style-type: none">
@@ -726,10 +729,15 @@
 						<div class="layui-form-item layui-form-text" style="margin-top: 30px;">
 							<label class="layui-form-label">Body</label>
 							<div class="layui-input-block">
-								<textarea id = "body" name="body" placeholder="请输入内容" class="layui-textarea" style="width: 910px;height: 300px;"></textarea>
+								<textarea id = "body" name="body" placeholder="仅支持输入JSON格式的内容数据" class="layui-textarea" style="width: 910px;height: 200px;"></textarea>
 							</div>
 						</div>
-
+						<div class="layui-form-item layui-form-text" style="margin-top: 30px;">
+							<label class="layui-form-label">response</label>
+							<div class="layui-input-block">
+								<textarea id = "response" name="response"  class="layui-textarea" style="width: 910px;height: 200px;"></textarea>
+							</div>
+						</div>
 					</form>
 				</div>
 			</div>
@@ -1708,17 +1716,71 @@
             content: $("#importCase").html()
         });
     }
-
+	//快速测试
     function quickTest() {
-		layer.open({
-			type: 1,
-			title: "快速测试",
-			shadeClose: true,
-			shade: false,
-			skin: "layui-layer-rim",
-			maxmin: true, //开启最大化最小化按钮
-			area: ['1200px', '680px'],
-			content:$('#quickTest'),
+        layer.open({
+            type: 1,
+            title: false,
+            shadeClose: true,
+            shade: false,
+            skin: "layui-layer-rim",
+            maxmin: true, //开启最大化最小化按钮
+            area: ['1200px', '680px'],
+            content: $('#quickTest'),
+            success: function () {
+                layui.use('form', function () {
+                    var form = layui.form;
+                    form.val("quickTest", {
+                    });
+                    //监听编辑用户信息，
+                    form.on('submit(quickTest)', function (data) {
+                        console.log(data);
+                        $.ajax({
+                            cache: false,
+                            url: "/quickTest/",
+                            dataType: 'text',
+                            type: 'POST',
+                            //async: false,
+                            data: {
+								"addURL": $("#addUrl").val(),
+								"Method": $("#addMethod").val(),
+								"addmergeheaders":$("#addmergeheaders").val(),
+								"addmergeformdatas":$("#addmergeformdatas").val(),
+								"body":$("#body").val(),
+                            },
+                            beforeSend: function () {
+                                l_index = layer.load(0, {shade: [0.5, '#DBDBDB']});
+                            },
+                            success: function (data) {
+                                $("#response").val(data);
+                                layer.msg("操作成功", {
+                                    icon: 6,
+                                    offset: 't'
+                                });
+                                //$("#response").val(data);
+                                //$(".layui-laypage-btn").click();
+
+                            },
+                            error: function (data) {
+                                console.log(data);
+                                layer.msg(data, {
+                                    icon: 5,
+                                    offset: 't',
+                                });
+                            },
+                            complete: function () {
+                                layer.close(l_index);
+                                //layer.close(a)
+                            }
+
+                        });
+                        return false;//阻止表单跳转
+                    });
+                });
+
+
+
+            }
 		});
 
     }
@@ -2001,8 +2063,6 @@
             }
         })
     });
-
-
     //增加formdata行列
     $(function () {
         $("#addformdata").click(function () {
@@ -2014,7 +2074,6 @@
             }
         })
     });
-
     $("#addsubmitBtn").click(function () {
             var objone={};
             var a=document.querySelectorAll("input[name='headers_key']");
@@ -2039,31 +2098,8 @@
             objthreestring = JSON.stringify(objthree);
             $("#addmergeformdatas").val(objthreestring);
     });
-    $('#addsubmitBtn').click(function go_add (id) {
-        $.ajax({
-            cache:false,
-            url : "add_singel_data/",
-            dataType:'text',
-            type:'POST',
-            async:false,
-            data:{
-                "addURL": $("#addUrl").val(),
-                "Method": $("#addMethod").val(),
-                "addmergeheaders":$("#addmergeheaders").val(),
-                "addmergeformdatas":$("#addmergeformdatas").val(),
-                "body":$("#body").val(),
-            },
-            success: function (data) {
-                alert("提交成功");
-                window.location.reload();
-                console.log(data);
-            },
-            error:function (data) {
-                console.log(data);
-                alert("数据重复/提交失败");
-            }
-        })
-    });
+
+
 
 
 

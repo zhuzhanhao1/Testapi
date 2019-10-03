@@ -1,6 +1,6 @@
 import io
 import threading
-
+import requests
 from xlwt import *
 import os,sys
 import time
@@ -14,6 +14,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from .forms import *
 from Api.interfacetest.run_method import RequestMethod
+from Api.interfacetest.run_mehod_quick import RequestMethodQuick
 from Api.interfacetest.get_header import  GetToken
 from Api.webuitest.DingDing import send_ding
 
@@ -1119,4 +1120,26 @@ def get_userinfo_transfer_views(request):
         L.append(dict)
     res = {"code": 0, "msg": "", "count": len(L), "data": L}
     return JsonResponse(res)
+
+
+#快速测试
+@login_required
+def quickTest_views(request):
+    quickMethod = RequestMethodQuick()
+    url = request.POST.get("addURL","")
+    method = request.POST.get("Method","")
+    headers = request.POST.get("addmergeheaders","")
+    params = request.POST.get("addmergeformdatas","")
+    body = request.POST.get("body","")
+    print(url)
+    print(method)
+    print(headers)
+    print(params)
+    print(type(params))
+    print(body)
+    response = quickMethod.run_main(method,url,headers=headers,params=params,data=body)
+    return HttpResponse(response)
+
+
+
 

@@ -50,10 +50,6 @@ def performance_views(request):
     os.system("sh /Users/zhuzhanhao/apache-jmeter-5.1/bin/jmeter.sh")
     return render(request, "welcome.html")
 
-#快速测试
-@login_required
-def quickTest_views(request):
-    return render(request, "quickTest.html")
 
 
 
