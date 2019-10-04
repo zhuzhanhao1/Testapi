@@ -50,7 +50,6 @@ def adminindex_view(request):
 
 
 #erms用例列表
-@login_required
 def apilist_view(request):
     casename = request.GET.get("key[casename]","")
     filterSos = request.GET.get("filterSos","")
@@ -1006,6 +1005,7 @@ def thread_view(request):
         print(run_time)
 
         print("运行已结束")
+
 def run_apicase(caseid):
     con = ConnDataBase()
     id = Case.objects.get(caseid=caseid)
@@ -1137,7 +1137,11 @@ def quickTest_views(request):
     print(params)
     print(type(params))
     print(body)
-    response = quickMethod.run_main(method,url,headers=headers,params=params,data=body)
+    response = quickMethod.run_main(method,url,headers,params,body)
+    print(response)
+    print(type(response))
+    response = json.dumps(response, ensure_ascii=False, sort_keys=True, indent=2)
+    print(response)
     return HttpResponse(response)
 
 

@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^logout/$',logout_views),
     # url(r'^import_case/$',import_case_views),
     url(r'^quickTest/$',quickTest_views),
+    url(r'^quicktest/$',quicktest_views),
 
 
 #----------------------Api_v2 url-----------------------------

@@ -9,8 +9,10 @@ from Api.webuitest.conn_database import ConnDataBase
 
 class RequestMethodQuick():
     def get(self,url,headers,params):
-        if headers:
-            headers = json.loads(headers)
+        params = json.loads(params)
+        headers = json.loads(headers)
+        params = params if any(params) == True else None
+        headers = headers if any(headers) == True else None
         r = requests.get(url, params=params, headers=headers)
         try:
             json_response = r.json()
@@ -22,10 +24,10 @@ class RequestMethodQuick():
 
 
     def post(self,url,headers,params,data):
-        if params:
-            params = json.loads(params)
-        if headers:
-            headers = json.loads(headers)
+        params = json.loads(params)
+        headers = json.loads(headers)
+        params = params if any(params) == True else None
+        headers = headers if any(headers) == True else None
         r = requests.post(url, params=params, data=data, headers=headers)
         try:
             json_response = r.json()
@@ -38,10 +40,10 @@ class RequestMethodQuick():
 
 
     def delete(self,url,headers,params,data):
-        if params:
-            params = json.loads(params)
-        if headers:
-            headers = json.loads(headers)
+        params = json.loads(params)
+        headers = json.loads(headers)
+        params = params if any(params) == True else None
+        headers = headers if any(headers) == True else None
         r = requests.delete(url, params=params,data=data, headers=headers)
         try:
             json_response = r.json()
@@ -52,10 +54,10 @@ class RequestMethodQuick():
 
 
     def put(self,url,headers,params,data):
-        if headers:
-            headers = json.loads(headers)
-        if params:
-            params = json.loads(params)
+        params = json.loads(params)
+        headers = json.loads(headers)
+        params = params if any(params) == True else None
+        headers = headers if any(headers) == True else None
         r = requests.put(url, params=params, data=data, headers=headers)
         try:
             json_response = r.json()
@@ -65,22 +67,23 @@ class RequestMethodQuick():
             return r.text
 
     def uploadfile(self,url,headers,params,data):
-        if headers:
-            headers = json.loads(headers)
-        if params:
-            params = json.loads(params)
+        params = json.loads(params)
+        headers = json.loads(headers)
+        params = params if any(params) == True else None
+        headers = headers if any(headers) == True else None
         print(data['path'])
         print(type(data['path']))
         print(params)
         print(type(params))
+        files = {"file": open(data['path'], "rb")}
+        r = requests.post(url, params=params, files=files, headers=headers)
         try:
-            files = {"file":open(data['path'],"rb")}
-            r =requests.post(url,params=params,files=files,headers=headers)
-            print(r.text)
             json_response = r.json()
             return json_response
         except Exception as e:
-            print("上传文件失败",e)
+            print("转换字典失败",e)
+            print(r.text)
+            return r.text
 
 
 

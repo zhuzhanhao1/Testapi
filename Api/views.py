@@ -22,6 +22,7 @@ def login_views(request):
             return response
         else:
             messages.add_message(request, messages.WARNING, '账户或者密码错误，请检查')
+            print('账户或者密码错误，请检查')
             return render(request, 'login.html')
     return render(request, 'login.html')
 
@@ -49,6 +50,11 @@ def timing_views(request):
 def performance_views(request):
     os.system("sh /Users/zhuzhanhao/apache-jmeter-5.1/bin/jmeter.sh")
     return render(request, "welcome.html")
+
+# 快速测试
+@login_required
+def quicktest_views(request):
+    return render(request, "quickTest.html")
 
 
 

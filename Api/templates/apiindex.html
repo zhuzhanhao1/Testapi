@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	<title>朱占豪的测试系统</title>
+	<title>朱占豪的ERMS接口测试</title>
 	<link rel="icon" href="./../static/images/favicon%202.ico">
 	<link rel="stylesheet" href="./../static/css/layui.css">
 	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
@@ -655,7 +655,7 @@
 					<img src="./../static/images/quickTest.png" style="margin-left: 460px;">
 				</div>
 				<div class="modal-body">
-					<form role="form" class="layui-form"  id="form" lay-filter="quickTest">
+					<form class="layui-form"  lay-filter="quickTest">
 
 						<div class="layui-form-item"  style="margin-top: 20px;">
 							<label class="layui-form-label">Request</label>
@@ -732,12 +732,19 @@
 								<textarea id = "body" name="body" placeholder="仅支持输入JSON格式的内容数据" class="layui-textarea" style="width: 910px;height: 200px;"></textarea>
 							</div>
 						</div>
+
 						<div class="layui-form-item layui-form-text" style="margin-top: 30px;">
 							<label class="layui-form-label">response</label>
-							<div class="layui-input-block">
-								<textarea id = "response" name="response"  class="layui-textarea" style="width: 910px;height: 200px;"></textarea>
+							<div class="layui-input-inline">
+								<textarea id="response" name="response" class="layui-textarea"
+										  style="width: 910px;height: 200px;" placeholder="响应内容在此区域展示"></textarea>
+							</div>
+							<label class="layui-form-label" style="width: 112px;color: chocolate;font-family:cursive">默认复制结果内容</label>
+							<div class="layui-inline">
+								<input type="button" class="layui-btn layui-btn-warm" id="jsoncn" value="前往json.cn粘贴"/>
 							</div>
 						</div>
+
 					</form>
 				</div>
 			</div>
@@ -1738,7 +1745,7 @@
                         $.ajax({
                             cache: false,
                             url: "/quickTest/",
-                            dataType: 'text',
+                            dataType: 'json',
                             type: 'POST',
                             //async: false,
                             data: {
@@ -1752,13 +1759,15 @@
                                 l_index = layer.load(0, {shade: [0.5, '#DBDBDB']});
                             },
                             success: function (data) {
-                                $("#response").val(data);
+                                console.log(data);
+                                var res = JSON.stringify(data, null, 4);
+                                console.log(res);
+                                $("#response").val(res);
                                 layer.msg("操作成功", {
                                     icon: 6,
-                                    offset: 't'
+                                    offset: 't',
+									time:1000
                                 });
-                                //$("#response").val(data);
-                                //$(".layui-laypage-btn").click();
 
                             },
                             error: function (data) {
@@ -2074,6 +2083,7 @@
             }
         })
     });
+    //提交快速测试的数据
     $("#addsubmitBtn").click(function () {
             var objone={};
             var a=document.querySelectorAll("input[name='headers_key']");
@@ -2098,6 +2108,24 @@
             objthreestring = JSON.stringify(objthree);
             $("#addmergeformdatas").val(objthreestring);
     });
+    //打开json.cn
+    $("#jsoncn").click(function () {
+		var copyRes = $("#response").select();
+		document.execCommand("Copy");
+		layer.msg("复制成功，打开json.cn",{icon:6,offset:'t'});
+		layer.open({
+			type:2,
+			title:"json.cn",
+			skin:'layui-layer-rim',
+			maxmin:true,
+			moveOut: true,
+			area:['90%','90%'],
+			content:"https://www.json.cn",
+			success:function () {
+				console.log("aaaaaaaa");
+            }
+		})
+    })
 
 
 
