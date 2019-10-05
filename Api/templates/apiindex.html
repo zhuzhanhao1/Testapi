@@ -5,13 +5,15 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<title>朱占豪的ERMS接口测试</title>
 	<link rel="icon" href="./../static/images/favicon%202.ico">
-	<link rel="stylesheet" href="./../static/css/layui.css">
-	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<script src="./../static/jquery-3.4.1/jquery-3.4.1.min.js"></script>
 	<link href="./../static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
 	<script src="./../static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="./../static/css/layui.css">
 	<script src="./../static/js/layui/layui.js"></script>
 	<link rel="stylesheet" href="./../static/font-awesome-4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="./../static/css/soulTable.css">
+	<script type="text/javascript" src="./../static/js/cache.js"></script>
+
 	<style>
 		#casetitle {
 			font-size: 22px;
@@ -29,11 +31,11 @@
 		}
 
 		.layui-bg-black {
-			background-color: #23262E !important;
+			background-color: #393d49 !important;
 		}
 
 		.layui-nav {
-			background-color: #23262E;
+			background-color: #393d49;
 		}
 
 		.kit-side-fold {
@@ -44,7 +46,7 @@
 		#sousuo {
 			position: fixed;
 			right: 15px;
-			top: 80px;
+			top: 65px;
 		}
 
 		.layui-laypage .layui-laypage-curr .layui-laypage-em {
@@ -52,34 +54,34 @@
 		}
 
 		.layui-layout-admin .layui-header {
-			background-color: black;
+			background-color: #23262E;
 		}
 		.layui-layer-input{
 			padding:20px;
 		}
 		.layui-laypage a, .layui-laypage span{
-			color: lightyellow;
+			color: #fff;
 		}
 		.layui-table-page .layui-laypage{
 			position: fixed;
 			right: 30px;
 		}
 		.layui-breadcrumb a{
-			color:whitesmoke!important;
+			color:#fff!important;
 		}
 		.layui-breadcrumb>*{
 			font-size: 22px;
 		}
 		.layui-breadcrumb span[lay-separator]{
-			color:whitesmoke;
+			color:#fff;
 			margin:0px 0px 0px;
 			margin-right: -10px;
 		}
 		.layui-breadcrumb a+a{
-			color:black!important;
+			color:#fff!important;
 		}
 		.soul-bottom-contion{
-			border-top:solid 1px #494A5F;
+			border-top:solid 0px #fff;
 		}
 		#headers>li input{
 			height: 36px;
@@ -101,6 +103,21 @@
 		#method>div>div>input{
 			background-color: aliceblue;
 		}
+		.layui-header{
+			height:50px;
+		}
+		.layui-layout-admin .layui-side{
+			top:50px;
+		}
+		.layui-layout-admin .layui-body{
+			top:48px;
+		}
+		.layui-layout-admin .layui-logo{
+			line-height:50px;
+		}
+		.layui-nav .layui-nav-item{
+			line-height:50px;
+		}
 
 	</style>
 </head>
@@ -115,7 +132,7 @@
 		<ul class="layui-nav layui-layout-left">
 			<li class="layui-nav-item">
 				<a href="javascript:;"><i class="fa fa-superpowers"
-										  style="font-size: 23px;color: white;font-weight: bolder;"></i>
+										  style="font-size: 15px;color: white;font-style:normal;font-weight: bolder;"></i>
 					切换系统</a>
 				<dl class="layui-nav-child">
 					<dd class="layui-this"><a href="/transferindex/">Transfer接口测试</a></dd>
@@ -128,30 +145,30 @@
 			<li class="layui-nav-item">
 				<a type="button" onclick="quickTest()">
 					<i class="fa fa-fighter-jet"
-					   style="font-size: 23px;color: white;"></i>&nbsp;快速测试
+					   style="font-size: 15px;color: white;"></i>&nbsp;快速测试
 				</a>
 			</li>
 			<li class="layui-nav-item">
 				<a href="/apiindex/">
 					<i class="layui-badge layui-bg-orange pull-right"
-						  style="margin-left: 75px;">{{ case_count }}</i>
+						  style="margin-left: 70px;">{{ case_count }}</i>
 					<i class="layui-icon layui-icon-template-1"
-					   style="font-size: 23px;color: white;"></i>&nbsp;用例库
+					   style="font-size: 15px;color: white;"></i>&nbsp;用例库
 				</a>
 			</li>
 		</ul>
 		<ul class="layui-nav layui-layout-right">
 			<li class="layui-nav-item">
-				<a href="javascript:;"><i class="fa fa-ravelry" style="font-size: 23px;color: white;font-weight: bolder;"></i>
+				<a href="javascript:;"><i class="fa fa-ravelry" style="font-size: 15px;color: white;font-weight: bolder;"></i>
 					导入导出
 				</a>
 				<dl class="layui-nav-child"> <!-- 二级菜单 -->
 					<dd><a type="button" onclick="importcase()">
-						<i class="fa fa-cloud-upload" style="font-size: 23px;"></i>
+						<i class="fa fa-cloud-upload" style="font-size: 15px;"></i>
 						&nbsp;导入用例
 					</a></dd>
 					<dd><a type="button" onclick="export_data()">
-						<i class="fa fa-cloud-download" style="font-size: 23px;"></i>
+						<i class="fa fa-cloud-download" style="font-size: 15px;"></i>
 						&nbsp;导出用例
 					</a></dd>
 				</dl>
@@ -201,7 +218,7 @@
 					</dl>
 				</li>
 				<li class="layui-nav-item">
-					<a href="?belong=record"><i class="fa fa-file"></i><span>&nbsp;Record接口</span></a>
+					<a href="?belong=record" data-type="tabAdd" class="btn site-demo-active"><i class="fa fa-file"></i><span>&nbsp;Record接口</span></a>
 				</li>
 				<li class="layui-nav-item">
 					<a href="?belong=document"><i class="fa fa-file-text"></i><span>&nbsp;文档管理接口</span></a>
@@ -248,14 +265,14 @@
 	</div>
 
 	<!--主题内容-table-->
-	<div id="layuibody" class="layui-body" style="background-color:#494A5F;margin-bottom: -50px;">
+	<div id="layuibody" class="layui-body" style="background-color:darkgrey;margin-bottom: -70px;">
 		<div style="padding: 15px;">
+			<!--  lay-separator="-"-->
 			<div class="demoTable">
-				<!--  lay-separator="-"-->
-				<div>
-					<span class="fa fa-home fa-lg layui-breadcrumb" style="font-size: 40px;color: whitesmoke;">
-						<a href="/apiindex/" class= "index" onmouseenter="erm_move_tip()" onmouseleave="erms_out_tip()">http://amberdata.cn/ermsapi/v2</a>
-						<a class="kit-side-fold casetitle" style="font-size: 22px;color: whitesmoke;" onmouseenter="erms_move_tip()" onmouseleave="erms_out_tip()">{{ abq }}</a>
+				<div class="layui-breadcrumb">
+					<span class="layui-icon layui-icon-link" style="font-size: 22px;color: #fff;">
+						<a href="/apiindex/" class= "index" onmouseenter="erm_move_tip()" style="color: #fff;" onmouseleave="erms_out_tip()">http://amberdata.cn/ermsapi/v2</a>
+						<a class="kit-side-fold casetitle" style="font-size: 22px;color: #fff;" onmouseenter="erms_move_tip()" onmouseleave="erms_out_tip()">{{ abq }}</a>
 					</span>
 				</div>
 				<div id="sousuo">
@@ -267,13 +284,30 @@
 							style="margin-top: -7px;">搜索
 					</button>
 				</div>
+				<table class="layui-hide" id="test" lay-filter="test"></table>
 			</div>
-			<table class="layui-hide" id="test" lay-filter="test"></table>
+			<!--<div class="layui-tab" lay-filter="demo" lay-allowclose="true">
+			  <ul class="layui-tab-title">
+				<li class="layui-this" lay-id="11">网站设置</li>
+				<li lay-id="22">用户管理</li>
+				<li lay-id="33">权限分配</li>
+				<li lay-id="44">商品管理</li>
+				<li lay-id="55">订单管理</li>
+			  </ul>
+			  <div class="layui-tab-content">
+				<div class="layui-tab-item layui-show"><table class="layui-hide" id="test" lay-filter="test"></table></div>
+				<div class="layui-tab-item">内容2</div>
+				<div class="layui-tab-item">内容3</div>
+				<div class="layui-tab-item">内容4</div>
+				<div class="layui-tab-item">内容5</div>
+			  </div>
+			</div>-->
+
 		</div>
 	</div>
 
 	<!--创建用例-->
-	<div class="layui-row" id="popSearchRoleTest">
+	<div class="layui-row" id="popSearchRoleTest" style="display: none;">
 		<div class="layui-col-md11">
 			<form class="layui-form" id="demoadd" lay-filter="create_apicase">
 				<div class="layui-form-item" style="margin-top: 20px;">
@@ -381,7 +415,7 @@
 	</div>
 
 	<!--编辑用例-->
-	<div class="layui-row" id="UpdateCase">
+	<div class="layui-row" id="UpdateCase" style="display: none;">
 		<div class="layui-col-md11">
 			<form class="layui-form" lay-filter="CreateUpdate">
 				<div class="layui-form-item" style="margin-top: 20px;">
@@ -493,7 +527,7 @@
 	</div>
 
 	<!--导入用例-->
-	<div class="layui-row" id="importCase">
+	<div class="layui-row" id="importCase" style="display: none;">
 		<div class="layui-col-md11">
 			<form class="layui-form" action="/import_case/" method="post" enctype="multipart/form-data">
 				<div class="layui-form-item" style="margin-top: 20px;">
@@ -514,7 +548,7 @@
 	</div>
 
 	<!--更新用户信息-->
-	<div class="layui-row" id="popSearchRoleTest2">
+	<div class="layui-row" id="popSearchRoleTest2" style="display: none;">
 		<div class="layui-col-md11">
 			<form class="layui-form" lay-filter="update_userinfo_api">
 
@@ -558,7 +592,7 @@
 	</div>
 
 	<!--获取令牌-->
-	<div class="layui-row" id="popSearchRoleTest3">
+	<div class="layui-row" id="popSearchRoleTest3" style="display: none;">
 		<div class="layui-col-md11">
 			<form class="layui-form" lay-filter="update_token_api">
 				<div class="layui-form-item" style="margin-top: 20px;">
@@ -589,7 +623,7 @@
 	</div>
 
 	<!--导出错误报告-->
-	<div class="layui-row" id="exportData">
+	<div class="layui-row" id="exportData" style="display: none;">
 		<div class="layui-col-md11">
 			<form class="layui-form" lay-filter="export_data">
 				<div class="layui-form-item" style="margin-top: 20px;">
@@ -619,7 +653,7 @@
 	</div>
 
 	<!--负责人-->
-	<div class="layui-row" id="requestParams">
+	<div class="layui-row" id="requestParams" style="display: none;">
 		<div class="layui-col-md11">
 			<form class="layui-form" lay-filter="head">
 				<div class="layui-form-item" style="margin-top: 50px;">
@@ -648,7 +682,7 @@
 	</div>
 
 	<!--快速测试-->
-	<div class="layui-row" id="quickTest">
+	<div class="layui-row" id="quickTest" style="display: none;">
 		<div class="modal fade">
 			<div class="modal-content">
 				<div class="modal-header" style="margin-top: 10px;">
@@ -777,7 +811,7 @@
             , page: {groups: 5} //开启分页
             //, limit: 10 //默认是10
 			, loading: false
-			, height: 'full-140'
+			, height: 'full-110'
 			, drag: {toolbar: true}//实现固定列与非固定列之间的转换
             , rowDrag: {
                 trigger: 'row', done: function (obj) {
@@ -896,7 +930,7 @@
                 , {title: '操作', toolbar: '#barDemo', width: 80, align: "left"}
                 //, {field: 'caseid', title: 'ID', width: 60,  align: "left"}
                 , {field: 'identity', title: '', width: 60, align: "center", templet: "#identityTpl"}
-                , {field: 'casename', title: '接口名称', width: 228, align: "left", filter: true, templet: "#casenameTpl",children:[
+                , {field: 'casename', title: '接口名称', width: 234, align: "left", filter: true, templet: "#casenameTpl",children:[
                     {
 						elem: '#templateTable'
 						, url: "/field_apilist/"
@@ -905,8 +939,9 @@
 							return {caseid:row.caseid}
                         }
 						, title:"请求参数详情"
-						, skin :'nob'
-						, size : "sm"
+						, skin :'line'
+						, size : "lg"
+						, height: 'full-10'
 						, cols: [[
 							{field: 'parameterName', title: '参数名称', width: 220, align: "left",style:'background-color: #eee;'}
 							, {field: 'parameterThat', title: '参数说明', width: 250, align: "left",style:'background-color: #eee;'}
@@ -2042,7 +2077,6 @@
 		$('.layui-nav-item span').each(function () {
 			if ($(this).is(':hidden')) {
 			    $(this).show();
-			    console.log("SSSSSSSs");
 				$('.layui-side.layui-bg-black').width(60); //设置宽度
 				$('.kit-side-fold i').css('margin-right', '70%');  //修改图标的位置
 				//将footer和body的宽度修改
@@ -2136,6 +2170,7 @@
 
 </script>
 
+
 <!--表头按钮-->
 <script type="text/html" id="toolbarDemo">
 	<div class="layui-btn-container">
@@ -2163,16 +2198,16 @@
 <!--请求方式模板-->
 <script type="text/html" id="methodTpl">
 	{% verbatim %}{{#  if(d.method === 'get'){ }}{% endverbatim %}
-	<span style="color: mediumpurple;">{% verbatim %}{{ d.method }}{% endverbatim %}</span>
+	<span style="color: mediumpurple;">{% verbatim %}GET{% endverbatim %}</span>
 
 	{% verbatim %}{{# } else if(d.method=== 'post') { }} {% endverbatim %}
-	<span style="color: yellowgreen;">{% verbatim %}{{ d.method }}{% endverbatim %}</span>
+	<span style="color: yellowgreen;">{% verbatim %}POST{% endverbatim %}</span>
 
 	{% verbatim %}{{# } else if(d.method=== 'put') { }} {% endverbatim %}
-	<span style="color: #00b4ef;">{% verbatim %}{{ d.method }}{% endverbatim %}</span>
+	<span style="color: #00b4ef;">{% verbatim %}PUT{% endverbatim %}</span>
 
 	{% verbatim %}{{# } else if(d.method=== 'delete' || d.method=== 'Delete' ) { }} {% endverbatim %}
-	<span style="color: deeppink;">{% verbatim %}{{ d.method }}{% endverbatim %}</span>
+	<span style="color: deeppink;">{% verbatim %}DELETE{% endverbatim %}</span>
 
 	{% verbatim %}{{# } else if(d.isMust.indexOf("false") != -1) { }} {% endverbatim %}
 	<span style="color: lightslategrey;">{% verbatim %}{{ d.isMust }}{% endverbatim %}</span>

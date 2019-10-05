@@ -3,139 +3,26 @@
 <head>
 	<meta charset="UTF-8">
 	<title>你访问出错啦</title>
-	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<style type="text/css">
-		#beijing{
-			width: 650px;
-			height: 400px;
-			background-image: url("./../static/images/404error.jpg");
-			margin-left: 400px;
-		}
-		h1,h2{
-			text-align: center;
-		}
-		.do--position-parent{
-			width: 400px;
-		}
-		.radio--option-box{
-			margin-right:50px;
-		}
-		.radio-inline-select{
-			margin-right: 30px;
-		}
-		.radio-inline-select>input{
-			margin-right: 3px;
-		}
-		.input-boxs{
-			margin-bottom: 10px;
-		}
-	</style>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="./../static/css/layui.css">
+	<link rel="stylesheet" href="./../static/css/public.css" media="all" />
 </head>
-<body>
-	<h2 class="alert alert-warning">{{ message }}</h2>
-	<div id="beijing"></div>
+<body class="childrenBody">
+	<div class="noFind">
+		<div class="ufo">
+			<i class="seraph icon-test ufo_icon"></i>
+			<i class="layui-icon page_icon">&#xe638;</i>
+		</div>
+		<div class="page404">
+			<i class="layui-icon">&#xe61c;</i>
+			<p>我勒个去，页面被外星人挟持了!</p>
+		</div>
+	</div>
+	<script src="./../static/js/layui/layui.js"></script>
 </body>
 </html>
-
-<!--新建用例表单-->
-{#            <div>#}
-{#                <form action="/create_case/" method="post" id='Fcase'>#}
-{#                    <h2>新建用例</h2>#}
-					<!--关闭按钮-->
-{#					<p>#}
-{#						<button type="button" class="close" aria-hidden="true">&times;</button>#}
-{#					</p>#}
-{#                    <div class="form-line">#}
-{#                        <span>用例ID</span>#}
-{#                        <div>#}
-{#                            <input type="text" name="caseid" class="form-control1">#}
-{#                        </div>#}
-{#                    </div>#}
-{##}
-{#                    <div class="form-line">#}
-{#                        <span>用例名称</span>#}
-{#                        <div>#}
-{#                            <input type="text" name="casename" class="form-control1">#}
-{#                        </div>#}
-{#                    </div>#}
-{##}
-{#                    <div class="form-line">#}
-{#                        <span>访问路径</span>#}
-{#                        <div>#}
-{#                            <input type="text" name="url" class="form-control1">#}
-{#                        </div>#}
-{#                    </div>#}
-{##}
-{#                    <div class="form-line">#}
-{#                        <span>是否运行</span>#}
-{#                        <div>#}
-{#							<input type="text" name="isrun" class="form-control1">#}
-{#						</div>#}
-{#                    </div>#}
-{##}
-{#                    <div class="form-line">#}
-{#                        <span>请求方式</span>#}
-{#                        <div>#}
-{#                            <input type="text" name="method" class="form-control1">#}
-{#                        </div>#}
-{#                    </div>#}
-{##}
-{#                    <div class="form-line">#}
-{#                        <span>请求头</span>#}
-{#                        <div>#}
-{#                            <input type="text" name="header" class="form-control1">#}
-{#                        </div>#}
-{#                    </div>#}
-{##}
-{#                    <div class="form-line">#}
-{#                        <span>依赖case的ID</span>#}
-{#                        <div>#}
-{#                            <input type="text" name="dependcaseid" class="form-control1">#}
-{#                        </div>#}
-{#                    </div>#}
-{##}
-{#                    <div class="form-line">#}
-{#                        <span>依赖case的返回数据</span>#}
-{#                        <div>#}
-{#                            <input type="text" name="dependidres" class="form-control1">#}
-{#                        </div>#}
-{#                    </div>#}
-{##}
-{#                    <div class="form-line">#}
-{#                        <span>需要替换的字段</span>#}
-{#                        <div>#}
-{#                            <input type="text" name="keywords" class="form-control1">#}
-{#                        </div>#}
-{#                    </div>#}
-{##}
-{#                    <div class="form-line">#}
-{#                        <span>请求参数</span>#}
-{#                        <div>#}
-{#                            <input type="text" name="params" class="form-control1">#}
-{#                        </div>#}
-{#                    </div>#}
-{##}
-{#                    <div class="form-line">#}
-{#                        <span>请求体</span>#}
-{#                        <div>#}
-{#                            <input type="text" name="body" class="form-control1">#}
-{#                        </div>#}
-{#                    </div>#}
-{##}
-{#                    <div class="form-line">#}
-{#                        <span>期望结果</span>#}
-{#                        <div>#}
-{#                            <input type="text" name="exceptres" class="form-control1">#}
-{#                        </div>#}
-{#                    </div>#}
-{##}
-{#                    <div class="form-line">#}
-{#                        <div class="but">#}
-{#                            <input type="submit" name="determine" value="确定" class="btnLogin">#}
-{#                            <input type="button" value="取消" class="btnLogin" onclick="location.href='/caselist/'">#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </form>#}
-{#            </div>#}
