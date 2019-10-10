@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>朱占豪测试系统</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta http-equiv="Access-Control-Allow-Origin" content="*">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="icon" href="./../static/images/favicon%202.ico">
+
+	<link rel="stylesheet" href="./../static/layui/css/layui.css" media="all" />
+{#	<link rel="stylesheet" href="./../static/css/index.css" media="all" />#}
+	<style>
+		/*公共样式*/
+		.header .layui-nav-child{ z-index:99999; top:60px; left: auto; right: 0;}
+		.seraph{ font-size:16px !important;}
+		.main_body{ min-width:320px; }
+		.layui-nav .layui-nav-item a{ cursor:pointer;}
+		.layui-nav .layui-nav-item>a{ color:rgba(255,255,255,1); max-height:60px;}
+		.layui-layer-tab .layui-layer-title span{ padding:0 !important;}
+		iframe{ position:absolute; height:100%; width:100%; border:none;}
+		.top_menu.layui-nav .layui-nav-child dd.layui-this a,.closeBox.layui-nav .layui-nav-child dd.layui-this a,.closeBox .layui-nav-child dd.layui-this,.top_menu .layui-nav-child dd.layui-this{ background:none; color:#333;}
+		.layui-nav .layui-nav-child a:hover,.layui-nav .layui-nav-child dd.layui-this a:hover{background-color:#5FB878;color:#fff;}
+
+		/*模拟加载层图标样式*/
+		.layui-layer-dialog .layui-layer-content .layui-layer-ico16{ background-size:100% 100% !important; }
+		/*样式改变的过渡*/
+		.layui-body,.layui-footer,.layui-layout-admin .layui-side,.logo,.topLevelMenus li.layui-nav-item,.topLevelMenus li.layui-nav-item:hover{ transition: all 0.3s ease-in-out;-webkit-transition: all 0.3s ease-in-out;-o-transition: all 0.3s ease-in-out;-moz-transition: all 0.3s ease-in-out;-ms-transition: all 0.3s ease-in-out; }
+		/*隐藏*/
+		*[mobile],.component .layui-select-title i.layui-edge{ display:none;}
+
+		/*打开页面动画*/
+		.layui-tab-item.layui-show{ animation:moveTop 1s; -webkit-animation:moveTop 1s; animation-fill-mode:both; -webkit-animation-fill-mode:both; position:relative; height:100%; -webkit-overflow-scrolling: touch; overflow:auto; }
+		@keyframes moveTop{
+			0% {opacity: 0;-webkit-transform: translateY(20px);-ms-transform: translateY(20px);transform: translateY(20px);}
+			100% {opacity: 1;-webkit-transform: translateY(0);-ms-transform: translateY(0);transform: translateY(0);}
+		}
+		@-o-keyframes moveTop{
+			0% {opacity: 0;-webkit-transform: translateY(20px);-ms-transform: translateY(20px);transform: translateY(20px);}
+			100% {opacity: 1;-webkit-transform: translateY(0);-ms-transform: translateY(0);transform: translateY(0);}
+		}
+		@-moz-keyframes moveTop{
+			0% {opacity: 0;-webkit-transform: translateY(20px);-ms-transform: translateY(20px);transform: translateY(20px);}
+			100% {opacity: 1;-webkit-transform: translateY(0);-ms-transform: translateY(0);transform: translateY(0);}
+		}
+		@-webkit-keyframes moveTop{
+			0% {opacity: 0;-webkit-transform: translateY(20px);-ms-transform: translateY(20px);transform: translateY(20px);}
+			100% {opacity: 1;-webkit-transform: translateY(0);-ms-transform: translateY(0);transform: translateY(0);}
+		}
+		/*锁屏*/
+		.admin-header-lock{width: 320px; height: 170px; padding: 20px; position: relative; text-align: center;}
+		.admin-header-lock-img{width:70px; height:70px; margin: 0 auto;}
+		.admin-header-lock-img img{width:70px; height:70px; border-radius: 100%; box-shadow:0 0 30px #44576b;}
+		.admin-header-lock-name{color: #009688;margin: 8px 0 15px 0;}
+		.input_btn{ overflow: hidden; margin-bottom: 10px; }
+		.admin-header-lock-input{width: 170px; color: #fff;background-color: #009688; float: left; margin:0 10px 0 40px; border:none;}
+		.admin-header-lock-input::-webkit-input-placeholder {color:#fff;}
+		.admin-header-lock-input::-moz-placeholder {color:#fff;}
+		.admin-header-lock-input:-ms-input-placeholder {color:#fff;}
+		.admin-header-lock-input:-moz-placeholder {color:#fff;}
+		#unlock{ float: left; }
+		#lock-box p{ color:#e60000; }
+		/*顶部*/
+		.header{ z-index:2000;}
+		.logo{ color: #fff; float: left; line-height:60px; font-size:20px; padding:0 25px; text-align: center; width:150px;}
+		.hideMenu{ float:left; width:20px; height:20px; margin-top:15px; font-size:17px; line-height:20px; text-align:center; padding:5px 5px; color:#fff; background-color:#1AA094; }
+		.hideMenu:hover{ color:#fff; }
+		.layui-nav cite{ margin-left: 5px;}
+		/*顶部右侧*/
+		.topLevelMenus{float:left;}
+		.topLevelMenus li.layui-nav-item:hover{ background-color:rgba(221,221,221,0.2);}
+		.layui-nav .layui-this:after{ bottom:-5px!important;}
+		.header .layui-nav-bar{top:60px !important;}
+		.topLevelMenus .layui-nav-item.layui-this{ background-color:rgba(0,0,0,0.5);}
+		.top_menu.layui-nav .layui-this:after{ width:0px; }
+		.top_menu .layui-nav-bar,.mobileTopLevelMenus .layui-nav-bar{background-color:rgba(0,0,0,0.7);}
+
+		/*左侧导航*/
+		.layui-nav{background-color: inherit !important;}
+		.showMenu.layui-layout-admin .layui-side{ left:-200px; }
+		.showMenu .layui-body,.showMenu .layui-footer{ left:0; }
+		/*左侧用户头像*/
+		.top_menu{ background-color:inherit !important; position:absolute; right:0;top:0; }
+		.layui-layout-admin .layui-side{ left:0; overflow:hidden;}
+		.user-photo{width: 200px; height: 120px; padding:15px 0 5px;}
+		.user-photo a.img{ display: block; width:80px; height:80px; margin: 0 auto 10px;}
+		.user-photo a.img img{ display: block; border: none; width: 100%; height: 100%; border-radius: 50%; -webkit-border-radius: 50%; -moz-border-radius: 50%; border: 4px solid #44576b; box-sizing:border-box;}
+		.user-photo p{ display: block; width: 100%; height: 25px; color: #ffffff; text-align: center; font-size: 12px; white-space: nowrap;line-height: 25px; overflow: hidden;}
+		/*左侧导航重定义*/
+		.layui-nav-item.layui-nav-itemed{ background-color:#2B2E37 !important;}
+		.layui-nav-itemed:before{ width:5px; height:100%; background-color:#009688; position:absolute; content:''; left:0; top:0;}
+		.layui-nav-itemed .layui-nav-child a{ padding-left:40px;}
+
+		/*layui-body*/
+		.layui-body{overflow:hidden; border-top:5px solid #1AA094;border-left:2px solid #1AA094; background:#fff;}
+		#top_tabs_box{ padding-right:138px; height:40px; border-bottom:1px solid #e2e2e2; }
+		#top_tabs{ position: absolute; border-bottom:none;}
+		.layui-tab-title .layui-this{ background-color:#1AA094; color:#fff; }
+		.layui-tab-title .layui-this:after{ border:none; }
+		.layui-tab-title li cite{ font-style: normal; padding-left:5px; }
+		.clildFrame.layui-tab-content{ top:41px; position:absolute; bottom:0; width:100%; padding:0;}
+		/*多窗口页面操作下拉*/
+		.closeBox{ position:absolute; right:0; background-color:#fff !important; color:#000; border-left:1px solid #e2e2e2; border-bottom:1px solid #e2e2e2; }
+		.closeBox .layui-nav-item{ line-height:40px; }
+		.closeBox .layui-nav-item>a,.closeBox .layui-nav-item>a:hover{ color:#000; }
+		.closeBox .layui-nav-child{ top:42px; left:-12px; }
+		.closeBox .layui-nav-bar{ display:none; }
+		.closeBox a i.caozuo{ font-size: 20px; position:absolute; top:1px; left:0; }
+		.closeBox a span.layui-nav-more{ border-color:#333 transparent transparent;}
+		.closeBox a span.layui-nav-more.layui-nav-mored{ border-color:transparent transparent #333;}
+		/*功能设定*/
+		.functionSrtting_box{ padding-top:15px;}
+		.functionSrtting_box .layui-form-label{ width:81px;}
+		.functionSrtting_box .layui-word-aux{ position:absolute;left:60px; top:9px; font-size: 12px;}
+		/*换肤*/
+		.skins_box{ padding:10px 34px 0; }
+		.skinBtn{ text-align:center; }
+		/*橙色*/
+		.orange .layui-layout-admin .layui-header{ background-color:orange !important; }
+		.orange .layui-bg-black{ background-color:#e47214 !important; }
+		/*蓝色*/
+		.blue .layui-layout-admin .layui-header{ background-color:#3396d8 !important; }
+		.blue .layui-bg-black,.blue .hideMenu{ background-color:#146aa2 !important; }
+		/*自定义*/
+		.skinCustom{ visibility:hidden; }
+		.skinCustom input{ width:48%; margin:5px 2% 5px 0; float:left; }
+		.orange .layui-nav-tree .layui-nav-child a,.blue .layui-nav-tree .layui-nav-child a{ color:#fff; }
+		.orange .top_menu.layui-nav .layui-nav-more,.blue .top_menu.layui-nav .layui-nav-more{border-color:#fff transparent transparent !important;}
+		.orange .top_menu.layui-nav-itemed .layui-nav-more,.orange .top_menu.layui-nav .layui-nav-mored,.blue .top_menu.layui-nav-itemed .layui-nav-more,.blue .top_menu.layui-nav .layui-nav-mored{border-color:transparent transparent #fff !important;}
+		/*底部*/
+		.footer{ text-align: center; line-height:44px;border-left: 2px solid #1AA094; z-index:999;}
+
+		/*响应式样式*/
+		@media screen and (max-width:1080px){
+			.mobileTopLevelMenus[mobile]{display:inline-block;}
+			.site-mobile .site-tree-mobile,.topLevelMenus[pc]{display:none !important;}
+		}
+		@media screen and (max-width: 720px){
+			.hideMenu{ display: none !important; }
+			.mobileTopLevelMenus[mobile]{ padding:0;}
+			.top_menu>li[pc]{ display: none !important; }
+			/*左侧导航*/
+			.layui-layout-admin .layui-side{ left:-260px; }
+			.site-mobile .layui-side{ left: 0; z-index:1100; }
+			.site-tree-mobile {display: block!important; position: fixed; z-index: 100000; bottom: 15px; left: 15px; width:40px; height:40px; line-height:40px; border-radius: 2px; text-align: center; background-color: rgba(0,0,0,.7); color: #fff;}
+			.site-mobile .site-mobile-shade { content: ''; position: fixed; top: 0; bottom: 0; left: 0; right: 0; background-color: rgba(0,0,0,.8); z-index: 999;}
+			.layui-body,.layui-layout-admin .layui-footer{ left:-2px; }
+		}
+		@media screen and (max-width:480px){
+			.logo{ width:120px; font-size: 18px;}
+			#userInfo>a{ padding:0 10px;}
+			.mobileTopLevelMenus[mobile] li>a{ padding:0 17px 0 15px;}
+			.logo,.layui-nav.top_menu{ padding:0 5px;}
+			.adminName,.top_menu dd[pc]{ display: none !important; }
+			*[mobile],.top_menu .layui-nav-item.showNotice[pc]{ display:inline-block !important; }
+		}
+
+		/*修改顶部高度*/
+		.header .layui-nav-child,.layui-body,.layui-layout-admin .layui-side,.header .layui-nav-bar{ top:50px !important;}
+		.header .layui-nav .layui-nav-item,.header .layui-nav .layui-nav-item>a,.header,.logo{ line-height:50px !important; max-height:50px; !important;}
+		.mobileTopLevelMenus{ float:left;}
+		.hideMenu{ margin-top: 10px;}
+		/*myzzh*/
+		.layui-layout-admin .layui-body{bottom:0px;}
+	</style>
+
+</head>
+<body class="main_body">
+	<div class="layui-layout layui-layout-admin">
+		<!-- 顶部 -->
+		<div class="layui-header header">
+			<div class="layui-main mag0">
+				<a href="#" class="logo">layui-ZZH</a>
+				<!-- 显示/隐藏菜单 -->
+				<a href="javascript:;" class="seraph hideMenu icon-caidan"></a>
+				<!-- 顶级菜单 -->
+				<ul class="layui-nav topLevelMenus" pc>
+{#					<li class="layui-nav-item" data-menu="contentManagement">#}
+{#						<a href="javascript:;"><i class="seraph icon-caidan"></i><cite>系统切换</cite></a>#}
+{#						<dl class="layui-nav-child">#}
+{#							<dd class="layui-this" data-menu="contentManagement"><a href="javascript:;"><i class="layui-icon" data-icon="&#xe63c;">&#xe63c;</i><cite>内容管理</cite></a></dd>#}
+{#							<dd data-menu="memberCenter"><a href="javascript:;"><i class="seraph icon-icon10" data-icon="icon-icon10"></i><cite>用户中心</cite></a></dd>#}
+{#							<dd data-menu="systemeSttings"><a href="javascript:;"><i class="layui-icon" data-icon="&#xe620;">&#xe620;</i><cite>系统设置</cite></a></dd>#}
+{#							<dd data-menu="seraphApi"><a href="javascript:;"><i class="layui-icon" data-icon="&#xe705;">&#xe705;</i><cite>使用文档</cite></a></dd>#}
+{#						</dl>#}
+{#					</li>#}
+					<li class="layui-nav-item layui-this" data-menu="contentManagement" pc>
+						<a href="javascript:;"><i class="layui-icon" data-icon="&#xe63c;">&#xe63c;</i><cite>Erms</cite></a>
+					</li>
+					<li class="layui-nav-item" data-menu="memberCenter" pc>
+						<a href="javascript:;"><i class="seraph icon-icon10" data-icon="icon-icon10"></i><cite>Transfer</cite></a>
+					</li>
+					<li class="layui-nav-item" data-menu="systemeSttings" pc>
+						<a href="javascript:;"><i class="layui-icon" data-icon="&#xe620;">&#xe620;</i><cite>Admin</cite></a>
+					</li>
+					<li class="layui-nav-item" data-menu="seraphApi" pc>
+						<a href="javascript:;"><i class="layui-icon" data-icon="&#xe705;">&#xe705;</i><cite>Tdr</cite></a>
+					</li>
+				</ul>
+			    <!-- 顶部右侧菜单 -->
+			    <ul class="layui-nav top_menu">
+					<li class="layui-nav-item" pc>
+						<a href="javascript:;" class="clearCache"><i class="layui-icon" data-icon="&#xe640;">&#xe640;</i><cite>清除缓存</cite><span class="layui-badge-dot"></span></a>
+					</li>
+					<li class="layui-nav-item lockcms" pc>
+						<a href="javascript:;"><i class="seraph icon-lock"></i><cite>锁屏</cite></a>
+					</li>
+					<li class="layui-nav-item" id="userInfo">
+						<a href="javascript:;"><img src="./../static/images/userface3.jpg" class="layui-nav-img userAvatar" width="35" height="35"><cite class="adminName">朱占豪</cite></a>
+						<dl class="layui-nav-child">
+							<dd><a href="javascript:;" data-url="page/user/userInfo.html"><i class="seraph icon-ziliao" data-icon="icon-ziliao"></i><cite>个人资料</cite></a></dd>
+							<dd><a href="javascript:;" data-url="page/user/changePwd.html"><i class="seraph icon-xiugai" data-icon="icon-xiugai"></i><cite>修改密码</cite></a></dd>
+							<dd><a href="javascript:;" class="showNotice"><i class="layui-icon">&#xe645;</i><cite>系统公告</cite><span class="layui-badge-dot"></span></a></dd>
+							<dd pc><a href="javascript:;" class="functionSetting"><i class="layui-icon">&#xe620;</i><cite>功能设定</cite><span class="layui-badge-dot"></span></a></dd>
+							<dd pc><a href="javascript:;" class="changeSkin"><i class="layui-icon">&#xe61b;</i><cite>更换皮肤</cite></a></dd>
+							<dd><a href="#" class="signOut"><i class="seraph icon-tuichu"></i><cite>退出</cite></a></dd>
+						</dl>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<!-- 左侧导航 -->
+		<div class="layui-side layui-bg-black">
+			<div class="user-photo">
+				<a class="img" title="我的头像" ><img src="./../static/images/userface4.jpg" class="userAvatar"></a>
+				<p>你好！<span class="userName">朱占豪</span>, 欢迎登录</p>
+			</div>
+			<!-- 搜索
+			<div class="layui-form component">
+				<select name="search" id="search" lay-search lay-filter="searchPage">
+					<option value="">搜索页面或功能</option>
+					<option value="1">layer</option>
+					<option value="2">form</option>
+				</select>
+				<i class="layui-icon">&#xe615;</i>
+			</div>-->
+			<div class="navBar layui-side-scroll" id="navBar">
+				<ul class="layui-nav layui-nav-tree">
+					<li class="layui-nav-item layui-this">
+						<a href="javascript:;" data-url="/web_welcome/">
+							<i class="layui-icon" data-icon=""></i><cite>后台首页</cite></a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<!-- 右侧内容 -->
+		<div class="layui-body layui-form">
+			<div class="layui-tab mag0" lay-filter="bodyTab" id="top_tabs_box">
+				<ul class="layui-tab-title top_tab" id="top_tabs">
+					<li class="layui-this" lay-id=""><i class="layui-icon">&#xe68e;</i> <cite>后台首页</cite></li>
+				</ul>
+				<ul class="layui-nav closeBox">
+				  <li class="layui-nav-item">
+				    <a href="javascript:;"><i class="layui-icon caozuo">&#xe643;</i> 页面操作</a>
+				    <dl class="layui-nav-child">
+					  <dd><a href="javascript:;" class="refresh refreshThis"><i class="layui-icon">&#x1002;</i> 刷新当前</a></dd>
+				      <dd><a href="javascript:;" class="closePageOther"><i class="seraph icon-prohibit"></i> 关闭其他</a></dd>
+				      <dd><a href="javascript:;" class="closePageAll"><i class="seraph icon-guanbi"></i> 关闭全部</a></dd>
+				    </dl>
+				  </li>
+				</ul>
+
+				<div class="layui-tab-content clildFrame">
+					<div class="layui-tab-item layui-show">
+						<iframe src="/web_welcome/"></iframe>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<!-- 底部
+		<div class="layui-footer footer">
+			<p><span>copyright @2018 驊驊龔頾</span>　　<a onclick="donation()" class="layui-btn layui-btn-danger layui-btn-sm">捐赠作者</a></p>
+		</div> -->
+	</div>
+
+	<!-- 移动导航 -->
+	<div class="site-tree-mobile"><i class="layui-icon">&#xe602;</i></div>
+	<div class="site-mobile-shade"></div>
+
+
+	<script type="text/javascript" src="./../static/layui/layui.js"></script>
+{#	<script type="text/javascript" src="./../static/js/index.js"></script>#}
+	<script type="text/javascript" src="./../static/js/cache.js"></script>
+	<script>
+		var $,tab,dataStr,layer;
+			layui.config({
+				base : "./../static/js/"
+			}).extend({
+				"bodyTab" : "bodyTab"
+			});
+			layui.use(['bodyTab','form','element','layer','jquery'],function(){
+				var form = layui.form,
+					element = layui.element;
+					$ = layui.$;
+					layer = parent.layer === undefined ? layui.layer : top.layer;
+					tab = layui.bodyTab({
+						openTabNum : "50",  //最大可打开窗口数量
+						url : "./../../static/json/navs.json" //获取菜单json地址
+					});
+
+				//通过顶部菜单获取左侧二三级菜单   注：此处只做演示之用，实际开发中通过接口传参的方式获取导航数据
+				function getData(json){
+					$.getJSON(tab.tabConfig.url,function(data){
+						if(json == "contentManagement"){
+							dataStr = data.contentManagement;
+							//重新渲染左侧菜单
+							tab.render();
+						}else if(json == "memberCenter"){
+							dataStr = data.memberCenter;
+							//重新渲染左侧菜单
+							tab.render();
+						}else if(json == "systemeSttings"){
+							dataStr = data.systemeSttings;
+							//重新渲染左侧菜单
+							tab.render();
+						}else if(json == "seraphApi"){
+							dataStr = data.seraphApi;
+							//重新渲染左侧菜单
+							tab.render();
+						}
+					})
+				}
+				//页面加载时判断左侧菜单是否显示
+				//通过顶部菜单获取左侧菜单
+				$(".topLevelMenus li,.mobileTopLevelMenus dd").click(function(){
+					if($(this).parents(".mobileTopLevelMenus").length != "0"){
+						$(".topLevelMenus li").eq($(this).index()).addClass("layui-this").siblings().removeClass("layui-this");
+					}else{
+						$(".mobileTopLevelMenus dd").eq($(this).index()).addClass("layui-this").siblings().removeClass("layui-this");
+					}
+					$(".layui-layout-admin").removeClass("showMenu");
+					$("body").addClass("site-mobile");
+					getData($(this).data("menu"));
+					//渲染顶部窗口
+					tab.tabMove();
+				})
+
+				//隐藏左侧导航
+				$(".hideMenu").click(function(){
+					if($(".topLevelMenus li.layui-this a").data("url")){
+						layer.msg("此栏目状态下左侧菜单不可展开");  //主要为了避免左侧显示的内容与顶部菜单不匹配
+						return false;
+					}
+					$(".layui-layout-admin").toggleClass("showMenu");
+					//渲染顶部窗口
+					tab.tabMove();
+				})
+
+				//通过顶部菜单获取左侧二三级菜单   注：此处只做演示之用，实际开发中通过接口传参的方式获取导航数据
+				getData("contentManagement");
+
+				//手机设备的简单适配
+				$('.site-tree-mobile').on('click', function(){
+					$('body').addClass('site-mobile');
+				});
+				$('.site-mobile-shade').on('click', function(){
+					$('body').removeClass('site-mobile');
+				});
+
+				// 添加新窗口
+				$("body").on("click",".layui-nav .layui-nav-item a:not('.mobileTopLevelMenus .layui-nav-item a')",function(){
+					//如果不存在子级
+					if($(this).siblings().length == 0){
+						addTab($(this));
+						$('body').removeClass('site-mobile');  //移动端点击菜单关闭菜单层
+					}
+					$(this).parent("li").siblings().removeClass("layui-nav-itemed");
+				})
+
+				//清除缓存
+				$(".clearCache").click(function(){
+					window.sessionStorage.clear();
+					window.localStorage.clear();
+					var index = layer.msg('清除缓存中，请稍候',{icon: 16,time:false,shade:0.8});
+					setTimeout(function(){
+						layer.close(index);
+						layer.msg("缓存清除成功！");
+					},1000);
+				})
+
+				//刷新后还原打开的窗口
+				if(cacheStr == "true") {
+					if (window.sessionStorage.getItem("menu") != null) {
+						menu = JSON.parse(window.sessionStorage.getItem("menu"));
+						curmenu = window.sessionStorage.getItem("curmenu");
+						var openTitle = '';
+						for (var i = 0; i < menu.length; i++) {
+							openTitle = '';
+							if (menu[i].icon) {
+								if (menu[i].icon.split("-")[0] == 'icon') {
+									openTitle += '<i class="seraph ' + menu[i].icon + '"></i>';
+								} else {
+									openTitle += '<i class="layui-icon">' + menu[i].icon + '</i>';
+								}
+							}
+							openTitle += '<cite>' + menu[i].title + '</cite>';
+							openTitle += '<i class="layui-icon layui-unselect layui-tab-close" data-id="' + menu[i].layId + '">&#x1006;</i>';
+							element.tabAdd("bodyTab", {
+								title: openTitle,
+								content: "<iframe src='" + menu[i].href + "' data-id='" + menu[i].layId + "'></frame>",
+								id: menu[i].layId
+							})
+							//定位到刷新前的窗口
+							if (curmenu != "undefined") {
+								if (curmenu == '' || curmenu == "null") {  //定位到后台首页
+									element.tabChange("bodyTab", '');
+								} else if (JSON.parse(curmenu).title == menu[i].title) {  //定位到刷新前的页面
+									element.tabChange("bodyTab", menu[i].layId);
+								}
+							} else {
+								element.tabChange("bodyTab", menu[menu.length - 1].layId);
+							}
+						}
+						//渲染顶部窗口
+						tab.tabMove();
+					}
+				}else{
+					window.sessionStorage.removeItem("menu");
+					window.sessionStorage.removeItem("curmenu");
+				}
+			})
+
+			//打开新窗口
+			function addTab(_this){
+				tab.tabAdd(_this);
+			}
+
+			//捐赠弹窗
+			function donation(){
+				layer.tab({
+					area : ['260px', '367px'],
+					tab : [{
+						title : "微信",
+						content : "<div style='padding:30px;overflow:hidden;background:#d2d0d0;'><img src='./../../static/images/wechat.jpg'></div>"
+					},{
+						title : "支付宝",
+						content : "<div style='padding:30px;overflow:hidden;background:#d2d0d0;'><img src='./../../static/images/wechat.jpg'></div>"
+					}]
+				})
+			}
+
+			//图片管理弹窗
+			function showImg(){
+				$.getJSON('json/images.json', function(json){
+					var res = json;
+					layer.photos({
+						photos: res,
+						anim: 5
+					});
+				});
+			}
+	</script>
+</body>
+</html>

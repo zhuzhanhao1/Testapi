@@ -1,8 +1,11 @@
 import requests,json
 import sys,os
 cur_path = os.path.dirname(os.path.realpath(__file__))
+# print(cur_path)
 cur_path1 = os.path.dirname(os.path.realpath(cur_path))
-sys.path.append(cur_path1)
+cur_path2 = os.path.dirname(os.path.realpath(cur_path1))
+# print(cur_path2)
+sys.path.append(cur_path2)
 
 from Api.webuitest.conn_database import ConnDataBase
 
@@ -18,6 +21,9 @@ class RequestMethod():
         headers = {
             "accessToken": token
         }
+        print(params=="")
+        params = json.loads(params) if params != "" else None
+        print(params)
         r = requests.get(url, params=params, headers=headers)
         try:
             json_response = r.json()
@@ -28,32 +34,21 @@ class RequestMethod():
 
 
 
-    def post(self,url,params,data=None):
-        data = json.dumps(data)
+    def post(self,url,params,data):
         token = self.con.get_logininfo(self.val)[3]
+        print(token)
         headers = {
             "accessToken": token,
             "Content-Type": "application/json"
         }
-        r = requests.post(url, params=params, data=data, headers=headers)
-        try:
-            json_response = r.json()
-            return json_response
-        except Exception as e:
-            print("POST请求出错", e)
-            print("zzh测试啊"+r.text)
-            print(type(r.text))
-            return r.text
-
-
-    def delfiles(self,url,data=None):
-        data = json.dumps(data)
-        token = self.con.get_logininfo(self.val)[3]
-        headers = {
-            "accessToken": token,
-            "Content-Type": "application/json"
-        }
-        r = requests.delete(url, data=data, headers=headers)
+        print(params)
+        params = json.loads(params) if params != "" else None
+        if data:
+            data = json.loads(data)
+            data = data if any(data) == True else None
+            r = requests.post(url, params=params, data=json.dumps(data), headers=headers)
+        else:
+            r = requests.post(url, params=params, data=None, headers=headers)
         try:
             json_response = r.json()
             return json_response
@@ -61,26 +56,40 @@ class RequestMethod():
             print("POST请求出错", e)
             return r.text
 
-    def delfile(self,url,params):
-        try:
-            token = self.con.get_logininfo(self.val)[3]
+    def delete(self,url,params,data):
+        token = self.con.get_logininfo(self.val)[3]
+        params = json.loads(params) if params != "" else None
+        if data:
             headers = {
-                "accessToken":token
+                "accessToken": token,
+                "Content-Type": "application/json"
             }
-            r =requests.delete(url,params=params,headers=headers)
+            data = json.loads(data)
+            r = requests.delete(url, params=params, data=json.dumps(data), headers=headers)
+        else:
+            headers = {"accessToken": token}
+            r = requests.delete(url, params=params, headers=headers)
+        try:
             json_response = r.json()
             return json_response
         except Exception as e:
-            print("DELETE请求出错",e)
+            print("POST请求出错", e)
+            return r.text
 
-    def putfile(self,url,params,data=None):
-        data = json.dumps(data)
+    def put(self,url,params,data):
         token = self.con.get_logininfo(self.val)[3]
         headers = {
             "accessToken": token,
             "Content-Type": "application/json"
         }
-        r = requests.put(url, params=params, data=data, headers=headers)
+        params = json.loads(params) if params != "" else None
+        if data:
+            # data = eval(data)
+            data = json.loads(data)
+            data = data if any(data) == True else None
+            r = requests.put(url, params=params, data=json.dumps(data), headers=headers)
+        else:
+            r = requests.put(url, params=params, data=None, headers=headers)
         try:
             json_response = r.json()
             return json_response
@@ -93,40 +102,33 @@ class RequestMethod():
         print(type(data['path']))
         print(params)
         print(type(params))
+        token = self.con.get_logininfo(self.val)[3]
+        headers = {
+            "accessToken": token
+        }
+        files = {"file": open(data['path'], "rb")}
+        r = requests.post(url, params=params, files=files, headers=headers)
         try:
-            token = self.con.get_logininfo(self.val)[3]
-            headers = {
-                "accessToken":token
-            }
-            files = {"file":open(data['path'],"rb")}
-            r =requests.post(url,params=params,files=files,headers=headers)
-            print(r.text)
             json_response = r.json()
             return json_response
         except Exception as e:
             print("上传文件失败",e)
+            print(r.text)
+            return r.text
 
-
-
-    def run_main(self,method,url,params,data=None):
+    def run_main(self,method,url,params,data):
         res = None
         if method == "get":
             res = self.get(url,params)
 
-        elif method == 'post' and data == None:
-            res = self.post(url,params)
-        elif method == "post" and data != None:
+        elif method == 'post':
             res = self.post(url,params,data)
 
         elif method == 'delete':
-            res = self.delfile(url, params)
-        elif method == "Delete":
-            res = self.delfiles(url, data)
+            res = self.delete(url,params,data)
 
-        elif method == 'put' and data == None:
-            res = self.putfile(url, params)
-        elif method == "put" and data != None:
-            res = self.putfile(url, params, data)
+        elif method == 'put':
+            res = self.put(url, params,data)
 
         elif method == "file":
             res = self.uploadfile(url,params,data)
@@ -134,16 +136,21 @@ class RequestMethod():
         return res
 
 
-
-
 if __name__ == "__main__":
     a = RequestMethod("ast")
-    aa = '{"pagingSort": {"currentPage": "1","pageSize": 50,"totalCount": 0,"sortField": None,"sortWay": None},"columns": []}'
-    aa1 = eval(aa)
-    params = '{"parentId":"/档案局new5/文件整理/1901/WS.文书档案/A.党群服务(按件)","isArrangeArea":"true"}'
-    params = eval(params)
+    params = '{"parentId":"/杭州市档案局/文件整理/2019"}'
+    data = {
+              "pagingSort": {
+                "currentPage": "1",
+                "pageSize": "50",
+                "totalCount": 0,
+                "sortField": None,
+                "sortWay": None
+              },
+              "sortList": [],
+              "columns": []
+            }
     bb = "post"
-    cc = "http://demo.amberdata.cn/ermsapi/v2/navigation/get_object_list"
-    b = a.run_main(bb,cc,params,aa1)
-
+    cc = "http://amberdata.cn/ermsapi/v2/navigation/get_object_list"
+    b = a.run_main(bb,cc,params,data)
     print(b)

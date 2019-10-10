@@ -118,10 +118,14 @@
 		.layui-nav .layui-nav-item{
 			line-height:50px;
 		}
+		.layui-table-tool{
+			background-color:rgba(0, 0, 0, 0.15);
+		}
+
 
 	</style>
 </head>
-<body class="layui-layout-body">
+<body class="layui-layout-body" style="background-image: url('./../static/images/beijing2.png');background-size:100%;">
 
 <div class="layui-layout layui-layout-admin">
 	<!-- 头部区域（可配合layui已有的水平导航） -->
@@ -264,8 +268,9 @@
 		</div>
 	</div>
 
+
 	<!--主题内容-table-->
-	<div id="layuibody" class="layui-body" style="background-color:darkgrey;margin-bottom: -70px;">
+	<div id="layuibody" class="layui-body" style="margin-bottom: -70px;">
 		<div style="padding: 15px;">
 			<!--  lay-separator="-"-->
 			<div class="demoTable">
@@ -771,7 +776,7 @@
 							<label class="layui-form-label">response</label>
 							<div class="layui-input-inline">
 								<textarea id="response" name="response" class="layui-textarea"
-										  style="width: 910px;height: 200px;" placeholder="响应内容在此区域展示"></textarea>
+										  style="width: 910px;height: 500px;" placeholder="响应内容在此区域展示"></textarea>
 							</div>
 							<label class="layui-form-label" style="width: 112px;color: chocolate;font-family:cursive">默认复制结果内容</label>
 							<div class="layui-inline">
@@ -958,7 +963,7 @@
 				]}// filter: true
                 , {field: 'url', title: '请求路径', width: 235, align: "left",templet:function (res) {
 						var a = res.url.split("/");
-						return '<span>' + a[2] + '</span>'
+						return '<span>' + a[a.length-1] + '</span>'
                     }}
                 , {field: 'method', title: '请求方式', width: 90, align: "left", templet: "#methodTpl"}
                 , {field: 'params', title: 'Query参数', width: 160, align: "left", event: 'params'}
@@ -1121,19 +1126,27 @@
 							offset:"t"
                         });
                     } else {
-                        var ids = "";
+                        var l = [];
                         for (i = 0; i < data.length; i++) {
-                            ids += data[i]["caseid"] + ",";
-                            console.log(ids);
+                            var dic = {};
+                            dic["caseid"] = data[i]["caseid"];
+                            dic['identity'] = data[i]['identity'];
+                            dic['casename'] = data[i]['casename'];
+							dic["url"] = data[i]['url'];
+							dic['method'] = data[i]['method'];
+							dic['params'] = data[i]['params'];
+							dic['body'] = data[i]['body'];
+							l.push(dic);
                         }
+                        console.log(l);
                         $.ajax({
                             cache: false,
                             url: "/run_apicase/",
                             dataType: 'json',
-                            type: 'GET',
+                            type: 'POST',
                             //async: false,
                             data: {
-                                "caseid": ids
+								"request":JSON.stringify(l)
                             },
                             //请求前的处理,加载loading
                             beforeSend: function () {
@@ -1144,7 +1157,6 @@
                                 });
                             },
                             success: function (data) {
-                                console.log("哎说是所"+data);
                                 var strjson = JSON.stringify(data, null, 4);
                                 console.log(strjson);
                                 layer.prompt({
@@ -1203,7 +1215,7 @@
                     console.log(data);
                     if (data.length == 0) {
                         layer.close(index);
-                        layer.msg("请先选中需要执行的用例", {
+                        layer.msg("请先选中需要发送的接口", {
                             icon: 2,
 							offset:"t"
                         });
@@ -1762,12 +1774,14 @@
     function quickTest() {
         layer.open({
             type: 1,
-            title: false,
-            shadeClose: true,
+            title: "快速测试",
+            //shadeClose: true,
             shade: false,
             skin: "layui-layer-rim",
-            maxmin: true, //开启最大化最小化按钮
-            area: ['1200px', '680px'],
+			moveOut:true,
+			zIndex:layer.zIndex,
+            maxmin: true,
+            area: ['1200px', '630px'],
             content: $('#quickTest'),
             success: function () {
                 layui.use('form', function () {
@@ -1794,15 +1808,22 @@
                                 l_index = layer.load(0, {shade: [0.5, '#DBDBDB']});
                             },
                             success: function (data) {
-                                console.log(data);
                                 var res = JSON.stringify(data, null, 4);
                                 console.log(res);
                                 $("#response").val(res);
-                                layer.msg("操作成功", {
-                                    icon: 6,
-                                    offset: 't',
-									time:1000
-                                });
+								if (data.status_code==500){
+									layer.msg(data.msg, {
+										icon: 5,
+										offset: 't',
+										time: 3000
+									});
+								}else{
+									layer.msg("操作成功", {
+										icon: 6,
+										offset: 't',
+										time: 1000
+									});
+								}
 
                             },
                             error: function (data) {
@@ -2208,6 +2229,9 @@
 
 	{% verbatim %}{{# } else if(d.method=== 'delete' || d.method=== 'Delete' ) { }} {% endverbatim %}
 	<span style="color: deeppink;">{% verbatim %}DELETE{% endverbatim %}</span>
+
+	{% verbatim %}{{# } else if(d.method=== 'file' ) { }} {% endverbatim %}
+	<span style="color: yellowgreen;">{% verbatim %}FILE{% endverbatim %}</span>
 
 	{% verbatim %}{{# } else if(d.isMust.indexOf("false") != -1) { }} {% endverbatim %}
 	<span style="color: lightslategrey;">{% verbatim %}{{ d.isMust }}{% endverbatim %}</span>

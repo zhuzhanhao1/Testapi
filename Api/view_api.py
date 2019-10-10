@@ -162,7 +162,6 @@ def apilist_view(request):
         data = {
             "caseid": weblist.caseid,
             "belong":weblist.belong,
-            "processid":weblist.isprocess,
             "identity": weblist.identity,
             "casename": weblist.casename,
             "url": weblist.url,
@@ -170,7 +169,8 @@ def apilist_view(request):
             "method": weblist.method,
             "params": weblist.params,
             "body": weblist.body,
-            "result": weblist.result
+            "result": weblist.result,
+            "system":weblist.system
         }
         L.append(data)
     print("此模块的用例个数为:"+str(len(L)))
@@ -604,7 +604,7 @@ def get_userinfo_transfer_views1(request):
             "单位管理员": {
                 "账号": admin[0],
                 "密码": admin[1],
-                "令牌": ast[3]
+                "令牌": admin[3]
             },
             "单位档案员": {
                 "账号": ast[0],
@@ -690,67 +690,32 @@ def update_token_api_views(request):
 #执行用例
 @login_required
 def run_apicase_views(request):
-    con = ConnDataBase()
-    ids= request.GET.get("caseid").split(",")[:-1]
-    print(ids)
-    if len(ids) == 1:
-        print("单一接口测试")
-        d = {}
-        for ucaseid in ids:
-            id = Case.objects.get(caseid=ucaseid)
-            #判断当前请求的系统，给对应的系统匹配上对应的URL
-            if id.system == "erms":
-                URL = str(con.get_logininfo("sysadmin")[2], 'utf-8')
-            elif id.system == "admin":
-                URL = str(con.get_logininfo("adminadmin")[2], 'utf-8')
-            else:
-                URL = str(con.get_logininfo("yjadmin")[2], 'utf-8')
-            identity = id.identity
-            Runmethod = RequestMethod(identity)
-            url = URL + id.url
-            # print(url)
-            method = id.method
-            params = id.params
-            body = id.body
-            casename = id.casename
-            head = id.exceptres
-            #eval()字符串转字典
+    content = request.POST.get("request","")
+    content = json.loads(content)
+    if len(content) == 1:
+        identity = content[0].get("identity","")  #用户身份
+        Runmethod = RequestMethod(identity) #根据用户身份获取请求头Token数据
+        url = content[0].get("url","")     #登录地址
+        method = content[0].get("method","")     #请求方式
+        params = content[0].get("params","")      #query数据
+        body = content[0].get("body","")         #body数据
+        casename = content[0].get("casename","")  #接口名
 
-            starttime = time.time()
-            if body != "":
-                if "＜" in body or "＞" in body:
-                    print('body存在需要替换的符号')
-                    a = body.replace("＜", "<")
-                    b = a.replace("＞", ">")
-                    body = b
-                try:
-                    body = eval(body)
-                except Exception as e:
-                    print(e)
-                    print(type(e))
-                    return HttpResponse("NameError")
-                if params:
-                    try:
-                        params = eval(params)
-                    except Exception as e:
-                        print(e)
-                        print(type(e))
-                        return HttpResponse("NameError")
-                response = Runmethod.run_main(method, url, params, body)
-
-            elif body == '':
-                if params:
-                    try:
-                        params = eval(params)
-                    except Exception as e:
-                        print(e)
-                        return HttpResponse(e)
-                response = Runmethod.run_main(method, url, params, body)
-
+        #获取开始运行的时间
+        starttime = time.time()
+        if "＜" in body or "＞" in body:
+            print('body存在需要替换的符号')
+            a = body.replace("＜", "<")
+            b = a.replace("＞", ">")
+            body = b
+        try:
+            response = Runmethod.run_main(method, url, params, body)
+            print(response)
+            # 获取运行完的时间
             endtime = time.time()
             runtime = round(endtime - starttime, 3)
             # 存为字典，转换为json格式
-            print(response,"Ssssssssssssssssss")
+            d = {}
             d[casename] = response
             if runtime > 0.5 and runtime <= 3.0:
                 d["A.响应时长"] = str(runtime) + "秒"
@@ -758,96 +723,77 @@ def run_apicase_views(request):
                 d["B.响应时长"] = str(runtime) + "秒"
             else:
                 d["S.响应时长"] = str(runtime) + "秒"
-            # d["＜"+ucaseid+"＞"+"负责人"] = head
-            # print(d)
             # json格式化
             djson = json.dumps(d, ensure_ascii=False, sort_keys=True, indent=2)
             if "<" in djson or ">" in djson:
                 print('result存在需要替换的符号')
                 a = djson.replace("<", "＜")
-                print(a)
                 b = a.replace(">", "＞")
-                print(b)
-                try:
-                    Case.objects.filter(caseid=ucaseid).update(result=b)
-                except Exception as e:
-                    print(e)
-                    return HttpResponse(e)
+                Case.objects.filter(caseid=content[0]["caseid"]).update(result=b)
             else:
-                Case.objects.filter(caseid=ucaseid).update(result=djson)
+                Case.objects.filter(caseid=content[0]["caseid"]).update(result=djson)
             print(djson)
-            # 发送钉钉消息
-            # send_ding(djson)
             return HttpResponse(djson)
+        #异常捕获
+        except TypeError as e:
+            print(e)
+            return JsonResponse({"status_code": 500, "msg": "操作或函数应用于不适当类型的对象"})
+        except json.decoder.JSONDecodeError as e:
+            print(e)
+            return JsonResponse({"status_code": 500, "msg": "json.loads()读取字符串报错"})
 
     else:
         #多个接口测试的情况
         print("多个接口测试")
-        # 将每次运行的字典结果集用列表存储
+        # 将每次运行的字典结果集用列表存储ii
         L = []
-        for ucaseid in ids:
-            # 每次循环创建一个字典，存储每次运行结束的接口，KEY以用例名字，Value以响应结果
-            d = {}
-            id = Case.objects.get(caseid=ucaseid)
-            identity = id.identity
-            if id.system == "erms":
-                URL = str(con.get_logininfo("sysadmin")[2], 'utf-8')
-            elif id.system == "admin":
-                URL = str(con.get_logininfo("adminadmin")[2], 'utf-8')
-            else:
-                URL = str(con.get_logininfo("yjadmin")[2], 'utf-8')
-            url = URL + id.url
-            method = id.method
-            params = id.params
-            body = id.body
-            casename = id.casename
-            head = id.exceptres
-            #从数据库获取token
-            Runmethod = RequestMethod(identity)
-            # 计算运行前的时间
+        for i in content:
+            identity = i.get("identity", "")  # 用户身份
+            Runmethod = RequestMethod(identity)  # 根据用户身份获取请求头Token数据
+            url = i.get("url", "")  # 登录地址
+            method = i.get("method", "")  # 请求方式
+            params = i.get("params", "")  # query数据
+            body = i.get("body", "")  # body数据
+            casename = i.get("casename", "")  # 接口名
+
             starttime = time.time()
-            if body != "":
-                if "＜" in body or "＞" in body:
-                    print('body存在需要替换的符号')
-                    a = body.replace("＜", "<")
-                    b = a.replace("＞", ">")
-                    body = b
-                body = eval(body)
-                if params:
-                    params = eval(params)
+            if "＜" in body or "＞" in body:
+                print('body存在需要替换的符号')
+                a = body.replace("＜", "<")
+                b = a.replace("＞", ">")
+                body = b
+            try:
                 response = Runmethod.run_main(method, url, params, body)
-
-            elif body == '':
-                if params:
-                    params = eval(params)
-                response = Runmethod.run_main(method, url, params, body)
-            endtime = time.time()
-            runtime = round(endtime - starttime, 3)
-            print(runtime)
-
-            d[casename] = response
-            if runtime > 0.5 and runtime <= 3.0:
-                d["A.响应时长"] = str(runtime) + "秒"
-            elif runtime > 3.0:
-                d["B.响应时长"] = str(runtime) + "秒"
-            else:
-                d["S.响应时长"] = str(runtime) + "秒"
-            # d["＜" + ucaseid + "＞" + "负责人"] = head
-
-            # 将每个结果的字典存放在一个列表中
-            L.append(d)
-            # json格式化
-            djson = json.dumps(d, ensure_ascii=False, sort_keys=True, indent=2)
-            if "<" in djson or ">" in djson:
-                print('result存在需要替换的符号')
-                a = djson.replace("<", "＜")
-                b = a.replace(">", "＞")
-                Case.objects.filter(caseid=ucaseid).update(result=b)
-            else:
-                # 每次运行结束将每个接口返回的数据JOSN格式化存入数据库
-                Case.objects.filter(caseid=ucaseid).update(result=djson)
-            # print(L)
-            # 创建一个字典存储包含所有字典的列表
+                print(response)
+                # 获取运行完的时间
+                endtime = time.time()
+                runtime = round(endtime - starttime, 3)
+                # 存为字典，转换为json格式
+                d = {}
+                d[casename] = response
+                if runtime > 0.5 and runtime <= 3.0:
+                    d["A.响应时长"] = str(runtime) + "秒"
+                elif runtime > 3.0:
+                    d["B.响应时长"] = str(runtime) + "秒"
+                else:
+                    d["S.响应时长"] = str(runtime) + "秒"
+                L.append(d)
+                # json格式化
+                djson = json.dumps(d, ensure_ascii=False, sort_keys=True, indent=2)
+                if "<" in djson or ">" in djson:
+                    print('result存在需要替换的符号')
+                    a = djson.replace("<", "＜")
+                    b = a.replace(">", "＞")
+                    Case.objects.filter(caseid=i["caseid"]).update(result=b)
+                else:
+                    Case.objects.filter(caseid=i["caseid"]).update(result=djson)
+            #异常捕获
+            except TypeError as e:
+                print(e)
+                return JsonResponse({"status_code": 500, "msg": "操作或函数应用于不适当类型的对象"})
+            except json.decoder.JSONDecodeError as e:
+                print(e)
+                return JsonResponse({"status_code": 500, "msg": "json.loads()读取字符串报错"})
         dict = {}
         dict["流程接口响应结果"] = L
         # 转换为JSON格式，且格式化
@@ -1135,14 +1081,20 @@ def quickTest_views(request):
     print(method)
     print(headers)
     print(params)
-    print(type(params))
     print(body)
-    response = quickMethod.run_main(method,url,headers,params,body)
-    print(response)
-    print(type(response))
-    response = json.dumps(response, ensure_ascii=False, sort_keys=True, indent=2)
-    print(response)
-    return HttpResponse(response)
+    try:
+        response = quickMethod.run_main(method,url,headers,params,body)
+        response = json.dumps(response, ensure_ascii=False, sort_keys=True, indent=2)
+        print(response)
+        return HttpResponse(response)
+    except TypeError as e:
+        print(e)
+        return JsonResponse({"status_code":500,"msg":"操作或函数应用于不适当类型的对象"})
+    except json.decoder.JSONDecodeError as e:
+        print(e)
+        return JsonResponse({"status_code":500,"msg":"json.loads()读取字符串报错"})
+
+
 
 
 

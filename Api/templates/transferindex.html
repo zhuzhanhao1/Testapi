@@ -44,7 +44,7 @@
 		#sousuo {
 			position: fixed;
 			right: 15px;
-			top: 80px;
+			top: 65px;
 		}
 
 		.layui-laypage .layui-laypage-curr .layui-laypage-em {
@@ -79,13 +79,50 @@
 			color:black!important;
 		}
 		.soul-bottom-contion{
-			border-top:solid 1px #494A5F;
+			border-top:solid 0px #fff;
 		}
-
+		#headers>li input{
+			height: 36px;
+			line-height: 36px;
+			width: 440px;
+		}
+		#formdatas>li input{
+			height: 36px;
+			line-height: 36px;
+			width: 440px;
+		}
+		.myinput{
+			line-height: 1.3;border-width:1px;border-style:solid;border-radius:2px;border-color:#e6e6e6;padding-left:10px;
+		}
+		.mybtn{
+			text-align: center;
+			padding: 0px;
+		}
+		#method>div>div>input{
+			background-color: aliceblue;
+		}
+		.layui-header{
+			height:50px;
+		}
+		.layui-layout-admin .layui-side{
+			top:50px;
+		}
+		.layui-layout-admin .layui-body{
+			top:48px;
+		}
+		.layui-layout-admin .layui-logo{
+			line-height:50px;
+		}
+		.layui-nav .layui-nav-item{
+			line-height:50px;
+		}
+		.layui-table-tool{
+			background-color:rgba(0, 0, 0, 0.15);
+		}
 	</style>
 </head>
 
-<body class="layui-layout-body">
+<body class="layui-layout-body" style="background-image: url('./../static/images/beijing2.png');background-size:100%;">
 <!--主体内容-->
 <div class="layui-layout layui-layout-admin">
 
@@ -101,7 +138,7 @@
 			{#				切换</a></li>#}
 			<li class="layui-nav-item">
 				<a href="javascript:;"><i class="fa fa-superpowers"
-										  style="font-size: 23px;color: white;font-weight: bolder;"></i>
+										  style="font-size: 15px;color: white;font-weight: bolder;"></i>
 					切换系统</a>
 				<dl class="layui-nav-child">
 					<dd class="layui-this"><a href="/apiindex/">ERMS接口测试</a></dd>
@@ -116,23 +153,23 @@
 					<i class="layui-badge layui-bg-orange pull-right"
 						  style="margin-left: 75px;">{{ case_count }}</i>
 					<i class="layui-icon layui-icon-template-1"
-					   style="font-size: 23px;color: white;"></i>&nbsp;用例库
+					   style="font-size: 15px;color: white;"></i>&nbsp;用例库
 				</a>
 			</li>
 		</ul>
 		<ul class="layui-nav layui-layout-right">
 			<li class="layui-nav-item">
 				<a href="javascript:;"><i class="fa fa-ravelry"
-										  style="font-size: 23px;color: white;font-weight: bolder;"></i>
+										  style="font-size: 15px;color: white;font-weight: bolder;"></i>
 					导入导出
 				</a>
 				<dl class="layui-nav-child"> <!-- 二级菜单 -->
 					<dd><a type="button" onclick="importcase()">
-						<i class="fa fa-cloud-upload" style="font-size: 23px;"></i>
+						<i class="fa fa-cloud-upload" style="font-size: 15px;"></i>
 						&nbsp;导入用例
 					</a></dd>
 					<dd class="layui-this"><a type="button" onclick="export_data()">
-						<i class="fa fa-cloud-download" style="font-size: 23px;"></i>
+						<i class="fa fa-cloud-download" style="font-size: 15px;"></i>
 						&nbsp;导出用例
 					</a></dd>
 				</dl>
@@ -210,13 +247,13 @@
 	</div>
 
 	<!-- 内容主体区域 -->
-	<div id="layuibody" class="layui-body" style="background-color:#494A5F;margin-bottom: -50px;">
+	<div id="layuibody" class="layui-body" style="margin-bottom: -70px;">
 		<div style="padding: 15px;">
 			<div class="demoTable">
 				<div>
-					<span class="fa fa-home fa-lg layui-breadcrumb" style="font-size: 40px;color: whitesmoke;">
-						<a href="/transferindex/" class= "index" onmouseenter="erm_move_tip()" onmouseleave="erms_out_tip()">http://amberdata.cn/transferapi/v2</a>
-						<a class="kit-side-fold casetitle" style="font-size: 22px;color: whitesmoke;" onmouseenter="erms_move_tip()" onmouseleave="erms_out_tip()">{{ abq }}</a>
+					<span class="layui-icon layui-icon-link" style="font-size: 22px;color: #fff;">
+						<a href="/transferindex/" class= "index" onmouseenter="erm_move_tip()" style="color: #fff;" onmouseleave="erms_out_tip()">http://amberdata.cn/transferapi/v2</a>
+						<a class="kit-side-fold casetitle" style="font-size: 22px;color: #fff;" onmouseenter="erms_move_tip()" onmouseleave="erms_out_tip()">{{ abq }}</a>
 					</span>
 				</div>
 				<div id="sousuo">
@@ -234,7 +271,7 @@
 	</div>
 
 	<!--创建用例-->
-	<div class="layui-row" id="popSearchRoleTest">
+	<div class="layui-row" id="popSearchRoleTest" style="display: none;">
 		<div class="layui-col-md11">
 			<form class="layui-form" lay-filter="create_apicase">
 				<div class="layui-form-item" style="margin-top: 20px;">
@@ -327,7 +364,7 @@
 	</div>
 
 	<!--编辑用例-->
-	<div class="layui-row" id="UpdateCase">
+	<div class="layui-row" id="UpdateCase" style="display: none;">
 		<div class="layui-col-md11">
 			<form class="layui-form" lay-filter="CreateUpdate">
 				<div class="layui-form-item" style="margin-top: 20px;">
@@ -427,7 +464,7 @@
 	</div>
 
 	<!--导入用例-->
-	<div class="layui-row" id="importCase">
+	<div class="layui-row" id="importCase" style="display: none;">
 		<div class="layui-col-md11">
 			<form class="layui-form" action="/import_case/" method="post" enctype="multipart/form-data">
 				<div class="layui-form-item" style="margin-top: 20px;">
@@ -447,7 +484,7 @@
 	</div>
 
 	<!--更新用户信息-->
-	<div class="layui-row" id="popSearchRoleTest2">
+	<div class="layui-row" id="popSearchRoleTest2" style="display: none;">
 		<div class="layui-col-md11">
 			<form class="layui-form" lay-filter="update_userinfo_api">
 				<div class="layui-form-item" style="margin-top: 20px;">
@@ -490,7 +527,7 @@
 	</div>
 
 	<!--获取令牌-->
-	<div class="layui-row" id="popSearchRoleTest3">
+	<div class="layui-row" id="popSearchRoleTest3" style="display: none;">
 		<div class="layui-col-md11">
 			<form class="layui-form" lay-filter="update_token_api">
 				<div class="layui-form-item" style="margin-top: 20px;">
@@ -520,7 +557,7 @@
 	</div>
 
 	<!--导出错误报告-->
-	<div class="layui-row" id="exportData">
+	<div class="layui-row" id="exportData" style="display: none;">
 		<div class="layui-col-md11">
 			<form class="layui-form" lay-filter="export_data">
 				<div class="layui-form-item" style="margin-top: 20px;">
@@ -551,7 +588,7 @@
 	</div>
 
 	<!--负责人-->
-	<div class="layui-row" id="requestParams">
+	<div class="layui-row" id="requestParams" style="display: none;">
 		<div class="layui-col-md11">
 			<form class="layui-form" lay-filter="head">
 				<div class="layui-form-item" style="margin-top: 80px;">
@@ -601,7 +638,7 @@
         var index = layer.load(0); //添加laoding,0-2两种方式
         table.render({
             elem: '#test'
-            , height: 'full-140'
+            , height: 'full-110'
             , url: '/transferlist/' //数据接口
             , toolbar: '#toolbarDemo'
             , title: 'Transfer接口测试'
@@ -754,7 +791,7 @@
 				]}// filter: true
                 , {field: 'url', title: '请求路径', width: 235, align: "left",templet:function (res) {
 						var a = res.url.split("/");
-						return '<span>' + a[2] + '</span>'
+						return '<span>' + a[a.length-1] + '</span>'
                     }}
                 , {field: 'method', title: '请求方式', width: 90, align: "left", templet: "#methodTpl"}
                 , {field: 'params', title: 'Params参数', width: 160, event: 'params', align: "left"}
@@ -1191,13 +1228,6 @@
                         });
                     }
                     break;
-                case 'getCheckLength':
-                    var data = checkStatus.data;
-                    layer.msg('选中了：' + data.length + ' 个');
-                    break;
-                case 'isAll':
-                    layer.msg(checkStatus.isAll ? '全选' : '未全选');
-                    break;
                 case 'runcase':
                     var data = checkStatus.data;
                     console.log(data);
@@ -1207,12 +1237,19 @@
                             anim: 6,
                         });
                     } else {
-                        var ids = "";
+                        var l = [];
                         for (i = 0; i < data.length; i++) {
-                            ids += data[i]["caseid"] + ",";
-                            console.log(ids);
+                            var dic = {};
+                            dic["caseid"] = data[i]["caseid"];
+                            dic['identity'] = data[i]['identity'];
+                            dic['casename'] = data[i]['casename'];
+							dic["url"] = data[i]['url'];
+							dic['method'] = data[i]['method'];
+							dic['params'] = data[i]['params'];
+							dic['body'] = data[i]['body'];
+							l.push(dic);
                         }
-                        var loadingFlag;
+                        console.log(l);
                         $.ajax({
                             cache: false,
                             url: "/run_apicase/",
@@ -1220,7 +1257,7 @@
                             type: 'GET',
                             //async: false,
                             data: {
-                                "caseid": ids
+                                "request":JSON.stringify(l)
                             },
                             //请求前的处理,加载loading
                             beforeSend: function () {
