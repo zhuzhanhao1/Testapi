@@ -19,7 +19,7 @@ layui.use(['form','jquery',"layer"],function() {
         $("#userFace").attr("src",window.sessionStorage.getItem('userFace'));
         $(".userAvatar").attr("src",$(".userAvatar").attr("src").split("images/")[0] + "images/" + window.sessionStorage.getItem('userFace').split("images/")[1]);
     }else{
-        $("#userFace").attr("src","./../../static/images/face.jpg");
+        $("#userFace").attr("src","./../static/images/userface4.jpg");
     }
 
     //公告层
@@ -64,13 +64,13 @@ layui.use(['form','jquery',"layer"],function() {
             title : false,
             type : 1,
             content : '<div class="admin-header-lock" id="lock-box">'+
-                            '<div class="admin-header-lock-img"><img src="images/face.jpg" class="userAvatar"/></div>'+
-                            '<div class="admin-header-lock-name" id="lockUserName">驊驊龔頾</div>'+
+                            '<div class="admin-header-lock-img"><img src="./../static/images/userface4.jpg" class="userAvatar"/></div>'+
+                            '<div class="admin-header-lock-name" id="lockUserName">朱占豪</div>'+
                             '<div class="input_btn">'+
                                 '<input type="password" class="admin-header-lock-input layui-input" autocomplete="off" placeholder="请输入密码解锁.." name="lockPwd" id="lockPwd" />'+
                                 '<button class="layui-btn" id="unlock">解锁</button>'+
                             '</div>'+
-                            '<p>请输入“123456”，否则不会解锁成功哦！！！</p>'+
+                            '<p>密码很简单，是头猪都知道</p>'+
                         '</div>',
             closeBtn : 0,
             shade : 0.9,

@@ -9,11 +9,19 @@ def web_index_views(request):
 def web_welcome_views(request):
     return render(request, 'web_welcome.html')
 
+def web_webindex_views(request):
+    return render(request, 'web_webindex.html')
+
+def web_quicktest_views(request):
+    return render(request, 'web_quicktest.html')
 
 def web_apiindex_views(request):
     a = request.GET.get("belong","")
-    return render(request,"web_apiindex.html",{"user":"朱占豪","abq":a})
+    return render(request, "web_apiindex.html", {"user": "朱占豪", "abq":a})
 
 def web_transferindex_views(request):
     a = request.GET.get("belong","")
-    return render(request,"web_transferindex.html",{"user":"朱占豪","abq":a})
+    return render(request, "web_transferindex.html", {"user": "朱占豪", "abq":a})
+
+def web_info_views(request):
+    return render(request, 'userInfo.html')

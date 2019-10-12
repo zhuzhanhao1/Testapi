@@ -2,19 +2,19 @@
 	"contentManagement": [
 		{
 			"title": "系统管理接口",
-			"icon": "&#xe630;",
+			"icon": "&#xe716;",
 			"href": "",
 			"spread": false,
 			"children": [
 				{
 					"title": "单位接口",
-					"icon": "&#xe61c;",
+					"icon": "&#xe770;",
 					"href": "http://127.0.0.1:8000/web_apiindex/?belong=unit",
 					"spread": false
 				},
 				{
 					"title": "部门管理接口",
-					"icon": "&#xe609;",
+					"icon": "&#xe613;",
 					"href": "http://127.0.0.1:8000/web_apiindex/?belong=dept",
 					"spread": false
 				},
@@ -26,13 +26,13 @@
 				},
 				{
 					"title": "角色管理接口",
-					"icon": "&#xe609;",
+					"icon": "&#xe612;",
 					"href": "http://127.0.0.1:8000/web_apiindex/?belong=role",
 					"spread": false
 				},
 				{
 					"title": "数据表单配置管理",
-					"icon": "&#xe609;",
+					"icon": "&#xe630;",
 					"href": "http://127.0.0.1:8000/web_apiindex/?belong=data_form_config",
 					"spread": false
 				}
@@ -46,31 +46,31 @@
 			"children": [
 				{
 					"title": "门类管理接口",
-					"icon": "&#xe61c;",
+					"icon": "&#xe6c9;",
 					"href": "http://127.0.0.1:8000/web_apiindex/?belong=category",
 					"spread": false
 				},
 				{
 					"title": "类目管理接口",
-					"icon": "&#xe609;",
+					"icon": "&#xe67b;",
 					"href": "http://127.0.0.1:8000/web_apiindex/?belong=class",
 					"spread": false
 				},
 				{
 					"title": "保留处置策略接口",
-					"icon": "&#xe61c;",
+					"icon": "&#xe67a;",
 					"href": "http://127.0.0.1:8000/web_apiindex/?belong=policy",
 					"spread": false
 				},
 				{
 					"title": "访问控制策略接口",
-					"icon": "&#xe609;",
+					"icon": "&#xe672;",
 					"href": "http://127.0.0.1:8000/web_apiindex/?belong=acl",
 					"spread": false
 				},
 				{
 					"title": "视图自定义接口",
-					"icon": "&#xe609;",
+					"icon": "&#xe66e;",
 					"href": "http://127.0.0.1:8000/web_apiindex/?belong=view",
 					"spread": false
 				}
@@ -78,7 +78,7 @@
 		},
 		{
 			"title": "Record接口",
-			"icon": "icon-text",
+			"icon": "&#xe655;",
 			"href": "http://127.0.0.1:8000/web_apiindex/?belong=record",
 			"spread": false
 		},
@@ -90,73 +90,73 @@
 		},
 		{
 			"title": "案卷管理接口",
-			"icon": "&#xe634;",
+			"icon": "&#xe663;",
 			"href": "http://127.0.0.1:8000/web_apiindex/?belong=volume",
 			"spread": false
 		},
         {
 			"title": "档案管理接口",
-			"icon": "icon-text",
+			"icon": "&#xe60a;",
 			"href": "http://127.0.0.1:8000/web_apiindex/?belong=archives",
 			"spread": false
 		},
 		{
 			"title": "续存记录接口",
-			"icon": "&#xe634;",
+			"icon": "&#xe60e;",
 			"href": "http://127.0.0.1:8000/web_apiindex/?belong=deposit_form",
 			"spread": false
 		},
 		{
 			"title": "资源管理接口",
-			"icon": "&#xe634;",
+			"icon": "&#xe60a;",
 			"href": "http://127.0.0.1:8000/web_apiindex/?belong=resource",
 			"spread": false
 		},
         {
 			"title": "导航管理接口",
-			"icon": "icon-text",
+			"icon": "&#xe632;",
 			"href": "http://127.0.0.1:8000/web_apiindex/?belong=navigation",
 			"spread": false
 		},
 		{
 			"title": "映射规则接口",
-			"icon": "&#xe634;",
+			"icon": "&#xe62c;",
 			"href": "http://127.0.0.1:8000/web_apiindex/?belong=attribute_mapping_scheme",
 			"spread": false
 		},
 		{
 			"title": "文件计划管理接口",
-			"icon": "&#xe634;",
+			"icon": "&#xe621;",
 			"href": "http://127.0.0.1:8000/web_apiindex/?belong=file_plan",
 			"spread": false
 		},
       	{
 			"title": "公共操作相关接口",
-			"icon": "icon-text",
+			"icon": "&#xe638;",
 			"href": "http://127.0.0.1:8000/web_apiindex/?belong=common",
 			"spread": false
 		},
 		{
 			"title": "移交表单信息接口",
-			"icon": "&#xe634;",
+			"icon": "&#xe63c;",
 			"href": "http://127.0.0.1:8000/web_apiindex/?belong=transfer_form",
 			"spread": false
 		},
 		{
 			"title": "数据表单管理接口",
-			"icon": "&#xe634;",
+			"icon": "&#xe656;",
 			"href": "http://127.0.0.1:8000/web_apiindex/?belong=data_form",
 			"spread": false
 		},
         {
 			"title": "通用文件夹管理接口",
-			"icon": "&#xe634;",
+			"icon": "&#xe631;",
 			"href": "http://127.0.0.1:8000/web_apiindex/?belong=common_folder",
 			"spread": false
 		},
 		{
 			"title": "元数据管理平台接口",
-			"icon": "&#xe634;",
+			"icon": "&#xe600;",
 			"href": "http://127.0.0.1:8000/web_apiindex/?belong=metadata",
 			"spread": false
 		}
@@ -164,15 +164,75 @@
 	],
 	"memberCenter": [
 		{
-			"title": "系统管理接口",
+			"title": "用户相关接口",
 			"icon": "&#xe612;",
-			"href": "http://127.0.0.1:8000/web_transferindex/?belong=transfer_form",
+			"href": "http://127.0.0.1:8000/web_transferindex/?belong=user",
 			"spread": false
 		},
 		{
-			"title": "原文接口",
-			"icon": "icon-vip",
+			"title": "原文相关接口",
+			"icon": "&#xe621;",
 			"href": "http://127.0.0.1:8000/web_transferindex/?belong=document",
+			"spread": false
+		},
+      		{
+			"title": "导航相关接口",
+			"icon": "&#xe632;",
+			"href": "http://127.0.0.1:8000/web_transferindex/?belong=navigation",
+			"spread": false
+		},
+		{
+			"title": "record接口",
+			"icon": "&#xe655;",
+			"href": "http://127.0.0.1:8000/web_transferindex/?belong=record",
+			"spread": false
+		},
+      		{
+			"title": "案卷相关接口",
+			"icon": "&#xe663;",
+			"href": "http://127.0.0.1:8000/web_transferindex/?belong=volume",
+			"spread": false
+		},
+		{
+			"title": "档案相关接口",
+			"icon": "&#xe634;",
+			"href": "http://127.0.0.1:8000/web_transferindex/?belong=archives",
+			"spread": false
+		},
+      		{
+			"title": "映射规则接口",
+			"icon": "&#xe62c;",
+			"href": "http://127.0.0.1:8000/web_transferindex/?belong=attribute_mapping_scheme",
+			"spread": false
+		},
+		{
+			"title": "意见相关接口",
+			"icon": "&#xe6b2;",
+			"href": "http://127.0.0.1:8000/web_transferindex/?belong=comments",
+			"spread": false
+		},
+      		{
+			"title": "检测报告接口",
+			"icon": "&#xe63c;",
+			"href": "http://127.0.0.1:8000/web_transferindex/?belong=report",
+			"spread": false
+		},
+		{
+			"title": "移交表单接口",
+			"icon": "&#xe60a;",
+			"href": "http://127.0.0.1:8000/web_transferindex/?belong=transfer_form",
+			"spread": false
+		},
+      		{
+			"title": "资源相关接口",
+			"icon": "&#xe612;",
+			"href": "http://127.0.0.1:8000/web_transferindex/?belong=resource",
+			"spread": false
+		},
+		{
+			"title": "元数据接口",
+			"icon": "&#xe600;",
+			"href": "http://127.0.0.1:8000/web_transferindex/?belong=metadata",
 			"spread": false
 		}
 	],

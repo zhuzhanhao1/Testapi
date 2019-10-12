@@ -174,16 +174,7 @@
 					</a></dd>
 				</dl>
 			</li>
-{#			<li class="layui-nav-item">#}
-			{#				<a href="javascript:;">#}
-			{#					<i class="fa fa-send-o" style="font-size: 23px;color: white;font-weight: bolder;"></i>#}
-			{#					通知#}
-			{#				</a>#}
-			{#				<dl class="layui-nav-child">#}
-			{#					<dd><a href="https://mail.qq.com/" target="_blank">邮件通知</a></dd>#}
-			{#					<dd class="layui-this"><a href="#" target="_blank">钉钉通知</a></dd>#}
-			{#				</dl>#}
-			{#			</li>#}
+
 			<li class="layui-nav-item">
 				<a href="javascript:;">
 					<img src="./../static/images/1.png" class="layui-nav-img">
@@ -250,7 +241,7 @@
 	<div id="layuibody" class="layui-body" style="margin-bottom: -70px;">
 		<div style="padding: 15px;">
 			<div class="demoTable">
-				<div>
+				<div class="layui-breadcrumb">
 					<span class="layui-icon layui-icon-link" style="font-size: 22px;color: #fff;">
 						<a href="/transferindex/" class= "index" onmouseenter="erm_move_tip()" style="color: #fff;" onmouseleave="erms_out_tip()">http://amberdata.cn/transferapi/v2</a>
 						<a class="kit-side-fold casetitle" style="font-size: 22px;color: #fff;" onmouseenter="erms_move_tip()" onmouseleave="erms_out_tip()">{{ abq }}</a>
@@ -463,26 +454,6 @@
 		</div>
 	</div>
 
-	<!--导入用例-->
-	<div class="layui-row" id="importCase" style="display: none;">
-		<div class="layui-col-md11">
-			<form class="layui-form" action="/import_case/" method="post" enctype="multipart/form-data">
-				<div class="layui-form-item" style="margin-top: 20px;">
-					<div class="layui-input-block">
-						<input type="file" name="file" id="filename">
-					</div>
-				</div>
-				<div class="layui-form-item">
-					<div class="layui-input-block">
-						<button class="layui-btn" lay-submit lay-filter="formDemo"
-								style="margin-left: 245px;background-color: yellowgreen;">确定导入
-						</button>
-					</div>
-				</div>
-			</form>
-		</div>
-	</div>
-
 	<!--更新用户信息-->
 	<div class="layui-row" id="popSearchRoleTest2" style="display: none;">
 		<div class="layui-col-md11">
@@ -550,6 +521,26 @@
 								style="margin-left: 225px;background-color: yellowgreen;">立即提交
 						</button>
 						<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<!--导入用例-->
+	<div class="layui-row" id="importCase" style="display: none;">
+		<div class="layui-col-md11">
+			<form class="layui-form" action="/import_case/" method="post" enctype="multipart/form-data">
+				<div class="layui-form-item" style="margin-top: 20px;">
+					<div class="layui-input-block">
+						<input type="file" name="file" id="filename">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<button class="layui-btn" lay-submit lay-filter="formDemo"
+								style="margin-left: 245px;background-color: yellowgreen;">确定导入
+						</button>
 					</div>
 				</div>
 			</form>
@@ -1234,7 +1225,8 @@
                     if (data.length == 0) {
                         layer.close(index);
                         layer.msg("请先选中需要执行的用例", {
-                            anim: 6,
+                            icon: 2,
+							offset:"t"
                         });
                     } else {
                         var l = [];
@@ -1254,10 +1246,10 @@
                             cache: false,
                             url: "/run_apicase/",
                             dataType: 'json',
-                            type: 'GET',
+                            type: 'POST',
                             //async: false,
                             data: {
-                                "request":JSON.stringify(l)
+								"request":JSON.stringify(l)
                             },
                             //请求前的处理,加载loading
                             beforeSend: function () {
@@ -1268,7 +1260,6 @@
                                 });
                             },
                             success: function (data) {
-                                console.log(data);
                                 var strjson = JSON.stringify(data, null, 4);
                                 console.log(strjson);
                                 layer.prompt({
@@ -1277,35 +1268,40 @@
                                     title: '响应结果',
                                     maxmin: true, //允许全屏最小化
                                     anim: 4,//从左滚动进来
-                                    shade: 0.6, //遮罩透明度
-                                    skin: "layui-layer-lan",
+                                    //shade: 0.6, //遮罩透明度
+                                    skin: "layui-layer-rim",
                                     //监听取消按钮
+									zIndex:layer.zIndex,
+									shade: false,
                                     btn: ["json.cn", "关闭"],
                                     yes: function () {
                                         layer.open({
-                                            type: 2,
-                                            title: false,
-                                            shadeClose: true,
-                                            shade: false,
-                                            maxmin: true, //开启最大化最小化按钮
-                                            area: ['893px', '600px'],
-                                            content: 'https://www.json.cn'
+											type: 2,
+											title: "json.cn",
+											//shadeClose: true,
+											shade: false,
+											zIndex:layer.zIndex,
+											maxmin: true, //开启最大化最小化按钮
+											area: ['893px', '600px'],
+											content: 'https://www.json.cn',
+											success:function () {
+												layer.setTop(layero);
+                                            }
                                         });
 
-                                    },
+									},
                                     btn2: function (index, layro) {//这里就是你要的
-                                        layer.closeAll();
+                                        layer.close(index);
                                         $(".layui-laypage-btn").click();
                                     },
                                     area: ['800px', '400px'] //自定义文本域宽高
                                 });
                             },
                             error: function (data) {
-                                console.log(data);
-                                layer.msg(data, {
+                                console.log("请求失败"+data);
+                                layer.msg("NameError", {
                                     icon: 5,
                                     offset: 't',
-                                    anim: 6
                                 });
                             },
                             complete: function () {
@@ -1552,18 +1548,6 @@
 
 
     }
-    //导入数据
-    function importcase() {
-        layer.open({
-            //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
-            type: 1,
-            title: "导入用例",
-            area: ['35%', '28%'],
-            skin: 'layui-layer-molv',
-            shade: 0.6,
-            content: $("#importCase").html()
-        });
-    }
     //编辑用户信息
     function loginuser() {
         var update_userinfo_api = layer.open({
@@ -1672,6 +1656,18 @@
             d.setAttribute("class", "layui-icon layui-icon-shrink-right");
         }
     }
+    //导入数据
+    function importcase() {
+        layer.open({
+            //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+            type: 1,
+            title: "导入用例",
+            area: ['35%', '28%'],
+            skin: 'layui-layer-molv',
+            shade: 0.6,
+            content: $("#importCase").html()
+        });
+    }
     //导出报告
     function export_data() {
         var exportData = layer.open({
@@ -1722,6 +1718,22 @@
                 });
             }
         });
+    }
+	//鼠标移交时间
+	function erms_move_tip() {
+		layer.tips('点我切换左侧导航的收缩。', '.casetitle', {
+		  tips: [2,'#3595CC'],
+		  time: 4000
+		});
+    }
+    function erm_move_tip() {
+		layer.tips('点我切换主页。', '.index', {
+		  tips: [2,'#3595CC'],
+		  time: 4000
+		});
+    }
+    function erms_out_tip() {
+		layer.closeAll();
     }
 </script>
 <!--页面加载是关闭错侧导航-->
