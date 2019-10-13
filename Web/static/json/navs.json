@@ -238,44 +238,99 @@
 	],
 	"systemeSttings": [
 		{
-			"title": "系统基本参数",
+			"title": "测试网址",
 			"icon": "&#xe631;",
-			"href": "page/systemSetting/basicParameter.html",
+			"href": "http://127.0.0.1:8000/web_linktest/",
 			"spread": false
-		},{
-			"title": "系统日志",
-			"icon": "icon-log",
-			"href": "page/systemSetting/logs.html",
-			"spread": false
-		},{
+		},
+		{
 			"title": "友情链接",
 			"icon": "&#xe64c;",
-			"href": "page/systemSetting/linkList.html",
+			"href": "http://127.0.0.1:8000/web_linklist/",
 			"spread": false
-		},{
-			"title": "图标管理",
+		},
+		{
+			"title": "系统日志",
 			"icon": "&#xe857;",
-			"href": "page/systemSetting/icons.html",
+			"href": "//",
 			"spread": false
 		}
 	],
 	"seraphApi": [
 		{
-			"title": "三级联动模块",
-			"icon": "icon-mokuai",
-			"href": "page/doc/addressDoc.html",
+			"title": "单位接口",
+			"icon": "&#xe770;",
+			"href": "http://127.0.0.1:8000/web_apiindex/?belong=unit",
 			"spread": false
-		},{
-			"title": "bodyTab模块",
-			"icon": "icon-mokuai",
-			"href": "page/doc/bodyTabDoc.html",
+		},
+		{
+			"title": "部门管理接口",
+			"icon": "&#xe613;",
+			"href": "http://127.0.0.1:8000/web_apiindex/?belong=dept",
 			"spread": false
-		},{
-			"title": "三级菜单",
-			"icon": "icon-mokuai",
-			"href": "page/doc/navDoc.html",
+		},
+		{
+			"title": "用户管理接口",
+			"icon": "&#xe61c;",
+			"href": "http://127.0.0.1:8000/web_apiindex/?belong=user",
+			"spread": false
+		},
+		{
+			"title": "Record接口",
+			"icon": "&#xe655;",
+			"href": "http://127.0.0.1:8000/web_apiindex/?belong=record",
+			"spread": false
+		},
+		{
+			"title": "案卷管理接口",
+			"icon": "&#xe663;",
+			"href": "http://127.0.0.1:8000/web_apiindex/?belong=volume",
+			"spread": false
+		},
+        {
+			"title": "档案管理接口",
+			"icon": "&#xe60a;",
+			"href": "http://127.0.0.1:8000/web_apiindex/?belong=archives",
+			"spread": false
+		},
+		{
+			"title": "资源管理接口",
+			"icon": "&#xe60a;",
+			"href": "http://127.0.0.1:8000/web_apiindex/?belong=resource",
+			"spread": false
+		},
+        {
+			"title": "导航管理接口",
+			"icon": "&#xe632;",
+			"href": "http://127.0.0.1:8000/web_apiindex/?belong=navigation",
+			"spread": false
+		},
+		{
+			"title": "映射规则接口",
+			"icon": "&#xe62c;",
+			"href": "http://127.0.0.1:8000/web_apiindex/?belong=attribute_mapping_scheme",
+			"spread": false
+		},
+		{
+			"title": "门类管理接口",
+			"icon": "&#xe6c9;",
+			"href": "http://127.0.0.1:8000/web_apiindex/?belong=category",
+			"spread": false
+		},
+      	{
+			"title": "公共操作相关接口",
+			"icon": "&#xe638;",
+			"href": "http://127.0.0.1:8000/web_apiindex/?belong=common",
+			"spread": false
+		},
+		{
+			"title": "元数据管理平台接口",
+			"icon": "&#xe600;",
+			"href": "http://127.0.0.1:8000/web_apiindex/?belong=metadata",
 			"spread": false
 		}
+
+
 	]
 }
 

@@ -9,4 +9,6 @@ urlpatterns = [
     url(r'^web_quicktest/$',web_quicktest_views),
     url(r'^web_webindex/$',web_webindex_views),
     url(r'^web_info/$',web_info_views),
+    url(r'^web_linklist/$',web_linklist_views),
+    url(r'^web_linktest/$',web_linktest_views),
 ]

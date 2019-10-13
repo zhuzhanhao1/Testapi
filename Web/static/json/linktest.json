@@ -1,0 +1,56 @@
+{
+	"code": 0,
+	"msg": "",
+	"count": 4,
+	"data": [
+		{
+			"linkId": "1",
+			"logo": "./../../static/images/amberdata.png",
+			"websiteName": "元数据治理平台",
+			"websiteUrl": "http://amberdata.cn/metadata/v2",
+            "websiteApiUrl": "没见过，不知道有没有"
+		},
+		{
+			"linkId": "2",
+			"logo": "./../../static/images/amberdata.png",
+			"websiteName": "数字档案室",
+			"websiteUrl": "http://amberdata.cn/erms/v2",
+            "websiteApiUrl": "http://amberdata.cn/ermsapi/v2/doc.html"
+		},
+		{
+			"linkId": "3",
+			"logo": "./../../static/images/amberdata.png",
+			"websiteName": "移交接收系统",
+			"websiteUrl": "http://amberdata.cn/transfer/v2",
+            "websiteApiUrl": "http://amberdata.cn/transferapi/v2/doc.html"
+		},
+		{
+			"linkId": "4",
+			"logo": "./../../static/images/amberdata.png",
+			"websiteName": "数字档案馆",
+			"websiteUrl": "http://amberdata.cn/tdr",
+            "websiteApiUrl": "http://amberdata.cn/tdrapi/doc.html"
+		},
+		{
+			"linkId": "5",
+			"logo": "./../../static/images/amberdata.png",
+			"websiteName": "用户权限管理系统",
+			"websiteUrl": "http://amberdata.cn/admin/v2",
+            "websiteApiUrl": "http://amberdata.cn/adminapi/v2/doc.html"
+		},
+		{
+			"linkId": "6",
+			"logo": "./../../static/images/amberdata.png",
+			"websiteName": "数字归档系统",
+			"websiteUrl": "http://amberdata.cn/infoarchives",
+            "websiteApiUrl": "没见过，不知道有没有"
+		},
+      	{
+			"linkId": "7",
+			"logo": "./../../static/images/pm.png",
+			"websiteName": "项目管理平台",
+			"websiteUrl": "http://amberdata.cn/pm",
+            "websiteApiUrl": "我是项目跟踪管理平台，没有api文档"
+		}
+	]
+}

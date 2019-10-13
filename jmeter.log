@@ -1,41 +1,41 @@
-2019-09-16 08:07:14,007 INFO o.a.j.u.JMeterUtils: Setting Locale to zh_CN_#Hans
-2019-09-16 08:07:14,167 INFO o.a.j.u.JMeterUtils: Could not find resources for 'zh_CN_#Hans', using 'zh_CN'
-2019-09-16 08:07:14,170 INFO o.a.j.JMeter: Loading user properties from: /Users/zhuzhanhao/apache-jmeter-5.1/bin/user.properties
-2019-09-16 08:07:14,188 INFO o.a.j.JMeter: Loading system properties from: /Users/zhuzhanhao/apache-jmeter-5.1/bin/system.properties
-2019-09-16 08:07:14,211 INFO o.a.j.JMeter: Copyright (c) 1998-2019 The Apache Software Foundation
-2019-09-16 08:07:14,212 INFO o.a.j.JMeter: Version 5.1 r1853635
-2019-09-16 08:07:14,212 INFO o.a.j.JMeter: java.version=11.0.2
-2019-09-16 08:07:14,212 INFO o.a.j.JMeter: java.vm.name=Java HotSpot(TM) 64-Bit Server VM
-2019-09-16 08:07:14,212 INFO o.a.j.JMeter: os.name=Mac OS X
-2019-09-16 08:07:14,212 INFO o.a.j.JMeter: os.arch=x86_64
-2019-09-16 08:07:14,212 INFO o.a.j.JMeter: os.version=10.14.6
-2019-09-16 08:07:14,213 INFO o.a.j.JMeter: file.encoding=UTF-8
-2019-09-16 08:07:14,213 INFO o.a.j.JMeter: java.awt.headless=null
-2019-09-16 08:07:14,213 INFO o.a.j.JMeter: Max memory     =2147483648
-2019-09-16 08:07:14,213 INFO o.a.j.JMeter: Available Processors =4
-2019-09-16 08:07:14,245 INFO o.a.j.JMeter: Default Locale=中文 (简体，中国)
-2019-09-16 08:07:14,247 INFO o.a.j.JMeter: JMeter  Locale=中文 (简体，中国)
-2019-09-16 08:07:14,247 INFO o.a.j.JMeter: JMeterHome=/Users/zhuzhanhao/apache-jmeter-5.1
-2019-09-16 08:07:14,247 INFO o.a.j.JMeter: user.dir  =/Users/zhuzhanhao/Testapi
-2019-09-16 08:07:14,248 INFO o.a.j.JMeter: PWD       =/Users/zhuzhanhao/Testapi
-2019-09-16 08:07:14,250 INFO o.a.j.JMeter: IP: 192.168.10.234 Name: zhuzhanhaodeMacBook-Air.local FullName: 192.168.10.234
-2019-09-16 08:07:20,669 INFO o.a.j.g.a.LookAndFeelCommand: Installing Darcula LAF
-2019-09-16 08:07:20,699 INFO o.a.j.g.a.LookAndFeelCommand: Using look and feel: com.bulenkov.darcula.DarculaLaf [Darcula]
-2019-09-16 08:07:20,699 INFO o.a.j.JMeter: Setting LAF to: com.bulenkov.darcula.DarculaLaf
-2019-09-16 08:07:21,015 INFO o.a.j.JMeter: Loaded icon properties from org/apache/jmeter/images/icon.properties
-2019-09-16 08:07:22,855 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must contain the string: '.functions.'
-2019-09-16 08:07:22,875 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must not contain the string: '.gui.'
-2019-09-16 08:07:28,110 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/html is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
-2019-09-16 08:07:28,113 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xhtml+xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
-2019-09-16 08:07:28,114 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
-2019-09-16 08:07:28,114 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
-2019-09-16 08:07:28,114 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/vnd.wap.wml is org.apache.jmeter.protocol.http.parser.RegexpHTMLParser
-2019-09-16 08:07:28,115 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/css is org.apache.jmeter.protocol.http.parser.CssParser
-2019-09-16 08:07:32,352 INFO o.a.j.e.KeyToolUtils: keytool found at 'keytool'
-2019-09-16 08:07:32,353 INFO o.a.j.p.h.p.ProxyControl: HTTP(S) Test Script Recorder SSL Proxy will use keys that support embedded 3rd party resources in file /Users/zhuzhanhao/apache-jmeter-5.1/bin/proxyserver.jks
-2019-09-16 08:07:32,651 INFO o.a.j.s.FileServer: Default base='/Users/zhuzhanhao/Testapi'
-2019-09-16 08:07:33,900 INFO o.a.j.s.SampleResult: Note: Sample TimeStamps are START times
-2019-09-16 08:07:33,901 INFO o.a.j.s.SampleResult: sampleresult.default.encoding is set to ISO-8859-1
-2019-09-16 08:07:33,902 INFO o.a.j.s.SampleResult: sampleresult.useNanoTime=true
-2019-09-16 08:07:33,902 INFO o.a.j.s.SampleResult: sampleresult.nanoThreadSleep=5000
-2019-09-16 08:07:33,988 INFO o.a.j.v.ViewResultsFullVisualizer: Add JavaFX to your Java installation if you want to use renderer: org.apache.jmeter.visualizers.RenderInBrowser
+2019-10-12 10:04:52,297 INFO o.a.j.u.JMeterUtils: Setting Locale to zh_CN_#Hans
+2019-10-12 10:04:52,569 INFO o.a.j.u.JMeterUtils: Could not find resources for 'zh_CN_#Hans', using 'zh_CN'
+2019-10-12 10:04:52,572 INFO o.a.j.JMeter: Loading user properties from: /Users/zhuzhanhao/apache-jmeter-5.1/bin/user.properties
+2019-10-12 10:04:52,576 INFO o.a.j.JMeter: Loading system properties from: /Users/zhuzhanhao/apache-jmeter-5.1/bin/system.properties
+2019-10-12 10:04:52,625 INFO o.a.j.JMeter: Copyright (c) 1998-2019 The Apache Software Foundation
+2019-10-12 10:04:52,625 INFO o.a.j.JMeter: Version 5.1 r1853635
+2019-10-12 10:04:52,625 INFO o.a.j.JMeter: java.version=11.0.2
+2019-10-12 10:04:52,626 INFO o.a.j.JMeter: java.vm.name=Java HotSpot(TM) 64-Bit Server VM
+2019-10-12 10:04:52,626 INFO o.a.j.JMeter: os.name=Mac OS X
+2019-10-12 10:04:52,626 INFO o.a.j.JMeter: os.arch=x86_64
+2019-10-12 10:04:52,626 INFO o.a.j.JMeter: os.version=10.14.6
+2019-10-12 10:04:52,626 INFO o.a.j.JMeter: file.encoding=UTF-8
+2019-10-12 10:04:52,626 INFO o.a.j.JMeter: java.awt.headless=null
+2019-10-12 10:04:52,626 INFO o.a.j.JMeter: Max memory     =2147483648
+2019-10-12 10:04:52,627 INFO o.a.j.JMeter: Available Processors =4
+2019-10-12 10:04:52,656 INFO o.a.j.JMeter: Default Locale=中文 (简体，中国)
+2019-10-12 10:04:52,657 INFO o.a.j.JMeter: JMeter  Locale=中文 (简体，中国)
+2019-10-12 10:04:52,658 INFO o.a.j.JMeter: JMeterHome=/Users/zhuzhanhao/apache-jmeter-5.1
+2019-10-12 10:04:52,658 INFO o.a.j.JMeter: user.dir  =/Users/zhuzhanhao/Testapi
+2019-10-12 10:04:52,658 INFO o.a.j.JMeter: PWD       =/Users/zhuzhanhao/Testapi
+2019-10-12 10:04:52,660 INFO o.a.j.JMeter: IP: 192.168.10.236 Name: zhuzhanhaodeMacBook-Air.local FullName: 192.168.10.236
+2019-10-12 10:04:59,079 INFO o.a.j.g.a.LookAndFeelCommand: Installing Darcula LAF
+2019-10-12 10:04:59,102 INFO o.a.j.g.a.LookAndFeelCommand: Using look and feel: com.bulenkov.darcula.DarculaLaf [Darcula]
+2019-10-12 10:04:59,102 INFO o.a.j.JMeter: Setting LAF to: com.bulenkov.darcula.DarculaLaf
+2019-10-12 10:04:59,377 INFO o.a.j.JMeter: Loaded icon properties from org/apache/jmeter/images/icon.properties
+2019-10-12 10:05:00,832 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must contain the string: '.functions.'
+2019-10-12 10:05:00,833 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must not contain the string: '.gui.'
+2019-10-12 10:05:05,882 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/html is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2019-10-12 10:05:05,884 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xhtml+xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2019-10-12 10:05:05,884 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2019-10-12 10:05:05,884 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2019-10-12 10:05:05,884 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/vnd.wap.wml is org.apache.jmeter.protocol.http.parser.RegexpHTMLParser
+2019-10-12 10:05:05,885 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/css is org.apache.jmeter.protocol.http.parser.CssParser
+2019-10-12 10:05:07,257 INFO o.a.j.e.KeyToolUtils: keytool found at 'keytool'
+2019-10-12 10:05:07,258 INFO o.a.j.p.h.p.ProxyControl: HTTP(S) Test Script Recorder SSL Proxy will use keys that support embedded 3rd party resources in file /Users/zhuzhanhao/apache-jmeter-5.1/bin/proxyserver.jks
+2019-10-12 10:05:07,620 INFO o.a.j.s.FileServer: Default base='/Users/zhuzhanhao/Testapi'
+2019-10-12 10:05:08,824 INFO o.a.j.s.SampleResult: Note: Sample TimeStamps are START times
+2019-10-12 10:05:08,825 INFO o.a.j.s.SampleResult: sampleresult.default.encoding is set to ISO-8859-1
+2019-10-12 10:05:08,825 INFO o.a.j.s.SampleResult: sampleresult.useNanoTime=true
+2019-10-12 10:05:08,825 INFO o.a.j.s.SampleResult: sampleresult.nanoThreadSleep=5000
+2019-10-12 10:05:08,942 INFO o.a.j.v.ViewResultsFullVisualizer: Add JavaFX to your Java installation if you want to use renderer: org.apache.jmeter.visualizers.RenderInBrowser

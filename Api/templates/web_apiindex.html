@@ -50,7 +50,7 @@
 		}
 
 		.layui-laypage .layui-laypage-curr .layui-laypage-em {
-			background-color: #FFB800;
+			{#background-color: #FFB800;#}
 		}
 
 		.layui-layout-admin .layui-header {
@@ -128,7 +128,7 @@
 
 	</style>
 </head>
-<body class="layui-layout-body" style="background-image: url('../static/images/beijing2.png');background-size:100%;">
+<body class="layui-layout-body" style="background-image: url('../static/images/beijing3.png');background-size:100%;">
 
 	<!--主题内容-table-->
 	<div id="layuibody" class="layui-body" style="margin-bottom: -70px;">
@@ -146,7 +146,7 @@
 						<input class="layui-input" name="id" id="demoReload" autocomplete="off" placeholder="请输入用例名称" value="错误接口查询"
 							   style="width:200px;color: #999999;">
 					</div>
-					<button class="layui-btn layui-icon layui-icon-search layui-btn-warm" data-type="reload"
+					<button class="layui-btn layui-icon layui-icon-search" data-type="reload"
 							style="margin-top: -7px;">搜索
 					</button>
 				</div>
@@ -376,33 +376,15 @@
 		</div>
 	</div>
 
-	<!--导入用例-->
-	<div class="layui-row" id="importCase" style="display: none;">
-		<div class="layui-col-md11">
-			<form class="layui-form" action="/import_case/" method="post" enctype="multipart/form-data">
-				<div class="layui-form-item" style="margin-top: 20px;">
-					<div class="layui-input-block">
-						<input type="file" name="file" id="filename">
-					</div>
-				</div>
-				<div class="layui-form-item">
-					<div class="layui-input-block">
-						<button class="layui-btn" lay-submit lay-filter="formDemo"
-								style="margin-left: 245px;background-color: yellowgreen;">确定导入
-						</button>
-						{#				  <button type="reset" class="layui-btn layui-btn-primary">重置</button>#}
-					</div>
-				</div>
-			</form>
-		</div>
-	</div>
-
 	<!--更新用户信息-->
 	<div class="layui-row" id="popSearchRoleTest2" style="display: none;">
 		<div class="layui-col-md11">
 			<form class="layui-form" lay-filter="update_userinfo_api">
 
 				<div class="layui-form-item" style="margin-top: 20px;">
+					<button type="button" class="layui-btn layui-btn-warm" onclick="gettoken()"
+							style="float: right;margin-left: 10px;">获取Token
+					</button>
 					<button type="button" class="layui-btn layui-btn-warm" onclick="get_user_info()"
 							style="float: right;">点我获取当前用户信息
 					</button>
@@ -431,10 +413,10 @@
 				</div>
 				<div class="layui-form-item">
 					<div class="layui-input-block">
-						<button class="layui-btn" lay-submit lay-filter="update_userinfo_api"
-								style="margin-left: 245px;background-color: yellowgreen;">立即提交
+						<button class="layui-btn layui-btn-warm" lay-submit lay-filter="update_userinfo_api"
+								style="float: right;margin-left:5px;">立即提交
 						</button>
-						<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						<button type="reset" style="float: right;" class="layui-btn layui-btn-primary">重置</button>
 					</div>
 				</div>
 			</form>
@@ -463,36 +445,6 @@
 				<div class="layui-form-item" style="margin-top: 30px;">
 					<div class="layui-input-block">
 						<button class="layui-btn" lay-submit lay-filter="update_token_api"
-								style="margin-left: 225px;background-color: yellowgreen;">立即提交
-						</button>
-						<button type="reset" class="layui-btn layui-btn-primary">重置</button>
-					</div>
-				</div>
-			</form>
-		</div>
-	</div>
-
-	<!--导出错误报告-->
-	<div class="layui-row" id="exportData" style="display: none;">
-		<div class="layui-col-md11">
-			<form class="layui-form" lay-filter="export_data">
-				<div class="layui-form-item" style="margin-top: 20px;">
-					<label class="layui-form-label">所属系统</label>
-					<div class="layui-input-block">
-						<input type="radio" name="system" value="erms" title="ERMS档案室" checked>
-						<input type="radio" name="system" value="transfer" title="Transfer移交接收系统">
-					</div>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">内容信息</label>
-					<div class="layui-input-block">
-						<input type="radio" name="content" value="allData" title="所有信息">
-						<input type="radio" name="content" value="errorData" title="错误信息" checked>
-					</div>
-				</div>
-				<div class="layui-form-item" style="margin-top: 10px;">
-					<div class="layui-input-block">
-						<button class="layui-btn" lay-submit lay-filter="export_data"
 								style="margin-left: 225px;background-color: yellowgreen;">立即提交
 						</button>
 						<button type="reset" class="layui-btn layui-btn-primary">重置</button>
@@ -551,9 +503,9 @@
         var index = layer.load(0); //添加laoding,0-2两种方式
         var myTable = table.render({
             elem: '#test'
-            , url: '/apilist/' //数据接口
+            , url: '/apilist/' //数据接口"exports"
             , toolbar: '#toolbarDemo'
-			, defaultToolbar: ['filter', 'exports', 'print', {layEvent: 'export',icon: 'layui-icon-tips'}]
+			, defaultToolbar: ['filter', {title:'导出数据',layEvent: 'export',icon: 'layui-icon-download-circle'}, 'print']
             , title: 'ERMS接口测试'
             , page: {groups: 5} //开启分页
             //, limit: 10 //默认是10
@@ -737,7 +689,6 @@
                 soulTable.render(this);
             }
         });
-
 
         //搜索
         layui.$, active = {
@@ -1020,6 +971,7 @@
                         );
                     }
                     break;
+				//导出用例
                 case "export":
                     if (checkStatus.data.length > 0) {
                         soulTable.export(myTable, {
@@ -1481,18 +1433,6 @@
             }
         });
     }
-    //导入用例
-    function importcase() {
-        layer.open({
-            //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
-            type: 1,
-            title: "导入用例",
-            area: ['35%', '30%'],
-            skin: "layui-layer-rim",
-            shade: 0.6,
-            content: $("#importCase").html()
-        });
-    }
     //编辑用户信息
     function loginuser() {
         var update_userinfo_api = layer.open({
@@ -1553,104 +1493,12 @@
         });
 
     }
-    //获取用户信息
-    function get_user_info1() {
-        $.ajax({
-            cache: false,
-            url: "/get_userinfo_transfer/",
-            dataType: 'text',
-            type: 'GET',
-            async: false,
-            data: {
-                "ids": "erms",
-            },
-            success: function (data) {
-                //var strjson = JSON.stringify(data, null, 4);
-                layer.prompt({
-                    formType: 2,//多行文本
-                    value: data,
-                    title: '用户信息',
-                    anim: 4,//从左滚动进来
-                    skin: "layui-layer-rim",
-                    shade: 0.6,
-                    area: ['500px', '380px'], //自定义文本域宽高
-                    btn: ["关闭"],
-                    yes: function (index) {
-                        layer.close(index);
-                    }
-                });
-
-            },
-            error: function (data) {
-                console.log(data);
-                layer.msg(data, {
-                    offset: 't',
-                    anim: 6,
-                    area: ["200px", "50px"],
-                });
-            }
-        });
-    }
-    //导出报告
-    function export_data() {
-        var exportData = layer.open({
-            type: 1,
-            title: "导出报告",
-            area: ['40%', '35%'],
-            skin: "layui-layer-rim",
-            shade: 0.6,
-            content: $("#exportData").html(),
-            success: function () {
-                layui.use('form', function () {
-                    var form = layui.form;
-                    //监听编辑用户信息，
-                    form.val("export_data", {
-                       // "casename": "sysadmin",
-                    });
-                    form.on('submit(export_data)', function (data) {
-                        $.ajax({
-                            cache: false,
-                            url: "/export_data/",
-                            dataType: 'text',
-                            type: 'GET',
-                            async: false,//同步
-                            data: {
-                                "content": data.field.content,
-                                "system": data.field.system
-                            },
-                            success: function (data) {
-                                console.log(data);
-                                layer.msg(data, {
-                                    icon: 6,
-                                    offset: 't',
-                                    anim: 6,
-                                });
-                            },
-                            error: function (data) {
-                                console.log(data);
-                                layer.msg(data, {
-                                    icon: 5,
-                                    offset: 't',
-                                    anim: 6,
-                                });
-                            },
-                            complete: function () {
-                                layer.close(exportData);
-                            }
-                        });
-                        return false;//阻止表单跳转
-                    });
-                });
-            }
-        });
-
-    }
-	//获取用户信息v2
+	//获取用户信息
     function get_user_info() {
         layer.open({
             type: 1,
             title: "用户信息",
-            area: ['75%', "85%"],
+            area: ['70%', "80%"],
             skin: 'layui-layer-molv',
             shade: 0.6,
             content: '<div style="padding:15px;"><table id="templateTable"></table></div>',
@@ -1671,7 +1519,7 @@
                         {field: 'identity', title: '用户身份', width: 120, align: "left"}
                         , {field: 'username', title: '用户名', width: 200, align: "left"}
                         , {field: 'password', title: '用户密码', width: 220, align: "left"}
-                        , {field: 'url', title: '请求地址', width: 250, align: "left"}
+                        //, {field: 'url', title: '请求地址', width: 250, align: "left"}
                         , {field: 'accessToken', title: '请求令牌', width: 280, align: "left"}
                     ]]
                 });
@@ -1688,13 +1536,10 @@
 <!--表头按钮-->
 <script type="text/html" id="toolbarDemo">
 	<div class="layui-btn-container">
-		<button type="button" onclick="selectRole()" class="layui-btn layui-btn-sm layui-btn-warm">新建用例</button>
-		<button class="layui-btn layui-btn-sm layui-btn-warm" id="export" lay-event="export">导出数据</button>
-		<button type="button" onclick="loginuser()" class="layui-btn layui-btn-sm layui-btn-normal">用户信息</button>
-		<button type="button" onclick="gettoken()" class="layui-btn layui-btn-sm layui-btn-normal">获取令牌</button>
-		<button id="Runcase" class="layui-btn layui-btn-sm layui-btn-danger" lay-event="runcase">执行用例</button>
-		<button id="Dingding" class="layui-btn layui-btn-sm layui-btn-danger" lay-event="dingding">钉钉通知</button>
-	</div>
+		<button type="button" onclick="selectRole()" class="layui-btn layui-btn-sm">新建用例</button>
+		<button type="button" onclick="loginuser()" class="layui-btn layui-btn-sm">用户信息</button>
+		<button id="Runcase" class="layui-btn layui-btn-sm" lay-event="runcase">执行用例</button>
+		<button id="Dingding" class="layui-btn layui-btn-sm layui-btn-disabled" lay-event="dingding">钉钉通知</button>
 </script>
 <!--行内按钮-->
 <script type="text/html" id="barDemo">
@@ -1705,8 +1550,9 @@
 </script>
 <!--用例名字超链接模板-->
 <script type="text/html" id="casenameTpl">
-	<a href="/detail_api/?id={% verbatim %}{{d.caseid}}{% endverbatim %}" class="layui-table-link" target="_blank"
-	   style="color: blueviolet;">{% verbatim %}{{d.casename}}{% endverbatim %}</a>
+	<a href="/detail_api/?id={% verbatim %}{{d.caseid}}{% endverbatim %}" class="layui-table-link" target="_blank" style="color: blueviolet;">
+		{% verbatim %}{{d.casename}}{% endverbatim %}
+	</a>
 </script>
 <!--请求方式模板-->
 <script type="text/html" id="methodTpl">
@@ -1736,10 +1582,10 @@
 <!--用户身份模板-->
 <script type="text/html" id="identityTpl">
 	{% verbatim %}{{#  if(d.identity === 'sysadmin'){ }}{% endverbatim %}
-	<img src="../static/images/lufei.png" class="layui-nav-img">
+	<img src="../static/images/sysadmin.png" class="layui-nav-img">
 
 	{% verbatim %}{{# } else if(d.identity=== 'admin') { }} {% endverbatim %}
-	<img src="../static/images/kenan.png" class="layui-nav-img">
+	<img src="../static/images/admin.png" class="layui-nav-img">
 
 	{% verbatim %}{{# } else if(d.identity=== 'ast') { }} {% endverbatim %}
 	<img src="../static/images/ast.png" class="layui-nav-img">

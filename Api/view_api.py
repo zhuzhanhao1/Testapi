@@ -524,7 +524,7 @@ def detail_api_views(request):
     if res:
         id = Case.objects.get(caseid=res)
         identity = id.identity
-        url =  id.url
+        url = "/".join(id.url.split("/")[-2:])
         method = id.method
         params = id.params
         body = id.body

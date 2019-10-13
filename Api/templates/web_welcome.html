@@ -19,7 +19,7 @@
 		padding: 0px;
 	}
 	.service-process-box{
-		padding-bottom: 50px;
+		padding-bottom: 80px;
 	}
 	a:hover{
 		font-size: 20px;
@@ -32,6 +32,11 @@
 	.item {
 		opacity: 0.8;
 	}
+	.header_box{
+		height: 60px;
+		line-height: 60px;
+	}
+
 
 
 </style>
@@ -43,17 +48,15 @@
     <div class="header">
       <ul class="app-header">
         <li class="app-header-menuicon">
-           <i class="layui-icon layui-icon-more-vertical"></i>
+           <i class="layui-icon layui-icon-more-vertical">
+		   </i>
         </li>
       </ul>
-      <h1 class="logo">
-        <a href="#">首页</a>
-      </h1>
+	  <h1><a href="/welcome/" target="_blank">Zzh_v1.0</a></h1>
       <div class="nav">
-        <a href="https://fly.layui.com/" target="_blank">前端框架社区</a>
-		<a href="/welcome/" target="_blank">Zzh_v1.0</a>
-        <a href="/logout/">退出</a>
+		  <span id="nowTime" class="logo"></span>
       </div>
+
     </div>
   </div>
   <!-- end-header -->
@@ -61,7 +64,6 @@
   <div class="service-process-box">
 	  <div class="service-process">
 		  <div class="layui-fluid" style="background-image: url('./../static/images/fw_img1.jpg');">
-
 			  <h3 class="title"><img src="./../static/images/1566726325_753653.png" style="margin-left: 386px;"></h3>
 			  <div class="process-centent">
 				  <div class="layui-row layui-col-space15">
@@ -81,7 +83,7 @@
 							  <h5>功能测试</h5>
 							  <p style="text-align: center;">
 								  <a href="/web_webindex/">功能测试</a><br>
-								  <a href="/web_webindex/">流程自动化测试</a>
+								  <a href="/web_webindex/">自动化测试</a>
 							  </p>
 						  </div>
 					  </div>
@@ -111,7 +113,7 @@
 	  </div>
   </div>
 
-  <!-- end-footer -->
+  <!-- end-footer
   <div class="footer">
 		<p class="copyright">
 		  有事没事的测试一下，你会发现其实还有很多的问题等你去发现<br/>
@@ -121,7 +123,7 @@
       <a href="#"><i class="layui-icon layui-icon-login-wechat weixin-icon"></i></a>
       <a href="#"><i class="layui-icon layui-icon-login-weibo weibo-icon"></i></a>
     </div>
-  </div>
+  </div> -->
 
 
 
@@ -133,6 +135,30 @@
       $('.header-down-nav').toggleClass('down-nav')
     })
   });
+  //获取系统时间
+	var newDate = '';
+	getLangDate();
+	//值小于10时，在前面补0
+	function dateFilter(date){
+		if(date < 10){return "0"+date;}
+		return date;
+	}
+	function getLangDate(){
+		var dateObj = new Date(); //表示当前系统时间的Date对象
+		var year = dateObj.getFullYear(); //当前系统时间的完整年份值
+		var month = dateObj.getMonth()+1; //当前系统时间的月份值
+		var date = dateObj.getDate(); //当前系统时间的月份中的日
+		var day = dateObj.getDay(); //当前系统时间中的星期值
+		var weeks = ["星期日","星期一","星期二","星期三","星期四","星期五","星期六"];
+		var week = weeks[day]; //根据星期值，从数组中获取对应的星期字符串
+		var hour = dateObj.getHours(); //当前系统时间的小时值
+		var minute = dateObj.getMinutes(); //当前系统时间的分钟值
+		var second = dateObj.getSeconds(); //当前系统时间的秒钟值
+		var timeValue = "" +((hour >= 12) ? (hour >= 18) ? "晚上" : "下午" : "上午" ); //当前时间属于上午、晚上还是下午
+		newDate = dateFilter(year)+"年"+dateFilter(month)+"月"+dateFilter(date)+"日 "+" "+dateFilter(hour)+":"+dateFilter(minute)+":"+dateFilter(second);
+		document.getElementById("nowTime").innerHTML = timeValue+"好！"+newDate+"　"+week;
+		setTimeout("getLangDate()",1000);
+	}
   </script>
 
 

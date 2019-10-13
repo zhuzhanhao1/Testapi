@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>友情链接--layui后台管理模板 2.0</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="./../static/layui/css/layui.css" media="all" />
+	<link rel="stylesheet" href="./../static/css/public.css" media="all" />
+</head>
+<body class="childrenBody">
+	<blockquote class="layui-elem-quote quoteBox">
+		<div>以下是本系统依赖的一些网站</div>
+	</blockquote>
+	<table id="linkList" lay-filter="linkList"></table>
+
+	<script type="text/javascript" src="./../static/layui/layui.js"></script>
+	<script>
+		layui.use(['form','layer','table'],function(){
+			var table = layui.table;
+
+			//友链列表
+			var tableIns = table.render({
+				elem: '#linkList',
+				url : './../../static/json/linkList.json',
+				//page : true,
+				//cellMinWidth : 95,
+				//height : "full-104",
+				limit : 20,
+				limits : [10,15,20,25],
+				id : "linkListTab",
+				size:'lg',
+				cols : [[
+					//{type: "checkbox", fixed:"left", width:50},
+					{field: 'logo', title: 'LOGO', width:400, align:"center",templet:function(d){
+						return '<a href="'+d.websiteUrl+'" target="_blank"><img src="'+d.logo+'" height="26" /></a>';
+					}},
+					{field: 'websiteName', title: '网站名称', width:400},
+					{field: 'websiteUrl', title: '网站地址',width:413,templet:function(d){
+						return '<a class="layui-blue" href="'+d.websiteUrl+'" target="_blank">'+d.websiteUrl+'</a>';
+					}}
+				]]
+			});
+
+		})
+	</script>
+</body>
+</html>
