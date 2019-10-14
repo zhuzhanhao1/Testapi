@@ -11,6 +11,7 @@
 	<link href="./../static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
 	<script src="./../static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 	<script src="./../static/js/layui/layui.js"></script>
+	<link rel="stylesheet" href="../static/css/soulTable.css">
 	<style>
 		#casetitle {
 			font-size: 22px;
@@ -520,7 +521,6 @@
 	<div class="layui-btn-container">
 		<button type="button" onclick="selectRole()" class="layui-btn layui-btn-sm">新建用例</button>
 		<button class="layui-btn layui-btn-sm" lay-event="getCheckData">编辑用例</button>
-		</button>
 	</div>
 </script>
 <!--自动化测试-表头按钮-->
@@ -564,60 +564,56 @@
 
 <!--功能测试列表-->
 <script>
-    layui.use('table', function () {
+    // 自定义模块
+    layui.config({
+        base: './../static/js/layui/lay/modules/',   // 模块目录
+        version: 'v1.3.28'
+    }).extend({             // 模块别名
+        soulTable: 'soulTable'
+    });
+
+    layui.use(['table',"soulTable"], function (data) {
         var table = layui.table;
+        soulTable = layui.soulTable;
         //第一个实例
         var layer = layui.layer;
         var index = layer.load(0); //添加laoding,0-2两种方式
-        table.render({
+        var myTable = table.render({
             elem: '#test'
             , height: 'full-65'
             , url: '/weblist/' //数据接口
             , toolbar: '#toolbarDemo'
+            , defaultToolbar: [
+                'filter', {title: '导出数据', layEvent: 'export', icon: 'layui-icon-download-circle'}, {
+                    title: '全屏显示',
+                    layEvent: 'fullScreen',
+                    icon: 'layui-icon-top'
+                }, 'print']
             , title: '功能测试用例'
             , page: true //开启分页
 			, loading: false
 			, size: 'lg'	//大尺寸 /sm小尺寸
-			, skin: 'line' //行边框风格 /row列表框风格 /nob无边框风格
-			, even : true
+			//, drag: {toolbar: true}//实现固定列与非固定列之间的转换
             , limits: [10, 20, 30, 40, 50, 100, 200]
             , where: {
                 belong: '{{ abq }}'
             }
-            , request: {
-                pageName: 'page' //页码的参数名称，默认：page
-                , limitName: 'limit' //每页数据量的参数名，默认：limit
-                ,
-            }
-            , response: {
-                statusName: 'code' //规定数据状态的字段名称，默认：code
-                , statusCode: 0 //规定成功的状态码，默认：0
-                , msgName: 'msg' //规定状态信息的字段名称，默认：msg
-                , countName: 'count' //规定数据总数的字段名称，默认：count
-                , dataName: 'data' //规定数据列表的字段名称，默认：data
-            }
             , cols: [[ //表头
                 {type: 'checkbox'}
-                , {title: '操作', toolbar: '#barDemo', width: 60, align: "left"}
-                , {field: 'caseid', title: 'ID', width: 60, sort: true, align: "left"}
-                , {field: 'module', title: '所属模块', width: 120, align: "left"}
-                , {field: 'funpoint', title: '功能点', width: 120, align: "left"}
-                , {
-                    field: 'casename',
-                    title: '测试用例名称',
-                    width: 260,
-                    align: "left",
-                    //style: 'background-color: lightyellow;'
-                }
-                , {field: 'premise', title: '前提条件', width: 150, align: "left"}
-                , {field: 'teststep', title: '测试步骤', width: 220, align: "left",}
-                , {field: 'exceptres', title: '期望结果', width: 220, align: "left"}
+
+                //, {field: 'caseid', title: 'ID', width: 60, sort: true, align: "left"}
+                , {field: 'module', merge: true,title: '所属模块', width: 120, align: "left"}
+                , {field: 'funpoint',merge: true,title: '功能点', width: 120, align: "left"}
+                , {field: 'casename', title: '测试用例名称', filter: true,width: 300,align: "left"}
+                , {field: 'premise', merge: true,title: '前提条件', width: 180, align: "left"}
+                , {field: 'teststep', title: '测试步骤', width: 223, align: "left"}
+                , {field: 'exceptres', title: '期望结果', width: 222, align: "left"}
                 , {
                     field: 'result',
                     title: '执行结果',
-                    width: 130,
+                    width: 100,
                     sort: true,
-                    align: "left",
+                    align: "center",
                     templet: function (res) {
                         if (res.result.indexOf("Failed") != -1) {
                             return '<span style="color: red;">' + res.result + '</span>'
@@ -628,11 +624,14 @@
                         }
                     }
                 }
+                , {title: '操作', toolbar: '#barDemo', width: 60, align: "left"}
 
             ]]
+            ,filter: {items:['column','editCondition','excel']} // 只显示表格列和导出excel两个菜单项
             , id: 'testReload'
             , done: function (res) {   //返回数据执行回调函数
                 layer.close(index);    //返回数据关闭loading
+				soulTable.render(this);
 
             }
         });
@@ -667,6 +666,7 @@
             var checkStatus = table.checkStatus(obj.config.id);
             //console.log(checkStatus);
             switch (obj.event) {
+                //编辑用例
                 case 'getCheckData':
                     var data = checkStatus.data;
                     console.log(data[0]);
@@ -752,7 +752,44 @@
                         });
                     }
                     break;
-
+				//导出用例
+                case "export":
+                    if (checkStatus.data.length > 0) {
+                        soulTable.export(myTable, {
+                            filename: '勾选数据.xlsx',
+                            checked: true, // 只导出勾选数据
+								border: {
+									style: 'thin',
+									color: '000000'
+								},
+							   head:{ // 表头样式
+								   family: 'helvetica', // 字体
+								   size: 14, // 字号
+								   color: 'FFFFFF', // 字体颜色
+								   bgColor: 'ff8c00' // 背景颜色
+							   },
+							   font: { // 正文样式
+								   family: 'Calibri', // 字体
+								   size: 12, // 字号
+								   color: '000000', // 字体颜色
+								   bgColor: 'FFFFFF' //背景颜色t
+							   }
+                        });
+                        layer.msg('操作成功',{icon:6,offset:'t'});
+                    } else {
+                        layer.msg('请先勾选数据在导出！',{icon:0,offset:'t'});
+                    }
+                //全屏显示
+                case "fullScreen":
+                    var docE = document.documentElement;
+                    if (docE.requestFullScreen) {
+                        docE.requestFullScreen();
+                    } else if (docE.mozRequestFullScreen) {
+                        docE.mozRequestFullScreen();
+                    } else if (docE.webkitRequestFullScreen) {
+                        docE.webkitRequestFullScreen();
+                    }
+                    break;
             }
         });
         //监听行工具事件
@@ -793,6 +830,7 @@
                 });
 
             }
+
         })
     });
 </script>
@@ -1169,52 +1207,7 @@
     });
 </script>
 
-<!--左侧导航收缩-->
-<script>
-    //监听导航点击
-    layui.use('element', function () {
-        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
-        //监听导航点击
-        element.on('nav(demo)', function (elem) {
-            //console.log(elem)
-            layer.msg(elem.text());
-        });
-        var isShow = true;  //定义一个标志位
-        $('.kit-side-fold').click(function () {
-            //选择出所有的span，并判断是不是hidden
-            $('.layui-nav-item span').each(function () {
-                if ($(this).is(':hidden')) {
-                    $(this).show();
-                } else {
-                    $(this).hide();
-                }
-            });
-            //判断isshow的状态
-            if (isShow) {
-                $('.layui-side.layui-bg-black').width(60); //设置宽度
-                $('.kit-side-fold i').css('margin-right', '70%');  //修改图标的位置
-                //将footer和body的宽度修改
-                $('.layui-body').css('left', 60 + 'px');
-                $('.layui-footer').css('left', 60 + 'px');
-                //将二级导航栏隐藏
-                $('dd span').each(function () {
-                    $(this).hide();
-                });
-                //修改标志位
-                isShow = false;
-            } else {
-                $('.layui-side.layui-bg-black').width(200);
-                $('.kit-side-fold i').css('margin-right', '10%');
-                $('.layui-body').css('left', 200 + 'px');
-                $('.layui-footer').css('left', 200 + 'px');
-                $('dd span').each(function () {
-                    $(this).show();
-                });
-                isShow = true;
-            }
-        });
-    });
-</script>
+
 <!--新建模态框-->
 <script>
     //新建用例
@@ -1246,67 +1239,6 @@
                         "steps": data.field.steps,
                         "premise": data.field.premise,
                         "funpoint": data.field.funpoint,
-                        "except": data.field.except,
-                    },
-                    beforeSend: function () {
-                        l_index = layer.load(0, {shade: [0.5, '#DBDBDB']});
-                    },
-                    success: function (data) {
-                        layer.msg(data, {
-                            icon: 6,
-                            offset: 't',
-                            anim: 2,
-                        });
-                        $(".layui-laypage-btn").click();
-                    },
-                    error: function (data) {
-                        console.log(data);
-                        layer.msg(data, {
-                            icon: 5,
-                            offset: 't',
-                            anim: 2,
-                        });
-                    },
-                    complete: function () {
-                        layer.close(l_index);
-                        layer.close(Create_apicase);
-                    }
-
-                });
-                return false;//阻止表单跳转
-            });
-        });
-
-    }
-
-    //新建auto用例
-    function selectRole1() {
-        var Create_apicase = layer.open({
-            //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
-            type: 1,
-            title: "新建用例",
-            skin: "layui-layer-molv",
-            shade: 0.6,
-            area: ['40%', '85%'],
-            content: $("#popSearchRoleTest1").html(),
-        });
-        layui.use('form', function () {
-            var form = layui.form;
-            //监听编辑用户信息，
-            form.on('submit(create_autocase)', function (data) {
-                console.log(data.field);
-                $.ajax({
-                    cache: false,
-                    url: "/create_autocase/",
-                    dataType: 'text',
-                    type: 'POST',
-                    //async: false,
-                    data: {
-                        "belong": data.field.belong,
-                        "dataready": data.field.dataready,
-                        "title": data.field.title,
-                        "steps": data.field.steps,
-                        "identity": data.field.identity,
                         "except": data.field.except,
                     },
                     beforeSend: function () {
@@ -1405,43 +1337,6 @@
 
     }
 
-    //获取用户信息
-    function get_user_info() {
-        $.ajax({
-            cache: false,
-            url: "/get_userinfo/",
-            dataType: 'text',
-            type: 'GET',
-            async: false,
-            success: function (data) {
-                //var strjson = JSON.stringify(data, null, 4);
-				layer.msg("操作成功",{icon:6,anim:2,offset:'t'}
-				);
-                layer.prompt({
-                    formType: 2,//多行文本
-                    value: data,
-                    title: '用户信息',
-                    anim: 4,//从左滚动进来
-                    skin: "layui-layer-rim",
-                    shade: 0.6,
-                    area: ['400px', '250px'], //自定义文本域宽高
-                    btn: ["关闭"],
-                    yes: function (index) {
-                        layer.close(index);
-                    }
-                });
-            },
-            error: function (data) {
-                console.log(data);
-                layer.msg(data, {
-                    offset: 't',
-                    anim: 6,
-                    area: ["200px", "50px"],
-                });
-            }
-        });
-    }
-
     //导入用例
     function importcase() {
         layer.open({
@@ -1454,7 +1349,21 @@
             content: $("#importCase").html()
         });
     }
+
+	// 进入全屏：
+    function entryFullScreen() {
+        var docE = document.documentElement;
+        if (docE.requestFullScreen) {
+            docE.requestFullScreen();
+        } else if (docE.mozRequestFullScreen) {
+            docE.mozRequestFullScreen();
+        } else if (docE.webkitRequestFullScreen) {
+            docE.webkitRequestFullScreen();
+        }
+    }
+
 </script>
+
 
 </body>
 </html>

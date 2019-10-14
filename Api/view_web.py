@@ -6,6 +6,7 @@ import xlrd
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.db.models import Q
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 
@@ -222,38 +223,83 @@ def webindex_views(request):
 # weB列表页
 @login_required
 def weblist_view(request):
+    #所属模块
     module = request.GET.get("key[id]", "")
     print(module)
-    caseid = request.GET.get("key[id1]", "")
-    print(caseid)
     a = request.GET.get("belong", "")
-    if module == "" and a == "" and caseid == "":
-        weblists = Webcase.objects.filter()
-    elif a == "policy":
-        weblists = Webcase.objects.filter(webcase_models="保留处置策略管理")
-    elif a == "unit":
-        weblists = Webcase.objects.filter(webcase_models__contains="入驻单位管理")
-    elif a == "forms":
-        weblists = Webcase.objects.filter(webcase_models="数据表单设置")
-    elif a == "views":
-        weblists = Webcase.objects.filter(webcase_models="视图管理")
-    elif a == "info":
-        weblists = Webcase.objects.filter(webcase_models="基本信息")
-    elif a == "dept":
-        weblists = Webcase.objects.filter(webcase_models="部门管理")
-    elif a == "user":
-        weblists = Webcase.objects.filter(webcase_models="用户管理")
-    elif a == "class":
-        weblists = Webcase.objects.filter(webcase_models="类目保管期限设定")
-    elif a == "access":
-        weblists = Webcase.objects.filter(webcase_models="访问控制策略管理")
-    elif a == "transfer":
-        weblists = Webcase.objects.filter(webcase_models="移交操作")
+    filterSos = request.GET.get("filterSos", "")
 
+    if module == "" and a == "" and filterSos== "":
+        weblists = Webcase.objects.filter().order_by("webcase_models","webfunpoint")
+    if a:
+        if a == "policy":
+            weblists = Webcase.objects.filter(webcase_models="保留处置策略管理")
+        elif a == "unit":
+            weblists = Webcase.objects.filter(webcase_models__contains="入驻单位管理")
+        elif a == "forms":
+            weblists = Webcase.objects.filter(webcase_models="数据表单设置")
+        elif a == "views":
+            weblists = Webcase.objects.filter(webcase_models="视图管理")
+        elif a == "info":
+            weblists = Webcase.objects.filter(webcase_models="基本信息")
+        elif a == "dept":
+            weblists = Webcase.objects.filter(webcase_models="部门管理")
+        elif a == "user":
+            weblists = Webcase.objects.filter(webcase_models="用户管理")
+        elif a == "class":
+            weblists = Webcase.objects.filter(webcase_models="类目保管期限设定")
+        elif a == "access":
+            weblists = Webcase.objects.filter(webcase_models="访问控制策略管理")
+        elif a == "transfer":
+            weblists = Webcase.objects.filter(webcase_models="移交操作")
     elif module:
-        weblists = Webcase.objects.filter(webcase_models__contains=module)
-    elif caseid:
-        weblists = Webcase.objects.filter(webcaseid=caseid)
+        try:
+            if int(module):
+                weblists = Webcase.objects.filter(webcaseid=module).order_by("webcase_models","webfunpoint")
+        except:
+            weblists = Webcase.objects.filter(webcase_models__contains=module).order_by("webcase_models","webfunpoint")
+
+    elif filterSos:
+        print(filterSos)
+        if filterSos == "[]":
+            weblists = Webcase.objects.filter().order_by("webcase_models","webfunpoint")
+        else:
+            L = []
+            for i in json.loads(filterSos):
+                filterSos_field = i.get("field")
+                filterSos_value = i.get("value")
+                if filterSos_field == "funpoint":
+                    apilists = Webcase.objects.filter(webfunpoint__contains=filterSos_value).order_by("webcase_models","webfunpoint")
+                elif filterSos_field == "module":
+                    apilists = Webcase.objects.filter(webcase_models__contains=filterSos_value).order_by("webcase_models","webfunpoint")
+                elif filterSos_field == "casename":
+                    apilists = Webcase.objects.filter(webcasename__contains=filterSos_value).order_by("webcase_models","webfunpoint")
+                for weblist in apilists:
+                    data = {
+                        "caseid": weblist.webcaseid,
+                        "module": weblist.webcase_models,
+                        "funpoint": weblist.webfunpoint,
+                        "casename": weblist.webcasename,
+                        "premise": weblist.webpremise,
+                        "teststep": weblist.webteststep,
+                        "exceptres": weblist.webexceptres,
+                        "result": weblist.webresult,
+                        "identity": weblist.webidentity,
+                        "webbelong": weblist.webbelong
+                    }
+                    L.append(data)
+            print(L)
+            pageindex = request.GET.get('page', "")
+            pagesize = request.GET.get("limit", "")
+            pageInator = Paginator(L, pagesize)
+            # 分页
+            contacts = pageInator.page(pageindex)
+            res = []
+            for contact in contacts:
+                res.append(contact)
+            datas = {"code": 0, "msg": "", "count": len(L), "data": res}
+            return JsonResponse(datas)
+
     L = []
     for weblist in weblists:
         data = {
@@ -280,6 +326,9 @@ def weblist_view(request):
         res.append(contact)
     datas = {"code": 0, "msg": "", "count": len(L), "data": res}
     return JsonResponse(datas)
+
+
+
 
 
 # Auto列表页
@@ -353,10 +402,15 @@ def create_autocase_views(request):
 def delete_webcase_views(request):
     if request.method == "GET":
         ids = request.GET.get("ids", "")
-        if ids:
-            print(ids)
-            Webcase.objects.filter(webcaseid=ids).delete()
-            return HttpResponse("删除成功")
+        print(ids)
+        caseids = json.loads(ids)
+        for caseid in caseids:
+            Webcase.objects.filter(webcaseid=caseid.get("caseid","")).delete()
+        return HttpResponse("删除成功")
+        # if ids:
+        #     print(ids)
+        #     Webcase.objects.filter(webcaseid=ids).delete()
+        #     return HttpResponse("删除成功")
 
 
 # 删除webAuto用例
@@ -373,6 +427,23 @@ def delete_autocase_views(request):
 # 更新web用例
 @login_required
 def update_webcase_views(request):
+    if request.method == "GET":
+        caseid = request.GET.get("ids", "")
+        casename = request.GET.get("casename", "")
+        teststep = request.GET.get("teststep", "")
+        exceptres = request.GET.get("exceptres", "")
+        result = request.GET.get("result", "")
+        if casename:
+            Webcase.objects.filter(webcaseid=caseid).update(webcasename=casename)
+        elif teststep:
+            Webcase.objects.filter(webcaseid=caseid).update(webteststep=teststep)
+        elif exceptres:
+            Webcase.objects.filter(webcaseid=caseid).update(webexceptres=exceptres)
+        elif result:
+            Webcase.objects.filter(webcaseid=caseid).update(webresult=result)
+        return HttpResponse("操作成功")
+
+
     if request.method == "POST":
         mainbelong = request.POST.get("mainbelong", "")
         belong = request.POST.get("belong", "")

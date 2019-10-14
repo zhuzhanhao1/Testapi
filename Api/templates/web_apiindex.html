@@ -505,10 +505,14 @@
             elem: '#test'
             , url: '/apilist/' //数据接口"exports"
             , toolbar: '#toolbarDemo'
-			, defaultToolbar: ['filter', {title:'导出数据',layEvent: 'export',icon: 'layui-icon-download-circle'}, 'print']
+            , defaultToolbar: [
+                'filter', {title: '导出数据', layEvent: 'export', icon: 'layui-icon-download-circle'}, {
+                    title: '全屏显示',
+                    layEvent: 'fullScreen',
+                    icon: 'layui-icon-top'
+                }, 'print']
             , title: 'ERMS接口测试'
             , page: {groups: 5} //开启分页
-            //, limit: 10 //默认是10
 			, loading: false
 			, height: 'full-60'
 			, drag: {toolbar: true}//实现固定列与非固定列之间的转换
@@ -684,6 +688,9 @@
             items:['column','editCondition','excel'] // 只显示表格列和导出excel两个菜单项
         	}
             , id: 'testReload'
+			,rowEvent: function (obj) {
+				obj.tr.css({'background':'#5FB878','color':'white'}).siblings().removeAttr('style')
+			}
             , done: function (res) {   //返回数据执行回调函数
                 layer.close(index);    //返回数据关闭loading
                 soulTable.render(this);
@@ -998,6 +1005,19 @@
                     } else {
                         layer.msg('请先勾选数据在导出！',{icon:0,offset:'t'});
                     }
+                    break;
+                //全屏显示
+                case "fullScreen":
+                    var docE = document.documentElement;
+                    if (docE.requestFullScreen) {
+                        docE.requestFullScreen();
+                    } else if (docE.mozRequestFullScreen) {
+                        docE.mozRequestFullScreen();
+                    } else if (docE.webkitRequestFullScreen) {
+                        docE.webkitRequestFullScreen();
+                    }
+                    break;
+
             }
 
         });

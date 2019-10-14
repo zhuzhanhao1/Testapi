@@ -13,7 +13,7 @@
 <style>
 	.layui-col-md6 {
 		width: 12%;
-		{#opacity: 0.5;#}
+	{#opacity: 0.5;#}
 	}
 
 	.layui-card-body {
@@ -22,7 +22,7 @@
 
 	.layui-col-md12 {
 		width: 50%;
-		{#opacity: 0.5;#}
+	{#opacity: 0.5;#}
 	}
 
 	.layui-nav {
@@ -44,15 +44,20 @@
 	.layui-nav {
 		background-color: cornflowerblue;
 	}
+	ol, ul{
+		margin-bottom:0px;
+	}
 </style>
 
 <body>
 
-{#<div>#}
-{#	<ul class="layui-nav layui-bg-green">#}
-{#		<li class="layui-nav-item" style="font-size: 24px;font-weight: lighter;">接口测试详细信息</li>#}
-{#	</ul>#}
-{#</div>#}
+<div>
+	<ul class="layui-nav">
+		<li class="layui-nav-item" style="font-size: 24px;background-color: cornflowerblue;font-weight: lighter;">接口测试详细信息</li>
+{#		<button id="FullScreen"  onclick="entryFullScreen()">sssssss</button>#}
+	</ul>
+</div>
+
 <div style="padding: 20px;background-image: url('./../static/images/banner2.jpg');">
 	<div class="layui-row layui-col-space15">
 		<div class="layui-col-md6" style="width: 24%;">
@@ -115,7 +120,7 @@
 			<div class="layui-card">
 				<div class="layui-card-header">Params:</div>
 				<div class="layui-card-body">
-					<textarea id="detail" rows="8" cols="80" readonly="readonly">{{ dic.params }}</textarea>
+					<textarea id="detail" rows="7" cols="80" readonly="readonly">{{ dic.params }}</textarea>
 				</div>
 			</div>
 		</div>
@@ -123,7 +128,7 @@
 			<div class="layui-card">
 				<div class="layui-card-header">响应内容:</div>
 				<div class="layui-card-body">
-					<textarea id="detail" rows="20" cols="80" readonly="readonly">{{ dic.result }}</textarea>
+					<textarea id="detail" rows="18" cols="80" readonly="readonly">{{ dic.result }}</textarea>
 
 
 				</div>
@@ -134,30 +139,30 @@
 				<div class="layui-card-header">Body:</div>
 				<div class="layui-card-body">
 
-					<textarea id="detail" rows="8" cols="80" readonly="readonly">{{ dic.body }}</textarea>
+					<textarea id="detail" rows="7" cols="80" readonly="readonly">{{ dic.body }}</textarea>
 				</div>
 			</div>
 		</div>
 
 
-{#		<div class="layui-col-md12" style="width: 18%;margin-bottom: 3px;">#}
-{#			<div class="layui-card">#}
-{#				<div class="layui-card-header">上个结果:</div>#}
-{#				<div class="layui-card-body">#}
-{#					<a type="button" href="/detail/?id={{ dic.back }}" style="color: darkmagenta">点击即将跳转到上个接口的详细信息页</a>#}
-{#				</div>#}
-{#			</div>#}
-{#		</div>#}
-{##}
-{#		<div class="layui-col-md12" style="width: 18%">#}
-{#			<div class="layui-card">#}
-{#				<div class="layui-card-header">下个结果:</div>#}
-{#				<div class="layui-card-body">#}
-{#					<a type="button" href="/detail/?id={{ dic.forward }}"#}
-{#					   style="color: darkmagenta">点击即将跳转到下个接口的详细信息页</a>#}
-{#				</div>#}
-{#			</div>#}
-{#		</div>#}
+		{#		<div class="layui-col-md12" style="width: 18%;margin-bottom: 3px;">#}
+		{#			<div class="layui-card">#}
+		{#				<div class="layui-card-header">上个结果:</div>#}
+		{#				<div class="layui-card-body">#}
+		{#					<a type="button" href="/detail/?id={{ dic.back }}" style="color: darkmagenta">点击即将跳转到上个接口的详细信息页</a>#}
+		{#				</div>#}
+		{#			</div>#}
+		{#		</div>#}
+		{##}
+		{#		<div class="layui-col-md12" style="width: 18%">#}
+		{#			<div class="layui-card">#}
+		{#				<div class="layui-card-header">下个结果:</div>#}
+		{#				<div class="layui-card-body">#}
+		{#					<a type="button" href="/detail/?id={{ dic.forward }}"#}
+		{#					   style="color: darkmagenta">点击即将跳转到下个接口的详细信息页</a>#}
+		{#				</div>#}
+		{#			</div>#}
+		{#		</div>#}
 
 
 	</div>
@@ -169,6 +174,67 @@
 <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
 <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script>
+    // 进入全屏：
+    function entryFullScreen() {
+        var docE = document.documentElement;
+        if (docE.requestFullScreen) {
+            docE.requestFullScreen();
+        } else if (docE.mozRequestFullScreen) {
+            docE.mozRequestFullScreen();
+        } else if (docE.webkitRequestFullScreen) {
+            docE.webkitRequestFullScreen();
+        }
+    }
+
+    // 退出全屏
+    {#function exitFullScreen() {#}
+    {#    var docE = document;#}
+    {#    if (docE.exitFullscreen) {#}
+    {#        docE.exitFullscreen();#}
+    {#    } else if (docE.mozCancelFullScreen) {#}
+    {#        docE.mozCancelFullScreen();#}
+    {#    } else if (docE.webkitCancelFullScreen) {#}
+    {#        docE.webkitCancelFullScreen();#}
+    {#    }#}
+    {#    // 全屏开启#}
+    {#    form.on('switch(fullscreen)', function (data) {#}
+    {#        var fValue = data.elem.checked;#}
+    {#        localStorage.setItem('funnscreen_info', fValue);#}
+    {#    });#}
+    {#    $(document).ready(function () {#}
+    {#        var fScreen = localStorage.getItem('fullscreen_info');#}
+    {#        if (fScreen && fScreen != 'false') {#}
+    {#            var fScreenIndex = layer.alert('按ESC退出全屏', {#}
+    {#                    title: '进入全屏提示信息',#}
+    {#                    skin: 'layui-layer-lan',#}
+    {#                    closeBtn: 0,#}
+    {#                    anim: 4,#}
+    {#                    offset: '100px'#}
+    {#                }, function () {#}
+    {#                    entryFullScreen();#}
+    {#                    $('#FullScreen').html('<i class="larry-icon larry-quanping"></i>退出全屏');#}
+    {#                    layer.close(fScreenIndex);#}
+    {#                }#}
+    {#            )#}
+    {#        }#}
+    {#    })#}
+    {#    // 全屏切换#}
+    {#    $('#FullScreen').bind('click', function () {#}
+    {#        var fullscreenElement =#}
+    {#            document.fullscreenElement ||#}
+    {#            document.mozFullScreenElement ||#}
+    {#            document.webkitFullscreenElement;#}
+    {#        if (fullscreenElement == null) {#}
+    {#            entryFullScreen();#}
+    {#            $(this).html('<i class="larry-icon">&#xe604;</i>退出全屏');#}
+    {#        } else {#}
+    {#            exitFullScreen();#}
+    {#            $(this).html('<i class="larry-icon">&#xe604;</i>全屏');#}
+    {#        }#}
+    {#    })#}
+</script>
 
 </body>
 </html>

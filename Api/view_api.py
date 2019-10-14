@@ -56,7 +56,7 @@ def apilist_view(request):
     belong = request.GET.get('belong',"")
     print("请求进入的模块是:"+belong)
     if casename == "" and belong == "" and filterSos== "":
-        apilists = Case.objects.filter(system='erms')
+        apilists = Case.objects.filter(system='erms').order_by("belong")
     #流程接口
     # elif belong == "process":
         #匹配流程字段的值不能等于空
@@ -113,22 +113,22 @@ def apilist_view(request):
         elif belong == "transfer_form":
             apilists = Case.objects.filter(Q(belong__contains="移交表单信息接口") & Q(system="erms"))
     elif casename:
-        apilist = Case.objects.filter(Q(casename__contains=casename) & Q(system="erms"))
+        apilist = Case.objects.filter(Q(casename__contains=casename) & Q(system="erms")).order_by("belong")
         print(apilist)
         if apilist.count() == 0:
-            apilists = Case.objects.filter(Q(result__contains="error") & Q(result__contains="message") & Q(system="erms"))
+            apilists = Case.objects.filter(Q(result__contains="error") & Q(result__contains="message") & Q(system="erms")).order_by("belong")
         else:
             apilists = apilist
     elif filterSos:
         print(filterSos)
         if filterSos == "[]":
-            apilists = Case.objects.filter(system="erms")
+            apilists = Case.objects.filter(system="erms").order_by("belong")
         else:
             L = []
             for i in json.loads(filterSos):
                 filterSos_res = i.get("value")
                 print(filterSos_res)
-                apilists = Case.objects.filter(Q(casename__contains=filterSos_res) & Q(system="erms"))
+                apilists = Case.objects.filter(Q(casename__contains=filterSos_res) & Q(system="erms")).order_by("belong")
                 for weblist in apilists:
                     data = {
                         "caseid": weblist.caseid,

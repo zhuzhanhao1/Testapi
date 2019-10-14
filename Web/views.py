@@ -12,8 +12,12 @@ def web_welcome_views(request):
     return render(request, 'web_welcome.html')
 
 @login_required
-def web_webindex_views(request):
-    return render(request, 'web_webindex.html')
+def web_functionalTest_views(request):
+    return render(request, 'web_functionalTest.html')
+
+
+def web_autoTest_views(request):
+    return render(request, 'web_autoTest.html')
 
 @login_required
 def web_quicktest_views(request):
