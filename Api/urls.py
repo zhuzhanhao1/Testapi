@@ -32,6 +32,7 @@ urlpatterns = [
     url(r'^export_data/$',export_data_views),
     url(r'^ding_ding/$',ding_ding_view),
     url(r'^field_apilist/$',field_apilist_views),
+    url(r'^web_sort/$', web_sort_views),
 
 
 #----------------------Api_process  url-----------------------------
@@ -67,6 +68,7 @@ urlpatterns = [
     url(r'^update_dataready/$',update_dataready_views),
     url(r'^get_userinfo/$',get_userinfo_views),
     url(r'^update_userinfo_api/$',update_userinfo_api_views),
+    url(r'^autosort/$',autosort_views),
 
 
     #----------------------timing url-----------------------------

@@ -27,11 +27,8 @@ class Case(models.Model):
     # belong_system = models.CharField(max_length=60,verbose_name="所属系统")
     #python3 manage.py migrate Api --fake
     system = models.CharField(max_length=50, verbose_name="所属系统")
-    parameterName = models.CharField(max_length=250, verbose_name="参数名称")
-    parameterThat = models.CharField(max_length=250, verbose_name="参数说明")
-    requestType = models.CharField(max_length=50, verbose_name="请求类型")
-    isMust = models.CharField(max_length=50, verbose_name="是否必须")
-    dataType = models.CharField(max_length=150, verbose_name="数据类型")
+    sortid = models.IntegerField(verbose_name="排序号")
+
 
 
 
@@ -94,6 +91,7 @@ class Autocase(models.Model):
     autoexceptres = models.CharField(max_length=500, verbose_name="期望结果")
     autoresult = models.TextField(verbose_name="执行结果",blank=True)
     autocreat_time = models.DateTimeField(verbose_name='创建时间', auto_now=True,blank=True)
+    sortid = models.IntegerField(verbose_name="排序号")
 
     def __str__(self):
         return self.autoname

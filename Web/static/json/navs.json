@@ -1,5 +1,26 @@
 {
 	"contentManagement": [
+				{
+			"title": "功能测试",
+			"icon": "&#xe857;",
+			"href": "",
+			"spread": false,
+			"children": [
+				{
+					"title": "功能测试",
+					"icon": "&#xe857;",
+					"href": "/web_functionalTest/",
+					"spread": false
+				},
+								{
+					"title": "自动化测试",
+					"icon": "&#xe857;",
+					"href": "/web_autoindex/",
+					"spread": false
+				}
+			]
+		},
+
 		{
 			"title": "系统管理接口",
 			"icon": "&#xe716;",
@@ -40,7 +61,7 @@
 		},
 		{
 			"title": "业务管理接口",
-			"icon": "&#xe630;",
+			"icon": "&#xe6c9;",
 			"href": "",
 			"spread": false,
 			"children": [
@@ -76,90 +97,108 @@
 				}
 			]
 		},
+
 		{
-			"title": "Record接口",
-			"icon": "&#xe655;",
-			"href": "http://127.0.0.1:8000/web_apiindex/?belong=record",
-			"spread": false
+			"title": "档案相关接口",
+			"icon": "&#xe630;",
+			"href": "",
+			"spread": false,
+			"children": [
+				{
+					"title": "Record接口",
+					"icon": "&#xe655;",
+					"href": "http://127.0.0.1:8000/web_apiindex/?belong=record",
+					"spread": false
+				},
+				{
+					"title": "文档管理接口",
+					"icon": "&#xe634;",
+					"href": "http://127.0.0.1:8000/web_apiindex/?belong=document",
+					"spread": false
+				},
+				{
+					"title": "案卷管理接口",
+					"icon": "&#xe663;",
+					"href": "http://127.0.0.1:8000/web_apiindex/?belong=volume",
+					"spread": false
+				},
+				{
+					"title": "档案管理接口",
+					"icon": "&#xe60a;",
+					"href": "http://127.0.0.1:8000/web_apiindex/?belong=archives",
+					"spread": false
+				},
+				{
+					"title": "续存记录接口",
+					"icon": "&#xe60e;",
+					"href": "http://127.0.0.1:8000/web_apiindex/?belong=deposit_form",
+					"spread": false
+				},
+				{
+					"title": "资源管理接口",
+					"icon": "&#xe60a;",
+					"href": "http://127.0.0.1:8000/web_apiindex/?belong=resource",
+					"spread": false
+				},
+				{
+					"title": "导航管理接口",
+					"icon": "&#xe632;",
+					"href": "http://127.0.0.1:8000/web_apiindex/?belong=navigation",
+					"spread": false
+				},
+				{
+					"title": "映射规则接口",
+					"icon": "&#xe62c;",
+					"href": "http://127.0.0.1:8000/web_apiindex/?belong=attribute_mapping_scheme",
+					"spread": false
+				},
+				{
+					"title": "文件计划管理接口",
+					"icon": "&#xe621;",
+					"href": "http://127.0.0.1:8000/web_apiindex/?belong=file_plan",
+					"spread": false
+				}
+			]
 		},
 		{
-			"title": "文档管理接口",
-			"icon": "&#xe634;",
-			"href": "http://127.0.0.1:8000/web_apiindex/?belong=document",
-			"spread": false
-		},
-		{
-			"title": "案卷管理接口",
-			"icon": "&#xe663;",
-			"href": "http://127.0.0.1:8000/web_apiindex/?belong=volume",
-			"spread": false
-		},
-        {
-			"title": "档案管理接口",
-			"icon": "&#xe60a;",
-			"href": "http://127.0.0.1:8000/web_apiindex/?belong=archives",
-			"spread": false
-		},
-		{
-			"title": "续存记录接口",
-			"icon": "&#xe60e;",
-			"href": "http://127.0.0.1:8000/web_apiindex/?belong=deposit_form",
-			"spread": false
-		},
-		{
-			"title": "资源管理接口",
-			"icon": "&#xe60a;",
-			"href": "http://127.0.0.1:8000/web_apiindex/?belong=resource",
-			"spread": false
-		},
-        {
-			"title": "导航管理接口",
-			"icon": "&#xe632;",
-			"href": "http://127.0.0.1:8000/web_apiindex/?belong=navigation",
-			"spread": false
-		},
-		{
-			"title": "映射规则接口",
-			"icon": "&#xe62c;",
-			"href": "http://127.0.0.1:8000/web_apiindex/?belong=attribute_mapping_scheme",
-			"spread": false
-		},
-		{
-			"title": "文件计划管理接口",
-			"icon": "&#xe621;",
-			"href": "http://127.0.0.1:8000/web_apiindex/?belong=file_plan",
-			"spread": false
-		},
-      	{
-			"title": "公共操作相关接口",
+			"title": "表单相关接口",
 			"icon": "&#xe638;",
-			"href": "http://127.0.0.1:8000/web_apiindex/?belong=common",
-			"spread": false
-		},
-		{
-			"title": "移交表单信息接口",
-			"icon": "&#xe63c;",
-			"href": "http://127.0.0.1:8000/web_apiindex/?belong=transfer_form",
-			"spread": false
-		},
-		{
-			"title": "数据表单管理接口",
-			"icon": "&#xe656;",
-			"href": "http://127.0.0.1:8000/web_apiindex/?belong=data_form",
-			"spread": false
-		},
-        {
-			"title": "通用文件夹管理接口",
-			"icon": "&#xe631;",
-			"href": "http://127.0.0.1:8000/web_apiindex/?belong=common_folder",
-			"spread": false
-		},
-		{
-			"title": "元数据管理平台接口",
-			"icon": "&#xe600;",
-			"href": "http://127.0.0.1:8000/web_apiindex/?belong=metadata",
-			"spread": false
+			"href": "",
+			"spread": false,
+			"children": [
+				{
+					"title": "公共操作相关接口",
+					"icon": "&#xe638;",
+					"href": "http://127.0.0.1:8000/web_apiindex/?belong=common",
+					"spread": false
+				},
+				{
+					"title": "移交表单信息接口",
+					"icon": "&#xe63c;",
+					"href": "http://127.0.0.1:8000/web_apiindex/?belong=transfer_form",
+					"spread": false
+				},
+				{
+					"title": "数据表单管理接口",
+					"icon": "&#xe656;",
+					"href": "http://127.0.0.1:8000/web_apiindex/?belong=data_form",
+					"spread": false
+				},
+				{
+					"title": "通用文件夹管理接口",
+					"icon": "&#xe631;",
+					"href": "http://127.0.0.1:8000/web_apiindex/?belong=common_folder",
+					"spread": false
+				},
+				{
+					"title": "元数据管理平台接口",
+					"icon": "&#xe600;",
+					"href": "http://127.0.0.1:8000/web_apiindex/?belong=metadata",
+					"spread": false
+				}
+			]
 		}
+
 
 	],
 	"memberCenter": [

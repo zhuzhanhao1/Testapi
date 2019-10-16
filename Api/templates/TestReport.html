@@ -116,18 +116,18 @@ function html_escape(s) {
 <div class='heading'>
 <h1 style="font-family: Microsoft YaHei">ERMS自动化测试报告</h1>
 <p class='attribute'><strong>测试人员 : </strong> 朱占豪</p>
-<p class='attribute'><strong>开始时间 : </strong> 2019-09-16 07:59:3508:00:00</p>
-<p class='attribute'><strong>合计耗时 : </strong> 0:00:47.500661</p>
-<p class='attribute'><strong>测试结果 : </strong> 共 2，通过 2，通过率= 100.00%</p>
+<p class='attribute'><strong>开始时间 : </strong> 2019-10-15 07:04:1008:00:00</p>
+<p class='attribute'><strong>合计耗时 : </strong> 0:00:23.206529</p>
+<p class='attribute'><strong>测试结果 : </strong> 共 2，错误 2，通过率= 0.00%</p>
 
 <p class='description'>Web Automation Testingweb</p>
 </div>
 
 
 <p id='show_detail_line'>
-<a class="btn btn-primary" href='javascript:showCase(0)'>概要{ 100.00% }</a>
+<a class="btn btn-primary" href='javascript:showCase(0)'>概要{ 0.00% }</a>
 <a class="btn btn-danger" href='javascript:showCase(1)'>失败{ 0 }</a>
-<a class="btn btn-success" href='javascript:showCase(2)'>通过{ 2 }</a>
+<a class="btn btn-success" href='javascript:showCase(2)'>通过{ 0 }</a>
 <a class="btn btn-info" href='javascript:showCase(3)'>所有{ 2 }</a>
 </p>
 <table id='result_table' class="table table-condensed table-bordered table-hover">
@@ -148,30 +148,43 @@ function html_escape(s) {
     <td>详细</td>
 </tr>
 
-<tr class='passClass warning'>
+<tr class='errorClass warning'>
     <td>Api.webuitest.A_sysadmin_test.SystemManagement</td>
     <td class="text-center">2</td>
+    <td class="text-center">0</td>
+    <td class="text-center">0</td>
     <td class="text-center">2</td>
-    <td class="text-center">0</td>
-    <td class="text-center">0</td>
     <td class="text-center"><a href="javascript:showClassDetail('c1',2)" class="detail" id='c1'>详细</a></td>
 </tr>
 
-<tr id='pt1_1' class='hiddenRow'>
-    <td class='passCase'><div class='testcase'>test_d_policy_create: 保留处置策略-新建保留处置策略</div></td>
+<tr id='ft1_1' class='none'>
+    <td class='errorCase'><div class='testcase'>test_a_forms_create: 数据表单设置-新建数据表单</div></td>
     <td colspan='5' align='center'>
     <!--默认收起错误信息 -Findyou
-    <button id='btn_pt1_1' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_pt1_1'>通过</button>
-    <div id='div_pt1_1' class="collapse">  -->
+    <button id='btn_ft1_1' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_ft1_1'>错误</button>
+    <div id='div_ft1_1' class="collapse">  -->
     <!-- 默认展开错误信息 -Findyou -->
-    <button id='btn_pt1_1' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_pt1_1'>通过</button>
-    <div id='div_pt1_1' class="collapse in">
+    <button id='btn_ft1_1' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_ft1_1'>错误</button>
+    <div id='div_ft1_1' class="collapse in">
     <pre>
     
-pt1_1: 正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//span[text()='保留处置策略管理']/..
-正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//span[text()='年后']/../input
-正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//span[text()='年后']/../input
-正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//div[@class='mat-select-trigger'][1]
+ft1_1: 正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//span[text()='数据表单设置']/..
+正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//input[@id='name']
+Traceback (most recent call last):
+  File "/Users/zhuzhanhao/Testapi/Api/webuitest/A_sysadmin_test.py", line 271, in test_a_forms_create
+    d.js_element(ysjfa_value)      #选择元数据方案的值
+  File "/Users/zhuzhanhao/Testapi/Api/webuitest/my_base.py", line 205, in js_element
+    self.driver.execute_script(js)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/webdriver.py", line 669, in execute_script
+    'args': converted_args})['value']
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/webdriver.py", line 318, in execute
+    self.error_handler.check_response(response)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.JavascriptException: Message: javascript error: Cannot read property 'click' of undefined
+  (Session info: chrome=74.0.3729.108)
+  (Driver info: chromedriver=74.0.3729.6 (255758eccf3d244491b8a1317aa76e1ce10d57e9-refs/branch-heads/3729@{#29}),platform=Mac OS X 10.14.6 x86_64)
+
 
 
     </pre>
@@ -179,19 +192,33 @@ pt1_1: 正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//span[te
     </td>
 </tr>
 
-<tr id='pt1_2' class='hiddenRow'>
-    <td class='passCase'><div class='testcase'>test_e_policy_update: 保留处置策略-编辑保留处置策略</div></td>
+<tr id='ft1_2' class='none'>
+    <td class='errorCase'><div class='testcase'>test_a_forms_delete: 数据表单设置-删除数据表单</div></td>
     <td colspan='5' align='center'>
     <!--默认收起错误信息 -Findyou
-    <button id='btn_pt1_2' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_pt1_2'>通过</button>
-    <div id='div_pt1_2' class="collapse">  -->
+    <button id='btn_ft1_2' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_ft1_2'>错误</button>
+    <div id='div_ft1_2' class="collapse">  -->
     <!-- 默认展开错误信息 -Findyou -->
-    <button id='btn_pt1_2' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_pt1_2'>通过</button>
-    <div id='div_pt1_2' class="collapse in">
+    <button id='btn_ft1_2' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_ft1_2'>错误</button>
+    <div id='div_ft1_2' class="collapse in">
     <pre>
     
-pt1_2: 正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//span[text()='保留处置策略管理']/..
-正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//div[@class='mat-select-trigger'][1]
+ft1_2: 正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//span[text()='数据表单设置']/..
+Traceback (most recent call last):
+  File "/Users/zhuzhanhao/Testapi/Api/webuitest/A_sysadmin_test.py", line 290, in test_a_forms_delete
+    d.js_element(dformsdetermine)   #点击确定
+  File "/Users/zhuzhanhao/Testapi/Api/webuitest/my_base.py", line 205, in js_element
+    self.driver.execute_script(js)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/webdriver.py", line 669, in execute_script
+    'args': converted_args})['value']
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/webdriver.py", line 318, in execute
+    self.error_handler.check_response(response)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.JavascriptException: Message: javascript error: Cannot read property 'click' of undefined
+  (Session info: chrome=74.0.3729.108)
+  (Driver info: chromedriver=74.0.3729.6 (255758eccf3d244491b8a1317aa76e1ce10d57e9-refs/branch-heads/3729@{#29}),platform=Mac OS X 10.14.6 x86_64)
+
 
 
     </pre>
@@ -202,10 +229,10 @@ pt1_2: 正在定位元素信息：定位方式-&gt;xpath, value值-&gt;//span[te
 <tr id='total_row' class="text-center active">
     <td>总计</td>
     <td>2</td>
+    <td>0</td>
+    <td>0</td>
     <td>2</td>
-    <td>0</td>
-    <td>0</td>
-    <td>通过率：100.00%</td>
+    <td>通过率：0.00%</td>
 </tr>
 </table>
 

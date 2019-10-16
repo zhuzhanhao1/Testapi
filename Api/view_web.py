@@ -328,17 +328,12 @@ def weblist_view(request):
     return JsonResponse(datas)
 
 
-
-
-
 # Auto列表页
 @login_required
 def antolist_view(request):
     caseid = request.GET.get("key[id]", "")
-    print("啊啊啊啊啊" + caseid)
-    weblists = Autocase.objects.filter()
+    weblists = Autocase.objects.filter().order_by("sortid")
     if caseid:
-        print("aaaaaaaa")
         weblists = Autocase.objects.filter(autoid=caseid)
     L = []
     for weblist in weblists:
@@ -350,7 +345,8 @@ def antolist_view(request):
             "dataready": weblist.autodataready,
             "teststep": weblist.autostep,
             "exceptres": weblist.autoexceptres,
-            "result": weblist.autoresult
+            "result": weblist.autoresult,
+            "sortid":weblist.sortid
         }
         L.append(data)
     print(len(L))
@@ -521,18 +517,18 @@ def import_webcase_views(request):
                     for i in range(1, rows):
                         rowVlaues = table.row_values(i)
                         print(rowVlaues)
-                        print(int(rowVlaues[0]))
+                        # print(int(rowVlaues[0]))
                         # major = models.TMajor.objects.filter(majorid=rowVlaues[1]).first()
-                        Webcase.objects.create(webcaseid=int(rowVlaues[0]), webbelong=rowVlaues[1],
-                                               webcase_models=rowVlaues[2], \
-                                               webfunpoint=rowVlaues[3], webcasename=rowVlaues[4],
-                                               webpremise=rowVlaues[5], webteststep=rowVlaues[6],
-                                               webexceptres=rowVlaues[7])
+                        Webcase.objects.create(webbelong=rowVlaues[0],
+                                               webcase_models=rowVlaues[1],
+                                               webfunpoint=rowVlaues[2], webcasename=rowVlaues[3],
+                                               webpremise=rowVlaues[4], webteststep=rowVlaues[5],
+                                               webexceptres=rowVlaues[6])
                         print('插入成功')
             except:
                 print('解析excel文件或者数据插入错误')
                 return HttpResponse("Failed!!!")
-            return HttpResponse("ok success!!!")
+            return HttpResponse("ok success!请按浏览器的返回键返回，由于请求通过form表单中，html input 标签的“file”完成，没采用ajax请求。")
             # return JsonResponse({"status":200,"message":"导入数据成功"})
         else:
             print('上传文件类型错误！')
@@ -570,3 +566,34 @@ def get_userinfo_views(request):
     dic1 = json.dumps(dic, ensure_ascii=False, sort_keys=True, indent=2)
     print(dic1)
     return HttpResponse(dic1)
+
+
+# 排序
+@login_required
+def autosort_views(request):
+    if request.method == "GET":
+        oldIndex = int(request.GET.get("oldIndex",""))+1
+        newIndex = int(request.GET.get("newIndex", ""))+1
+        if oldIndex < newIndex:
+            q = []
+            for i in range(oldIndex,newIndex):
+                a = i + 1
+                for b in Autocase.objects.filter(sortid=a):
+                    q.append(b.autoid)
+                Autocase.objects.filter(sortid=a).update(sortid=i)
+            l = Autocase.objects.filter(sortid=oldIndex)
+            for lll in l:
+                if lll.autoid not in q:
+                    Autocase.objects.filter(autoid=lll.autoid).update(sortid=newIndex)
+        elif oldIndex > newIndex:
+            Autocase.objects.filter(sortid=oldIndex).update(sortid=-1)
+            L = []
+            for i in range(newIndex,oldIndex):
+                L.append(i)
+            e = L[::-1]
+            for r in e:
+                Autocase.objects.filter(sortid=r).update(sortid=r+1)
+            Autocase.objects.filter(sortid=-1).update(sortid=newIndex)
+        return HttpResponse("排序成功")
+
+

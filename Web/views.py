@@ -45,3 +45,4 @@ def web_linklist_views(request):
 def web_linktest_views(request):
     return render(request, 'linktest.html')
 
+

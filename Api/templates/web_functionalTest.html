@@ -280,7 +280,7 @@
 	<!--导入测试用例-->
 	<div class="layui-row" id="importCase" style="display:none;">
 		<div class="layui-col-md11">
-			<form class="layui-form" action="/import_webcase/" method="post" enctype="multipart/form-data">
+			<form class="layui-form" enctype="multipart/form-data" action="/import_webcase/" method="post">
 
 				<div class="layui-form-item" style="margin-top: 20px;">
 					<div class="layui-input-block">
@@ -290,8 +290,8 @@
 
 				<div class="layui-form-item">
 					<div class="layui-input-block">
-						<button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
-						<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						<button class="layui-btn" lay-submit lay-filter="importCase" style="float: right;">上传</button>
+{#						<button type="reset" class="layui-btn layui-btn-primary">重置</button>#}
 					</div>
 				</div>
 			</form>
@@ -343,7 +343,7 @@
                     title: '全屏显示',
                     layEvent: 'fullScreen',
                     icon: 'layui-icon-top'
-                }, 'print']
+                }, {title: '导入数据', layEvent: 'import', icon: 'layui-icon-upload-circle'}, 'print']
             , title: '功能测试用例'
             , page: true //开启分页
 			, loading: false
@@ -358,9 +358,9 @@
                 {type: 'checkbox'}
 
                 //, {field: 'caseid', title: 'ID', width: 60, sort: true, align: "left"}
-                , {field: 'module', merge: true,title: '所属模块', filter: true, sort:true,width: 120, align: "center"}
-                , {field: 'funpoint',merge: ['module','funpoint'],title: '功能点',sort:true, filter: true, width: 120, align: "center"}
-                , {field: 'casename', title: '测试用例名称', filter: true,sort:true,width: 270,align: "left",event:"casename"}
+                , {field: 'module', merge: true,title: '所属模块', filter: true, width: 120, align: "center"}
+                , {field: 'funpoint',merge: ['module','funpoint'],title: '功能点', filter: true, width: 120, align: "center"}
+                , {field: 'casename', title: '测试用例名称', filter: true,width: 270,align: "left",event:"casename"}
                 , {field: 'premise', merge: true,title: '前提条件', width: 180, align: "left"}
                 , {field: 'teststep', title: '测试步骤', width: 275, align: "left",event:"teststep"}
                 , {field: 'exceptres', title: '期望结果', width: 275, align: "left",event:"exceptres"}
@@ -555,45 +555,56 @@
                     }
                     break;
                 //删除用例
-				case "deletecase":
-				    var data = checkStatus.data;
-				    layer.confirm('真的删除行么', function (index) {
-						console.log(data);
-						layer.close(index);
-						var l = [];
+                case "deletecase":
+                    var data = checkStatus.data;
+                    layer.confirm('真的删除行么', function (index) {
+                        console.log(data);
+                        layer.close(index);
+                        var l = [];
                         for (i = 0; i < data.length; i++) {
                             var dic = {};
                             dic["caseid"] = data[i]["caseid"];
                             l.push(dic);
                         }
                         console.log(l);
-						$.ajax({
-							cache: false,
-							url: "/del_webcase/",
-							dataType: 'text',
-							type: 'GET',
-							//async: false,
-							data: {
-								"ids": JSON.stringify(l),
-							},
-							success: function (data) {
-								layer.msg(data, {
-									offset: 't',
-									icon: 6,
-								});
-								$(".layui-laypage-btn").click();
-							},
-							error: function (data) {
-								console.log(data);
-								layer.msg(data, {
-									offset: 't',
-									icon:5
-								});
-							}
-						});
-					});
-
-
+                        $.ajax({
+                            cache: false,
+                            url: "/del_webcase/",
+                            dataType: 'text',
+                            type: 'GET',
+                            //async: false,
+                            data: {
+                                "ids": JSON.stringify(l),
+                            },
+                            success: function (data) {
+                                layer.msg(data, {
+                                    offset: 't',
+                                    icon: 6,
+                                });
+                                $(".layui-laypage-btn").click();
+                            },
+                            error: function (data) {
+                                console.log(data);
+                                layer.msg(data, {
+                                    offset: 't',
+                                    icon: 5
+                                });
+                            }
+                        });
+                    });
+                    break;
+                //导入用例
+                case "import":
+                    layer.open({
+                        //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+                        type: 1,
+                        title: "导入用例",
+                        area: ['35%', '30%'],
+                        skin: "layui-layer-rim",
+                        shade: 0.6,
+                        content: $("#importCase").html()
+                    });
+                    break;
             }
         });
         //监听行工具事件
@@ -832,32 +843,6 @@
         });
 
     }
-
-    //导入用例
-    function importcase() {
-        layer.open({
-            //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
-            type: 1,
-            title: "导入用例",
-            area: ['35%', '30%'],
-            skin: "layui-layer-rim",
-            shade: 0.6,
-            content: $("#importCase").html()
-        });
-    }
-
-	// 进入全屏：
-    function entryFullScreen() {
-        var docE = document.documentElement;
-        if (docE.requestFullScreen) {
-            docE.requestFullScreen();
-        } else if (docE.mozRequestFullScreen) {
-            docE.mozRequestFullScreen();
-        } else if (docE.webkitRequestFullScreen) {
-            docE.webkitRequestFullScreen();
-        }
-    }
-
 </script>
 
 

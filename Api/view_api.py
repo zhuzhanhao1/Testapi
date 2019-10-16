@@ -1,6 +1,7 @@
 import io
 import threading
 import requests
+import xlrd
 from xlwt import *
 import os,sys
 import time
@@ -56,79 +57,79 @@ def apilist_view(request):
     belong = request.GET.get('belong',"")
     print("请求进入的模块是:"+belong)
     if casename == "" and belong == "" and filterSos== "":
-        apilists = Case.objects.filter(system='erms').order_by("belong")
+        apilists = Case.objects.filter(system='erms').order_by("sortid")
     #流程接口
     # elif belong == "process":
         #匹配流程字段的值不能等于空
         # apilists = Case.objects.filter(~Q(isprocess= ''))
     elif belong:
         if belong == "unit":
-            apilists = Case.objects.filter(Q(belong__contains="单位接口") & Q(system="erms"))
+            apilists = Case.objects.filter(Q(belong__contains="单位接口") & Q(system="erms")).order_by("sortid")
         elif belong == "dept":
-            apilists = Case.objects.filter(Q(belong__contains="部门管理接口") & Q(system="erms"))
+            apilists = Case.objects.filter(Q(belong__contains="部门管理接口") & Q(system="erms")).order_by("sortid")
         elif belong == "user":
-            apilists = Case.objects.filter(Q(belong__contains="用户管理接口") & Q(system="erms"))
+            apilists = Case.objects.filter(Q(belong__contains="用户管理接口") & Q(system="erms")).order_by("sortid")
         elif belong == "views":
-            apilists = Case.objects.filter(Q(belong__contains="视图管理接口") & Q(system="erms"))
+            apilists = Case.objects.filter(Q(belong__contains="视图管理接口") & Q(system="erms")).order_by("sortid")
         elif belong == "policy":
-            apilists = Case.objects.filter(Q(belong__contains="保留处置策略接口") & Q(system="erms"))
+            apilists = Case.objects.filter(Q(belong__contains="保留处置策略接口") & Q(system="erms")).order_by("sortid")
         elif belong == "role":
-            apilists = Case.objects.filter(Q(belong__contains="角色管理接口") & Q(system="erms"))
+            apilists = Case.objects.filter(Q(belong__contains="角色管理接口") & Q(system="erms")).order_by("sortid")
         elif belong == "data_form_config":
-            apilists = Case.objects.filter(Q(belong__contains="数据表单配置管理接口") & Q(system="erms"))
+            apilists = Case.objects.filter(Q(belong__contains="数据表单配置管理接口") & Q(system="erms")).order_by("sortid")
         elif belong == "category":
-            apilists = Case.objects.filter(Q(belong__contains="门类管理接口") & Q(system="erms"))
+            apilists = Case.objects.filter(Q(belong__contains="门类管理接口") & Q(system="erms")).order_by("sortid")
         elif belong == "class":
-            apilists = Case.objects.filter(Q(belong__contains="类目模块接口") & Q(system="erms"))
+            apilists = Case.objects.filter(Q(belong__contains="类目模块接口") & Q(system="erms")).order_by("sortid")
         elif belong == "acl":
-            apilists = Case.objects.filter(Q(belong__contains="访问控制权限接口") & Q(system="erms"))
+            apilists = Case.objects.filter(Q(belong__contains="访问控制权限接口") & Q(system="erms")).order_by("sortid")
         elif belong == "view":
-            apilists = Case.objects.filter(Q(belong__contains="视图自定义接口") & Q(system="erms"))
+            apilists = Case.objects.filter(Q(belong__contains="视图自定义接口") & Q(system="erms")).order_by("sortid")
         elif belong == "record":
-            apilists = Case.objects.filter(Q(belong__contains="Record接口") & Q(system="erms"))
+            apilists = Case.objects.filter(Q(belong__contains="Record接口") & Q(system="erms")).order_by("sortid")
         elif belong == "document":
-            apilists = Case.objects.filter(Q(belong__contains="文档管理接口") & Q(system="erms"))
+            apilists = Case.objects.filter(Q(belong__contains="文档管理接口") & Q(system="erms")).order_by("sortid")
         elif belong == "volume":
-            apilists = Case.objects.filter(Q(belong__contains="案卷管理接口") & Q(system="erms"))
+            apilists = Case.objects.filter(Q(belong__contains="案卷管理接口") & Q(system="erms")).order_by("sortid")
         elif belong == "archives":
-            apilists = Case.objects.filter(Q(belong__contains="档案管理接口") & Q(system="erms"))
+            apilists = Case.objects.filter(Q(belong__contains="档案管理接口") & Q(system="erms")).order_by("sortid")
         elif belong == "resource":
-            apilists = Case.objects.filter(Q(belong__contains="资源管理接口") & Q(system="erms"))
+            apilists = Case.objects.filter(Q(belong__contains="资源管理接口") & Q(system="erms")).order_by("sortid")
         elif belong == "navigation":
-            apilists = Case.objects.filter(Q(belong__contains="导航管理接口") & Q(system="erms"))
+            apilists = Case.objects.filter(Q(belong__contains="导航管理接口") & Q(system="erms")).order_by("sortid")
         elif belong == "data_form":
-            apilists = Case.objects.filter(Q(belong__contains="数据表单管理接口") & Q(system="erms"))
+            apilists = Case.objects.filter(Q(belong__contains="数据表单管理接口") & Q(system="erms")).order_by("sortid")
         elif belong == "file_plan":
-            apilists = Case.objects.filter(Q(belong__contains="文件计划管理接口") & Q(system="erms"))
+            apilists = Case.objects.filter(Q(belong__contains="文件计划管理接口") & Q(system="erms")).order_by("sortid")
         elif belong == "common":
-            apilists = Case.objects.filter(Q(belong__contains="公共操作相关接口") & Q(system="erms"))
+            apilists = Case.objects.filter(Q(belong__contains="公共操作相关接口") & Q(system="erms")).order_by("sortid")
         elif belong == "common_folder":
-            apilists = Case.objects.filter(Q(belong__contains="通用文件夹管理接口") & Q(system="erms"))
+            apilists = Case.objects.filter(Q(belong__contains="通用文件夹管理接口") & Q(system="erms")).order_by("sortid")
         elif belong == "metadata":
-            apilists = Case.objects.filter(Q(belong__contains="元数据管理平台接口") & Q(system="erms"))
+            apilists = Case.objects.filter(Q(belong__contains="元数据管理平台接口") & Q(system="erms")).order_by("sortid")
         elif belong == "deposit_form":
-            apilists = Case.objects.filter(Q(belong__contains="续存记录接口") & Q(system="erms"))
+            apilists = Case.objects.filter(Q(belong__contains="续存记录接口") & Q(system="erms")).order_by("sortid")
         elif belong == "attribute_mapping_scheme":
-            apilists = Case.objects.filter(Q(belong__contains="映射规则接口") & Q(system="erms"))
+            apilists = Case.objects.filter(Q(belong__contains="映射规则接口") & Q(system="erms")).order_by("sortid")
         elif belong == "transfer_form":
-            apilists = Case.objects.filter(Q(belong__contains="移交表单信息接口") & Q(system="erms"))
+            apilists = Case.objects.filter(Q(belong__contains="移交表单信息接口") & Q(system="erms")).order_by("sortid")
     elif casename:
-        apilist = Case.objects.filter(Q(casename__contains=casename) & Q(system="erms")).order_by("belong")
+        apilist = Case.objects.filter(Q(casename__contains=casename) & Q(system="erms")).order_by("sortid")
         print(apilist)
         if apilist.count() == 0:
-            apilists = Case.objects.filter(Q(result__contains="error") & Q(result__contains="message") & Q(system="erms")).order_by("belong")
+            apilists = Case.objects.filter(Q(result__contains="error") & Q(result__contains="message") & Q(system="erms")).order_by("sortid")
         else:
             apilists = apilist
     elif filterSos:
         print(filterSos)
         if filterSos == "[]":
-            apilists = Case.objects.filter(system="erms").order_by("belong")
+            apilists = Case.objects.filter(system="erms").order_by("sortid")
         else:
             L = []
             for i in json.loads(filterSos):
                 filterSos_res = i.get("value")
                 print(filterSos_res)
-                apilists = Case.objects.filter(Q(casename__contains=filterSos_res) & Q(system="erms")).order_by("belong")
+                apilists = Case.objects.filter(Q(casename__contains=filterSos_res) & Q(system="erms")).order_by("sortid")
                 for weblist in apilists:
                     data = {
                         "caseid": weblist.caseid,
@@ -141,7 +142,8 @@ def apilist_view(request):
                         "method": weblist.method,
                         "params": weblist.params,
                         "body": weblist.body,
-                        "result": weblist.result
+                        "result": weblist.result,
+                        "sort": weblist.sortid
                     }
                     L.append(data)
             print(L)
@@ -170,7 +172,8 @@ def apilist_view(request):
             "params": weblist.params,
             "body": weblist.body,
             "result": weblist.result,
-            "system":weblist.system
+            "system":weblist.system,
+            "sort":weblist.sortid
         }
         L.append(data)
     print("此模块的用例个数为:"+str(len(L)))
@@ -805,6 +808,41 @@ def run_apicase_views(request):
         return HttpResponse(djson_new)
 
 
+# 导入用例
+@login_required
+def import_apicase_views(request):
+    if request.method == 'POST':
+        f = request.FILES.get('file')
+        print(f)
+        excel_type = f.name.split('.')[1]
+        if excel_type in ['xlsx', 'xls']:
+            # 开始解析上传的excel表格
+            wb = xlrd.open_workbook(filename=None, file_contents=f.read())
+            table = wb.sheets()[0]
+            rows = table.nrows  # 总行数
+            print(rows)
+            try:
+                with transaction.atomic():  # 控制数据库事务交易
+                    for i in range(1, rows):
+                        rowVlaues = table.row_values(i)
+                        print(rowVlaues)
+                        # print(int(rowVlaues[0]))
+                        # major = models.TMajor.objects.filter(majorid=rowVlaues[1]).first()
+                        Case.objects.create(belong=rowVlaues[0],identity=rowVlaues[1],
+                                               casename=rowVlaues[2],
+                                               url=rowVlaues[3], method=rowVlaues[4],
+                                               params=rowVlaues[5], body=rowVlaues[6],
+                                               exceptres=rowVlaues[7],system=rowVlaues[8])
+                        print('插入成功')
+            except:
+                print('解析excel文件或者数据插入错误')
+                return HttpResponse("Failed!!!")
+            return HttpResponse("ok success!请按浏览器的返回键返回，由于请求通过form表单中，html input 标签的“file”完成，没采用ajax请求。")
+            # return JsonResponse({"status":200,"message":"导入数据成功"})
+        else:
+            print('上传文件类型错误！')
+            return JsonResponse({"status": 200, "message": "导入数据失败"})
+
 #导出数据
 @login_required
 def export_data_views(request):
@@ -1094,6 +1132,48 @@ def quickTest_views(request):
         print(e)
         return JsonResponse({"status_code":500,"msg":"json.loads()读取字符串报错"})
 
+
+#排序
+@login_required
+def web_sort_views(request):
+    if request.method == "GET":
+        oldIndex = int(request.GET.get("oldIndex",""))+1
+        newIndex = int(request.GET.get("newIndex", ""))+1
+        if oldIndex < newIndex:
+            q = []
+            for i in range(oldIndex,newIndex):
+                a = i + 1
+                for b in Case.objects.filter(sortid=a):
+                    q.append(b.caseid)
+                Case.objects.filter(sortid=a).update(sortid=i)
+            l = Case.objects.filter(sortid=oldIndex)
+            for lll in l:
+                if lll.caseid not in q:
+                    Case.objects.filter(caseid=lll.caseid).update(sortid=newIndex)
+        elif oldIndex > newIndex:
+            Case.objects.filter(sortid=oldIndex).update(sortid=-1)
+            L = []
+            for i in range(newIndex,oldIndex):
+                L.append(i)
+            e = L[::-1]
+            for r in e:
+                Case.objects.filter(sortid=r).update(sortid=r+1)
+            Case.objects.filter(sortid=-1).update(sortid=newIndex)
+        return HttpResponse("排序成功")
+    else:
+        data = request.POST.get("data","")
+        belong = request.POST.get("belong","")
+        datas = json.loads(data)
+        all = Case.objects.filter(Q(belong=belong) & Q(system="erms"))
+        l = []
+        for i in all:
+            l.append(i.sortid)
+        l.sort()
+        flag = 0
+        for d in datas:
+            Case.objects.filter(caseid=d).update(sortid=l[flag])
+            flag += 1
+        return HttpResponse("排序成功")
 
 
 
