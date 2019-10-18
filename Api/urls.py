@@ -8,7 +8,6 @@ urlpatterns = [
     url(r'^login/$',login_views),
     url(r'^welcome/$',welcome_views),
     url(r'^logout/$',logout_views),
-    # url(r'^import_case/$',import_case_views),
     url(r'^quickTest/$',quickTest_views),
     url(r'^quicktest/$',quicktest_views),
 
@@ -33,6 +32,7 @@ urlpatterns = [
     url(r'^ding_ding/$',ding_ding_view),
     url(r'^field_apilist/$',field_apilist_views),
     url(r'^web_sort/$', web_sort_views),
+    url(r'^import_case/$',import_apicase_views),
 
 
 #----------------------Api_process  url-----------------------------

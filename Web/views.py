@@ -13,8 +13,13 @@ def web_welcome_views(request):
 
 @login_required
 def web_functionalTest_views(request):
-    return render(request, 'web_functionalTest.html')
+    a = request.GET.get("belong", "")
+    return render(request, 'web_functionalTest.html', {"user": "朱占豪", "abq":a})
 
+@login_required
+def web_functionalTest_transfer_views(request):
+    a = request.GET.get("belong", "")
+    return render(request, 'web_functionalTest_transfer.html', {"user": "朱占豪", "abq":a})
 
 def web_autoTest_views(request):
     return render(request, 'web_autoTest.html')

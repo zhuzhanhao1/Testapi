@@ -74,6 +74,7 @@ class Webcase(models.Model):
     webexceptres = models.CharField(max_length=500, verbose_name="期望结果")
     webresult = models.TextField(verbose_name="执行结果",blank=True)
     webcreat_time = models.DateTimeField(verbose_name='创建时间', auto_now=True,blank=True)
+    system = models.CharField(max_length=50, verbose_name="所属系统")
 
     def __str__(self):
         return self.webcasename

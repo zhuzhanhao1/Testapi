@@ -213,8 +213,6 @@ def run_autocase_views(request):
 # web首页
 @login_required
 def webindex_views(request):
-    # id = request.session.get('id')
-    # uname = User.objects.get(id=id).uname
     a = request.GET.get("belong", "")
     case_count = Webcase.objects.all().count()
     return render(request, "webindex.html", {"user": "朱占豪", "abq": a, "case_count": case_count})
@@ -224,108 +222,194 @@ def webindex_views(request):
 @login_required
 def weblist_view(request):
     #所属模块
-    module = request.GET.get("key[id]", "")
-    print(module)
-    a = request.GET.get("belong", "")
-    filterSos = request.GET.get("filterSos", "")
+    system = request.GET.get("system", "")
+    if system == "erms":
+        module = request.GET.get("key[id]", "")
+        print(module)
+        a = request.GET.get("belong", "")
+        filterSos = request.GET.get("filterSos", "")
 
-    if module == "" and a == "" and filterSos== "":
-        weblists = Webcase.objects.filter().order_by("webcase_models","webfunpoint")
-    if a:
-        if a == "policy":
-            weblists = Webcase.objects.filter(webcase_models="保留处置策略管理")
-        elif a == "unit":
-            weblists = Webcase.objects.filter(webcase_models__contains="入驻单位管理")
-        elif a == "forms":
-            weblists = Webcase.objects.filter(webcase_models="数据表单设置")
-        elif a == "views":
-            weblists = Webcase.objects.filter(webcase_models="视图管理")
-        elif a == "info":
-            weblists = Webcase.objects.filter(webcase_models="基本信息")
-        elif a == "dept":
-            weblists = Webcase.objects.filter(webcase_models="部门管理")
-        elif a == "user":
-            weblists = Webcase.objects.filter(webcase_models="用户管理")
-        elif a == "class":
-            weblists = Webcase.objects.filter(webcase_models="类目保管期限设定")
-        elif a == "access":
-            weblists = Webcase.objects.filter(webcase_models="访问控制策略管理")
-        elif a == "transfer":
-            weblists = Webcase.objects.filter(webcase_models="移交操作")
-    elif module:
-        try:
-            if int(module):
-                weblists = Webcase.objects.filter(webcaseid=module).order_by("webcase_models","webfunpoint")
-        except:
-            weblists = Webcase.objects.filter(webcase_models__contains=module).order_by("webcase_models","webfunpoint")
+        if module == "" and a == "" and filterSos== "":
+            weblists = Webcase.objects.filter(system=system).order_by("webcase_models","webfunpoint")
+        if a:
+            if a == "policy":
+                weblists = Webcase.objects.filter(Q(webcase_models="保留处置策略管理") & Q(system="erms"))
+            elif a == "unit":
+                weblists = Webcase.objects.filter(Q(webcase_models="入驻单位管理") & Q(system="erms"))
+            elif a == "forms":
+                weblists = Webcase.objects.filter(Q(webcase_models="数据表单设置") & Q(system="erms"))
+            elif a == "views":
+                weblists = Webcase.objects.filter(Q(webcase_models="视图管理") & Q(system="erms"))
+            elif a == "info":
+                weblists = Webcase.objects.filter(Q(webcase_models="基本信息") & Q(system="erms"))
+            elif a == "dept":
+                weblists = Webcase.objects.filter(Q(webcase_models="部门管理") & Q(system="erms"))
+            elif a == "user":
+                weblists = Webcase.objects.filter(Q(webcase_models="用户管理") & Q(system="erms"))
+            elif a == "class":
+                weblists = Webcase.objects.filter(Q(webcase_models="类目保管期限设定") & Q(system="erms"))
+            elif a == "access":
+                weblists = Webcase.objects.filter(Q(webcase_models="访问控制策略管理") & Q(system="erms"))
+            elif a == "transfer":
+                weblists = Webcase.objects.filter(Q(webcase_models="移交操作") & Q(system="erms"))
+        elif module:
+            try:
+                if int(module):
+                    weblists = Webcase.objects.filter(Q(webcaseid=module) & Q(system="erms")).order_by("webcase_models","webfunpoint")
+            except:
+                weblists = Webcase.objects.filter(Q(webcase_models__contains=module) & Q(system="erms")).order_by("webcase_models","webfunpoint")
 
-    elif filterSos:
-        print(filterSos)
-        if filterSos == "[]":
-            weblists = Webcase.objects.filter().order_by("webcase_models","webfunpoint")
-        else:
-            L = []
-            for i in json.loads(filterSos):
-                filterSos_field = i.get("field")
-                filterSos_value = i.get("value")
-                if filterSos_field == "funpoint":
-                    apilists = Webcase.objects.filter(webfunpoint__contains=filterSos_value).order_by("webcase_models","webfunpoint")
-                elif filterSos_field == "module":
-                    apilists = Webcase.objects.filter(webcase_models__contains=filterSos_value).order_by("webcase_models","webfunpoint")
-                elif filterSos_field == "casename":
-                    apilists = Webcase.objects.filter(webcasename__contains=filterSos_value).order_by("webcase_models","webfunpoint")
-                for weblist in apilists:
-                    data = {
-                        "caseid": weblist.webcaseid,
-                        "module": weblist.webcase_models,
-                        "funpoint": weblist.webfunpoint,
-                        "casename": weblist.webcasename,
-                        "premise": weblist.webpremise,
-                        "teststep": weblist.webteststep,
-                        "exceptres": weblist.webexceptres,
-                        "result": weblist.webresult,
-                        "identity": weblist.webidentity,
-                        "webbelong": weblist.webbelong
-                    }
-                    L.append(data)
-            print(L)
-            pageindex = request.GET.get('page', "")
-            pagesize = request.GET.get("limit", "")
-            pageInator = Paginator(L, pagesize)
-            # 分页
-            contacts = pageInator.page(pageindex)
-            res = []
-            for contact in contacts:
-                res.append(contact)
-            datas = {"code": 0, "msg": "", "count": len(L), "data": res}
-            return JsonResponse(datas)
+        elif filterSos:
+            print(filterSos)
+            if filterSos == "[]":
+                weblists = Webcase.objects.filter(system=system).order_by("webcase_models","webfunpoint")
+            else:
+                L = []
+                for i in json.loads(filterSos):
+                    filterSos_field = i.get("field")
+                    filterSos_value = i.get("value")
+                    if filterSos_field == "funpoint":
+                        apilists = Webcase.objects.filter(Q(webfunpoint__contains=filterSos_value) & Q(system="erms")).order_by("webcase_models","webfunpoint")
+                    elif filterSos_field == "module":
+                        apilists = Webcase.objects.filter(Q(webcase_models__contains=filterSos_value) & Q(system="erms")).order_by("webcase_models","webfunpoint")
+                    elif filterSos_field == "casename":
+                        apilists = Webcase.objects.filter(Q(webcasename__contains=filterSos_value) & Q(system="erms")).order_by("webcase_models","webfunpoint")
+                    for weblist in apilists:
+                        data = {
+                            "caseid": weblist.webcaseid,
+                            "module": weblist.webcase_models,
+                            "funpoint": weblist.webfunpoint,
+                            "casename": weblist.webcasename,
+                            "premise": weblist.webpremise,
+                            "teststep": weblist.webteststep,
+                            "exceptres": weblist.webexceptres,
+                            "result": weblist.webresult,
+                            "identity": weblist.webidentity,
+                            "webbelong": weblist.webbelong
+                        }
+                        L.append(data)
+                print(L)
+                pageindex = request.GET.get('page', "")
+                pagesize = request.GET.get("limit", "")
+                pageInator = Paginator(L, pagesize)
+                # 分页
+                contacts = pageInator.page(pageindex)
+                res = []
+                for contact in contacts:
+                    res.append(contact)
+                datas = {"code": 0, "msg": "", "count": len(L), "data": res}
+                return JsonResponse(datas)
 
-    L = []
-    for weblist in weblists:
-        data = {
-            "caseid": weblist.webcaseid,
-            "module": weblist.webcase_models,
-            "funpoint": weblist.webfunpoint,
-            "casename": weblist.webcasename,
-            "premise": weblist.webpremise,
-            "teststep": weblist.webteststep,
-            "exceptres": weblist.webexceptres,
-            "result": weblist.webresult,
-            "identity": weblist.webidentity,
-            "webbelong": weblist.webbelong
-        }
-        L.append(data)
-    print(len(L))
-    pageindex = request.GET.get('page', "")
-    pagesize = request.GET.get("limit", "")
-    pageInator = Paginator(L, pagesize)
-    # 分页
-    contacts = pageInator.page(pageindex)
-    res = []
-    for contact in contacts:
-        res.append(contact)
-    datas = {"code": 0, "msg": "", "count": len(L), "data": res}
-    return JsonResponse(datas)
+        L = []
+        for weblist in weblists:
+            data = {
+                "caseid": weblist.webcaseid,
+                "module": weblist.webcase_models,
+                "funpoint": weblist.webfunpoint,
+                "casename": weblist.webcasename,
+                "premise": weblist.webpremise,
+                "teststep": weblist.webteststep,
+                "exceptres": weblist.webexceptres,
+                "result": weblist.webresult,
+                "identity": weblist.webidentity,
+                "webbelong": weblist.webbelong
+            }
+            L.append(data)
+        print(len(L))
+        pageindex = request.GET.get('page', "")
+        pagesize = request.GET.get("limit", "")
+        pageInator = Paginator(L, pagesize)
+        # 分页
+        contacts = pageInator.page(pageindex)
+        res = []
+        for contact in contacts:
+            res.append(contact)
+        datas = {"code": 0, "msg": "", "count": len(L), "data": res}
+        return JsonResponse(datas)
+
+    elif system == "transfer":
+        module = request.GET.get("key[id]", "")
+        print(module)
+        a = request.GET.get("belong", "")
+        filterSos = request.GET.get("filterSos", "")
+
+        if module == "" and a == "" and filterSos== "":
+            weblists = Webcase.objects.filter(system=system).order_by("webcase_models","webfunpoint")
+        elif module:
+            try:
+                if int(module):
+                    weblists = Webcase.objects.filter(Q(webcaseid=module) & Q(system="transfer")).order_by("webcase_models","webfunpoint")
+            except:
+                weblists = Webcase.objects.filter(Q(webcase_models__contains=module) & Q(system="transfer")).order_by("webcase_models","webfunpoint")
+
+        elif filterSos:
+            print(filterSos)
+            if filterSos == "[]":
+                weblists = Webcase.objects.filter(system=system).order_by("webcase_models","webfunpoint")
+            else:
+                L = []
+                for i in json.loads(filterSos):
+                    filterSos_field = i.get("field")
+                    filterSos_value = i.get("value")
+                    if filterSos_field == "funpoint":
+                        apilists = Webcase.objects.filter(Q(webfunpoint__contains=filterSos_value) & Q(system="transfer")).order_by("webcase_models","webfunpoint")
+                    elif filterSos_field == "module":
+                        apilists = Webcase.objects.filter(Q(webcase_models__contains=filterSos_value) & Q(system="transfer")).order_by("webcase_models","webfunpoint")
+                    elif filterSos_field == "casename":
+                        apilists = Webcase.objects.filter(Q(webcasename__contains=filterSos_value) & Q(system="transfer")).order_by("webcase_models","webfunpoint")
+                    for weblist in apilists:
+                        data = {
+                            "caseid": weblist.webcaseid,
+                            "module": weblist.webcase_models,
+                            "funpoint": weblist.webfunpoint,
+                            "casename": weblist.webcasename,
+                            "premise": weblist.webpremise,
+                            "teststep": weblist.webteststep,
+                            "exceptres": weblist.webexceptres,
+                            "result": weblist.webresult,
+                            "identity": weblist.webidentity,
+                            "webbelong": weblist.webbelong
+                        }
+                        L.append(data)
+                print(L)
+                pageindex = request.GET.get('page', "")
+                pagesize = request.GET.get("limit", "")
+                pageInator = Paginator(L, pagesize)
+                # 分页
+                contacts = pageInator.page(pageindex)
+                res = []
+                for contact in contacts:
+                    res.append(contact)
+                datas = {"code": 0, "msg": "", "count": len(L), "data": res}
+                return JsonResponse(datas)
+
+        L = []
+        for weblist in weblists:
+            data = {
+                "caseid": weblist.webcaseid,
+                "module": weblist.webcase_models,
+                "funpoint": weblist.webfunpoint,
+                "casename": weblist.webcasename,
+                "premise": weblist.webpremise,
+                "teststep": weblist.webteststep,
+                "exceptres": weblist.webexceptres,
+                "result": weblist.webresult,
+                "identity": weblist.webidentity,
+                "webbelong": weblist.webbelong
+            }
+            L.append(data)
+        print(len(L))
+        pageindex = request.GET.get('page', "")
+        pagesize = request.GET.get("limit", "")
+        pageInator = Paginator(L, pagesize)
+        # 分页
+        contacts = pageInator.page(pageindex)
+        res = []
+        for contact in contacts:
+            res.append(contact)
+        datas = {"code": 0, "msg": "", "count": len(L), "data": res}
+        return JsonResponse(datas)
+
 
 
 # Auto列表页
@@ -373,7 +457,8 @@ def create_webcase_views(request):
         premise = request.POST.get("premise", "")
         steps = request.POST.get("steps", "")
         exceptres = request.POST.get("except", "")
-        Webcase.objects.create(webcasename=webname, webbelong=mainbelong, webcase_models=belong,
+        system = request.POST.get("system", "")
+        Webcase.objects.create(webcasename=webname, webbelong=mainbelong, webcase_models=belong,system=system,
                                webfunpoint=funpoint, webpremise=premise, webteststep=steps, webexceptres=exceptres)
         return HttpResponse("操作成功")
 
@@ -519,11 +604,10 @@ def import_webcase_views(request):
                         print(rowVlaues)
                         # print(int(rowVlaues[0]))
                         # major = models.TMajor.objects.filter(majorid=rowVlaues[1]).first()
-                        Webcase.objects.create(webbelong=rowVlaues[0],
-                                               webcase_models=rowVlaues[1],
+                        Webcase.objects.create(webbelong=rowVlaues[0],webcase_models=rowVlaues[1],
                                                webfunpoint=rowVlaues[2], webcasename=rowVlaues[3],
                                                webpremise=rowVlaues[4], webteststep=rowVlaues[5],
-                                               webexceptres=rowVlaues[6])
+                                               webexceptres=rowVlaues[6],system=rowVlaues[7])
                         print('插入成功')
             except:
                 print('解析excel文件或者数据插入错误')

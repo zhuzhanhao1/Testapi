@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^web_quicktest/$',web_quicktest_views),
 
     url(r'^web_functionalTest/$',web_functionalTest_views),
+    url(r'^web_functionalTest_transfer/$',web_functionalTest_transfer_views),
     url(r'^web_autoindex/$',web_autoTest_views),
 
     url(r'^web_info/$',web_info_views),

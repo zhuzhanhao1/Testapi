@@ -409,25 +409,29 @@ def create_apicase_views(request):
         system = request.POST.get("system","")
         head = request.POST.get("head","")
         print(system)
-
+        all = Case.objects.filter()
+        L = []
+        for i in all:
+            L.append(i.sortid)
+        m = max(L) + 1
         if system == "erms":
             try:
                 Case.objects.create(casename=casename, identity=identity, url=url, system=system,
-                                    method=method, params=params, body=body, belong=belong, exceptres=head)
+                                    method=method, params=params, body=body, belong=belong, exceptres=head,sortid=m)
             except Exception as e:
                 return HttpResponse(e)
 
         elif system == "transfer":
             try:
                 Case.objects.create(casename=casename, identity=identity, url=url, system=system,
-                                    method=method, params=params, body=body, belong=belong)
+                                    method=method, params=params, body=body, belong=belong,sortid=m)
             except Exception as e:
                 return HttpResponse(e)
 
         elif system == "admin":
             try:
                 Case.objects.create(casename=casename, identity=identity, url=url, system=system,
-                                    method=method, params=params, body=body, belong=belong)
+                                    method=method, params=params, body=body, belong=belong,sortid=m)
             except Exception as e:
                 return HttpResponse(e)
 
@@ -444,9 +448,15 @@ def create_apicase_views(request):
 def delete_apicase_views(request):
     if request.method == "GET":
         ids = request.GET.get("ids","")
+        id = request.GET.get("id", "")
         if ids:
+            caseids = json.loads(ids)
             print(ids)
-            Case.objects.filter(caseid=ids).delete()
+            for caseid in caseids:
+                Case.objects.filter(caseid=caseid.get("caseid","")).delete()
+            return HttpResponse("操作成功")
+        elif id:
+            Case.objects.filter(caseid=id).delete()
             return HttpResponse("操作成功")
         else:
             return HttpResponse("没有获取请求的ID")

@@ -305,14 +305,11 @@
 	<div class="layui-btn-container">
 		<button type="button" onclick="selectRole()" class="layui-btn layui-btn-sm">新建用例</button>
 		<button class="layui-btn layui-btn-sm" lay-event="getCheckData">编辑用例</button>
-		<button class="layui-btn layui-btn-sm" lay-event="deletecase">批量测试</button>
+		<button class="layui-btn layui-btn-sm" lay-event="deletecase">批量删除</button>
 	</div>
 </script>
 <!--行按钮-->
 <script type="text/html" id="barDemo">
-	{#  <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>#}
-	{#	<a class="layui-icon-edit layui-icon" lay-event="edit" style="color:#74777b;font-size: 24px;"></a>#}
-	{#	<a class="layui-icon-survey layui-icon" lay-event="edit1" style="color:#74777b;font-size: 21px;"></a>#}
 	<a class="layui-icon-delete layui-icon" lay-event="del" style="color: #74777b;font-size: 24px;"></a>
 </script>
 
@@ -352,7 +349,8 @@
 			, limit : 20
             , limits: [10, 20, 30, 40, 50, 100, 200]
             , where: {
-                belong: '{{ abq }}'
+                belong: '{{ abq }}',
+				system:"erms"
             }
             , cols: [[ //表头
                 {type: 'checkbox'}
