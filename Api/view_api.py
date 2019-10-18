@@ -554,16 +554,16 @@ def detail_api_views(request):
             identity = "单位管理员"
         if identity == "ast":
             identity = "单位档案员"
-        if params == "":
-            params = {
-                "surprise":"params没有传参数哦!"
-            }
-            params = json.dumps(params, ensure_ascii=False, sort_keys=True, indent=2)
-        if body == "":
-            body = {
-                "surprise": "body没有传参数哦!"
-            }
-            body = json.dumps(body, ensure_ascii=False, sort_keys=True, indent=2)
+        # if params == "":
+        #     params = {
+        #         "surprise":"params没有传参数哦!"
+        #     }
+        #     params = json.dumps(params, ensure_ascii=False, sort_keys=True, indent=2)
+        # if body == "":
+        #     body = {
+        #         "surprise": "body没有传参数哦!"
+        #     }
+        #     body = json.dumps(body, ensure_ascii=False, sort_keys=True, indent=2)
         dic = {
             "identity": identity,
             "belong": belong,
@@ -1173,8 +1173,12 @@ def web_sort_views(request):
     else:
         data = request.POST.get("data","")
         belong = request.POST.get("belong","")
+        system = request.POST.get("system", "")
         datas = json.loads(data)
-        all = Case.objects.filter(Q(belong=belong) & Q(system="erms"))
+        if system == "erms":
+            all = Case.objects.filter(Q(belong=belong) & Q(system="erms"))
+        elif system == "transfer":
+            all = Case.objects.filter(Q(belong=belong) & Q(system="transfer"))
         l = []
         for i in all:
             l.append(i.sortid)

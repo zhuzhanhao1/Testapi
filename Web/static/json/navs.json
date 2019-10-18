@@ -267,11 +267,17 @@
 			]
 		},
 		{
-			"title": "接口测试",
+			"title": "Transfer接口测试",
 			"icon": "&#xe674;",
 			"href": "",
 			"spread": false,
 			"children": [
+				{
+					"title": "Transfer接口首页",
+					"icon": "&#xe674;",
+					"href": "/web_transferindex/",
+					"spread": false
+				},
 				{
 					"title": "用户相关接口",
 					"icon": "&#xe612;",
@@ -384,7 +390,7 @@
 			]
 		},
 		{
-			"title": "接口测试",
+			"title": "Tdr接口测试",
 			"icon": "&#xe674;",
 			"href": "",
 			"spread": false,

@@ -450,6 +450,26 @@
 		</div>
 	</div>
 
+	<!--导入测试用例-->
+	<div class="layui-row" id="importCase" style="display:none;">
+		<div class="layui-col-md11">
+			<form class="layui-form" enctype="multipart/form-data" action="/import_case/" method="post">
+
+				<div class="layui-form-item" style="margin-top: 20px;">
+					<div class="layui-input-block">
+						<input type="file" name="file" id="filename">
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<button class="layui-btn" lay-submit lay-filter="importCase" style="float: right;">上传</button>
+{#						<button type="reset" class="layui-btn layui-btn-primary">重置</button>#}
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
 
 
 <!--数据表格JS-->
@@ -473,14 +493,19 @@
             , height: 'full-60'
             , url: '/transferlist/' //数据接口
             , toolbar: '#toolbarDemo'
-			, defaultToolbar: ['filter', {title:'导出数据',layEvent: 'export',icon: 'layui-icon-download-circle'}, 'print']
+            , defaultToolbar: [
+                'filter', {title: '导出数据', layEvent: 'export', icon: 'layui-icon-download-circle'}, {
+                    title: '全屏显示',
+                    layEvent: 'fullScreen',
+                    icon: 'layui-icon-top'
+                }, {title: '导入数据', layEvent: 'import', icon: 'layui-icon-upload-circle'}, 'print']
             , title: 'Transfer接口测试'
             , page: {groups: 5} //开启分页
 			, loading:false
 			, skin: 'line' //行边框风格 /row列表框风格 /nob无边框风格
 			, size: 'lg'	//大尺寸 /sm小尺寸
 			//,even: true 斑马线
-			, rowDrag: {
+            , rowDrag: {
                 trigger: 'row', done: function (obj) {
                     // 完成时（松开时）触发
                     // 如果拖动前和拖动后无变化，则不会触发此方法
@@ -488,6 +513,69 @@
                     console.log(obj.cache); // 改动后全表数据
                     console.log(obj.oldIndex); // 原来的数据索引
                     console.log(obj.newIndex); // 改动后数据索引
+                    if (obj.cache.length >= 30) {
+                        $.ajax({
+                            cache: false,
+                            url: "/web_sort/",
+                            dataType: 'text',
+                            type: 'GET',
+                            //async: false,
+                            data: {
+                                "oldIndex": obj.oldIndex,
+                                "newIndex":obj.newIndex
+                            },
+                            success: function (data) {
+                                layer.msg(data, {
+                                    offset: 't',
+                                    icon: 6,
+                                });
+                                $(".layui-laypage-btn").click();
+                            },
+                            error: function (data) {
+                                console.log(data);
+                                layer.msg(data, {
+                                    offset: 't',
+                                    icon: 5
+                                });
+                            }
+                        });
+                    } else {
+                        var l = [];
+                        for (var i in obj.cache) {
+                            l.push(obj.cache[i].caseid)
+                        }
+                        var belong = obj.cache[0].belong;
+                        console.log(l);
+                        $.ajax({
+                            cache: false,
+                            url: "/web_sort/",
+                            dataType: 'text',
+                            type: 'POST',
+                            //async: false,
+                            data: {
+                                //"oldIndex": obj.oldIndex,
+                                //"newIndex":obj.newIndex
+                                "data": JSON.stringify(l),
+								"belong":belong,
+								"system":"transfer"
+                            },
+                            success: function (data) {
+                                layer.msg(data, {
+                                    offset: 't',
+                                    icon: 6,
+                                });
+                                $(".layui-laypage-btn").click();
+                            },
+                            error: function (data) {
+                                console.log(data);
+                                layer.msg(data, {
+                                    offset: 't',
+                                    icon: 5
+                                });
+                            }
+                        });
+                    }
+
                 }
             }
 			, drag: {toolbar: true}//实现固定列与非固定列之间的转换
@@ -650,6 +738,9 @@
             items:['column','editCondition','excel'] // 只显示表格列和导出excel两个菜单项
         	}
             , id: 'testReload'
+			,rowEvent: function (obj) {
+				obj.tr.css({'background':'#5FB878','color':'white'}).siblings().removeAttr('style')
+			}
             , done: function (res) {   //返回数据执行回调函数
                 layer.close(index);    //返回数据关闭loading
 				soulTable.render(this);
@@ -1238,6 +1329,68 @@
                     } else {
                         layer.msg('请先勾选数据在导出！', {icon: 0, offset: 't'});
                     }
+                //全屏显示
+                case "fullScreen":
+                    var docE = document.documentElement;
+                    if (docE.requestFullScreen) {
+                        docE.requestFullScreen();
+                    } else if (docE.mozRequestFullScreen) {
+                        docE.mozRequestFullScreen();
+                    } else if (docE.webkitRequestFullScreen) {
+                        docE.webkitRequestFullScreen();
+                    }
+                    break;
+                //导入用例
+                case "import":
+                    layer.open({
+                        //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+                        type: 1,
+                        title: "导入用例",
+                        area: ['35%', '30%'],
+                        skin: "layui-layer-rim",
+                        shade: 0.6,
+                        content: $("#importCase").html()
+                    });
+                    break;
+                //删除用例
+                case "deletecase":
+                    var data = checkStatus.data;
+                    layer.confirm('真的删除行么', function (index) {
+                        console.log(data);
+                        layer.close(index);
+                        var l = [];
+                        for (i = 0; i < data.length; i++) {
+                            var dic = {};
+                            dic["caseid"] = data[i]["caseid"];
+                            l.push(dic);
+                        }
+                        console.log(l);
+                        $.ajax({
+                            cache: false,
+                            url: "/del_apicase/",
+                            dataType: 'text',
+                            type: 'GET',
+                            //async: false,
+                            data: {
+                                "ids": JSON.stringify(l),
+                            },
+                            success: function (data) {
+                                layer.msg(data, {
+                                    offset: 't',
+                                    icon: 6,
+                                });
+                                $(".layui-laypage-btn").click();
+                            },
+                            error: function (data) {
+                                console.log(data);
+                                layer.msg(data, {
+                                    offset: 't',
+                                    icon: 5
+                                });
+                            }
+                        });
+                    });
+                    break;
             }
         });
 
@@ -1467,6 +1620,7 @@
 	<div class="layui-btn-container">
 		<button type="button" onclick="selectRole()" class="layui-btn layui-btn-sm">新建用例</button>
 		<button type="button" onclick="loginuser()" class="layui-btn layui-btn-sm">用户信息</button>
+		<button class="layui-btn layui-btn-sm" lay-event="deletecase">批量删除</button>
 		<button id="Runcase" class="layui-btn layui-btn-sm" lay-event="runcase">执行用例</button>
 		<button id="Dingding" class="layui-btn layui-btn-sm layui-btn-disabled" lay-event="dingding">钉钉通知</button>
 {#		<button class="layui-btn layui-btn-sm" id="export" lay-event="export">导出数据</button>#}

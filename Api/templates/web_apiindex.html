@@ -255,9 +255,9 @@
 				<div class="layui-form-item">
 					<div class="layui-input-block">
 						<button class="layui-btn" lay-submit lay-filter="create_apicase"
-								style="margin-left: 245px;background-color: yellowgreen;">立即提交
+								style="float: right;">立即提交
 						</button>
-						<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						<button type="reset" class="layui-btn layui-btn-primary" style="float: right;margin-right: 10px;">重置</button>
 					</div>
 				</div>
 			</form>
@@ -360,9 +360,9 @@
 				<div class="layui-form-item">
 					<div class="layui-input-block">
 						<button class="layui-btn" lay-submit lay-filter="update_apicase"
-								style="margin-left: 245px;background-color: yellowgreen;">立即提交
+								style="float: right;">立即提交
 						</button>
-						<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						<button type="reset" class="layui-btn layui-btn-primary" style="float: right;margin-right: 10px;">重置</button>
 					</div>
 				</div>
 			</form>
@@ -451,7 +451,7 @@
 	<div class="layui-row" id="requestParams" style="display: none;">
 		<div class="layui-col-md11">
 			<form class="layui-form" lay-filter="head">
-				<div class="layui-form-item" style="margin-top: 50px;">
+				<div class="layui-form-item" style="margin-top: 20px;">
 					<label class="layui-form-label">负责人:</label>
 					<div class="layui-input-block">
 						<select name="head" lay-verify="required">
@@ -464,12 +464,12 @@
 					</div>
 				</div>
 
-				<div class="layui-form-item" style="margin-top: 200px;">
+				<div class="layui-form-item" style="margin-top: 130px;">
 					<div class="layui-input-block">
 						<button class="layui-btn" lay-submit lay-filter="update_apicase"
-								style="margin-left: 175px;background-color: yellowgreen;">立即提交
+								style="float: right;background-color: cornflowerblue;">立即提交
 						</button>
-						<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						<button type="reset" class="layui-btn layui-btn-primary" style="float: right;margin-right: 10px;">重置</button>
 					</div>
 				</div>
 			</form>
@@ -579,7 +579,8 @@
                                 //"oldIndex": obj.oldIndex,
                                 //"newIndex":obj.newIndex
                                 "data": JSON.stringify(l),
-								"belong":belong
+								"belong":belong,
+								"system":"erms"
                             },
                             success: function (data) {
                                 layer.msg(data, {
@@ -743,7 +744,7 @@
                 , {field: 'params', title: 'Query参数', width: 160, align: "left", event: 'params'}
                 , {field: 'body', title: 'Body参数', width: 160, event: 'body',  align: "left"}
                 , {
-                    field: 'result', title: '响应结果', align: "left", width: 226, event:"detail", templet: function (res) {
+                    field: 'result', title: '响应结果', align: "left",  event:"detail", templet: function (res) {
                         if (res.result.indexOf("message") != -1 && res.result.indexOf("error") != -1 && res.result.indexOf(res.casename) != -1) {
                             var a = res.casename;
                             var b = JSON.parse(res.result);
@@ -1174,7 +1175,7 @@
                             shade: false,
                             zIndex: layer.zIndex,
                             maxmin: true, //开启最大化最小化按钮
-                            area: ['600px', '600px'],
+                            area: ['600px', '1200px'],
                             content: "/detail_api/?id=" + data.caseid,
                         });
                         layer.full(index);
@@ -1312,7 +1313,7 @@
 				var a = layer.open({
                     type: 1,
                     title: "编辑用例",
-                    area: ['40%', '95%'],
+                    area: ['40%', ""],
                     skin: "layui-layer-molv",
                     shada: 0.6,
                     content: $("#UpdateCase").html(),
@@ -1393,7 +1394,7 @@
                     , shade: 0.6
 					, shadeClose:true
 					,moveOut: true
-					, area: ['500px', '400px'] //自定义文本域宽高
+					, area: ["30%", '40%'] //自定义文本域宽高
 					,content:$("#requestParams").html(),
 					success:function () {
 						layui.use('form', function () {
@@ -1453,7 +1454,7 @@
             //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
             type: 1,
             title: "获取AccessToken",
-            area: ['45%', '40%'],
+            area: ['35%', ''],
             skin: "layui-layer-rim",
             shade: 0.6,
             anim: 1,
@@ -1522,7 +1523,7 @@
             title: "新建用例",
             skin: "layui-layer-molv",
             shade: 0.6,
-            area: ['40%', '95%'],
+            area: ['35%', ''],
             content: $("#popSearchRoleTest").html(),
             success: function () {
                 layui.use('form', function () {
@@ -1583,7 +1584,7 @@
             //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
             type: 1,
             title: "编辑用户信息",
-            area: ['50%', '55%'],
+            area: ['35%', ''],
             shade: 0.6,
             skin: "layui-layer-rim",
             content: $("#popSearchRoleTest2").html(),
@@ -1642,7 +1643,7 @@
         layer.open({
             type: 1,
             title: "用户信息",
-            area: ['70%', "80%"],
+            area: ['55%', ""],
             skin: 'layui-layer-molv',
             shade: 0.6,
             content: '<div style="padding:15px;"><table id="templateTable"></table></div>',
@@ -1662,9 +1663,9 @@
                     , cols: [[
                         {field: 'identity', title: '用户身份', width: 120, align: "left"}
                         , {field: 'username', title: '用户名', width: 200, align: "left"}
-                        , {field: 'password', title: '用户密码', width: 220, align: "left"}
+                        , {field: 'password', title: '用户密码', width: 250, align: "left"}
                         //, {field: 'url', title: '请求地址', width: 250, align: "left"}
-                        , {field: 'accessToken', title: '请求令牌', width: 280, align: "left"}
+                        , {field: 'accessToken', title: '请求令牌', align: "left"}
                     ]]
                 });
             },
@@ -1685,6 +1686,7 @@
 		<button class="layui-btn layui-btn-sm" lay-event="deletecase">批量删除</button>
 		<button id="Runcase" class="layui-btn layui-btn-sm" lay-event="runcase">执行用例</button>
 		<button id="Dingding" class="layui-btn layui-btn-sm layui-btn-disabled" lay-event="dingding">钉钉通知</button>
+	</div>
 </script>
 <!--行内按钮-->
 <script type="text/html" id="barDemo">

@@ -22,6 +22,7 @@
 
 	.layui-col-md12 {
 		width: 50%;
+		height: 50%;
 	{#opacity: 0.5;#}
 	}
 
@@ -53,8 +54,7 @@
 
 <div>
 	<ul class="layui-nav">
-		<li class="layui-nav-item" style="font-size: 24px;background-color: cornflowerblue;font-weight: lighter;">接口测试详细信息</li>
-{#		<button id="FullScreen"  onclick="entryFullScreen()">sssssss</button>#}
+		<li class="layui-nav-item" style="text-align: center;background-color: cornflowerblue;font-weight: lighter;">接口测试详细信息</li>
 	</ul>
 </div>
 
@@ -120,7 +120,7 @@
 			<div class="layui-card">
 				<div class="layui-card-header">Params:</div>
 				<div class="layui-card-body">
-					<textarea id="detail" rows="7" cols="80" readonly="readonly">{{ dic.params }}</textarea>
+					<textarea id="detail" rows="8" cols="100" readonly="readonly">{{ dic.params }}</textarea>
 				</div>
 			</div>
 		</div>
@@ -128,7 +128,7 @@
 			<div class="layui-card">
 				<div class="layui-card-header">响应内容:</div>
 				<div class="layui-card-body">
-					<textarea id="detail" rows="18" cols="80" readonly="readonly">{{ dic.result }}</textarea>
+					<textarea id="detail" rows="20" cols="100" readonly="readonly">{{ dic.result }}</textarea>
 
 
 				</div>
@@ -139,7 +139,7 @@
 				<div class="layui-card-header">Body:</div>
 				<div class="layui-card-body">
 
-					<textarea id="detail" rows="7" cols="80" readonly="readonly">{{ dic.body }}</textarea>
+					<textarea id="detail" rows="8" cols="100" readonly="readonly">{{ dic.body }}</textarea>
 				</div>
 			</div>
 		</div>
