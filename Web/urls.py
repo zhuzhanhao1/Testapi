@@ -15,4 +15,5 @@ urlpatterns = [
     url(r'^web_info/$',web_info_views),
     url(r'^web_linklist/$',web_linklist_views),
     url(r'^web_linktest/$',web_linktest_views),
+    url(r'^web_process/$',web_process_views),
 ]

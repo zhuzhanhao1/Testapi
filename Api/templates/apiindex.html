@@ -936,7 +936,7 @@
                 , {title: '操作', toolbar: '#barDemo', width: 80, align: "left"}
                 //, {field: 'caseid', title: 'ID', width: 60,  align: "left"}
                 , {field: 'identity', title: '', width: 60, align: "center", templet: "#identityTpl"}
-                , {field: 'casename', title: '接口名称', width: 234, align: "left", filter: true, templet: "#casenameTpl",children:[
+                , {field: 'casename', title: '接口名称', width: 250, align: "left", filter: true, templet: "#casenameTpl",children:[
                     {
 						elem: '#templateTable'
 						, url: "/field_apilist/"
@@ -962,7 +962,7 @@
 
 					}
 				]}// filter: true
-                , {field: 'url', title: '请求路径', width: 235, align: "left",templet:function (res) {
+                , {field: 'url', title: '请求路径', width: 250, align: "left",templet:function (res) {
 						var a = res.url.split("/");
 						return '<span>' + a[a.length-1] + '</span>'
                     }}
@@ -970,7 +970,7 @@
                 , {field: 'params', title: 'Query参数', width: 160, align: "left", event: 'params'}
                 , {field: 'body', title: 'Body参数', width: 160, event: 'body',  align: "left"}
                 , {
-                    field: 'result', title: '响应结果', align: "left", width: 200, event:"detail", templet: function (res) {
+                    field: 'result', title: '响应结果', align: "left",  event:"detail", templet: function (res) {
                         if (res.result.indexOf("message") != -1 && res.result.indexOf("error") != -1 && res.result.indexOf(res.casename) != -1) {
                             var a = res.casename;
                             var b = JSON.parse(res.result);

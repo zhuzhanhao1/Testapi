@@ -766,18 +766,6 @@
             , where: {//额外参数
                 belong: '{{ abq }}'
             }
-            , request: {
-                pageName: 'page' //页码的参数名称，默认：page
-                , limitName: 'limit' //每页数据量的参数名，默认：limit
-                ,
-            }
-            , response: {
-                statusName: 'code' //规定数据状态的字段名称，默认：code
-                , statusCode: 0 //规定成功的状态码，默认：0
-                , msgName: 'msg' //规定状态信息的字段名称，默认：msg
-                , countName: 'count' //规定数据总数的字段名称，默认：count
-                , dataName: 'data' //规定数据列表的字段名称，默认：data
-            }
             , cols: [[ //表头
         	{type: 'checkbox'}
                 , {title: '操作', toolbar: '#barDemo', width: 80, align: "left"}
@@ -848,7 +836,7 @@
             var checkStatus = table.checkStatus(obj.config.id);
             //console.log(checkStatus);
             switch (obj.event) {
-                //获取选择数据按钮
+                //编辑用例
                 case 'getCheckData':
                     var data = checkStatus.data;
                     console.log(data[0]);
@@ -917,8 +905,7 @@
                                             success: function (data) {
                                                 layer.msg(data, {
                                                     icon: 6,
-                                                    offset: 't',
-                                                    anim: 2,
+                                                    offset: 't'
                                                 });
                                                 $(".layui-laypage-btn").click();
 
@@ -927,8 +914,7 @@
                                                 console.log(data);
                                                 layer.msg(data, {
                                                     icon: 5,
-                                                    offset: 't',
-                                                    anim: 2,
+                                                    offset: 't'
                                                 });
                                             },
                                             complete: function () {
@@ -944,15 +930,6 @@
                             }
                         });
                     }
-                    break;
-                //获取选择数目按钮
-                case 'getCheckLength':
-                    var data = checkStatus.data;
-                    layer.msg('选中了：' + data.length + ' 个');
-                    break;
-                //验证是否全选按钮
-                case 'isAll':
-                    layer.msg(checkStatus.isAll ? '全选' : '未全选');
                     break;
                 //执行用例按钮
                 case 'runcase':

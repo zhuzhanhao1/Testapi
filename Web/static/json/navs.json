@@ -75,6 +75,50 @@
 			]
 		},
 		{
+			"title": "流程接口测试",
+			"icon": "&#xe638;",
+			"href": "",
+			"spread": false,
+			"children": [
+				{
+					"title": "流程接口首页",
+					"icon": "&#xe638;",
+					"href": "/web_process/",
+					"spread": false
+				},
+				{
+					"title": "数据表单配置接口",
+					"icon": "&#xe638;",
+					"href": "/web_process/?belong=data_form_config",
+					"spread": false
+				},
+				{
+					"title": "类目保管期限设定",
+					"icon": "&#xe63c;",
+					"href": "/web_process/?belong=category",
+					"spread": false
+				},
+				{
+					"title": "保留处置策略管理",
+					"icon": "&#xe656;",
+					"href": "/web_process/?belong=policy",
+					"spread": false
+				},
+				{
+					"title": "访问控制策略管理",
+					"icon": "&#xe631;",
+					"href": "/web_process/?belong=alc",
+					"spread": false
+				},
+								{
+					"title": "视图自定义",
+					"icon": "&#xe600;",
+					"href": "/web_process/?belong=view",
+					"spread": false
+				}
+			]
+		},
+		{
 			"title": "系统管理接口",
 			"icon": "&#xe716;",
 			"href": "",

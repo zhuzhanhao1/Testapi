@@ -1,0 +1,1977 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>朱占豪的流程接口测试</title>
+	<link rel="icon" href="../static/images/favicon%202.ico">
+	<script src="../static/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+	<link href="../static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+	<script src="../static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="../static/css/layui.css">
+	<script src="../static/js/layui/layui.js"></script>
+	<link rel="stylesheet" href="../static/font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="../static/css/soulTable.css">
+	<script type="text/javascript" src="../static/js/cache.js"></script>
+
+	<style>
+		#casetitle {
+			font-size: 22px;
+			padding: 0px;
+			color: white;
+			margin-left: -5px;
+		}
+
+		#casetitle:hover {
+			color: red;
+		}
+
+		.layui-form-item {
+			margin-bottom: 10px;
+		}
+
+		.layui-bg-black {
+			background-color: #393d49 !important;
+		}
+
+		.layui-nav {
+			background-color: #393d49;
+		}
+
+		.kit-side-fold {
+			font-size: 18px;
+			text-align: center;
+		}
+
+		#sousuo {
+			position: fixed;
+			right: 15px;
+			top: 15px;
+		}
+
+		.layui-laypage .layui-laypage-curr .layui-laypage-em {
+			{#background-color: #FFB800;#}
+		}
+
+		.layui-layout-admin .layui-header {
+			background-color: #23262E;
+		}
+		.layui-layer-input{
+			padding:20px;
+		}
+		.layui-laypage a, .layui-laypage span{
+			color: #fff;
+		}
+		.layui-table-page .layui-laypage{
+			position: fixed;
+			right: 30px;
+		}
+		.layui-breadcrumb a{
+			color:#fff!important;
+		}
+		.layui-breadcrumb>*{
+			font-size: 22px;
+		}
+		.layui-breadcrumb span[lay-separator]{
+			color:#fff;
+			margin:0px 0px 0px;
+			margin-right: -10px;
+		}
+		.layui-breadcrumb a+a{
+			color:#fff!important;
+		}
+		.soul-bottom-contion{
+			border-top:solid 0px #fff;
+		}
+		#headers>li input{
+			height: 36px;
+			line-height: 36px;
+			width: 440px;
+		}
+		#formdatas>li input{
+			height: 36px;
+			line-height: 36px;
+			width: 440px;
+		}
+		.myinput{
+			line-height: 1.3;border-width:1px;border-style:solid;border-radius:2px;border-color:#e6e6e6;padding-left:10px;
+		}
+		.mybtn{
+			text-align: center;
+			padding: 0px;
+		}
+		#method>div>div>input{
+			background-color: aliceblue;
+		}
+		.layui-header{
+			height:50px;
+		}
+		.layui-layout-admin .layui-side{
+			top:50px;
+		}
+		.layui-layout-admin .layui-body{
+			top:48px;
+		}
+		.layui-layout-admin .layui-logo{
+			line-height:50px;
+		}
+		.layui-nav .layui-nav-item{
+			line-height:50px;
+		}
+		.layui-table-tool{
+			background-color:rgba(0, 0, 0, 0.15);
+		}
+		.layui-body{
+			left:0px;
+		}
+
+
+	</style>
+</head>
+<body class="layui-layout-body" style="background-image: url('../static/images/beijing3.png');background-size:100%;">
+
+	<!--主题内容-table-->
+	<div id="layuibody" class="layui-body" style="margin-bottom: -70px;">
+		<div style="padding: 15px;">
+			<!--  lay-separator="-"-->
+			<div class="demoTable">
+				<div class="layui-breadcrumb">
+					<span class="layui-icon layui-icon-link" style="font-size: 22px;color: #fff;">
+						<a href="/web_apiindex/" class= "index"  style="color: #fff;" >http://amberdata.cn/ermsapi/v2</a>
+						<a class="kit-side-fold casetitle" style="font-size: 22px;color: #fff;">{{ abq }}</a>
+					</span>
+				</div>
+				<div id="sousuo">
+					<div class="layui-inline" style="margin-top: -7px;">
+						<input class="layui-input" name="id" id="demoReload" autocomplete="off" placeholder="请输入用例名称" value="错误接口查询"
+							   style="width:200px;color: #999999;">
+					</div>
+					<button class="layui-btn layui-icon layui-icon-search" data-type="reload"
+							style="margin-top: -7px;">搜索
+					</button>
+				</div>
+				<table class="layui-hide" id="test" lay-filter="test"></table>
+			</div>
+
+		</div>
+	</div>
+
+	<!--创建用例-->
+	<div class="layui-row" id="popSearchRoleTest" style="display:none;">
+		<div class="layui-col-md11">
+			<form class="layui-form" lay-filter="createProcess">
+				<div class="layui-form-item" style="margin-top: 20px;">
+					<label class="layui-form-label">所属模块</label>
+					<div class="layui-input-block">
+						<select name="belong" lay-verify="required">
+							<option value="单位接口">单位接口</option>
+							<option value="保留处置策略接口">保留处置策略接口</option>
+							<option value="数据表单配置接口">数据表单配置接口</option>
+							<option value="访问控制策略接口">访问控制策略接口</option>
+							<option value="类目保管期限接口">类目保管期限接口</option>
+							<option value="视图自定义接口">视图自定义接口</option>
+							<option value="部门管理接口">部门管理接口</option>
+							<option value="用户管理接口">用户管理接口</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">用户身份</label>
+					<div class="layui-input-block">
+						<input type="radio" name="identity" value="sysadmin" title="系统管理员" checked>
+						<input type="radio" name="identity" value="admin" title="单位管理员">
+						<input type="radio" name="identity" value="ast" title="单位档案员">
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">用例名称</label>
+					<div class="layui-input-block">
+						<input type="text" name="casename" required lay-verify="required" placeholder="请输入用例名称"
+							   autocomplete="off" class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">请求地址</label>
+					<div class="layui-input-block">
+						<input type="text" name="url" required lay-verify="required" placeholder="请输入请求地址"
+							   autocomplete="off" class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">请求方式</label>
+					<div class="layui-input-block">
+						<input type="radio" name="method" value="get" title="GET" checked>
+						<input type="radio" name="method" value="post" title="POST">
+						<input type="radio" name="method" value="put" title="PUT">
+						<input type="radio" name="method" value="delete" title="Delete">
+					</div>
+				</div>
+
+
+{#				<div class="layui-form-item">#}
+{#					<label class="layui-form-label">流程序号</label>#}
+{#					<div class="layui-input-block">#}
+{#						<input type="text" name="orderno" required lay-verify="required" placeholder=""#}
+{#							   autocomplete="off" class="layui-input">#}
+{#					</div>#}
+{#				</div>#}
+
+
+				<div class="layui-form-item layui-form-text">
+					<label class="layui-form-label">Query Params</label>
+					<div class="layui-input-block">
+						<textarea name="params" placeholder="请输入内容" class="layui-textarea"></textarea>
+					</div>
+				</div>
+
+				<div class="layui-form-item layui-form-text">
+					<label class="layui-form-label">Form Data</label>
+					<div class="layui-input-block">
+						<textarea name="body" id="body" placeholder="请输入内容" class="layui-textarea"></textarea>
+					</div>
+				</div>
+
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">是否有依赖</label>
+					<div class="layui-input-block">
+						<input type="radio" name="isprocess" value="True" title="有依赖">
+						<input type="radio" name="isprocess" value="False" title="无依赖" checked="">
+					</div>
+				</div>
+
+				<div class="layui-form-item depend" style="display: none;">
+					<label class="layui-form-label">替换区域</label>
+					<div class="layui-input-block">
+						<input type="checkbox" name="replaceposition" value="params" title="params">
+						<input type="checkbox" name="replaceposition" value="body" title="body">
+						<input type="checkbox" name="replaceposition" value="" title="null" checked="">
+					</div>
+				</div>
+
+
+				<div class="layui-form-item depend" style="display: none;">
+					<label class="layui-form-label">依赖的ID</label>
+					<div class="layui-input-block">
+						<input type="text" name="dependid" placeholder="无依赖不必填" class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-form-item depend" style="display: none;">
+					<label class="layui-form-label">依赖的key</label>
+					<div class="layui-input-block">
+						<input type="text" name="dependkey" placeholder="无依赖不必填" class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-form-item depend" style="display: none;">
+					<label class="layui-form-label">替换的key</label>
+					<div class="layui-input-block">
+						<input type="text" name="replacekey" placeholder="无依赖不必填" class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<button class="layui-btn" lay-submit lay-filter="createProcess"
+								style="float: right;">立即提交
+						</button>
+						<button type="reset" class="layui-btn layui-btn-primary" style="float: right;margin-right: 10px;">重置</button>
+					</div>
+				</div>
+
+			</form>
+		</div>
+	</div>
+
+	<!--编辑用例-->
+	<div class="layui-row" id="updatecacase" style="display:none;">
+		<div class="layui-col-md11">
+			<form class="layui-form" lay-filter="CreateUpdate">
+				<div class="layui-form-item" style="margin-top: 20px;">
+					<label class="layui-form-label">所属模块</label>
+					<div class="layui-input-block">
+						<select name="belong" lay-verify="required">
+							<option value="单位接口">单位接口</option>
+							<option value="保留处置策略接口">保留处置策略接口</option>
+							<option value="数据表单配置接口">数据表单配置接口</option>
+							<option value="访问控制策略接口">访问控制策略接口</option>
+							<option value="类目保管期限接口">类目保管期限接口</option>
+							<option value="视图自定义接口">视图自定义接口</option>
+							<option value="部门管理接口">部门管理接口</option>
+							<option value="用户管理接口">用户管理接口</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">用户身份</label>
+					<div class="layui-input-block">
+						<input type="radio" name="identity" value="sysadmin" title="系统管理员" checked>
+						<input type="radio" name="identity" value="admin" title="单位管理员">
+						<input type="radio" name="identity" value="ast" title="单位档案员">
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">用例ID</label>
+					<div class="layui-input-block">
+						<input type="text" name="caseID" required lay-verify="required" placeholder=""
+							   autocomplete="off" class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">用例名称</label>
+					<div class="layui-input-block">
+						<input type="text" name="casename" required lay-verify="required" placeholder="请输入用例名称"
+							   autocomplete="off" class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">请求地址</label>
+					<div class="layui-input-block">
+						<input type="text" name="url" required lay-verify="required" placeholder="请输入请求地址"
+							   autocomplete="off" class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">请求方式</label>
+					<div class="layui-input-block">
+						<input type="radio" name="method" value="get" title="GET" checked>
+						<input type="radio" name="method" value="post" title="POST">
+						<input type="radio" name="method" value="put" title="PUT">
+						<input type="radio" name="method" value="delete" title="Delete">
+					</div>
+				</div>
+
+{#				<div class="layui-form-item">#}
+{#					<label class="layui-form-label">流程序号</label>#}
+{#					<div class="layui-input-block">#}
+{#						<input type="text" name="orderno" required lay-verify="required" placeholder=""#}
+{#							   autocomplete="off" class="layui-input">#}
+{#					</div>#}
+{#				</div>#}
+
+
+				<div class="layui-form-item layui-form-text">
+					<label class="layui-form-label">Query Params</label>
+					<div class="layui-input-block">
+						<textarea name="params" placeholder="请输入内容" class="layui-textarea"></textarea>
+					</div>
+				</div>
+
+				<div class="layui-form-item layui-form-text">
+					<label class="layui-form-label">Form Data</label>
+					<div class="layui-input-block">
+						<textarea name="body" id="body" placeholder="请输入内容" class="layui-textarea"></textarea>
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">是否有依赖</label>
+					<div class="layui-input-block">
+						<input type="radio" name="isprocess" value="True" title="有依赖">
+						<input type="radio" name="isprocess" value="False" title="无依赖" checked="">
+					</div>
+				</div>
+
+				<div class="layui-form-item depend" style="display: none;">
+					<label class="layui-form-label">替换区域</label>
+					<div class="layui-input-block">
+						<input type="checkbox" name="replaceposition" value="params" title="params">
+						<input type="checkbox" name="replaceposition" value="body" title="body">
+						<input type="checkbox" name="replaceposition" value="" title="null" checked="">
+					</div>
+				</div>
+
+				<div class="layui-form-item depend" style="display: none;">
+					<label class="layui-form-label">依赖的ID</label>
+					<div class="layui-input-block">
+						<input type="text" name="dependid" placeholder="无依赖不必填" class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-form-item depend" style="display: none;">
+					<label class="layui-form-label">依赖的key</label>
+					<div class="layui-input-block">
+						<input type="text" name="dependkey" placeholder="无依赖不必填" class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-form-item depend" style="display: none;">
+					<label class="layui-form-label">替换的key</label>
+					<div class="layui-input-block">
+						<input type="text" name="replacekey" placeholder="无依赖不必填" class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<button class="layui-btn" lay-submit lay-filter="update_processcase" id="upload"
+								style="float: right;">立即提交
+						</button>
+						<button type="reset" class="layui-btn layui-btn-primary" style="float: right;margin-right: 10px;">重置</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<!--更新用户信息-->
+	<div class="layui-row" id="popSearchRoleTest2" style="display: none;">
+		<div class="layui-col-md11">
+			<form class="layui-form" lay-filter="update_userinfo_api">
+
+				<div class="layui-form-item" style="margin-top: 20px;">
+					<button type="button" class="layui-btn layui-btn-warm" onclick="gettoken()"
+							style="float: right;margin-left: 10px;">获取Token
+					</button>
+					<button type="button" class="layui-btn layui-btn-warm" onclick="get_user_info()"
+							style="float: right;">点我获取当前用户信息
+					</button>
+				</div>
+				<div class="layui-form-item" style="margin-top: 20px;">
+					<label class="layui-form-label">角色</label>
+					<div class="layui-input-block">
+						<input type="radio" name="identity" value="sysadmin" title="系统管理员" checked>
+						<input type="radio" name="identity" value="admin" title="单位管理员">
+						<input type="radio" name="identity" value="ast" title="单位档案员">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">账号</label>
+					<div class="layui-input-block">
+						<input type="text" id="username" name="username" required lay-verify="required"
+							   placeholder="请输入账号" autocomplete="off" class="layui-input" value="{{ test }}">
+					</div>
+				</div>
+				<div class="layui-form-item layui-form-text">
+					<label class="layui-form-label">密码</label>
+					<div class="layui-input-block">
+						<input type="text" id="password" name="password" required lay-verify="required"
+							   placeholder="请输入密码" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<button class="layui-btn layui-btn-warm" lay-submit lay-filter="update_userinfo_api"
+								style="float: right;margin-left:5px;">立即提交
+						</button>
+						<button type="reset" style="float: right;" class="layui-btn layui-btn-primary">重置</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<!--获取令牌-->
+	<div class="layui-row" id="popSearchRoleTest3" style="display: none;">
+		<div class="layui-col-md11">
+			<form class="layui-form" lay-filter="update_token_api">
+				<div class="layui-form-item" style="margin-top: 20px;">
+					<label class="layui-form-label">所属系统</label>
+					<div class="layui-input-block">
+						<input type="radio" name="system" value="erms" title="ERMS档案室" checked>
+						{#						<input type="radio" name="system" value="transfer" title="Transfer移交接收系统">#}
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">角色</label>
+					<div class="layui-input-block">
+						<input type="checkbox" name="identity1" value="sysadmin" title="系统管理员" checked>
+						<input type="checkbox" name="identity2" value="admin" title="单位管理员" checked>
+						<input type="checkbox" name="identity3" value="ast" title="单位档案员" checked>
+					</div>
+				</div>
+				<div class="layui-form-item" style="margin-top: 30px;">
+					<div class="layui-input-block">
+						<button class="layui-btn" lay-submit lay-filter="update_token_api"
+								style="margin-left: 225px;background-color: yellowgreen;">立即提交
+						</button>
+						<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<!--负责人-->
+	<div class="layui-row" id="requestParams" style="display: none;">
+		<div class="layui-col-md11">
+			<form class="layui-form" lay-filter="head">
+				<div class="layui-form-item" style="margin-top: 20px;">
+					<label class="layui-form-label">负责人:</label>
+					<div class="layui-input-block">
+						<select name="head" lay-verify="required">
+							<option value="老张">老张</option>
+							<option value="老王">老王</option>
+							<option value="老李">老李</option>
+							<option value="老江">老江</option>
+							<option value="老刘">老刘</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="layui-form-item" style="margin-top: 130px;">
+					<div class="layui-input-block">
+						<button class="layui-btn" lay-submit lay-filter="update_apicase"
+								style="float: right;background-color: cornflowerblue;">立即提交
+						</button>
+						<button type="reset" class="layui-btn layui-btn-primary" style="float: right;margin-right: 10px;">重置</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<!--导入测试用例-->
+	<div class="layui-row" id="importCase" style="display:none;">
+		<div class="layui-col-md11">
+			<form class="layui-form" enctype="multipart/form-data" action="/import_case/" method="post">
+
+				<div class="layui-form-item" style="margin-top: 20px;">
+					<div class="layui-input-block">
+						<input type="file" name="file" id="filename">
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<button class="layui-btn" lay-submit lay-filter="importCase" style="float: right;">上传</button>
+{#						<button type="reset" class="layui-btn layui-btn-primary">重置</button>#}
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<!--设置定时任务-->
+	<div class="layui-row" id="popSearchRoleTest4" style="display:none;">
+		<div class="layui-col-md11">
+			<form class="layui-form" lay-filter="example">
+
+				{#				<div class="layui-form-item" style="margin-top: 20px;">#}
+				{#					<label class="layui-form-label">开始时间</label>#}
+				{#					<div class="layui-input-block" style="width: 80%">#}
+				{#						<input type="text" name="date" id="test5" placeholder="HH:mm:ss" class="layui-input test-item">#}
+				{#					</div>#}
+				{#				</div>#}
+
+				<div class="layui-form-item" style="margin-top: 20px;">
+					<label class="layui-form-label">结束时间</label>
+					<div class="layui-input-block" style="width: 80%">
+						<input type="text" name="date1" class="layui-input test-item" id="test5" placeholder="HH:mm:ss">
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">时间间隔</label>
+					<div class="layui-input-block" style="width: 80%">
+						<input type="text" name="date2" class="layui-input test-item shijian" id="test5" placeholder="开始运行时间等于现在时间加上时间间隔">
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">运行的ID</label>
+					<div class="layui-input-block" style="width: 80%">
+						<input type="text" name="caseid" lay-verify="title" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-form-item" style="margin-top: 20px;">
+					<div class="layui-input-block">
+						<button class="layui-btn" id="time" lay-submit lay-filter="example"
+								style="margin-left: 265px;background-color: yellowgreen;">确定
+						</button>
+						<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+<!--数据表格JS-->
+<script>
+    // 自定义模块
+    layui.config({
+        base: './../static/js/layui/lay/modules/',   // 模块目录
+        version: 'v1.3.28'
+    }).extend({             // 模块别名
+        soulTable: 'soulTable'
+    });
+
+    layui.use(['table',"soulTable"], function (data) {
+        var table = layui.table;
+        soulTable = layui.soulTable;
+        //第一个实例
+        var layer = layui.layer;
+        var index = layer.load(0); //添加laoding,0-2两种方式
+        var myTable = table.render({
+            elem: '#test'
+            , url: '/processlist/' //数据接口"exports"
+            , toolbar: '#toolbarDemo'
+            , defaultToolbar: [
+                'filter', {title: '导出数据', layEvent: 'export', icon: 'layui-icon-download-circle'}, {
+                    title: '全屏显示',
+                    layEvent: 'fullScreen',
+                    icon: 'layui-icon-top'
+                }, {title: '导入数据', layEvent: 'import', icon: 'layui-icon-upload-circle'}, 'print']
+            , title: 'ERMS接口测试'
+            , page: {groups: 5} //开启分页
+			, loading: false
+			, height: 'full-60'
+			, drag: {toolbar: true}//实现固定列与非固定列之间的转换
+            , rowDrag: {
+                trigger: 'row', done: function (obj) {
+                    // 完成时（松开时）触发
+                    // 如果拖动前和拖动后无变化，则不会触发此方法
+                    console.log(obj.row);// 当前行数据
+                    console.log(obj.cache); // 改动后全表数据
+                    console.log(obj.oldIndex); // 原来的数据索引
+                    console.log(obj.newIndex); // 改动后数据索引
+                    if (obj.cache.length >= 30) {
+                        $.ajax({
+                            cache: false,
+                            url: "/process_sort/",
+                            dataType: 'text',
+                            type: 'GET',
+                            //async: false,
+                            data: {
+                                "oldIndex": obj.oldIndex,
+                                "newIndex":obj.newIndex
+                            },
+                            success: function (data) {
+                                layer.msg(data, {
+                                    offset: 't',
+                                    icon: 6,
+                                });
+                                $(".layui-laypage-btn").click();
+                            },
+                            error: function (data) {
+                                console.log(data);
+                                layer.msg(data, {
+                                    offset: 't',
+                                    icon: 5
+                                });
+                            }
+                        });
+                    } else {
+                        var l = [];
+                        for (var i in obj.cache) {
+                            l.push(obj.cache[i].caseid)
+                        }
+                        var belong = obj.cache[0].belong;
+
+                        console.log(l);
+                        $.ajax({
+                            cache: false,
+                            url: "/process_sort/",
+                            dataType: 'text',
+                            type: 'POST',
+                            //async: false,
+                            data: {
+                                //"oldIndex": obj.oldIndex,
+                                //"newIndex":obj.newIndex
+                                "data": JSON.stringify(l),
+								"belong":belong,
+								"system":"erms"
+                            },
+                            success: function (data) {
+                                layer.msg(data, {
+                                    offset: 't',
+                                    icon: 6,
+                                });
+                                $(".layui-laypage-btn").click();
+                            },
+                            error: function (data) {
+                                console.log(data);
+                                layer.msg(data, {
+                                    offset: 't',
+                                    icon: 5
+                                });
+                            }
+                        });
+                    }
+
+                }
+            }
+			, size: 'lg'	//大尺寸 /sm小尺寸
+			, skin: 'line' //行边框风格 /row列表框风格 /nob无边框风格
+			, limit : 30
+            , limits: [10, 20, 30, 40, 50, 100, 200]
+            , where: {//额外参数
+                belong: '{{ abq }}'
+            }
+            ,contextmenu: {
+				// 表头右键菜单配置
+				header: [
+					{
+						name: '重载表格',
+						icon: 'layui-icon layui-icon-refresh-1',
+						click: function() {
+							table.reload(this.id)
+						}
+					},
+					{
+						name: '字体颜色',
+						icon: 'layui-icon layui-icon-theme',
+						children: [
+							{
+								 name: '红色',
+								 children: [
+									 {
+										name: '大红色',
+										click: function(obj) {
+										  obj.elem.css('color', 'red')
+										}
+									 },
+									 {
+										name: '粉红色',
+										click: function(obj) {
+										  obj.elem.css('color', 'black')
+										}
+									 },
+								 ]
+							},
+							{
+								 name: '黑色',
+								 click: function(obj) {
+								   obj.elem.css('color', 'black')
+								 }
+							 }
+						 ]
+					}
+					,
+					{
+						name: '背景色',
+						icon: 'layui-icon layui-icon-theme',
+						children: [
+							{
+								 name: '蓝色',
+								 click: function(obj) {
+									obj.elem.css('background', '#01AAED')
+								 }
+							},
+							{
+								 name: '黄色',
+								 click: function(obj) {
+								   obj.elem.css('background', '#FFB800')
+								 }
+							 }
+						 ]
+					}
+				],
+				// 表格内容右键菜单配置
+				body: [
+					{
+						name: '删除当前行数据',
+						click: function(obj) {
+							obj.del()
+						}
+					},
+					{
+						name: '更新数据',
+						click: function(obj) {
+							obj.update({author: obj.row.author + '+1'})
+						}
+					},
+					{
+						name: '行-蓝色',
+						click: function(obj) {
+							obj.trElem.css('background', '#01AAED')
+						}
+					},
+					{
+						name: '红色',
+						click: function(obj) {
+						  obj.elem.css('color', 'red')
+						}
+					}
+				],
+				// 合计栏右键菜单配置
+				total: [
+					{
+						name: '背景黄色',
+						click: function(obj) {
+						  obj.elem.css('background', '#FFB800')
+						}
+					}
+				]
+			}
+            , cols: [[ //表头, fixed: 'left'
+                {type: 'checkbox'}
+                , {title: '操作', toolbar: '#barDemo', width: 80, align: "left"}
+                //, {field: 'sortid', title: '排序号', width: 80, align: "left"}
+                , {field: 'identity', title: '', width: 60, align: "center", templet: "#identityTpl"}
+                , {field: 'casename', title: '接口名称', width: 250, align: "left", filter: true,excel: {color:'0040ff',bgColor:'f3fef3'}, templet: "#casenameTpl",children:[
+                    {
+						elem: '#templateTable'
+						, url: "/field_apilist/"
+						, where: function (row) {
+							console.log(row);
+							return {caseid:row.caseid}
+                        }
+						, title:"请求参数详情"
+						, skin :'line'
+						, size : "lg"
+						//, height: 'full-10'
+						, cols: [[
+							{field: 'parameterName', title: '参数名称', width: 220, align: "left",style:'background-color: #eee;'}
+							, {field: 'parameterThat', title: '参数说明', width: 250, align: "left",style:'background-color: #eee;'}
+							, {field: 'requestType', title: '请求类型', width: 150, align: "left",style:'background-color: #eee;'}
+							, {field: 'isMust', title: '是否必须', width: 150, align: "left",templet: "#methodTpl",sort:true,style:'background-color: #eee;'}
+							, {field: 'dataType', title: '请求类型', width: 190, align: "left",style:'background-color: #eee;'}
+						]]
+						,done:function (data) {
+						    //console.log(data);
+							soulTable.render(this);
+                        }
+
+					}
+				]}
+                , {field: 'url', title: '请求路径', width: 250, align: "left",templet:function (res) {
+						var a = res.url.split("/");
+						return '<span>' + a[a.length-1] + '</span>'
+                    }}
+                , {field: 'method', title: '请求方式', width: 90, align: "left", templet: "#methodTpl"}
+                , {field: 'params', title: 'Query参数',  align: "left", event: 'params'}
+                , {field: 'body', title: 'Body参数',  event: 'body',  align: "left"}
+				, {field: 'depend_id', title: '依赖的ID', align: "left",enent:"depend_id"}
+                , {field: 'depend_key', title: '依赖的key', align: "left",enent:"depend_key"}
+                , {field: 'replace_key', title: '替换的key', align: "left",enent:"replace_key"}
+                , {field: 'replace_position', title: '替换的位置', align: "left",enent:"replace_position"}
+                //, {field: 'belong', title: 'a', width: 100,align:"center"}
+                , {
+                    field: 'result', title: '响应结果', align: "left",  event:"detail", templet: function (res) {
+                        if (res.result.indexOf("message") != -1 && res.result.indexOf("error") != -1 && res.result.indexOf(res.casename) != -1) {
+                            var a = res.casename;
+                            var b = JSON.parse(res.result);
+                            //console.log(typeof(a));
+                            //console.log(b[a]["message"]);
+                            return '<span style="color: red;">' + JSON.stringify(b[a]["message"]) + '</span>'
+                        } else if (res.result.indexOf("B.") != -1) {
+                            return '<span style="color: deeppink;">' + res.result + '</span>'
+                        } else {
+                            return '<span>' + res.result + '</span>'
+                        }
+                    }
+                }
+				, {field: 'head', title: '负责人', width: 80, align: "left",event:"head"}//merge: true行合并
+
+            ]]
+            ,filter: {
+            items:['column','editCondition','excel'] // 只显示表格列和导出excel两个菜单项
+        	}
+            , id: 'testReload'
+			,rowEvent: function (obj) {
+				obj.tr.css({'background':'#5FB878','color':'white'}).siblings().removeAttr('style')
+			}
+            , done: function (res) {   //返回数据执行回调函数
+                layer.close(index);    //返回数据关闭loading
+                soulTable.render(this);
+            }
+        });
+
+        //搜索
+        layui.$, active = {
+            reload: function () {
+                var demoReload = $('#demoReload');
+                console.log(demoReload.val());
+                //执行重载
+                table.reload('testReload', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    , where: {
+                        key: {
+                            casename: demoReload.val()
+                        }
+                    }
+                }, 'data');
+            }
+        };
+
+        $('.demoTable .layui-btn').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        //头工具栏事件
+        table.on('toolbar(test)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            //console.log(checkStatus);
+            switch (obj.event) {
+                //更新用例
+                case 'getCheckData':
+                    var data = checkStatus.data;
+                    console.log(data[0]);
+                    if (data.length == 0) {
+                        layer.close(index);
+                        layer.msg("请先选中需要编辑的用例", {
+                            anim: 6,
+                            icon: 4,
+                            offset: "t"
+                        });
+                    } else {
+                        var a = layer.open({
+                            //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+                            type: 1,
+                            title: "编辑流程接口用例",
+                            area: ['40%', '90%'],
+                            skin: 'layui-layer-molv',
+                            shade: 0.6,
+                            content: $("#updatecacase").html(),
+                            success: function () {
+                                layui.use('form', function () {
+                                    var form = layui.form;
+                                    form.val("CreateUpdate", {
+                                        "identity": data[0]['identity'],
+                                        "casename": data[0]['casename'],
+                                        "url": data[0]['url'],
+                                        "caseID": data[0]["caseid"],
+                                        "method": data[0]['method'],
+                                        "belong": data[0]['belong'],
+                                        "params": data[0]['params'],
+                                        "isprocess": data[0]['isprocess'],
+                                        "body": data[0]['body'],
+                                        "orderno": data[0]['order_no'],
+                                        "dependid": data[0]['depend_id'],
+                                        "dependkey": data[0]['depend_key'],
+                                        "replacekey": data[0]['replace_key'],
+                                        "replaceposition": data[0]['replace_position'],
+                                    });
+                                    form.on('submit(update_processcase)', function (data) {
+                                        console.log(data.field);
+                                        $.ajax({
+                                            cache: false,
+                                            url: "/update_processcase/",
+                                            dataType: 'text',
+                                            type: 'POST',
+                                            async: false,
+                                            data: {
+                                                "identity": data.field.identity,
+                                                "casename": data.field.casename,
+                                                "url": data.field.url,
+                                                "caseID": data.field.caseID,
+                                                "method": data.field.method,
+                                                "belong": data.field.belong,
+                                                "params": data.field.params,
+                                                "isprocess": data.field.isprocess,
+                                                "body": data.field.body,
+                                                "orderno": data.field.orderno,
+                                                "dependid": data.field.dependid,
+                                                "dependkey": data.field.dependkey,
+                                                "replacekey": data.field.replacekey,
+                                                "replaceposition": data.field.replaceposition,
+                                            },
+                                            beforeSend: function () {
+                                                l_index = layer.load(0, {shade: [0.5, '#DBDBDB']});
+                                            },
+                                            success: function (data) {
+                                                layer.msg(data, {
+                                                    icon: 6,
+                                                    offset: 't'
+                                                });
+                                                $(".layui-laypage-btn").click();
+
+                                            },
+                                            error: function (data) {
+                                                console.log(data);
+                                                layer.msg(data, {
+                                                    icon: 5,
+                                                    offset: 't'
+                                                });
+                                            },
+                                            complete: function () {
+                                                layer.close(l_index);
+                                                layer.close(a)
+                                            }
+
+                                        });
+                                        return false;//阻止表单跳转
+                                    });
+                                });
+                                //。。。CreateUpdate
+                            }
+                        });
+                    }
+                    break;
+                //执行用例
+                case 'runcase':
+                    var data = checkStatus.data;
+                    console.log(data);
+                    if (data.length == 0) {
+                        layer.close(index);
+                        layer.msg("请先选中需要执行的用例", {
+                            icon: 2,
+                            offset: "t"
+                        });
+                    } else {
+                        var l = [];
+                        for (i = 0; i < data.length; i++) {
+                            var dic = {};
+                            dic["caseid"] = data[i]["caseid"];
+                            dic['identity'] = data[i]['identity'];
+                            dic['casename'] = data[i]['casename'];
+                            dic["url"] = data[i]['url'];
+                            dic['method'] = data[i]['method'];
+                            dic['params'] = data[i]['params'];
+                            dic['body'] = data[i]['body'];
+
+                            dic['depend_id'] = data[i]['depend_id'];
+                            dic['depend_key'] = data[i]['depend_key'];
+                            dic['replace_key'] = data[i]['replace_key'];
+                            dic['replace_position'] = data[i]['replace_position'];
+
+                            l.push(dic);
+                        }
+                        console.log(l);
+                        $.ajax({
+                            cache: false,
+                            url: "/run_processcase/",
+                            dataType: 'json',
+                            type: 'POST',
+                            //async: false,
+                            data: {
+                                "request": JSON.stringify(l)
+                            },
+                            //请求前的处理,加载loading
+                            beforeSend: function () {
+                                document.getElementById("Runcase").setAttribute("disabled", true);
+                                document.getElementById("Runcase").innerHTML = "loading...";
+                                l_index = layer.load(0, {
+                                    shade: [0.5, '#DBDBDB'] //0.1透明度的白色背景
+                                });
+                            },
+                            success: function (data) {
+                                var strjson = JSON.stringify(data, null, 4);
+                                console.log(strjson);
+                                layer.prompt({
+                                    formType: 2,//多行文本
+                                    value: strjson,
+                                    title: '响应结果',
+                                    maxmin: true, //允许全屏最小化
+                                    anim: 4,//从左滚动进来
+                                    //shade: 0.6, //遮罩透明度
+                                    skin: "layui-layer-rim",
+                                    //监听取消按钮
+                                    zIndex: layer.zIndex,
+                                    shade: false,
+                                    btn: ["json.cn", "关闭"],
+                                    yes: function () {
+                                        layer.open({
+                                            type: 2,
+                                            title: "json.cn",
+                                            //shadeClose: true,
+                                            shade: false,
+                                            zIndex: layer.zIndex,
+                                            maxmin: true, //开启最大化最小化按钮
+                                            area: ['893px', '600px'],
+                                            content: 'https://www.json.cn',
+                                            success: function () {
+                                                layer.setTop(layero);
+                                            }
+                                        });
+
+                                    },
+                                    btn2: function (index, layro) {//这里就是你要的
+                                        layer.close(index);
+                                        $(".layui-laypage-btn").click();
+                                    },
+                                    area: ['800px', '400px'] //自定义文本域宽高
+                                });
+                            },
+                            error: function (data) {
+                                console.log("请求失败" + data);
+                                layer.msg("NameError", {
+                                    icon: 5,
+                                    offset: 't',
+                                });
+                            },
+                            complete: function () {
+                                document.getElementById("Runcase").removeAttribute("disabled");
+                                document.getElementById("Runcase").innerHTML = "执行用例";
+                                layer.close(l_index);
+                            }
+                        });
+                    }
+                    break;
+                //发送钉钉消息
+                case 'dingding':
+                    var data = checkStatus.data;
+                    console.log(data);
+                    if (data.length == 0) {
+                        layer.close(index);
+                        layer.msg("请先选中需要发送的接口", {
+                            icon: 2,
+                            offset: "t"
+                        });
+                    } else {
+                        layer.confirm("你确定要发送接口请求结果给相应的负责人吗？\n注意:请求正常发送所有结果信息，请求失败发送错误内容", {
+                                icon: 3,
+                                btn: ["确定", "取消"]
+                            }, function () {
+                                var ids = "";
+                                for (i = 0; i < data.length; i++) {
+                                    ids += data[i]["caseid"] + ",";
+                                    console.log(ids);
+                                }
+                                $.ajax({
+                                    cache: false,
+                                    url: "/ding_ding/",
+                                    dataType: 'text',
+                                    type: 'GET',
+                                    //async: false,
+                                    data: {
+                                        "caseid": ids
+                                    },
+                                    //请求前的处理,加载loading
+                                    beforeSend: function () {
+                                        document.getElementById("Dingding").setAttribute("disabled", true);
+                                        document.getElementById("Dingding").innerHTML = "loading...";
+                                        l_index = layer.load(0, {
+                                            shade: [0.5, '#DBDBDB'] //0.1透明度的白色背景
+                                        });
+                                    },
+                                    success: function (data) {
+                                        console.log(data);
+                                        layer.msg(data, {
+                                            icon: 6,
+                                            offset: 't',
+                                        });
+
+                                    },
+                                    error: function (data) {
+                                        console.log(data);
+                                        layer.msg(data, {
+                                            icon: 5,
+                                            offset: 't',
+                                            anim: 6
+                                        });
+                                    },
+                                    complete: function () {
+                                        document.getElementById("Dingding").removeAttribute("disabled");
+                                        document.getElementById("Dingding").innerHTML = "钉钉通知";
+                                        layer.close(l_index);
+                                    }
+                                });
+
+                            }, function () {
+                                layer.msg(
+                                    "取消发送钉钉消息",
+                                    {icon: 1, offset: "t"}
+                                );
+                            }
+                        );
+                    }
+                    break;
+                //导出用例
+                case "export":
+                    if (checkStatus.data.length > 0) {
+                        soulTable.export(myTable, {
+                            filename: '勾选数据.xlsx',
+                            checked: true, // 只导出勾选数据
+                            border: {
+                                style: 'thin',
+                                color: '000000'
+                            },
+                            head: { // 表头样式
+                                family: 'helvetica', // 字体
+                                size: 14, // 字号
+                                color: 'FFFFFF', // 字体颜色
+                                bgColor: 'ff8c00' // 背景颜色
+                            },
+                            font: { // 正文样式
+                                family: 'Calibri', // 字体
+                                size: 12, // 字号
+                                color: '000000', // 字体颜色
+                                bgColor: 'FFFFFF' //背景颜色t
+                            }
+                        });
+                        layer.msg('操作成功', {icon: 6, offset: 't'});
+                    } else {
+                        layer.msg('请先勾选数据在导出！', {icon: 0, offset: 't'});
+                    }
+                    break;
+                //全屏显示
+                case "fullScreen":
+                    var docE = document.documentElement;
+                    if (docE.requestFullScreen) {
+                        docE.requestFullScreen();
+                    } else if (docE.mozRequestFullScreen) {
+                        docE.mozRequestFullScreen();
+                    } else if (docE.webkitRequestFullScreen) {
+                        docE.webkitRequestFullScreen();
+                    }
+                    break;
+                //导入用例
+                case "import":
+                    layer.open({
+                        //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+                        type: 1,
+                        title: "导入用例",
+                        area: ['35%', '30%'],
+                        skin: "layui-layer-rim",
+                        shade: 0.6,
+                        content: $("#importCase").html()
+                    });
+                    break;
+                //删除用例
+                case "deletecase":
+                    var data = checkStatus.data;
+                    layer.confirm('真的删除行么', function (index) {
+                        console.log(data);
+                        layer.close(index);
+                        var l = [];
+                        for (i = 0; i < data.length; i++) {
+                            var dic = {};
+                            dic["caseid"] = data[i]["caseid"];
+                            l.push(dic);
+                        }
+                        console.log(l);
+                        $.ajax({
+                            cache: false,
+                            url: "/del_processcase/",
+                            dataType: 'text',
+                            type: 'GET',
+                            //async: false,
+                            data: {
+                                "ids": JSON.stringify(l),
+                            },
+                            success: function (data) {
+                                layer.msg(data, {
+                                    offset: 't',
+                                    icon: 6,
+                                });
+                                $(".layui-laypage-btn").click();
+                            },
+                            error: function (data) {
+                                console.log(data);
+                                layer.msg(data, {
+                                    offset: 't',
+                                    icon: 5
+                                });
+                            }
+                        });
+                    });
+                    break;
+                //执行定时任务按钮
+                case "Timingtask":
+                    var data = checkStatus.data;
+                    var ids = "";
+                    for (i = 0; i < data.length; i++) {
+                        ids += data[i]["caseid"] + ",";
+                        console.log(ids);
+                    }
+                    var timetask = layer.open({
+                        type: 1,
+                        title: "设置定时任务",
+                        area: ['40%', '40%'],
+                        trigger: 'click',
+                        skin: 'layui-layer-molv',
+                        shade: 0.6,
+                        content: $("#popSearchRoleTest4").html(),
+                        success: function (layero, index) {
+                            layui.use(['laydate', 'form'], function () {
+                                var laydate = layui.laydate;
+                                var form = layui.form;
+                                lay('.shijian').each(function () {
+                                    laydate.render({
+                                        elem: this
+                                        , type: 'time'
+                                        , trigger: 'click'
+                                    });
+                                });
+                                lay('.test-item').each(function () {
+                                    laydate.render({
+                                        elem: this
+                                        , type: 'datetime'
+                                        , trigger: 'click'
+                                    });
+                                });
+
+                                form.val("example", {
+                                    "caseid": ids
+                                });
+                                form.on('submit(example)', function (data) {
+                                    console.log(data.field.date);
+                                    console.log(data.field.date1);
+                                    console.log(data.field.date2);
+                                    console.log(data.field.caseid);
+                                    $.ajax({
+                                        cache: false,
+                                        url: "/timetask/",
+                                        dataType: 'text',
+                                        type: 'POST',
+                                        //async: false,
+                                        data: {
+                                            "date": data.field.date,
+                                            "date1": data.field.date1,
+                                            "date2": data.field.date2,
+                                            "caseid": data.field.caseid,
+                                        },
+                                        success: function (data) {
+                                            layer.msg(data, {
+                                                icon: 6,
+                                                offset: 't',
+                                                anim: 2,
+                                            });
+                                        },
+                                        error: function (data) {
+                                            console.log(data);
+                                            layer.msg(data, {
+                                                icon: 5,
+                                                offset: 't',
+                                                anim: 2,
+                                            });
+                                        },
+                                        complete: function () {
+                                            layer.close(timetask)
+
+                                        }
+                                    });
+                                    return false;//阻止表单跳转
+                                });
+                            });
+                        }
+                    });
+                    break;
+            }
+
+        });
+        //监听行工具事件
+        table.on('tool(test)', function (obj) {
+            var data = obj.data;
+            //console.log(obj);
+            if (obj.event === 'detail') {
+                console.log(data.result);
+                //var strjson = JSON.parse(data.result);
+                layer.prompt({
+                    formType: 2,//多行文本
+                    value: data.result,
+                    shade: false,
+					title:data.casename+"响应结果",
+                    //anim: 4,//从左滚动进来
+					maxmin:true,
+                    skin: "layui-layer-rim",//hui
+                    closeBtn: 0,
+                    zIndex: layer.zIndex,
+                    area: ['700px', '400px'], //自定义文本域宽高
+                    btn: ["详情", "关闭"],
+                    yes: function () {
+                        var index = layer.open({
+                            type: 2,
+                            title: data.casename + "详细信息",
+                            //shadeClose: true,
+                            shade: false,
+                            zIndex: layer.zIndex,
+                            maxmin: true, //开启最大化最小化按钮
+                            area: ['600px', '1200px'],
+                            content: "/detail_api/?id=" + data.caseid,
+                        });
+                        layer.full(index);
+                    },
+                    btn2: function (index) {
+                        layer.close(index);
+                    }
+                });
+            } else if (obj.event === 'del') {
+                layer.confirm('真的删除行么',{icon:2,title:"删除提示"},function (index) {
+                    console.log(obj.data);
+                    //layer.msg("确定删除",{icon:1});
+                    obj.del();//删除对应行（tr）的DOM结构，并更新缓存
+                    layer.close(index);
+                    //向服务端发送删除指令
+                    var id = obj.data["caseid"];
+                    console.log(id);
+                    $.ajax({
+                        cache: false,
+                        url: "/del_processcase/",
+                        dataType: 'text',
+                        type: 'GET',
+                        async: false,
+                        data: {
+                            "id": id,
+                        },
+                        success: function (data) {
+                            layer.msg(data, {
+                                offset: 't',
+                                icon: 6,
+                            });
+                            $(".layui-laypage-btn").click();
+                        },
+                        error: function (data) {
+                            console.log(data);
+                            layer.msg(data, {
+                                offset: 't',
+                                icon: 5,
+                            });
+                        }
+                    });
+                });
+            } else if (obj.event === 'params') {
+                layer.prompt({
+                    formType: 2
+                    , value: data.params
+                    , title: ["编辑Query parmas"]
+                    , skin: "layui-layer-lan"
+                    , shade: false
+                    , area: ['500px', '300px'] //自定义文本域宽高
+
+                }, function (value, index) {
+                    console.log(value);
+                    console.log(index);
+                    $.ajax({
+                        cache: false,
+                        url: "/update_apicase/",
+                        dataType: 'text',
+                        type: 'GET',
+                        async: false,
+                        data: {
+                            "ids": obj.data['caseid'],
+                            "params": value
+                        },
+                        success: function (data) {
+                            layer.msg(data, {
+                                offset: 't',
+                                anim: 2,
+                                icon: 6,
+                            });
+                        },
+                        error: function (data) {
+                            console.log(data);
+                            layer.msg(data, {
+                                offset: 't',
+                                anim: 2,
+                                area: ["200px", "50px"],
+                            });
+                        }
+                    });
+                    //同步更新缓存对应的值
+                    obj.update({
+                        params: value
+                    });
+                    layer.close(index);
+
+                });
+            } else if (obj.event === 'body') {
+                layer.prompt({
+                    formType: 2
+                    , value: data.body
+                    , title: ["编辑data forms"]
+                    , skin: "layui-layer-lan"
+                    , shade: 0.6
+                    , area: ['600px', '400px'] //自定义文本域宽高
+                    , maxlength: 500000
+
+                }, function (value, index) {
+                    console.log(value);
+                    console.log(index);
+                    $.ajax({
+                        cache: false,
+                        url: "/update_apicase/",
+                        dataType: 'text',
+                        type: 'GET',
+                        async: false,
+                        data: {
+                            "ids": obj.data['caseid'],
+                            "body": value
+                        },
+                        success: function (data) {
+                            layer.msg(data, {
+                                offset: 't',
+                                anim: 2,
+                                icon: 6,
+                            });
+                            //setTimeout(function(){ window.location.reload(); }, 500);
+                        },
+                        error: function (data) {
+                            console.log(data);
+                            layer.msg(data, {
+                                offset: 't',
+								icon:'5'
+                            });
+                        }
+                    });
+                    //同步更新缓存对应的值
+                    obj.update({
+                        body: value
+                    });
+                    layer.close(index);
+
+                });
+            } else if (obj.event === 'requestparams') {
+				var a = layer.open({
+                    type: 1,
+                    title: "编辑用例",
+                    area: ['40%', ""],
+                    skin: "layui-layer-molv",
+                    shada: 0.6,
+                    content: $("#updatecacase").html(),
+                    success: function () {
+                        layui.use(['form',"jquery"], function () {
+                            var form = layui.form;
+                            form.val("CreateUpdate", {
+                                "caseID": data.caseid,
+                                "casename": data.casename,
+                                "identity": data.identity,
+                                "url": data.url,
+                                "method": data.method,
+                                "belong": data.belong,
+                                "params": data.params,
+                                "body": data.body,
+                                "head": data.head,
+                                "dependid": data.depend_id,
+                                "dependkey": data.depend_key,
+                                "replacekey": data.replace_key,
+                                "replaceposition": data.replace_position,
+                            });
+                            form.on('radio', function (data) {
+                                console.log(data.elem); //得到radio原始DOM对象
+                                console.log(data.value); //被点击的radio的value
+                                if (data.value == "True") {
+                                    $(".depend").show();
+                                } else {
+                                    $(".depend").hide();
+                                }
+
+                            });
+                            //监听编辑用户信息，
+                            form.on('submit(update_processcase)', function (data) {
+                                console.log(data.field);
+                                $.ajax({
+                                    cache: false,
+                                    url: "/update_processcase/",
+                                    dataType: 'text',
+                                    type: 'POST',
+                                    //async: false,
+									data: {
+										"identity": data.field.identity,
+										"casename": data.field.casename,
+										"url": data.field.url,
+										"caseID": data.field.caseID,
+										"method": data.field.method,
+										"belong": data.field.belong,
+										"params": data.field.params,
+										"isprocess": data.field.isprocess,
+										"body": data.field.body,
+										"dependid": data.field.dependid,
+										"dependkey": data.field.dependkey,
+										"replacekey": data.field.replacekey,
+										"replaceposition": data.field.replaceposition,
+									},
+                                    beforeSend: function () {
+                                        l_index = layer.load(0, {shade: [0.5, '#DBDBDB']});
+                                    },
+                                    success: function (data) {
+                                        layer.msg(data, {
+                                            icon: 6,
+                                            offset: 't',
+                                            anim: 2,
+                                            time: 3000//默认三秒
+                                        });
+                                        $(".layui-laypage-btn").click();
+                                    },
+                                    error: function (data) {
+                                        console.log(data);
+                                        layer.msg(data, {
+                                            icon: 5,
+                                            offset: 't',
+                                            anim: 2,
+                                        });
+                                    },
+                                    complete: function () {
+                                        layer.close(l_index);
+                                        layer.close(a);
+                                        ``
+                                    }
+
+                                });
+                                return false;//阻止表单跳转
+                            });
+                        });
+                    }
+                });
+
+            } else if (obj.event === 'head') {
+                var update_apicase = layer.open({
+                    type: 1
+                    , value: data.head
+                    , title: ["编辑负责人"]
+                    , skin: "layui-layer-lan"
+                    , shade: 0.6
+					, shadeClose:true
+					,moveOut: true
+					, area: ["30%", '40%'] //自定义文本域宽高
+					,content:$("#requestParams").html(),
+					success:function () {
+						layui.use('form', function () {
+							var form = layui.form;
+							form.val("head", {
+								//我是对了对抗重置按钮来的
+							});
+							//监听编辑用户信息，
+							form.on('submit(update_apicase)', function (data) {
+								$.ajax({
+									cache: false,
+									url: "/update_apicase/",
+									dataType: 'text',
+									type: 'GET',
+									//async: false,
+									data: {
+										"ids":obj.data['caseid'],
+										"head": data.field.head
+									},
+									success: function (data) {
+										layer.msg(data, {
+											icon: 6,
+											offset: 't',
+											anim: 2,
+										});
+										$(".layui-laypage-btn").click();
+									},
+									error: function (data) {
+										console.log(data);
+										layer.msg(data, {
+											icon: 5,
+											offset: 't',
+											anim: 2,
+										});
+									},
+									complete: function () {
+										layer.close(update_apicase);
+									}
+
+								});
+								return false;//阻止表单跳转
+							});
+						})
+                    }
+
+                });
+
+            }
+        });
+    });
+
+</script>
+<script>
+    //获取令牌
+    function gettoken() {
+        var update_token_api = layer.open({
+            //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+            type: 1,
+            title: "获取AccessToken",
+            area: ['35%', ''],
+            skin: "layui-layer-rim",
+            shade: 0.6,
+            anim: 1,
+            content: $("#popSearchRoleTest3").html(),
+            success: function () {
+                layui.use('form', function () {
+                    var form = layui.form;
+                    //监听编辑用户信息，
+					form.val("update_token_api", {
+					    //我是对了对抗重置按钮来的
+                    });
+                    form.on('submit(update_token_api)', function (data) {
+                        $.ajax({
+                            cache: false,
+                            url: "/update_token_api/",
+                            dataType: 'text',
+                            type: 'POST',
+                            //async: false,
+                            data: {
+                                "identity1": data.field.identity1,
+                                "identity2": data.field.identity2,
+                                "identity3": data.field.identity3,
+                                "system": data.field.system
+                            },
+                            success: function (data) {
+                                if (data.indexOf("Failed") != -1) {
+                                    layer.msg(data, {
+                                        icon: 5,
+                                        offset: 't',
+                                        anim: 2,
+                                    });
+                                } else {
+                                    layer.msg(data, {
+                                        icon: 6,
+                                        offset: 't',
+                                        anim: 2,
+                                    });
+                                }
+                            },
+                            error: function (data) {
+                                console.log(data);
+                                layer.msg(data, {
+                                    icon: 5,
+                                    offset: 't',
+                                    anim: 2,
+                                });
+                            },
+                            complete: function () {
+                                layer.close(update_token_api);
+                            }
+
+                        });
+                        return false;//阻止表单跳转
+                    });
+                })
+            }
+        });
+
+
+    }
+    //新建用例
+    function selectRole() {
+        var Create_apicase = layer.open({
+            //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+            type: 1,
+            title: "新建用例",
+            skin: "layui-layer-molv",
+            shade: 0.6,
+            area: ['35%', ''],
+            content: $("#popSearchRoleTest").html(),
+            success: function () {
+                layui.use(['form',"jquery"], function () {
+                    var form = layui.form,
+						$=layui.$;
+                    //监听编辑用户信息，
+                    form.val("createProcess");
+                    form.on('radio', function (data) {
+                        console.log(data.elem); //得到radio原始DOM对象
+                        console.log(data.value); //被点击的radio的value
+						if (data.value=="True"){
+						    $(".depend").show();
+						}else{
+						    $(".depend").hide();
+						}
+
+                    });
+                    form.on('submit(createProcess)', function (data) {
+                        console.log(data.field);
+                        $.ajax({
+                            cache: false,
+                            url: "/create_processcase/",
+                            dataType: 'text',
+                            type: 'POST',
+                            //async: false,
+							data: {
+								"identity": data.field.identity,
+								"casename": data.field.casename,
+								"url": data.field.url,
+								"method": data.field.method,
+								"belong": data.field.belong,
+								"params": data.field.params,
+								"isprocess": data.field.isprocess,
+								"body": data.field.body,
+								"dependid": data.field.dependid,
+								"dependkey": data.field.dependkey,
+								"replacekey": data.field.replacekey,
+								"replaceposition": data.field.replaceposition,
+								"system":"erms"
+							},
+                            beforeSend: function () {
+                                l_index = layer.load(0, {shade: [0.5, '#DBDBDB']});
+                            },
+                            success: function (data) {
+                                layer.msg(data, {
+                                    icon: 6,
+                                    offset: 't',
+                                });
+                                $(".layui-laypage-btn").click();
+                            },
+                            error: function (data) {
+                                console.log(data);
+                                layer.msg(data, {
+                                    icon: 5,
+                                    offset: 't',
+                                });
+                            },
+                            complete: function () {
+                                layer.close(l_index);
+                                layer.close(Create_apicase);
+                            }
+
+                        });
+                        return false;//阻止表单跳转
+                    });
+                });
+            }
+        });
+    }
+    //编辑用户信息
+    function loginuser() {
+        var update_userinfo_api = layer.open({
+            //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+            type: 1,
+            title: "编辑用户信息",
+            area: ['35%', ''],
+            shade: 0.6,
+            skin: "layui-layer-rim",
+            content: $("#popSearchRoleTest2").html(),
+            success: function () {
+                layui.use('form', function () {
+                    var form = layui.form;
+                    form.val("update_userinfo_api", {
+                        "identity": "sysadmin",
+                        "username": "admin@amberdata.cn",
+                        "password": "Y+zilsR88g9SZI8WOeHJlA=="
+                    });
+                    //监听编辑用户信息，
+                    form.on('submit(update_userinfo_api)', function (data) {
+                        $.ajax({
+                            cache: false,
+                            url: "/update_userinfo_api/",
+                            dataType: 'text',
+                            type: 'POST',
+                            //async: false,
+                            data: {
+                                "identity": data.field.identity,
+                                "username": data.field.username,
+                                "password": data.field.password
+                            },
+                            success: function (data) {
+                                layer.msg(data, {
+                                    icon: 6,
+                                    offset: 't',
+                                    anim: 2,
+                                });
+                            },
+                            error: function (data) {
+                                console.log(data);
+                                layer.msg(data, {
+                                    icon: 5,
+                                    offset: 't',
+                                    anim: 2,
+                                });
+                            },
+                            complete: function () {
+                                layer.close(update_userinfo_api)
+
+                            }
+                        });
+                        return false;//阻止表单跳转
+                    });
+
+
+                });
+            }
+        });
+
+    }
+	//获取用户信息
+    function get_user_info() {
+        layer.open({
+            type: 1,
+            title: "用户信息",
+            area: ['55%', ""],
+            skin: 'layui-layer-molv',
+            shade: 0.6,
+            content: '<div style="padding:15px;"><table id="templateTable"></table></div>',
+            success: function () {
+                var table = layui.table;
+                table.render({
+                    elem: '#templateTable'
+                    , url: "/get_userinfo_transfer/"
+                    //, limit: 11
+                    //, height: 'full-200'
+                    //,page:true
+                    //, initSort:{
+                    //field:"isMust",
+                    //type:"desc"
+                    //}
+					, size: 'lg'
+                    , cols: [[
+                        {field: 'identity', title: '用户身份', width: 120, align: "left"}
+                        , {field: 'username', title: '用户名', width: 200, align: "left"}
+                        , {field: 'password', title: '用户密码', width: 250, align: "left"}
+                        //, {field: 'url', title: '请求地址', width: 250, align: "left"}
+                        , {field: 'accessToken', title: '请求令牌', align: "left"}
+                    ]]
+                });
+            },
+            btn: ['关闭'],
+            yes: function () {
+                layer.closeAll()
+            }
+
+        });
+    }
+</script>
+
+
+
+<!--表头按钮-->
+<script type="text/html" id="toolbarDemo">
+	<div class="layui-btn-container">
+		<button type="button" onclick="selectRole()" class="layui-btn layui-btn-sm">新建用例</button>
+		<button type="button" onclick="loginuser()" class="layui-btn layui-btn-sm">用户信息</button>
+		<button class="layui-btn layui-btn-sm" lay-event="deletecase">批量删除</button>
+		<button id="Runcase" class="layui-btn layui-btn-sm" lay-event="runcase">执行用例</button>
+		<button id="task" class="layui-btn layui-btn-sm" lay-event="Timingtask">定时任务</button>
+		<button id="Dingding" class="layui-btn layui-btn-sm layui-btn-disabled" lay-event="dingding">钉钉通知</button>
+	</div>
+</script>
+<!--行内按钮-->
+<script type="text/html" id="barDemo">
+	<a class="layui-icon layui-icon-tips" style="color:#797979;font-size: 20px;padding:0 2px;vertical-align:middle;font-weight: lighter;" lay-event="requestparams"></a>
+{#	<a class="fa fa-edit" lay-event="edit" style="color:#797979;font-size: 20px;padding:0 2px;vertical-align:middle;font-weight: lighter;"></a>#}
+{#	<a class="layui-icon-survey layui-icon" lay-event="edit1" style="color:#797979;font-size: 20px;padding:0 2px;vertical-align:middle;font-weight: lighter;"></a>#}
+	<a class="fa fa-trash-o" lay-event="del" style="color: #797979;font-size: 20px;padding:0 2px;vertical-align:middle;font-weight: lighter;"></a>
+</script>
+<!--用例名字超链接模板-->
+<script type="text/html" id="casenameTpl">
+	<a href="/detail_api/?id={% verbatim %}{{d.caseid}}{% endverbatim %}" class="layui-table-link" target="_blank" style="color: blueviolet;">
+		{% verbatim %}{{d.casename}}{% endverbatim %}
+	</a>
+</script>
+<!--请求方式模板-->
+<script type="text/html" id="methodTpl">
+	{% verbatim %}{{#  if(d.method === 'get'){ }}{% endverbatim %}
+	<span style="color: mediumpurple;">{% verbatim %}GET{% endverbatim %}</span>
+
+	{% verbatim %}{{# } else if(d.method=== 'post') { }} {% endverbatim %}
+	<span style="color: yellowgreen;">{% verbatim %}POST{% endverbatim %}</span>
+
+	{% verbatim %}{{# } else if(d.method=== 'put') { }} {% endverbatim %}
+	<span style="color: #00b4ef;">{% verbatim %}PUT{% endverbatim %}</span>
+
+	{% verbatim %}{{# } else if(d.method=== 'delete' || d.method=== 'Delete' ) { }} {% endverbatim %}
+	<span style="color: deeppink;">{% verbatim %}DELETE{% endverbatim %}</span>
+
+	{% verbatim %}{{# } else if(d.method=== 'file' ) { }} {% endverbatim %}
+	<span style="color: yellowgreen;">{% verbatim %}FILE{% endverbatim %}</span>
+
+	{% verbatim %}{{# } else if(d.isMust.indexOf("false") != -1) { }} {% endverbatim %}
+	<span style="color: lightslategrey;">{% verbatim %}{{ d.isMust }}{% endverbatim %}</span>
+
+	{% verbatim %}{{# } else if(d.isMust.indexOf("true") != -1) { }} {% endverbatim %}
+	<span style="color: deeppink;">{% verbatim %}{{ d.isMust }}{% endverbatim %}</span>
+
+	{% verbatim %}{{#  } }}{% endverbatim %}
+</script>
+<!--用户身份模板-->
+<script type="text/html" id="identityTpl">
+	{% verbatim %}{{#  if(d.identity === 'sysadmin'){ }}{% endverbatim %}
+	<img src="../static/images/sysadmin.png" class="layui-nav-img">
+
+	{% verbatim %}{{# } else if(d.identity=== 'admin') { }} {% endverbatim %}
+	<img src="../static/images/admin.png" class="layui-nav-img">
+
+	{% verbatim %}{{# } else if(d.identity=== 'ast') { }} {% endverbatim %}
+	<img src="../static/images/ast.png" class="layui-nav-img">
+
+	{% verbatim %}{{#  } }}{% endverbatim %}
+</script>
+
+</body>
+</html>

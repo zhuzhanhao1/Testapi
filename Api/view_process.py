@@ -46,28 +46,29 @@ def processlist_view(request):
     belong = request.GET.get('belong', "")
     print("请求进入的模块是:" + belong)
     if casename == "" and belong == "":
-        apilists = Processapi.objects.filter()
+        apilists = Processapi.objects.filter().order_by("sortid")
 
     # 流程接口
-    elif belong == "unit":
-        apilists = Processapi.objects.filter(belong="单位接口")
-    elif belong == "policy":
-        apilists = Processapi.objects.filter(belong="保留处置策略接口")
-    elif belong == "data_form_config":
-        apilists = Processapi.objects.filter(belong="数据表单配置接口")
-    elif belong == "alc":
-        apilists = Processapi.objects.filter(belong="访问控制策略接口")
-    elif belong == "category":
-        apilists = Processapi.objects.filter(belong="类目保管期限接口")
-    elif belong == "view":
-        apilists = Processapi.objects.filter(belong="视图自定义接口")
+    if belong:
+        if belong == "unit":
+            apilists = Processapi.objects.filter(belong="单位接口").order_by("sortid")
+        elif belong == "policy":
+            apilists = Processapi.objects.filter(belong="保留处置策略接口").order_by("sortid")
+        elif belong == "data_form_config":
+            apilists = Processapi.objects.filter(belong="数据表单配置接口").order_by("sortid")
+        elif belong == "alc":
+            apilists = Processapi.objects.filter(belong="访问控制策略接口").order_by("sortid")
+        elif belong == "category":
+            apilists = Processapi.objects.filter(belong="类目保管期限接口").order_by("sortid")
+        elif belong == "view":
+            apilists = Processapi.objects.filter(belong="视图自定义接口").order_by("sortid")
 
     # 按用例名称查询
     elif casename:
         apilists = Processapi.objects.filter(casename__contains=casename)
         print(apilists)
         if apilists.count() == 0:
-            apilists = Processapi.objects.filter()
+            apilists = Processapi.objects.filter().order_by("sortid")
             L = []
             for weblist in apilists:
                 if weblist.system == "erms" and "error" in weblist.result and "timestamp" in weblist.result:
@@ -82,7 +83,7 @@ def processlist_view(request):
                         "params": weblist.params,
                         "body": weblist.body,
                         "result": weblist.result,
-                        "order_no": weblist.order_no,
+                        "sortid": weblist.sortid,
                         "depend_id": weblist.depend_id,
                         "depend_key": weblist.depend_key,
                         "replace_key": weblist.replace_key,
@@ -114,7 +115,7 @@ def processlist_view(request):
             "params": weblist.params,
             "body": weblist.body,
             "result": weblist.result,
-            "order_no": weblist.order_no,
+            "sortid": weblist.sortid,
             "depend_id": weblist.depend_id,
             "depend_key": weblist.depend_key,
             "replace_key": weblist.replace_key,
@@ -148,28 +149,35 @@ def create_processcase_views(request):
         params = request.POST.get("params", "")
         body = request.POST.get("body", "")
         identity = request.POST.get("identity", "")
-        orderno = request.POST.get("orderno", "")
         isprocess = request.POST.get("isprocess", "")
         dependid = request.POST.get("dependid", "")
         dependkey = request.POST.get("dependkey", "")
         replacekey = request.POST.get("replacekey", "")
         replaceposition = request.POST.get("replaceposition", "")
+        system = request.POST.get("system","")
+
+        all = Processapi.objects.filter()
+        L = []
+        for i in all:
+            L.append(i.sortid)
+        m = max(L) + 1
+
         if "<" in body or ">" in body:
             print('存在需要替换的符号')
             a = body.replace("<", "＜")
             print(a)
             b = a.replace(">", "＞")
             print(b)
-            Processapi.objects.create(casename=casename, identity=identity, url=url,
+            Processapi.objects.create(casename=casename, identity=identity, url=url,system=system,
                                       method=method, params=params, body=b, belong=belong,
                                       isprocess=isprocess, depend_id=dependid, depend_key=dependkey,
-                                      replace_key=replacekey, replace_position=replaceposition, order_no=orderno
+                                      replace_key=replacekey, replace_position=replaceposition, sortid=m
                                       )
         else:
-            Processapi.objects.create(casename=casename, identity=identity, url=url,
+            Processapi.objects.create(casename=casename, identity=identity, url=url,system=system,
                                       method=method, params=params, body=body, belong=belong,
                                       isprocess=isprocess, depend_id=dependid, depend_key=dependkey,
-                                      replace_key=replacekey, replace_position=replaceposition, order_no=orderno
+                                      replace_key=replacekey, replace_position=replaceposition, sortid=m
                                       )
         return HttpResponse("操作成功")
     else:
@@ -180,15 +188,22 @@ def create_processcase_views(request):
 @login_required
 def delete_processcase_views(request):
     if request.method == "GET":
-        ids = request.GET.get("ids", "")
+        ids = request.GET.get("ids","")
+        id = request.GET.get("id", "")
         if ids:
-            print("你要删除的ID是:" + ids)
-            Processapi.objects.filter(caseid=ids).delete()
-            return HttpResponse("删除成功")
+            caseids = json.loads(ids)
+            print(ids)
+            for caseid in caseids:
+                Processapi.objects.filter(caseid=caseid.get("caseid","")).delete()
+            return HttpResponse("操作成功")
+        elif id:
+            Processapi.objects.filter(caseid=id).delete()
+            return HttpResponse("操作成功")
         else:
             return HttpResponse("没有获取请求的ID")
     else:
         return HttpResponse("请求方式有误")
+
 
 
 # 更新api用例
@@ -235,7 +250,6 @@ def update_processcase_views(request):
         params = request.POST.get("params", "")
         body = request.POST.get("body", "")
         identity = request.POST.get("identity", "")
-        orderno = request.POST.get("orderno", "")
         isprocess = request.POST.get("isprocess", "")
         dependid = request.POST.get("dependid", "")
         dependkey = request.POST.get("dependkey", "")
@@ -249,7 +263,6 @@ def update_processcase_views(request):
             print(b)
             Processapi.objects.filter(caseid=caseid).update(casename=casename, identity=identity, url=url,
                                                             method=method, params=params, body=b, belong=belong,
-                                                            order_no=orderno,
                                                             isprocess=isprocess, depend_id=dependid,
                                                             depend_key=dependkey,
                                                             replace_key=replacekey, replace_position=replaceposition)
@@ -717,7 +730,7 @@ def job_function(ids,end_time,URL,sched):
             print(d)
             # json格式化
             djson = json.dumps(d, ensure_ascii=False, sort_keys=True, indent=2)
-            send_ding(djson,head)
+            # send_ding(djson,head)
             if "<" in djson or ">" in djson:
                 print('result存在需要替换的符号')
                 a = djson.replace("<", "＜")
@@ -940,3 +953,48 @@ def job_function(ids,end_time,URL,sched):
             pass
 
 
+#排序
+@login_required
+def process_sort_views(request):
+    if request.method == "GET":
+        oldIndex = int(request.GET.get("oldIndex",""))+1
+        newIndex = int(request.GET.get("newIndex", ""))+1
+        if oldIndex < newIndex:
+            q = []
+            for i in range(oldIndex,newIndex):
+                a = i + 1
+                for b in Processapi.objects.filter(sortid=a):
+                    q.append(b.caseid)
+                Processapi.objects.filter(sortid=a).update(sortid=i)
+            l = Processapi.objects.filter(sortid=oldIndex)
+            for lll in l:
+                if lll.caseid not in q:
+                    Processapi.objects.filter(caseid=lll.caseid).update(sortid=newIndex)
+        elif oldIndex > newIndex:
+            Processapi.objects.filter(sortid=oldIndex).update(sortid=-1)
+            L = []
+            for i in range(newIndex,oldIndex):
+                L.append(i)
+            e = L[::-1]
+            for r in e:
+                Processapi.objects.filter(sortid=r).update(sortid=r+1)
+            Processapi.objects.filter(sortid=-1).update(sortid=newIndex)
+        return HttpResponse("排序成功")
+    else:
+        data = request.POST.get("data","")
+        belong = request.POST.get("belong","")
+        system = request.POST.get("system", "")
+        datas = json.loads(data)
+        if system == "erms":
+            all = Processapi.objects.filter(Q(belong=belong) & Q(system="erms"))
+        elif system == "transfer":
+            all = Processapi.objects.filter(Q(belong=belong) & Q(system="transfer"))
+        l = []
+        for i in all:
+            l.append(i.sortid)
+        l.sort()
+        flag = 0
+        for d in datas:
+            Processapi.objects.filter(caseid=d).update(sortid=l[flag])
+            flag += 1
+        return HttpResponse("排序成功")
