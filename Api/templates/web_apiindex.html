@@ -741,8 +741,8 @@
 						return '<span>' + a[a.length-1] + '</span>'
                     }}
                 , {field: 'method', title: '请求方式', width: 90, align: "left", templet: "#methodTpl"}
-                , {field: 'params', title: 'Query参数', width: 160, align: "left", event: 'params'}
-                , {field: 'body', title: 'Body参数', width: 160, event: 'body',  align: "left"}
+                , {field: 'params', title: 'Query参数',  align: "left", event: 'params'}
+                , {field: 'body', title: 'Body参数',  event: 'body',  align: "left"}
                 , {
                     field: 'result', title: '响应结果', align: "left",  event:"detail", templet: function (res) {
                         if (res.result.indexOf("message") != -1 && res.result.indexOf("error") != -1 && res.result.indexOf(res.casename) != -1) {
@@ -752,7 +752,11 @@
                             //console.log(b[a]["message"]);
                             return '<span style="color: red;">' + JSON.stringify(b[a]["message"]) + '</span>'
                         } else if (res.result.indexOf("B.") != -1) {
-                            return '<span style="color: deeppink;">' + res.result + '</span>'
+                            let a = JSON.parse(res.result)[res.casename];
+                            return '<span style="color: deeppink;">' + JSON.stringify(a) + '</span>'
+                        }else if(res.result != ""){
+                            let a = JSON.parse(res.result)[res.casename];
+                            return '<span>' + JSON.stringify(a) + '</span>'
                         } else {
                             return '<span>' + res.result + '</span>'
                         }

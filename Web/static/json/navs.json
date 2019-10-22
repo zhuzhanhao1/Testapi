@@ -1,10 +1,212 @@
 {
 	"contentManagement": [
 		{
-			"title": "自动化测试",
-			"icon": "&#xe628;",
-			"href": "/web_autoindex/",
+			"title": "快速测试",
+			"icon": "&#xe631;",
+			"href": "/web_quicktest/",
 			"spread": false
+		},
+		{
+			"title": "单一接口测试",
+			"icon": "&#xe716;",
+			"href": "",
+			"spread": false,
+			"children": [
+				{
+					"title": "单一接口总览",
+					"icon": "&#xe770;",
+					"href": "/web_apiindex/",
+					"spread": false
+				},
+				{
+					"title": "单位接口",
+					"icon": "&#xe770;",
+					"href": "/web_apiindex/?belong=unit",
+					"spread": false
+				},
+				{
+					"title": "部门管理接口",
+					"icon": "&#xe613;",
+					"href": "/web_apiindex/?belong=dept",
+					"spread": false
+				},
+				{
+					"title": "用户管理接口",
+					"icon": "&#xe61c;",
+					"href": "/web_apiindex/?belong=user",
+					"spread": false
+				},
+				{
+					"title": "角色管理接口",
+					"icon": "&#xe612;",
+					"href": "/web_apiindex/?belong=role",
+					"spread": false
+				},
+				{
+					"title": "数据表单配置管理",
+					"icon": "&#xe630;",
+					"href": "/web_apiindex/?belong=data_form_config",
+					"spread": false
+				},
+				{
+					"title": "门类管理接口",
+					"icon": "&#xe6c9;",
+					"href": "/web_apiindex/?belong=category",
+					"spread": false
+				},
+				{
+					"title": "类目管理接口",
+					"icon": "&#xe67b;",
+					"href": "/web_apiindex/?belong=class",
+					"spread": false
+				},
+				{
+					"title": "保留处置策略接口",
+					"icon": "&#xe67a;",
+					"href": "/web_apiindex/?belong=policy",
+					"spread": false
+				},
+				{
+					"title": "访问控制策略接口",
+					"icon": "&#xe672;",
+					"href": "/web_apiindex/?belong=acl",
+					"spread": false
+				},
+				{
+					"title": "视图自定义接口",
+					"icon": "&#xe66e;",
+					"href": "/web_apiindex/?belong=view",
+					"spread": false
+				},
+								{
+					"title": "Record接口",
+					"icon": "&#xe655;",
+					"href": "/web_apiindex/?belong=record",
+					"spread": false
+				},
+				{
+					"title": "文档管理接口",
+					"icon": "&#xe634;",
+					"href": "/web_apiindex/?belong=document",
+					"spread": false
+				},
+				{
+					"title": "案卷管理接口",
+					"icon": "&#xe663;",
+					"href": "/web_apiindex/?belong=volume",
+					"spread": false
+				},
+				{
+					"title": "档案管理接口",
+					"icon": "&#xe60a;",
+					"href": "/web_apiindex/?belong=archives",
+					"spread": false
+				},
+				{
+					"title": "续存记录接口",
+					"icon": "&#xe60e;",
+					"href": "/web_apiindex/?belong=deposit_form",
+					"spread": false
+				},
+				{
+					"title": "资源管理接口",
+					"icon": "&#xe60a;",
+					"href": "/web_apiindex/?belong=resource",
+					"spread": false
+				},
+				{
+					"title": "导航管理接口",
+					"icon": "&#xe632;",
+					"href": "/web_apiindex/?belong=navigation",
+					"spread": false
+				},
+				{
+					"title": "映射规则接口",
+					"icon": "&#xe62c;",
+					"href": "/web_apiindex/?belong=attribute_mapping_scheme",
+					"spread": false
+				},
+				{
+					"title": "文件计划管理接口",
+					"icon": "&#xe621;",
+					"href": "/web_apiindex/?belong=file_plan",
+					"spread": false
+				},
+								{
+					"title": "公共操作相关接口",
+					"icon": "&#xe638;",
+					"href": "/web_apiindex/?belong=common",
+					"spread": false
+				},
+				{
+					"title": "移交表单信息接口",
+					"icon": "&#xe63c;",
+					"href": "/web_apiindex/?belong=transfer_form",
+					"spread": false
+				},
+				{
+					"title": "数据表单管理接口",
+					"icon": "&#xe656;",
+					"href": "/web_apiindex/?belong=data_form",
+					"spread": false
+				},
+				{
+					"title": "通用文件夹管理接口",
+					"icon": "&#xe631;",
+					"href": "/web_apiindex/?belong=common_folder",
+					"spread": false
+				},
+				{
+					"title": "元数据管理平台接口",
+					"icon": "&#xe600;",
+					"href": "/web_apiindex/?belong=metadata",
+					"spread": false
+				}
+			]
+		},
+		{
+			"title": "流程接口测试",
+			"icon": "&#xe638;",
+			"href": "",
+			"spread": false,
+			"children": [
+				{
+					"title": "流程接口总览",
+					"icon": "&#xe638;",
+					"href": "/web_process/",
+					"spread": false
+				},
+				{
+					"title": "数据表单配置接口",
+					"icon": "&#xe638;",
+					"href": "/web_process/?belong=data_form_config",
+					"spread": false
+				},
+				{
+					"title": "类目保管期限设定",
+					"icon": "&#xe63c;",
+					"href": "/web_process/?belong=category",
+					"spread": false
+				},
+				{
+					"title": "保留处置策略管理",
+					"icon": "&#xe656;",
+					"href": "/web_process/?belong=policy",
+					"spread": false
+				},
+				{
+					"title": "访问控制策略管理",
+					"icon": "&#xe631;",
+					"href": "/web_process/?belong=alc",
+					"spread": false
+				},
+								{
+					"title": "视图自定义",
+					"icon": "&#xe600;",
+					"href": "/web_process/?belong=view",
+					"spread": false
+				}
+			]
 		},
 		{
 			"title": "功能测试",
@@ -75,249 +277,21 @@
 			]
 		},
 		{
-			"title": "流程接口测试",
-			"icon": "&#xe638;",
-			"href": "",
-			"spread": false,
-			"children": [
-				{
-					"title": "流程接口首页",
-					"icon": "&#xe638;",
-					"href": "/web_process/",
-					"spread": false
-				},
-				{
-					"title": "数据表单配置接口",
-					"icon": "&#xe638;",
-					"href": "/web_process/?belong=data_form_config",
-					"spread": false
-				},
-				{
-					"title": "类目保管期限设定",
-					"icon": "&#xe63c;",
-					"href": "/web_process/?belong=category",
-					"spread": false
-				},
-				{
-					"title": "保留处置策略管理",
-					"icon": "&#xe656;",
-					"href": "/web_process/?belong=policy",
-					"spread": false
-				},
-				{
-					"title": "访问控制策略管理",
-					"icon": "&#xe631;",
-					"href": "/web_process/?belong=alc",
-					"spread": false
-				},
-								{
-					"title": "视图自定义",
-					"icon": "&#xe600;",
-					"href": "/web_process/?belong=view",
-					"spread": false
-				}
-			]
-		},
-		{
-			"title": "系统管理接口",
-			"icon": "&#xe716;",
-			"href": "",
-			"spread": false,
-			"children": [
-				{
-					"title": "单位接口",
-					"icon": "&#xe770;",
-					"href": "/web_apiindex/?belong=unit",
-					"spread": false
-				},
-				{
-					"title": "部门管理接口",
-					"icon": "&#xe613;",
-					"href": "/web_apiindex/?belong=dept",
-					"spread": false
-				},
-				{
-					"title": "用户管理接口",
-					"icon": "&#xe61c;",
-					"href": "/web_apiindex/?belong=user",
-					"spread": false
-				},
-				{
-					"title": "角色管理接口",
-					"icon": "&#xe612;",
-					"href": "/web_apiindex/?belong=role",
-					"spread": false
-				},
-				{
-					"title": "数据表单配置管理",
-					"icon": "&#xe630;",
-					"href": "/web_apiindex/?belong=data_form_config",
-					"spread": false
-				}
-			]
-		},
-		{
-			"title": "业务管理接口",
-			"icon": "&#xe6c9;",
-			"href": "",
-			"spread": false,
-			"children": [
-				{
-					"title": "门类管理接口",
-					"icon": "&#xe6c9;",
-					"href": "/web_apiindex/?belong=category",
-					"spread": false
-				},
-				{
-					"title": "类目管理接口",
-					"icon": "&#xe67b;",
-					"href": "/web_apiindex/?belong=class",
-					"spread": false
-				},
-				{
-					"title": "保留处置策略接口",
-					"icon": "&#xe67a;",
-					"href": "/web_apiindex/?belong=policy",
-					"spread": false
-				},
-				{
-					"title": "访问控制策略接口",
-					"icon": "&#xe672;",
-					"href": "/web_apiindex/?belong=acl",
-					"spread": false
-				},
-				{
-					"title": "视图自定义接口",
-					"icon": "&#xe66e;",
-					"href": "/web_apiindex/?belong=view",
-					"spread": false
-				}
-			]
-		},
-		{
-			"title": "档案相关接口",
-			"icon": "&#xe630;",
-			"href": "",
-			"spread": false,
-			"children": [
-				{
-					"title": "Record接口",
-					"icon": "&#xe655;",
-					"href": "/web_apiindex/?belong=record",
-					"spread": false
-				},
-				{
-					"title": "文档管理接口",
-					"icon": "&#xe634;",
-					"href": "/web_apiindex/?belong=document",
-					"spread": false
-				},
-				{
-					"title": "案卷管理接口",
-					"icon": "&#xe663;",
-					"href": "/web_apiindex/?belong=volume",
-					"spread": false
-				},
-				{
-					"title": "档案管理接口",
-					"icon": "&#xe60a;",
-					"href": "/web_apiindex/?belong=archives",
-					"spread": false
-				},
-				{
-					"title": "续存记录接口",
-					"icon": "&#xe60e;",
-					"href": "/web_apiindex/?belong=deposit_form",
-					"spread": false
-				},
-				{
-					"title": "资源管理接口",
-					"icon": "&#xe60a;",
-					"href": "/web_apiindex/?belong=resource",
-					"spread": false
-				},
-				{
-					"title": "导航管理接口",
-					"icon": "&#xe632;",
-					"href": "/web_apiindex/?belong=navigation",
-					"spread": false
-				},
-				{
-					"title": "映射规则接口",
-					"icon": "&#xe62c;",
-					"href": "/web_apiindex/?belong=attribute_mapping_scheme",
-					"spread": false
-				},
-				{
-					"title": "文件计划管理接口",
-					"icon": "&#xe621;",
-					"href": "/web_apiindex/?belong=file_plan",
-					"spread": false
-				}
-			]
-		},
-		{
-			"title": "表单相关接口",
-			"icon": "&#xe638;",
-			"href": "",
-			"spread": false,
-			"children": [
-				{
-					"title": "公共操作相关接口",
-					"icon": "&#xe638;",
-					"href": "/web_apiindex/?belong=common",
-					"spread": false
-				},
-				{
-					"title": "移交表单信息接口",
-					"icon": "&#xe63c;",
-					"href": "/web_apiindex/?belong=transfer_form",
-					"spread": false
-				},
-				{
-					"title": "数据表单管理接口",
-					"icon": "&#xe656;",
-					"href": "/web_apiindex/?belong=data_form",
-					"spread": false
-				},
-				{
-					"title": "通用文件夹管理接口",
-					"icon": "&#xe631;",
-					"href": "/web_apiindex/?belong=common_folder",
-					"spread": false
-				},
-				{
-					"title": "元数据管理平台接口",
-					"icon": "&#xe600;",
-					"href": "/web_apiindex/?belong=metadata",
-					"spread": false
-				}
-			]
+			"title": "自动化测试",
+			"icon": "&#xe628;",
+			"href": "/web_autoindex/",
+			"spread": false
 		}
 	],
 	"memberCenter": [
 		{
-			"title": "功能测试",
-			"icon": "&#xe857;",
-			"href": "",
-			"spread": false,
-			"children": [
-				{
-					"title": "功能测试",
-					"icon": "&#xe857;",
-					"href": "/web_functionalTest_transfer/",
-					"spread": false
-				}
-			]
-		},
-		{
-			"title": "Transfer接口测试",
+			"title": "单一接口测试",
 			"icon": "&#xe674;",
 			"href": "",
 			"spread": false,
 			"children": [
 				{
-					"title": "Transfer接口首页",
+					"title": "Transfer接口总览",
 					"icon": "&#xe674;",
 					"href": "/web_transferindex/",
 					"spread": false
@@ -395,8 +369,21 @@
 					"spread": false
 				}
 			]
+		},
+		{
+			"title": "功能测试",
+			"icon": "&#xe857;",
+			"href": "",
+			"spread": false,
+			"children": [
+				{
+					"title": "功能测试",
+					"icon": "&#xe857;",
+					"href": "/web_functionalTest_transfer/",
+					"spread": false
+				}
+			]
 		}
-
 	],
 	"systemeSttings": [
 		{

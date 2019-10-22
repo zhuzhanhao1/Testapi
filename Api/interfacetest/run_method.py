@@ -21,9 +21,7 @@ class RequestMethod():
         headers = {
             "accessToken": token
         }
-        print(params=="")
         params = json.loads(params) if params != "" else None
-        print(params)
         r = requests.get(url, params=params, headers=headers)
         try:
             json_response = r.json()
@@ -36,12 +34,10 @@ class RequestMethod():
 
     def post(self,url,params,data):
         token = self.con.get_logininfo(self.val)[3]
-        print(token)
         headers = {
             "accessToken": token,
             "Content-Type": "application/json"
         }
-        print(params)
         params = json.loads(params) if params != "" else None
         if data:
             data = json.loads(data)

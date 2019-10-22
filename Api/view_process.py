@@ -215,6 +215,10 @@ def update_processcase_views(request):
         body = request.GET.get("body", "")
         ids = request.GET.get("ids", "")
         head = request.GET.get("head","")
+        depend_id = request.GET.get('depend_id', "")
+        depend_key = request.GET.get("depend_key", "")
+        replace_key = request.GET.get("replace_key", "")
+        replace_position = request.GET.get("replace_position","")
         print(ids)
         if params:
             print(params)
@@ -238,6 +242,14 @@ def update_processcase_views(request):
         elif head:
             print(head)
             Processapi.objects.filter(caseid=ids).update(header=head)
+        elif depend_id:
+            Processapi.objects.filter(caseid=ids).update(depend_id=depend_id)
+        elif depend_key:
+            Processapi.objects.filter(caseid=ids).update(depend_key=depend_key)
+        elif replace_key:
+            Processapi.objects.filter(caseid=ids).update(replace_key=replace_key)
+        elif replace_position:
+            Processapi.objects.filter(caseid=ids).update(replace_position=replace_position)
 
         return HttpResponse("编辑成功")
     elif request.method == "POST":
@@ -355,7 +367,7 @@ def export_data_process_views(request):
 
 # 执行用例
 @login_required
-def run_processcase_views(request):
+def run_processcase_view(request):
     con = ConnDataBase()
     URL = str(con.get_logininfo("sysadmin")[2], 'utf-8')
     ids = request.GET.get("caseid").split(",")[:-1]
@@ -572,6 +584,7 @@ def run_processcase_views(request):
                     if params:
                         params = eval(params)
                     response = Runmethod.run_main(method, url, params, body)
+
             endtime = time.time()
             runtime = round(endtime - starttime, 3)
             print(runtime)
@@ -608,6 +621,247 @@ def run_processcase_views(request):
         # send_ding(djson_new)
         # 将JSON数据返回给前端
         return HttpResponse(djson_new)
+
+
+def run_processcase_views(request):
+    content = request.POST.get("request", "")
+    content = json.loads(content)
+    if len(content) == 1:
+        identity = content[0].get("identity", "")  # 用户身份
+        Runmethod = RequestMethod(identity)  # 根据用户身份获取请求头Token数据
+        url = content[0].get("url", "")  # 登录地址
+        casename = content[0].get("casename", "")  # 接口名
+        method = content[0].get("method", "")  # 请求方式
+        params = content[0].get("params", "")  # query数据
+        body = content[0].get("body", "")  # body数据
+        isprocess = content[0].get("isprocess", "")  # 是否存在依赖
+        depend_id = content[0].get("depend_id", "")  # 依赖的ID
+        depend_key = content[0].get("depend_key", "")  # 依=依赖的key
+        replace_key = content[0].get("replace_key", "")  # 替换的key
+        replace_position = content[0].get("replace_position", "")  # 替换的位置
+        if isprocess == "True":
+            return JsonResponse({"status_code": 500, "msg": "我是流程接口，请选择我和我依赖的ID一起运行!!!"})
+
+        # 获取开始运行的时间
+        starttime = time.time()
+        if "＜" in body or "＞" in body:
+            print('body存在需要替换的符号')
+            a = body.replace("＜", "<")
+            b = a.replace("＞", ">")
+            body = b
+        try:
+            response = Runmethod.run_main(method, url, params, body)
+            print(response)
+            # 获取运行完的时间
+            endtime = time.time()
+            runtime = round(endtime - starttime, 3)
+            # 存为字典，转换为json格式
+            d = {}
+            d[casename] = response
+            if runtime > 0.5 and runtime <= 3.0:
+                d["A.响应时长"] = str(runtime) + "秒"
+            elif runtime > 3.0:
+                d["B.响应时长"] = str(runtime) + "秒"
+            else:
+                d["S.响应时长"] = str(runtime) + "秒"
+            # json格式化
+            djson = json.dumps(d, ensure_ascii=False, sort_keys=True, indent=2)
+            if "<" in djson or ">" in djson:
+                print('result存在需要替换的符号')
+                a = djson.replace("<", "＜")
+                b = a.replace(">", "＞")
+                Processapi.objects.filter(caseid=content[0]["caseid"]).update(result=b)
+            else:
+                Processapi.objects.filter(caseid=content[0]["caseid"]).update(result=djson)
+            print(djson)
+            return HttpResponse(djson)
+        # 异常捕获
+        except TypeError as e:
+            print(e)
+            return JsonResponse({"status_code": 500, "msg": "操作或函数应用于不适当类型的对象"})
+        except json.decoder.JSONDecodeError as e:
+            print(e)
+            return JsonResponse({"status_code": 500, "msg": "json.loads()读取字符串报错"})
+
+    else:
+        # 多个接口测试的情况
+        print("多个接口测试")
+        # 将每次运行的字典结果集用列表存储ii
+        L = []
+        for i in content:
+            caseid = i.get("caseid","")
+            identity = i.get("identity", "")  # 用户身份
+            Runmethod = RequestMethod(identity)  # 根据用户身份获取请求头Token数据
+            url = i.get("url", "")  # 登录地址
+            method = i.get("method", "")  # 请求方式
+            params = i.get("params", "")  # query数据
+            body = i.get("body", "")  # body数据
+            casename = i.get("casename", "")  # 接口名
+            isprocess = i.get("isprocess", "")  # 是否存在依赖
+            depend_id = i.get("depend_id", "")  # 接口名
+            depend_key = i.get("depend_key", "")  # 接口名
+            replace_key = i.get("replace_key", "")  # 接口名
+            replace_position = i.get("replace_position", "")  # 接口名
+            starttime = time.time()
+            # 判断是否为流程测试接口，如果是的话先通过依赖数据的ID查询结果
+            if isprocess == "True":
+                print("我需要依赖别的接口哦！！！")
+                dependid = Processapi.objects.get(caseid=depend_id)
+
+                # 处理
+                if "," in depend_key:
+                    # 存在多个key时需要拆分字符串，通过循环赋值给每个结果
+                    transfer_key = depend_key.split(",")
+                    print(transfer_key)
+                    l = []
+                    for key in transfer_key:
+                        if key:
+                            l.append(key)
+                    need_key = replace_key.split(",")
+                    print(need_key)
+
+                    b = 0
+                    for i in l:
+                        # 依赖的数据
+                        depend_res = json.loads(dependid.result)[dependid.casename][0][i]
+                        print(depend_res)
+                        if replace_position == "body":
+                            if type(body) == str:
+                                body = eval(body)
+                            body[(need_key[b])] = depend_res
+                        elif replace_position == "params":
+                            params = eval(params)
+                            params[(need_key[b])] = depend_res
+                        b += 1
+                    print(body)
+                    print(params)
+                    response = Runmethod.run_main(method, url, json.dumps(params), json.dumps(body))
+
+                # 处理保管期限的列表接口返回的值
+                elif "/" in depend_key:
+                    # 存在多个key时需要拆分字符串，通过循环赋值给每个结果
+                    transfer_key = depend_key.split("/")
+                    print(transfer_key)
+                    need_key = replace_key.split(",")
+                    print(need_key)
+
+                    # 依赖的数据
+                    try:
+                        depend_res = json.loads(dependid.result)[dependid.casename][(transfer_key[0])][0][
+                            (transfer_key[1])]
+                        print(depend_res)
+                        if replace_position == "body":
+                            if "＜" in body or "＞" in body:
+                                print('body存在需要替换的符号')
+                                a = body.replace("＜", "<")
+                                b = a.replace("＞", ">")
+                                body = b
+                            body = eval(body)
+                            body[(need_key[0])] = depend_res
+                        elif replace_position == "params":
+                            params = eval(params)
+                            params[(need_key[0])] = depend_res
+
+                        print("更新后的body:" + str(body))
+                        print("更新后的params:" + str(params))
+                        if params:
+                            if type(params) == str:
+                                params = eval(params)
+                        if body:
+                            if type(body) == str:
+                                body = eval(body)
+                        response = Runmethod.run_main(method, url, params, body)
+
+                    except:
+                        print('请查看日志')
+
+
+                # 处理访问控制策略的列表接口返回的值
+                elif "-" in depend_key:
+                    # 存在多个key时需要拆分字符串，通过循环赋值给每个结果
+                    transfer_key = depend_key.split("-")
+                    print(transfer_key)
+                    need_key = replace_key.split(",")
+                    print(need_key)
+
+                    # 依赖的数据
+                    print("我是body" + body)
+                    for i in range(len(need_key)):
+                        depend_res = json.loads(dependid.result)[dependid.casename][(transfer_key[0])][
+                            (transfer_key[i + 1])]
+                        print(depend_res)
+                        if replace_position == "body":
+                            if type(body) == str:
+                                body = eval(body)
+                            body[(need_key[i])] = depend_res
+                        elif replace_position == "params":
+                            if type(body) == str:
+                                params = eval(params)
+                            params[(need_key[i])] = depend_res
+
+                    print("更新后的:" + str(body))
+                    print("更新后的:" + str(params))
+                    if params:
+                        if type(params) == str:
+                            params = eval(params)
+                    if body:
+                        if type(body) == str:
+                            body = eval(body)
+                    response = Runmethod.run_main(method, url, params, body)
+
+
+            # 不需要别的接口
+            elif isprocess != "True":
+                print("我不需要依赖别的接口！！！")
+                if "＜" in body or "＞" in body:
+                    print('body存在需要替换的符号')
+                    a = body.replace("＜", "<")
+                    b = a.replace("＞", ">")
+                    body = b
+                try:
+                    response = Runmethod.run_main(method, url, params, body)
+                    print(response)
+                    # 异常捕获
+                except TypeError as e:
+                    print(e)
+                    return JsonResponse({"status_code": 500, "msg": "操作或函数应用于不适当类型的对象"})
+                except json.decoder.JSONDecodeError as e:
+                    print(e)
+                    return JsonResponse({"status_code": 500, "msg": "json.loads()读取字符串报错"})
+                # 获取运行完的时间
+            endtime = time.time()
+            runtime = round(endtime - starttime, 3)
+            # 存为字典，转换为json格式
+            d = {}
+            d[casename] = response
+            if runtime > 0.5 and runtime <= 3.0:
+                d["A.响应时长"] = str(runtime) + "秒"
+            elif runtime > 3.0:
+                d["B.响应时长"] = str(runtime) + "秒"
+            else:
+                d["S.响应时长"] = str(runtime) + "秒"
+            L.append(d)
+            # json格式化
+            djson = json.dumps(d, ensure_ascii=False, sort_keys=True, indent=2)
+            if "<" in djson or ">" in djson:
+                print('result存在需要替换的符号')
+                a = djson.replace("<", "＜")
+                b = a.replace(">", "＞")
+                Processapi.objects.filter(caseid=caseid).update(result=b)
+            else:
+                Processapi.objects.filter(caseid=caseid).update(result=djson)
+
+        dict = {}
+        dict["流程接口响应结果"] = L
+        # 转换为JSON格式，且格式化
+        djson_new = json.dumps(dict, ensure_ascii=False, sort_keys=True, indent=2)
+        print(djson_new)
+        # 发送钉钉消息
+        # send_ding(djson_new)
+        # 将JSON数据返回给前端
+        return HttpResponse(djson_new)
+
+
 
 
 # 用例详情

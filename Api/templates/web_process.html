@@ -843,21 +843,25 @@
                 , {field: 'method', title: '请求方式', width: 90, align: "left", templet: "#methodTpl"}
                 , {field: 'params', title: 'Query参数',  align: "left", event: 'params'}
                 , {field: 'body', title: 'Body参数',  event: 'body',  align: "left"}
-				, {field: 'depend_id', title: '依赖的ID', align: "left",enent:"depend_id"}
-                , {field: 'depend_key', title: '依赖的key', align: "left",enent:"depend_key"}
-                , {field: 'replace_key', title: '替换的key', align: "left",enent:"replace_key"}
-                , {field: 'replace_position', title: '替换的位置', align: "left",enent:"replace_position"}
+				, {field: 'depend_id', title: '依赖的ID', align: "left",event:"depend_id"}
+                , {field: 'depend_key', title: '依赖的key', align: "left",event:"depend_key"}
+                , {field: 'replace_key', title: '替换的key', align: "left",event:"replace_key"}
+                , {field: 'replace_position', title: '替换的位置', align: "left",event:"replace_position"}
                 //, {field: 'belong', title: 'a', width: 100,align:"center"}
                 , {
                     field: 'result', title: '响应结果', align: "left",  event:"detail", templet: function (res) {
-                        if (res.result.indexOf("message") != -1 && res.result.indexOf("error") != -1 && res.result.indexOf(res.casename) != -1) {
+                         if (res.result.indexOf("message") != -1 && res.result.indexOf("error") != -1 && res.result.indexOf(res.casename) != -1) {
                             var a = res.casename;
                             var b = JSON.parse(res.result);
                             //console.log(typeof(a));
                             //console.log(b[a]["message"]);
                             return '<span style="color: red;">' + JSON.stringify(b[a]["message"]) + '</span>'
                         } else if (res.result.indexOf("B.") != -1) {
-                            return '<span style="color: deeppink;">' + res.result + '</span>'
+                            let a = JSON.parse(res.result)[res.casename];
+                            return '<span style="color: deeppink;">' + JSON.stringify(a) + '</span>'
+                        }else if(res.result != ""){
+                            let a = JSON.parse(res.result)[res.casename];
+                            return '<span>' + JSON.stringify(a) + '</span>'
                         } else {
                             return '<span>' + res.result + '</span>'
                         }
@@ -1024,12 +1028,11 @@
                             dic['method'] = data[i]['method'];
                             dic['params'] = data[i]['params'];
                             dic['body'] = data[i]['body'];
-
+							dic['isprocess'] = data[i]['isprocess'];
                             dic['depend_id'] = data[i]['depend_id'];
                             dic['depend_key'] = data[i]['depend_key'];
                             dic['replace_key'] = data[i]['replace_key'];
                             dic['replace_position'] = data[i]['replace_position'];
-
                             l.push(dic);
                         }
                         console.log(l);
@@ -1051,42 +1054,47 @@
                                 });
                             },
                             success: function (data) {
-                                var strjson = JSON.stringify(data, null, 4);
-                                console.log(strjson);
-                                layer.prompt({
-                                    formType: 2,//多行文本
-                                    value: strjson,
-                                    title: '响应结果',
-                                    maxmin: true, //允许全屏最小化
-                                    anim: 4,//从左滚动进来
-                                    //shade: 0.6, //遮罩透明度
-                                    skin: "layui-layer-rim",
-                                    //监听取消按钮
-                                    zIndex: layer.zIndex,
-                                    shade: false,
-                                    btn: ["json.cn", "关闭"],
-                                    yes: function () {
-                                        layer.open({
-                                            type: 2,
-                                            title: "json.cn",
-                                            //shadeClose: true,
-                                            shade: false,
-                                            zIndex: layer.zIndex,
-                                            maxmin: true, //开启最大化最小化按钮
-                                            area: ['893px', '600px'],
-                                            content: 'https://www.json.cn',
-                                            success: function () {
-                                                layer.setTop(layero);
-                                            }
-                                        });
+                                if (data.status_code == 500){
+                                    layer.msg(data.msg,{icon:5,offset:"t"});
+								}else{
+									var strjson = JSON.stringify(data, null, 4);
+									console.log(strjson);
+									layer.prompt({
+										formType: 2,//多行文本
+										value: strjson,
+										title: '响应结果',
+										maxmin: true, //允许全屏最小化
+										anim: 4,//从左滚动进来
+										//shade: 0.6, //遮罩透明度
+										skin: "layui-layer-rim",
+										//监听取消按钮
+										zIndex: layer.zIndex,
+										shade: false,
+										btn: ["json.cn", "关闭"],
+										yes: function () {
+											layer.open({
+												type: 2,
+												title: "json.cn",
+												//shadeClose: true,
+												shade: false,
+												zIndex: layer.zIndex,
+												maxmin: true, //开启最大化最小化按钮
+												area: ['893px', '600px'],
+												content: 'https://www.json.cn',
+												success: function () {
+													layer.setTop(layero);
+												}
+											});
 
-                                    },
-                                    btn2: function (index, layro) {//这里就是你要的
-                                        layer.close(index);
-                                        $(".layui-laypage-btn").click();
-                                    },
-                                    area: ['800px', '400px'] //自定义文本域宽高
-                                });
+										},
+										btn2: function (index, layro) {//这里就是你要的
+											layer.close(index);
+											$(".layui-laypage-btn").click();
+										},
+										area: ['800px', '400px'] //自定义文本域宽高
+									});
+								}
+
                             },
                             error: function (data) {
                                 console.log("请求失败" + data);
@@ -1430,7 +1438,7 @@
                     console.log(index);
                     $.ajax({
                         cache: false,
-                        url: "/update_apicase/",
+                        url: "/update_processcase/",
                         dataType: 'text',
                         type: 'GET',
                         async: false,
@@ -1476,7 +1484,7 @@
                     console.log(index);
                     $.ajax({
                         cache: false,
-                        url: "/update_apicase/",
+                        url: "/update_processcase/",
                         dataType: 'text',
                         type: 'GET',
                         async: false,
@@ -1496,13 +1504,185 @@
                             console.log(data);
                             layer.msg(data, {
                                 offset: 't',
-								icon:'5'
+                                icon: '5'
                             });
                         }
                     });
                     //同步更新缓存对应的值
                     obj.update({
                         body: value
+                    });
+                    layer.close(index);
+
+                });
+            } else if (obj.event === 'depend_id') {
+                layer.prompt({
+                    formType: 2
+                    , value: data.depend_id
+                    , title: ["编辑depend_id"]
+                    , skin: "layui-layer-lan"
+                    , shade: 0.6
+                    , area: ['300px', '150px'] //自定义文本域宽高
+                    , maxlength: 500000
+
+                }, function (value, index) {
+                    $.ajax({
+                        cache: false,
+                        url: "/update_processcase/",
+                        dataType: 'text',
+                        type: 'GET',
+                        async: false,
+                        data: {
+                            "ids": obj.data['caseid'],
+                            "depend_id": value
+                        },
+                        success: function (data) {
+                            layer.msg(data, {
+                                offset: 't',
+                                icon: 6,
+                            });
+                        },
+                        error: function (data) {
+                            console.log(data);
+                            layer.msg(data, {
+                                offset: 't',
+								icon:'5'
+                            });
+                        }
+                    });
+                    //同步更新缓存对应的值
+                    obj.update({
+                        depend_id: value
+                    });
+                    layer.close(index);
+
+                });
+            } else if (obj.event === 'depend_key') {
+                layer.prompt({
+                    formType: 2
+                    , value: data.depend_key
+                    , title: ["编辑depend_key"]
+                    , skin: "layui-layer-lan"
+                    , shade: 0.6
+                    , area: ['300px', '150px'] //自定义文本域宽高
+                    , maxlength: 500000
+
+                }, function (value, index) {
+                    console.log(value);
+                    console.log(index);
+                    $.ajax({
+                        cache: false,
+                        url: "/update_processcase/",
+                        dataType: 'text',
+                        type: 'GET',
+                        async: false,
+                        data: {
+                            "ids": obj.data['caseid'],
+                            "depend_key": value
+                        },
+                        success: function (data) {
+                            layer.msg(data, {
+                                offset: 't',
+                                icon: 6,
+                            });
+                            //setTimeout(function(){ window.location.reload(); }, 500);
+                        },
+                        error: function (data) {
+                            console.log(data);
+                            layer.msg(data, {
+                                offset: 't',
+								icon:'5'
+                            });
+                        }
+                    });
+                    //同步更新缓存对应的值
+                    obj.update({
+                        depend_key: value
+                    });
+                    layer.close(index);
+
+                });
+			} else if (obj.event === 'replace_key') {
+                layer.prompt({
+                    formType: 2
+                    , value: data.replace_key
+                    , title: ["编辑replace_key"]
+                    , skin: "layui-layer-lan"
+                    , shade: 0.6
+                    , area: ['300px', '150px'] //自定义文本域宽高
+                    , maxlength: 500000
+
+                }, function (value, index) {
+                    $.ajax({
+                        cache: false,
+                        url: "/update_processcase/",
+                        dataType: 'text',
+                        type: 'GET',
+                        async: false,
+                        data: {
+                            "ids": obj.data['caseid'],
+                            "replace_key": value
+                        },
+                        success: function (data) {
+                            layer.msg(data, {
+                                offset: 't',
+                                icon: 6,
+                            });
+                            //setTimeout(function(){ window.location.reload(); }, 500);
+                        },
+                        error: function (data) {
+                            console.log(data);
+                            layer.msg(data, {
+                                offset: 't',
+								icon:'5'
+                            });
+                        }
+                    });
+                    //同步更新缓存对应的值
+                    obj.update({
+                        replace_key: value
+                    });
+                    layer.close(index);
+
+                });
+			} else if (obj.event === 'replace_position') {
+                layer.prompt({
+                    formType: 2
+                    , value: data.replace_position
+                    , title: ["编辑replace_position"]
+                    , skin: "layui-layer-lan"
+                    , shade: 0.6
+                    , area: ['300px', '150px'] //自定义文本域宽高
+                    , maxlength: 500000
+
+                }, function (value, index) {
+                    $.ajax({
+                        cache: false,
+                        url: "/update_processcase/",
+                        dataType: 'text',
+                        type: 'GET',
+                        async: false,
+                        data: {
+                            "ids": obj.data['caseid'],
+                            "replace_position": value
+                        },
+                        success: function (data) {
+                            layer.msg(data, {
+                                offset: 't',
+                                icon: 6,
+                            });
+                        },
+                        error: function (data) {
+                            console.log(data);
+                            layer.msg(data, {
+                                offset: 't',
+								icon:'5'
+                            });
+                        }
+                    });
+                    //同步更新缓存对应的值
+                    obj.update({
+                        replace_position: value
                     });
                     layer.close(index);
 
@@ -1621,7 +1801,7 @@
 							form.on('submit(update_apicase)', function (data) {
 								$.ajax({
 									cache: false,
-									url: "/update_apicase/",
+									url: "/update_processcase/",
 									dataType: 'text',
 									type: 'GET',
 									//async: false,
