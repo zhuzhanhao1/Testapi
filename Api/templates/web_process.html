@@ -12,6 +12,7 @@
 	<script src="../static/js/layui/layui.js"></script>
 	<link rel="stylesheet" href="../static/font-awesome-4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="../static/css/soulTable.css">
+
 	<script type="text/javascript" src="../static/js/cache.js"></script>
 
 	<style>
@@ -172,6 +173,7 @@
 							<option value="视图自定义接口">视图自定义接口</option>
 							<option value="部门管理接口">部门管理接口</option>
 							<option value="用户管理接口">用户管理接口</option>
+							<option value="整理任务接口">整理任务接口</option>
 						</select>
 					</div>
 				</div>
@@ -304,6 +306,8 @@
 							<option value="视图自定义接口">视图自定义接口</option>
 							<option value="部门管理接口">部门管理接口</option>
 							<option value="用户管理接口">用户管理接口</option>
+							<option value="整理任务接口">整理任务接口</option>
+
 						</select>
 					</div>
 				</div>
@@ -566,21 +570,21 @@
 
 				<div class="layui-form-item" style="margin-top: 20px;">
 					<label class="layui-form-label">结束时间</label>
-					<div class="layui-input-block" style="width: 80%">
+					<div class="layui-input-block">
 						<input type="text" name="date1" class="layui-input test-item" id="test5" placeholder="HH:mm:ss">
 					</div>
 				</div>
 
 				<div class="layui-form-item">
 					<label class="layui-form-label">时间间隔</label>
-					<div class="layui-input-block" style="width: 80%">
+					<div class="layui-input-block">
 						<input type="text" name="date2" class="layui-input test-item shijian" id="test5" placeholder="开始运行时间等于现在时间加上时间间隔">
 					</div>
 				</div>
 
 				<div class="layui-form-item">
 					<label class="layui-form-label">运行的ID</label>
-					<div class="layui-input-block" style="width: 80%">
+					<div class="layui-input-block">
 						<input type="text" name="caseid" lay-verify="title" autocomplete="off" class="layui-input">
 					</div>
 				</div>
@@ -588,9 +592,9 @@
 				<div class="layui-form-item" style="margin-top: 20px;">
 					<div class="layui-input-block">
 						<button class="layui-btn" id="time" lay-submit lay-filter="example"
-								style="margin-left: 265px;background-color: yellowgreen;">确定
+								style="float: right;">确定
 						</button>
-						<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						<button type="reset" class="layui-btn layui-btn-primary" style="float: right;margin-right: 10px;">重置</button>
 					</div>
 				</div>
 			</form>
@@ -1281,7 +1285,7 @@
                     var timetask = layer.open({
                         type: 1,
                         title: "设置定时任务",
-                        area: ['40%', '40%'],
+                        area: ['40%', ''],
                         trigger: 'click',
                         skin: 'layui-layer-molv',
                         shade: 0.6,
@@ -1328,16 +1332,14 @@
                                         success: function (data) {
                                             layer.msg(data, {
                                                 icon: 6,
-                                                offset: 't',
-                                                anim: 2,
+                                                offset: 't'
                                             });
                                         },
                                         error: function (data) {
                                             console.log(data);
                                             layer.msg(data, {
                                                 icon: 5,
-                                                offset: 't',
-                                                anim: 2,
+                                                offset: 't'
                                             });
                                         },
                                         complete: function () {

@@ -36,11 +36,11 @@
 				size:'lg',
 				cols : [[
 					//{type: "checkbox", fixed:"left", width:50},
-					{field: 'logo', title: 'LOGO', width:400, align:"center",templet:function(d){
+					{field: 'logo', title: 'LOGO',  align:"center",templet:function(d){
 						return '<a href="'+d.websiteUrl+'" target="_blank"><img src="'+d.logo+'" height="26" /></a>';
 					}},
-					{field: 'websiteName', title: '网站名称', width:400},
-					{field: 'websiteUrl', title: '网站地址',width:413,templet:function(d){
+					{field: 'websiteName', title: '网站名称'},
+					{field: 'websiteUrl', title: '网站地址',templet:function(d){
 						return '<a class="layui-blue" href="'+d.websiteUrl+'" target="_blank">'+d.websiteUrl+'</a>';
 					}}
 				]]

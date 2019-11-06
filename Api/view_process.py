@@ -5,6 +5,7 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 from datetime import datetime
 import time
 import json
+import jsonpath
 
 from apscheduler.triggers.interval import IntervalTrigger
 from django.contrib.auth.decorators import login_required
@@ -41,11 +42,12 @@ def process_interface_view(request):
 @login_required
 def processlist_view(request):
     casename = request.GET.get("key[casename]", "")
+    filterSos = request.GET.get("filterSos", "")
     if casename:
         print("搜索的用例名是:" + casename)
     belong = request.GET.get('belong', "")
     print("请求进入的模块是:" + belong)
-    if casename == "" and belong == "":
+    if casename == "" and belong == "" and filterSos== "":
         apilists = Processapi.objects.filter().order_by("sortid")
 
     # 流程接口
@@ -62,6 +64,8 @@ def processlist_view(request):
             apilists = Processapi.objects.filter(belong="类目保管期限接口").order_by("sortid")
         elif belong == "view":
             apilists = Processapi.objects.filter(belong="视图自定义接口").order_by("sortid")
+        elif belong == "finish_task":
+            apilists = Processapi.objects.filter(belong="整理任务接口").order_by("sortid")
 
     # 按用例名称查询
     elif casename:
@@ -103,6 +107,50 @@ def processlist_view(request):
                 res.append(contact)
             datas = {"code": 0, "msg": "", "count": len(L), "data": res}
             return JsonResponse(datas)
+
+    elif filterSos:
+        print(filterSos)
+        if filterSos == "[]":
+            apilists = Processapi.objects.filter(system="erms").order_by("sortid")
+        else:
+            L = []
+            for i in json.loads(filterSos):
+                filterSos_res = i.get("value")
+                print(filterSos_res)
+                apilists = Processapi.objects.filter(Q(casename__contains=filterSos_res) & Q(system="erms")).order_by("sortid")
+                for weblist in apilists:
+                    data = {
+                        "caseid": weblist.caseid,
+                        "isprocess": weblist.isprocess,
+                        "identity": weblist.identity,
+                        "casename": weblist.casename,
+                        "url": weblist.url,
+                        "method": weblist.method,
+                        "params": weblist.params,
+                        "body": weblist.body,
+                        "result": weblist.result,
+                        "sortid": weblist.sortid,
+                        "depend_id": weblist.depend_id,
+                        "depend_key": weblist.depend_key,
+                        "replace_key": weblist.replace_key,
+                        "replace_position": weblist.replace_position,
+                        "belong": weblist.belong,
+                        "head": weblist.header
+                    }
+                    L.append(data)
+            print(L)
+            print("此模块的用例个数为:" + str(len(L)))
+            pageindex = request.GET.get('page', "")
+            pagesize = request.GET.get("limit", "")
+            pageInator = Paginator(L, pagesize)
+            # 分页
+            contacts = pageInator.page(pageindex)
+            res = []
+            for contact in contacts:
+                res.append(contact)
+            datas = {"code": 0, "msg": "", "count": len(L), "data": res}
+            return JsonResponse(datas)
+
     L = []
     for weblist in apilists:
         data = {
@@ -267,6 +315,8 @@ def update_processcase_views(request):
         dependkey = request.POST.get("dependkey", "")
         replacekey = request.POST.get("replacekey", "")
         replaceposition = request.POST.get("replaceposition", "")
+
+        ids = request.GET.get("ids", "")
         if "<" in body or ">" in body:
             print('存在需要替换的符号')
             a = body.replace("<", "＜")
@@ -365,7 +415,7 @@ def export_data_process_views(request):
         return HttpResponse("操作成功")
 
 
-# 执行用例
+# 执行用例-old版本
 @login_required
 def run_processcase_view(request):
     con = ConnDataBase()
@@ -622,7 +672,8 @@ def run_processcase_view(request):
         # 将JSON数据返回给前端
         return HttpResponse(djson_new)
 
-
+# 执行用例-new版本
+@login_required
 def run_processcase_views(request):
     content = request.POST.get("request", "")
     content = json.loads(content)
@@ -698,116 +749,77 @@ def run_processcase_views(request):
             body = i.get("body", "")  # body数据
             casename = i.get("casename", "")  # 接口名
             isprocess = i.get("isprocess", "")  # 是否存在依赖
-            depend_id = i.get("depend_id", "")  # 接口名
-            depend_key = i.get("depend_key", "")  # 接口名
-            replace_key = i.get("replace_key", "")  # 接口名
-            replace_position = i.get("replace_position", "")  # 接口名
+            depend_id = i.get("depend_id", "")  # 依赖的id
+            depend_key = i.get("depend_key", "")  # 依赖的键
+            replace_key = i.get("replace_key", "")  # 需要替换的键
+            replace_position = i.get("replace_position", "")  # 替换的区域
             starttime = time.time()
             # 判断是否为流程测试接口，如果是的话先通过依赖数据的ID查询结果
             if isprocess == "True":
                 print("我需要依赖别的接口哦！！！")
-                dependid = Processapi.objects.get(caseid=depend_id)
+                depend_id = depend_id.split(",")
+                dependid = Processapi.objects.get(caseid=depend_id[0])
+                # 获取依赖接口返回的结果
+                result = json.loads(dependid.result)[dependid.casename]
+                body = json.loads(body) if body != "" else body
+                params = json.loads(params) if params != "" else params
 
-                # 处理
-                if "," in depend_key:
-                    # 存在多个key时需要拆分字符串，通过循环赋值给每个结果
-                    transfer_key = depend_key.split(",")
-                    print(transfer_key)
-                    l = []
-                    for key in transfer_key:
-                        if key:
-                            l.append(key)
-                    need_key = replace_key.split(",")
-                    print(need_key)
+                replaceKey = eval(replace_key)
+                replaceKey_key = [x for x in replaceKey]
+                print(replaceKey_key)
 
-                    b = 0
-                    for i in l:
-                        # 依赖的数据
-                        depend_res = json.loads(dependid.result)[dependid.casename][0][i]
-                        print(depend_res)
-                        if replace_position == "body":
-                            if type(body) == str:
-                                body = eval(body)
-                            body[(need_key[b])] = depend_res
-                        elif replace_position == "params":
-                            params = eval(params)
-                            params[(need_key[b])] = depend_res
-                        b += 1
-                    print(body)
-                    print(params)
-                    response = Runmethod.run_main(method, url, json.dumps(params), json.dumps(body))
+                dependkey = eval(depend_key)
+                dependkey_key = [x for x in dependkey]
+                print(dependkey_key)
 
-                # 处理保管期限的列表接口返回的值
-                elif "/" in depend_key:
-                    # 存在多个key时需要拆分字符串，通过循环赋值给每个结果
-                    transfer_key = depend_key.split("/")
-                    print(transfer_key)
-                    need_key = replace_key.split(",")
-                    print(need_key)
+                params_body = params if replace_position == "params" else body
+                depend_value = []
+                replace_value = []
+                for i in range(len(dependkey)):
+                    dependvalue = jsonpath.jsonpath(result,dependkey_key[i])[dependkey[dependkey_key[i]]]
+                    if type(dependvalue) is list:
+                        dependvalue = dependvalue[0]
+                    depend_value.append(dependvalue)
 
-                    # 依赖的数据
-                    try:
-                        depend_res = json.loads(dependid.result)[dependid.casename][(transfer_key[0])][0][
-                            (transfer_key[1])]
-                        print(depend_res)
-                        if replace_position == "body":
-                            if "＜" in body or "＞" in body:
-                                print('body存在需要替换的符号')
-                                a = body.replace("＜", "<")
-                                b = a.replace("＞", ">")
-                                body = b
-                            body = eval(body)
-                            body[(need_key[0])] = depend_res
-                        elif replace_position == "params":
-                            params = eval(params)
-                            params[(need_key[0])] = depend_res
+                    replacevalue = jsonpath.jsonpath(params_body,replaceKey_key[i])[replaceKey[replaceKey_key[i]]]
+                    if type(replacevalue) is list:
+                        replacevalue = replacevalue[0]
+                    replace_value.append(replacevalue)
 
-                        print("更新后的body:" + str(body))
-                        print("更新后的params:" + str(params))
-                        if params:
-                            if type(params) == str:
-                                params = eval(params)
-                        if body:
-                            if type(body) == str:
-                                body = eval(body)
-                        response = Runmethod.run_main(method, url, params, body)
+                params_body = json.dumps(params_body, ensure_ascii=False, sort_keys=True, indent=2)
+                for i in range(len(depend_value)):
+                    params_body = params_body.replace(replace_value[i],depend_value[i])
+                response = Runmethod.run_main(method, url, params_body, json.dumps(body)) if replace_position =="params" else Runmethod.run_main(method, url, json.dumps(params),params_body)
 
-                    except:
-                        print('请查看日志')
-
-
-                # 处理访问控制策略的列表接口返回的值
-                elif "-" in depend_key:
-                    # 存在多个key时需要拆分字符串，通过循环赋值给每个结果
-                    transfer_key = depend_key.split("-")
-                    print(transfer_key)
-                    need_key = replace_key.split(",")
-                    print(need_key)
-
-                    # 依赖的数据
-                    print("我是body" + body)
-                    for i in range(len(need_key)):
-                        depend_res = json.loads(dependid.result)[dependid.casename][(transfer_key[0])][
-                            (transfer_key[i + 1])]
-                        print(depend_res)
-                        if replace_position == "body":
-                            if type(body) == str:
-                                body = eval(body)
-                            body[(need_key[i])] = depend_res
-                        elif replace_position == "params":
-                            if type(body) == str:
-                                params = eval(params)
-                            params[(need_key[i])] = depend_res
-
-                    print("更新后的:" + str(body))
-                    print("更新后的:" + str(params))
-                    if params:
-                        if type(params) == str:
-                            params = eval(params)
-                    if body:
-                        if type(body) == str:
-                            body = eval(body)
-                    response = Runmethod.run_main(method, url, params, body)
+                # print("我需要依赖别的接口哦！！！")
+                # depend_id = depend_id.split(",")
+                # dependid = Processapi.objects.get(caseid=depend_id[0])
+                # # 获取依赖接口返回的结果
+                # result = json.loads(dependid.result)[dependid.casename]
+                # body = json.loads(body) if body != "" else body
+                # params = json.loads(params) if params != "" else params
+                # replaceKey = eval(replace_key)
+                # dependkey = eval(depend_key)
+                #
+                # params_body = params if replace_position == "params" else body
+                # depend_value = []
+                # replace_value = []
+                # for i in range(len(dependkey)):
+                #     dependvalue = jsonpath.jsonpath(result,dependkey[i])[int(depend_id[-1])]
+                #     print(dependvalue)
+                #     depend_value.append(dependvalue)
+                #
+                #     if len(depend_id) == 3:
+                #         replacevalue = jsonpath.jsonpath(params_body, replaceKey[i])[int(depend_id[-1])][0]
+                #     elif len(depend_id) != 3:
+                #         replacevalue = jsonpath.jsonpath(params_body,replaceKey[i])[int(depend_id[-1])]
+                #     replace_value.append(replacevalue)
+                #     print(replace_value)
+                #
+                # params_body = json.dumps(params_body, ensure_ascii=False, sort_keys=True, indent=2)
+                # for i in range(len(depend_value)):
+                #     params_body = params_body.replace(replace_value[i],depend_value[i])
+                # response = Runmethod.run_main(method, url, params_body, json.dumps(body)) if replace_position =="params" else Runmethod.run_main(method, url, json.dumps(params),params_body)
 
 
             # 不需要别的接口
@@ -851,10 +863,10 @@ def run_processcase_views(request):
             else:
                 Processapi.objects.filter(caseid=caseid).update(result=djson)
 
-        dict = {}
-        dict["流程接口响应结果"] = L
+        dic = {}
+        dic["流程接口响应结果"] = L
         # 转换为JSON格式，且格式化
-        djson_new = json.dumps(dict, ensure_ascii=False, sort_keys=True, indent=2)
+        djson_new = json.dumps(dic, ensure_ascii=False, sort_keys=True, indent=2)
         print(djson_new)
         # 发送钉钉消息
         # send_ding(djson_new)

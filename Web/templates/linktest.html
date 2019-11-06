@@ -36,14 +36,14 @@
 				size:'lg',
 				cols : [[
 					//{type: "checkbox", fixed:"left", width:50},
-					{field: 'logo', title: 'LOGO', width:100, align:"center",templet:function(d){
+					{field: 'logo', title: 'LOGO',  align:"center",templet:function(d){
 						return '<a href="'+d.websiteUrl+'" target="_blank"><img src="'+d.logo+'" height="26" /></a>';
 					}},
-					{field: 'websiteName', title: '网站名称', width:300},
-					{field: 'websiteUrl', title: '网站地址',width:400,templet:function(d){
+					{field: 'websiteName', title: '网站名称'},
+					{field: 'websiteUrl', title: '网站地址',templet:function(d){
 						return '<a style="color:blue;" href="'+d.websiteUrl+'" target="_blank">'+d.websiteUrl+'</a>';
 					}},
-					{field: 'websiteApiUrl', title: '接口文档地址',width:400,templet:function(d){
+					{field: 'websiteApiUrl', title: '接口文档地址',templet:function(d){
 					    if (d.websiteApiUrl.indexOf("http") != -1){
 					        return '<a style="color:blue;" href="'+d.websiteApiUrl+'" target="_blank">'+d.websiteApiUrl+'</a>';
 						}else{

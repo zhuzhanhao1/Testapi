@@ -1,6 +1,14 @@
 {
 	"contentManagement": [
 		{
+			"title": "ERMS测试分类",
+			"icon": "&#xe6c9;",
+			"href": "",
+			"spread": false,
+			"children": [
+			]
+		},
+		{
 			"title": "快速测试",
 			"icon": "&#xe631;",
 			"href": "/web_quicktest/",
@@ -205,6 +213,12 @@
 					"icon": "&#xe600;",
 					"href": "/web_process/?belong=view",
 					"spread": false
+				},
+								{
+					"title": "整理任务接口",
+					"icon": "&#xe638;",
+					"href": "/web_process/?belong=finish_task",
+					"spread": false
 				}
 			]
 		},
@@ -284,6 +298,20 @@
 		}
 	],
 	"memberCenter": [
+		{
+			"title": "Transfer测试分类",
+			"icon": "&#xe6c9;",
+			"href": "",
+			"spread": false,
+			"children": [
+			]
+		},
+		{
+			"title": "快速测试",
+			"icon": "&#xe631;",
+			"href": "/web_quicktest/",
+			"spread": false
+		},
 		{
 			"title": "单一接口测试",
 			"icon": "&#xe674;",
@@ -371,6 +399,14 @@
 			]
 		},
 		{
+			"title": "流程接口测试",
+			"icon": "&#xe638;",
+			"href": "",
+			"spread": false,
+			"children": [
+			]
+		},
+		{
 			"title": "功能测试",
 			"icon": "&#xe857;",
 			"href": "",
@@ -383,6 +419,12 @@
 					"spread": false
 				}
 			]
+		},
+		{
+			"title": "自动化测试",
+			"icon": "&#xe628;",
+			"href": "//",
+			"spread": false
 		}
 	],
 	"systemeSttings": [
@@ -407,25 +449,31 @@
 	],
 	"seraphApi": [
 		{
-			"title": "功能测试",
-			"icon": "&#xe857;",
+			"title": "Tdr测试分类",
+			"icon": "&#xe6c9;",
 			"href": "",
 			"spread": false,
 			"children": [
-				{
-					"title": "功能测试",
-					"icon": "&#xe857;",
-					"href": "/web_functionalTest_tdr/",
-					"spread": false
-				}
 			]
 		},
 		{
-			"title": "Tdr接口测试",
+			"title": "快速测试",
+			"icon": "&#xe631;",
+			"href": "/web_quicktest/",
+			"spread": false
+		},
+		{
+			"title": "单一接口测试",
 			"icon": "&#xe674;",
 			"href": "",
 			"spread": false,
 			"children": [
+				{
+						"title": "tdr接口总览",
+						"icon": "&#xe770;",
+						"href": "/web_tdrindex/",
+						"spread": false
+					},
 					{
 						"title": "单位接口",
 						"icon": "&#xe770;",
@@ -499,7 +547,66 @@
 						"spread": false
 					}
 			]
+		},
+		{
+			"title": "流程接口测试",
+			"icon": "&#xe638;",
+			"href": "",
+			"spread": false,
+			"children": [
+			]
+		},
+		{
+			"title": "功能测试",
+			"icon": "&#xe857;",
+			"href": "",
+			"spread": false,
+			"children": [
+				{
+					"title": "档案接收",
+					"icon": "&#xe857;",
+					"href": "/web_functionalTest_tdr/",
+					"spread": false
+				},
+								{
+					"title": "档案管理",
+					"icon": "&#xe857;",
+					"href": "/web_functionalTest_tdr/",
+					"spread": false
+				},
+								{
+					"title": "任务中心",
+					"icon": "&#xe857;",
+					"href": "/web_functionalTest_tdr/",
+					"spread": false
+				},
+								{
+					"title": "档案利用",
+					"icon": "&#xe857;",
+					"href": "/web_functionalTest_tdr/",
+					"spread": false
+				},
+								{
+					"title": "统计分析",
+					"icon": "&#xe857;",
+					"href": "/web_functionalTest_tdr/",
+					"spread": false
+				},
+								{
+					"title": "系统管理",
+					"icon": "&#xe857;",
+					"href": "/web_functionalTest_tdr/",
+					"spread": false
+				}
+			]
+		},
+		{
+			"title": "自动化测试",
+			"icon": "&#xe628;",
+			"href": "//",
+			"spread": false
 		}
+
 
 
 	]

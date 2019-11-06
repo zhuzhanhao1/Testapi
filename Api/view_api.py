@@ -17,7 +17,7 @@ from .forms import *
 from Api.interfacetest.run_method import RequestMethod
 from Api.interfacetest.run_mehod_quick import RequestMethodQuick
 from Api.interfacetest.get_header import  GetToken
-from Api.webuitest.DingDing import send_ding
+from Api.webuitest.DingDing import send_ding,send_link
 
 currentUrl = os.path.dirname(__file__)
 #父文件路径
@@ -531,7 +531,6 @@ def update_apicase_views(request):
 
 
 #接口详情
-@login_required
 def detail_api_views(request):
     res = request.GET.get("id","")
     if res:
@@ -968,9 +967,10 @@ def ding_ding_view(request):
                     "Body":body,
                     "Response":result
                 }
-                dic_json = json.dumps(dic, ensure_ascii=False, sort_keys=True, indent=2)#
+                dic_json = json.dumps(dic, ensure_ascii=False, sort_keys=True, indent=2)
                 print(dic_json)
-                # send_ding(dic_json,head)
+                send_ding(dic_json,head)
+                send_link(id,casename)
                 return HttpResponse("操作成功")
             else:
                 return HttpResponse("不存在的ID")

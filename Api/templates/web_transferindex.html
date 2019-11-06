@@ -580,6 +580,7 @@
             }
 			, drag: {toolbar: true}//实现固定列与非固定列之间的转换
             , limits: [10, 20, 30, 40, 50, 100, 200]
+			, limit :30
             , where: {//额外参数
                 belong: '{{ abq }}'
             }
@@ -1069,6 +1070,7 @@
             var checkStatus = table.checkStatus(obj.config.id);
             //console.log(checkStatus);
             switch (obj.event) {
+                //编辑用例
                 case 'getCheckData':
                     var data = checkStatus.data;
                     console.log(data[0]);
@@ -1155,6 +1157,7 @@
                         });
                     }
                     break;
+				//运行用例
                 case 'runcase':
                     var data = checkStatus.data;
                     console.log(data);
@@ -1248,65 +1251,76 @@
                         });
                     }
                     break;
+                //发送钉钉消息
                 case 'dingding':
                     var data = checkStatus.data;
                     console.log(data);
                     if (data.length == 0) {
                         layer.close(index);
-                        layer.msg("请先选中需要执行的用例", {
-                            anim: 6,
+                        layer.msg("请先选中需要发送的接口", {
+                            icon: 2,
+                            offset: "t"
                         });
                     } else {
-                        var ids = "";
-                        for (i = 0; i < data.length; i++) {
-                            ids += data[i]["caseid"] + ",";
-                            console.log(ids);
-                        }
-                        layer.msg(
-                            "你选择的用例编号是:" + ids,
-                            {anim: 1,}
-                        );
-                        $.ajax({
-                            cache: false,
-                            url: "/ding_ding/",
-                            dataType: 'text',
-                            type: 'GET',
-                            //async: false,
-                            data: {
-                                "caseid": ids
-                            },
-                            //请求前的处理,加载loading
-                            beforeSend: function () {
-                                document.getElementById("Dingding").setAttribute("disabled", true);
-                                document.getElementById("Dingding").innerHTML = "loading...";
-                                l_index = layer.load(0, {
-                                    shade: [0.5, '#DBDBDB'] //0.1透明度的白色背景
-                                });
-                            },
-                            success: function (data) {
-                                console.log(data);
-                                layer.msg(data, {
-                                    icon: 6,
-                                    offset: 't',
+                        layer.confirm("你确定要发送接口请求结果给相应的负责人吗？\n注意:钉钉机器人发送，不可撤回！", {
+                                icon: 3,
+                                btn: ["确定", "取消"]
+                            }, function () {
+                                var ids = "";
+                                for (i = 0; i < data.length; i++) {
+                                    ids += data[i]["caseid"] + ",";
+                                    console.log(ids);
+                                }
+                                $.ajax({
+                                    cache: false,
+                                    url: "/ding_ding/",
+                                    dataType: 'text',
+                                    type: 'GET',
+                                    //async: false,
+                                    data: {
+                                        "caseid": ids
+                                    },
+                                    //请求前的处理,加载loading
+                                    beforeSend: function () {
+                                        document.getElementById("Dingding").setAttribute("disabled", true);
+                                        document.getElementById("Dingding").innerHTML = "loading...";
+                                        l_index = layer.load(0, {
+                                            shade: [0.5, '#DBDBDB'] //0.1透明度的白色背景
+                                        });
+                                    },
+                                    success: function (data) {
+                                        console.log(data);
+                                        layer.msg(data, {
+                                            icon: 6,
+                                            offset: 't',
+                                        });
+
+                                    },
+                                    error: function (data) {
+                                        console.log(data);
+                                        layer.msg(data, {
+                                            icon: 5,
+                                            offset: 't',
+                                            anim: 6
+                                        });
+                                    },
+                                    complete: function () {
+                                        document.getElementById("Dingding").removeAttribute("disabled");
+                                        document.getElementById("Dingding").innerHTML = "钉钉通知";
+                                        layer.close(l_index);
+                                    }
                                 });
 
-                            },
-                            error: function (data) {
-                                console.log(data);
-                                layer.msg(data, {
-                                    icon: 5,
-                                    offset: 't',
-                                    anim: 6
-                                });
-                            },
-                            complete: function () {
-                                document.getElementById("Dingding").removeAttribute("disabled");
-                                document.getElementById("Dingding").innerHTML = "钉钉通知";
-                                layer.close(l_index);
+                            }, function () {
+                                layer.msg(
+                                    "取消发送钉钉消息",
+                                    {icon: 1, offset: "t"}
+                                );
                             }
-                        });
+                        );
                     }
                     break;
+                //导出用例
                 case "export":
                     if (checkStatus.data.length > 0) {
                         soulTable.export(myTable, {

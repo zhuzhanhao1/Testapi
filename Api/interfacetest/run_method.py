@@ -94,6 +94,11 @@ class RequestMethod():
             return r.text
 
     def uploadfile(self,url,params,data):
+        params = json.loads(params) if params != "" else None
+        if data:
+            # data = eval(data)
+            data = json.loads(data)
+            data = data if any(data) == True else None
         print(data['path'])
         print(type(data['path']))
         print(params)

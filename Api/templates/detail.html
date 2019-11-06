@@ -8,12 +8,17 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<link rel="stylesheet" href="./../static/css/layui.css" media="all">
+	<script src="./../static/js/layui/layui.js"></script>
+	<link rel="stylesheet" type="text/css" href="./../static/css/main.css">
 	<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <style>
+	*{
+		margin: 0px;
+		padding: 0px;
+	}
 	.layui-col-md6 {
 		width: 12%;
-	{#opacity: 0.5;#}
 	}
 
 	.layui-card-body {
@@ -21,13 +26,7 @@
 	}
 
 	.layui-col-md12 {
-		width: 50%;
-		height: 50%;
-	{#opacity: 0.5;#}
-	}
-
-	.layui-nav {
-		padding: 0 600px;
+		width: 33.3%;
 	}
 
 	.layui-card-header {
@@ -44,17 +43,37 @@
 
 	.layui-nav {
 		background-color: cornflowerblue;
+		opacity: 0.8;
 	}
-	ol, ul{
-		margin-bottom:0px;
+
+	ol, ul {
+		margin-bottom: 0px;
 	}
+
+	.footer p.copyright {
+		padding: 15px 0 10px 0;
+	}
+
+	.footer {
+		background-color: cornflowerblue;
+		padding: 0px;
+		position: fixed;
+		bottom: 0px;
+		width: 100%;
+		height: 8%;
+		opacity: 0.8;
+	}
+	textarea{
+		width: 100%;
+	}
+
 </style>
 
 <body>
 
 <div>
 	<ul class="layui-nav">
-		<li class="layui-nav-item" style="text-align: center;background-color: cornflowerblue;font-weight: lighter;">接口测试详细信息</li>
+		<li class="layui-nav-item" style="text-align:center;display:block;background-color: cornflowerblue;font-size: 20px;">接口测试详细信息</li>
 	</ul>
 </div>
 
@@ -120,7 +139,15 @@
 			<div class="layui-card">
 				<div class="layui-card-header">Params:</div>
 				<div class="layui-card-body">
-					<textarea id="detail" rows="8" cols="100" readonly="readonly">{{ dic.params }}</textarea>
+					<textarea id="detail" rows="24" cols="80" readonly="readonly">{{ dic.params }}</textarea>
+				</div>
+			</div>
+		</div>
+		<div class="layui-col-md12">
+			<div class="layui-card">
+				<div class="layui-card-header">Body:</div>
+				<div class="layui-card-body">
+					<textarea id="detail" rows="24" cols="80" readonly="readonly">{{ dic.body }}</textarea>
 				</div>
 			</div>
 		</div>
@@ -128,22 +155,10 @@
 			<div class="layui-card">
 				<div class="layui-card-header">响应内容:</div>
 				<div class="layui-card-body">
-					<textarea id="detail" rows="20" cols="100" readonly="readonly">{{ dic.result }}</textarea>
-
-
+					<textarea id="detail" rows="24" cols="80" readonly="readonly">{{ dic.result }}</textarea>
 				</div>
 			</div>
 		</div>
-		<div class="layui-col-md12" style="margin-top: -278px;">
-			<div class="layui-card">
-				<div class="layui-card-header">Body:</div>
-				<div class="layui-card-body">
-
-					<textarea id="detail" rows="8" cols="100" readonly="readonly">{{ dic.body }}</textarea>
-				</div>
-			</div>
-		</div>
-
 
 		{#		<div class="layui-col-md12" style="width: 18%;margin-bottom: 3px;">#}
 		{#			<div class="layui-card">#}
@@ -166,6 +181,12 @@
 
 
 	</div>
+</div>
+<div class="footer">
+	<p class="copyright">
+		没有什么事情能比找BUG更开心的了<br/>
+		人生苦短，我用Python
+	</p>
 </div>
 
 

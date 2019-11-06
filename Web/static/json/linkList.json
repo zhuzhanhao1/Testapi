@@ -50,6 +50,12 @@
       "logo": "./../../static/images/json.png",
       "websiteName": "json- 格式转换",
       "websiteUrl": "https://www.json.cn"
+    },
+    {
+      "linkId": "8",
+      "logo": "./../../static/images/xiankefu.png",
+      "websiteName": "layui-贤客服",
+      "websiteUrl": "https://console.xiankefu.com/"
     }
   ]
 }
