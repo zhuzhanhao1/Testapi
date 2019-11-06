@@ -12,7 +12,7 @@
 	<script src="../static/js/layui/layui.js"></script>
 	<link rel="stylesheet" href="../static/font-awesome-4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="../static/css/soulTable.css">
-
+{#	<script type="text/javascript" src="../static/js/docs.min.js"></script>#}
 	<script type="text/javascript" src="../static/js/cache.js"></script>
 
 	<style>
@@ -125,6 +125,7 @@
 		.layui-body{
 			left:0px;
 		}
+
 
 
 	</style>
@@ -601,6 +602,23 @@
 		</div>
 	</div>
 
+	<!--进度条-->
+	<div class="layui-row" id="jindutiao" style="display: none;">
+		<div class="layui-col-md11">
+			<div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="demo">
+				<div class="layui-progress-bar" lay-percent="0%"></div>
+			</div>
+{#			<div class="progress-div">#}
+{#				<div class="progress">#}
+{#					<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="2"#}
+{#						 aria-valuemin="0"#}
+{#						 aria-valuemax="100" style="min-width: 2em; width: 2%;">#}
+{#						2%#}
+{#					</div>#}
+{#				</div>#}
+{#			</div>#}
+		</div>
+	</div>
 <!--数据表格JS-->
 <script>
     // 自定义模块
@@ -1051,11 +1069,46 @@
                             },
                             //请求前的处理,加载loading
                             beforeSend: function () {
-                                document.getElementById("Runcase").setAttribute("disabled", true);
-                                document.getElementById("Runcase").innerHTML = "loading...";
-                                l_index = layer.load(0, {
-                                    shade: [0.5, '#DBDBDB'] //0.1透明度的白色背景
-                                });
+                                if (data.length > 1) {
+                                    document.getElementById("Runcase").setAttribute("disabled", true);
+                                    document.getElementById("Runcase").innerHTML = "loading...";
+                                    l_index = layer.load(0, {
+                                        shade: [0.5, '#DBDBDB'] //0.1透明度的白色背景
+                                    });
+                                    layer.open({
+                                        //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+                                        type: 1,
+                                        title: false,
+                                        area: ['50%', ''],
+                                        skin: "layui-layer-rim",
+                                        shade: 0.6,
+                                        offset: "b",
+                                        content: $("#jindutiao").html(),
+                                        success: function () {
+                                            layui.use('element', function () {
+                                                var $ = layui.jquery
+                                                    , element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
+                                                console.log("come in ");
+                                                var sitv = setInterval(function () {
+                                                    var prog_url = '/show_progress/';      // prog_url指请求进度的url，后面会在django中设置
+                                                    $.getJSON(prog_url, function (num_progress) {
+                                                        element.progress('demo', num_progress + '%');
+                                                        if (num_progress == "333") {
+                                                            clearInterval(sitv);
+                                                        }
+                                                    });
+                                                }, 100);// 每10毫秒查询一次后台进度
+                                            });
+                                        }
+                                    });
+                                } else {
+                                    document.getElementById("Runcase").setAttribute("disabled", true);
+                                    document.getElementById("Runcase").innerHTML = "loading...";
+                                    l_index = layer.load(0, {
+                                        shade: [0.5, '#DBDBDB'] //0.1透明度的白色背景
+                                    });
+                                }
+
                             },
                             success: function (data) {
                                 if (data.status_code == 500){
@@ -1083,19 +1136,19 @@
 												shade: false,
 												zIndex: layer.zIndex,
 												maxmin: true, //开启最大化最小化按钮
-												area: ['893px', '600px'],
+												area: ['70%', '80%'],
 												content: 'https://www.json.cn',
 												success: function () {
 													layer.setTop(layero);
 												}
 											});
-
 										},
 										btn2: function (index, layro) {//这里就是你要的
-											layer.close(index);
+											//layer.close(index);
+											layer.closeAll()
 											$(".layui-laypage-btn").click();
 										},
-										area: ['800px', '400px'] //自定义文本域宽高
+										area: ['800px', '600px'] //自定义文本域宽高
 									});
 								}
 
@@ -2087,6 +2140,19 @@
             }
 
         });
+    }
+
+    function gettoken1() {
+		layer.open({
+			//layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+			type: 1,
+			title: false,
+			area: ['50%', ''],
+			//skin: "layui-layer-rim",
+			shade: 0.6,
+			content: $("#jindutiao").html()
+		});
+
     }
 </script>
 

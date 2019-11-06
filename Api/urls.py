@@ -47,6 +47,7 @@ urlpatterns = [
     url(r'^get_userinfo_transfer/$',get_userinfo_transfer_views),
     url(r'^export_data_process/$', export_data_process_views),
     url(r'^process_sort/$', process_sort_views),
+    url(r'^show_progress/$', show_progress),
 
 
     #----------------------web url-----------------------------
