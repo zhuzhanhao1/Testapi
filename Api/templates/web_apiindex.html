@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	<title>朱占豪的ERMS接口测试</title>
+	<title>朱占豪的接口测试平台</title>
 	<link rel="icon" href="../static/images/favicon%202.ico">
 	<script src="../static/jquery-3.4.1/jquery-3.4.1.min.js"></script>
 	<link href="../static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
@@ -125,10 +125,10 @@
 			left:0px;
 		}
 
-
 	</style>
 </head>
-<body class="layui-layout-body" style="background-image: url('../static/images/beijing3.png');background-size:100%;">
+<!--background-image: url('../static/images/beijing3.png');background-size:100%;-->
+<body class="layui-layout-body" style="background-color:lightsteelblue;">
 
 	<!--主题内容-table-->
 	<div id="layuibody" class="layui-body" style="margin-bottom: -70px;">
@@ -137,7 +137,7 @@
 			<div class="demoTable">
 				<div class="layui-breadcrumb">
 					<span class="layui-icon layui-icon-link" style="font-size: 22px;color: #fff;">
-						<a href="/web_apiindex/" class= "index"  style="color: #fff;" >http://amberdata.cn/ermsapi/v2</a>
+						<a href="/web_apiindex/?system={{ system }}" class= "index"  style="color: #fff;" >http://amberdata.cn/{{ system }}api/v2</a>
 						<a class="kit-side-fold casetitle" style="font-size: 22px;color: #fff;">{{ abq }}</a>
 					</span>
 				</div>
@@ -160,10 +160,60 @@
 	<div class="layui-row" id="popSearchRoleTest" style="display: none;">
 		<div class="layui-col-md11">
 			<form class="layui-form" id="demoadd" lay-filter="create_apicase">
+
 				<div class="layui-form-item" style="margin-top: 20px;">
-					<label class="layui-form-label">所属模块</label>
+					<label class="layui-form-label">所属系统</label>
 					<div class="layui-input-block">
+						<input type="radio" name="system" value="erms" title="数据档案室">
+						<input type="radio" name="system" value="transfer" title="移交接收系统">
+						<input type="radio" name="system" value="tdr" title="数字档案馆">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">角色</label>
+					<div class="layui-input-block erms" style="display: none;">
+						<input type="radio"  name="identity" value="sysadmin" title="系统管理员">
+						<input type="radio"  name="identity" value="admin" title="单位管理员">
+						<input type="radio"  name="identity" value="ast" title="单位档案员">
+					</div>
+					<div class="layui-input-block transfer" style="display: none;">
+						<input type="radio"  name="identity" value="transferadmin" title="数据管理员">
+						<input type="radio"  name="identity" value="sjzjy" title="数据质检员">
+						<input type="radio"  name="identity" value="sjshy" title="数据审核员">
+					</div>
+					<div class="layui-input-block tdr" style="display: none;">
+						<input type="radio"  name="identity" value="tdradmin" title="系统管理员">
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">所属模块</label>
+
+					<div class="layui-input-block create-case-tdr" style="display: none;">
 						<select name="belong" lay-verify="required">
+							<option value="单位接口">单位接口</option>
+							<option value="部门管理接口">部门管理接口</option>
+							<option value="用户管理接口">用户管理接口</option>
+							<option value="门类管理接口">门类管理接口</option>
+							<option value="视图自定义接口">视图自定义接口</option>
+							<option value="Record接口">Record接口</option>
+							<option value="文档管理接口">文档管理接口</option>
+							<option value="案卷管理接口">案卷管理接口</option>
+							<option value="档案管理接口">档案管理接口</option>
+							<option value="资源管理接口">资源管理接口</option>
+							<option value="导航管理接口">导航管理接口</option>
+							<option value="文件计划管理接口">文件计划管理接口</option>
+							<option value="公共操作相关接口">公共操作相关接口</option>
+							<option value="通用文件夹管理接口">通用文件夹管理接口</option>
+							<option value="元数据管理平台接口">元数据管理平台接口</option>
+							<option value="映射规则接口">映射规则接口</option>
+							<option value="鉴定任务接口">鉴定任务接口</option>
+							<option value="鉴定档案接口">鉴定档案接口</option>
+						</select>
+					</div>
+
+					<div class="layui-input-block  create-case-erms" style="display: none;">
+						<select name="belong1" lay-verify="required">
 							<option value="单位接口">单位接口</option>
 							<option value="部门管理接口">部门管理接口</option>
 							<option value="用户管理接口">用户管理接口</option>
@@ -191,15 +241,26 @@
 							<option value="映射规则接口">映射规则接口</option>
 						</select>
 					</div>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">用户身份</label>
-					<div class="layui-input-block">
-						<input type="radio" name="identity" value="sysadmin" title="系统管理员" checked>
-						<input type="radio" name="identity" value="admin" title="单位管理员">
-						<input type="radio" name="identity" value="ast" title="单位档案员">
+
+					<div class="layui-input-block  create-case-transfer" style="display: none;">
+						<select name="belong2" lay-verify="required">
+							<option value="用户模块接口">用户模块接口</option>
+							<option value="Record接口">Record接口</option>
+							<option value="资源管理接口">资源管理接口</option>
+							<option value="原文接口">原文接口</option>
+							<option value="导航接口">导航接口</option>
+							<option value="意见接口">意见接口</option>
+							<option value="案卷相关接口">案卷相关接口</option>
+							<option value="档案相关接口">档案相关接口</option>
+							<option value="映射规则接口">映射规则接口</option>
+							<option value="检测报告相关接口">检测报告相关接口</option>
+							<option value="移交表单相关接口">移交表单相关接口</option>
+							<option value="元数据平台接口">元数据平台接口</option>
+						</select>
 					</div>
+
 				</div>
+
 				<div class="layui-form-item">
 					<label class="layui-form-label">请求方式</label>
 					<div class="layui-input-block">
@@ -207,6 +268,7 @@
 						<input type="radio" name="method" value="post" title="POST">
 						<input type="radio" name="method" value="put" title="PUT">
 						<input type="radio" name="method" value="delete" title="Delete">
+						<input type="radio" name="method" value="file" title="FILE">
 					</div>
 				</div>
 				<div class="layui-form-item">
@@ -248,8 +310,6 @@
 							<option value="老江">老江</option>
 							<option value="老刘">老刘</option>
 						</select>
-{#						<input type="text" name="head" required lay-verify="required" placeholder="请输入负责人称谓"#}
-{#							   autocomplete="off" class="layui-input">#}
 					</div>
 				</div>
 				<div class="layui-form-item">
@@ -268,10 +328,60 @@
 	<div class="layui-row" id="UpdateCase" style="display: none;">
 		<div class="layui-col-md11">
 			<form class="layui-form" lay-filter="CreateUpdate">
+
 				<div class="layui-form-item" style="margin-top: 20px;">
-					<label class="layui-form-label">所属模块</label>
+					<label class="layui-form-label">所属系统</label>
 					<div class="layui-input-block">
+						<input type="radio" name="system" value="erms" title="数据档案室">
+						<input type="radio" name="system" value="transfer" title="移交接收系统">
+						<input type="radio" name="system" value="tdr" title="数字档案馆">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">角色</label>
+					<div class="layui-input-block erms" style="display: none;">
+						<input type="radio"  name="identity" value="sysadmin" title="系统管理员">
+						<input type="radio"  name="identity" value="admin" title="单位管理员">
+						<input type="radio"  name="identity" value="ast" title="单位档案员">
+					</div>
+					<div class="layui-input-block transfer" style="display: none;">
+						<input type="radio"  name="identity" value="transferadmin" title="数据管理员">
+						<input type="radio"  name="identity" value="sjzjy" title="数据质检员">
+						<input type="radio"  name="identity" value="sjshy" title="数据审核员">
+					</div>
+					<div class="layui-input-block tdr" style="display: none;">
+						<input type="radio"  name="identity" value="tdradmin" title="系统管理员">
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">所属模块</label>
+
+					<div class="layui-input-block create-case-tdr" style="display: none;">
 						<select name="belong" lay-verify="required">
+							<option value="单位接口">单位接口</option>
+							<option value="部门管理接口">部门管理接口</option>
+							<option value="用户管理接口">用户管理接口</option>
+							<option value="门类管理接口">门类管理接口</option>
+							<option value="视图自定义接口">视图自定义接口</option>
+							<option value="Record接口">Record接口</option>
+							<option value="文档管理接口">文档管理接口</option>
+							<option value="案卷管理接口">案卷管理接口</option>
+							<option value="档案管理接口">档案管理接口</option>
+							<option value="资源管理接口">资源管理接口</option>
+							<option value="导航管理接口">导航管理接口</option>
+							<option value="文件计划管理接口">文件计划管理接口</option>
+							<option value="公共操作相关接口">公共操作相关接口</option>
+							<option value="通用文件夹管理接口">通用文件夹管理接口</option>
+							<option value="元数据管理平台接口">元数据管理平台接口</option>
+							<option value="映射规则接口">映射规则接口</option>
+							<option value="鉴定任务接口">鉴定任务接口</option>
+							<option value="鉴定档案接口">鉴定档案接口</option>
+						</select>
+					</div>
+
+					<div class="layui-input-block  create-case-erms" style="display: none;">
+						<select name="belong1" lay-verify="required">
 							<option value="单位接口">单位接口</option>
 							<option value="部门管理接口">部门管理接口</option>
 							<option value="用户管理接口">用户管理接口</option>
@@ -299,15 +409,26 @@
 							<option value="映射规则接口">映射规则接口</option>
 						</select>
 					</div>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">用户身份</label>
-					<div class="layui-input-block">
-						<input type="radio" name="identity" value="sysadmin" title="系统管理员" checked>
-						<input type="radio" name="identity" value="admin" title="单位管理员">
-						<input type="radio" name="identity" value="ast" title="单位档案员">
+
+					<div class="layui-input-block  create-case-transfer" style="display: none;">
+						<select name="belong2" lay-verify="required">
+							<option value="用户模块接口">用户模块接口</option>
+							<option value="Record接口">Record接口</option>
+							<option value="资源管理接口">资源管理接口</option>
+							<option value="原文接口">原文接口</option>
+							<option value="导航接口">导航接口</option>
+							<option value="意见接口">意见接口</option>
+							<option value="案卷相关接口">案卷相关接口</option>
+							<option value="档案相关接口">档案相关接口</option>
+							<option value="映射规则接口">映射规则接口</option>
+							<option value="检测报告相关接口">检测报告相关接口</option>
+							<option value="移交表单相关接口">移交表单相关接口</option>
+							<option value="元数据平台接口">元数据平台接口</option>
+						</select>
 					</div>
+
 				</div>
+
 				<div class="layui-form-item">
 					<label class="layui-form-label">请求方式</label>
 					<div class="layui-input-block">
@@ -315,6 +436,7 @@
 						<input type="radio" name="method" value="post" title="POST">
 						<input type="radio" name="method" value="put" title="PUT">
 						<input type="radio" name="method" value="delete" title="Delete">
+						<input type="radio" name="method" value="file" title="FILE">
 					</div>
 				</div>
 				<div class="layui-form-item">
@@ -353,8 +475,13 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">负责人</label>
 					<div class="layui-input-block">
-						<input type="text" name="head" required lay-verify="required" placeholder="请输入负责人称谓"
-							   autocomplete="off" class="layui-input">
+						<select name="head" lay-verify="required">
+							<option value="老张">老张</option>
+							<option value="老王">老王</option>
+							<option value="老李">老李</option>
+							<option value="老江">老江</option>
+							<option value="老刘">老刘</option>
+						</select>
 					</div>
 				</div>
 				<div class="layui-form-item">
@@ -379,22 +506,38 @@
 							style="float: right;margin-left: 10px;">获取Token
 					</button>
 					<button type="button" class="layui-btn layui-btn-warm" onclick="get_user_info()"
-							style="float: right;">点我获取当前用户信息
+							style="float: right;">用户信息
 					</button>
 				</div>
 				<div class="layui-form-item" style="margin-top: 20px;">
-					<label class="layui-form-label">角色</label>
+					<label class="layui-form-label">所属系统</label>
 					<div class="layui-input-block">
-						<input type="radio" name="identity" value="sysadmin" title="系统管理员" checked>
-						<input type="radio" name="identity" value="admin" title="单位管理员">
-						<input type="radio" name="identity" value="ast" title="单位档案员">
+						<input type="radio" name="system" value="erms" title="数据档案室">
+						<input type="radio" name="system" value="transfer" title="移交接收系统">
+						<input type="radio" name="system" value="tdr" title="数字档案馆">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">角色</label>
+					<div class="layui-input-block erms" style="display: none;">
+						<input type="radio"  name="identity" value="sysadmin" title="系统管理员">
+						<input type="radio"  name="identity" value="admin" title="单位管理员">
+						<input type="radio"  name="identity" value="ast" title="单位档案员">
+					</div>
+					<div class="layui-input-block transfer" style="display: none;">
+						<input type="radio"  name="identity" value="transferadmin" title="数据管理员">
+						<input type="radio"  name="identity" value="sjzjy" title="数据质检员">
+						<input type="radio"  name="identity" value="sjshy" title="数据审核员">
+					</div>
+					<div class="layui-input-block tdr" style="display: none;">
+						<input type="radio"  name="identity" value="tdradmin" title="系统管理员">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">账号</label>
 					<div class="layui-input-block">
 						<input type="text" id="username" name="username" required lay-verify="required"
-							   placeholder="请输入账号" autocomplete="off" class="layui-input" value="{{ test }}">
+							   placeholder="请输入账号" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item layui-form-text">
@@ -423,24 +566,34 @@
 				<div class="layui-form-item" style="margin-top: 20px;">
 					<label class="layui-form-label">所属系统</label>
 					<div class="layui-input-block">
-						<input type="radio" name="system" value="erms" title="ERMS档案室" checked>
-						{#						<input type="radio" name="system" value="transfer" title="Transfer移交接收系统">#}
+						<input type="radio" name="system" value="erms" title="数据档案室" checked>
+						<input type="radio" name="system" value="transfer" title="移交接收系统">
+						<input type="radio" name="system" value="tdr" title="数字档案馆">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">角色</label>
-					<div class="layui-input-block">
-						<input type="checkbox" name="identity1" value="sysadmin" title="系统管理员" checked>
-						<input type="checkbox" name="identity2" value="admin" title="单位管理员" checked>
-						<input type="checkbox" name="identity3" value="ast" title="单位档案员" checked>
+					<div class="layui-input-block erms" style="display: none;">
+						<input type="checkbox"  name="sysadmin" value="sysadmin" title="系统管理员" checked>
+						<input type="checkbox"  name="admin" value="admin" title="单位管理员" checked>
+						<input type="checkbox"  name="ast" value="ast" title="单位档案员" checked>
+					</div>
+					<div class="layui-input-block transfer" style="display: none;">
+						<input type="checkbox"  name="transferadmin" value="transferadmin" title="数据管理员" checked>
+						<input type="checkbox"  name="sjzjy" value="sjzjy" title="数据质检员">
+						<input type="checkbox"  name="sjshy" value="sjshy" title="数据审核员">
+					</div>
+					<div class="layui-input-block tdr" style="display: none;">
+						<input type="checkbox"  name="tdradmin" value="tdradmin" title="系统管理员" checked>
 					</div>
 				</div>
+
 				<div class="layui-form-item" style="margin-top: 30px;">
-					<div class="layui-input-block">
+						<div class="layui-input-block">
 						<button class="layui-btn" lay-submit lay-filter="update_token_api"
-								style="margin-left: 225px;background-color: yellowgreen;">立即提交
+								style="float:right;background-color: yellowgreen;">立即提交
 						</button>
-						<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						<button type="reset" class="layui-btn layui-btn-primary" style="float: right;margin-right: 10px;">重置</button>
 					</div>
 				</div>
 			</form>
@@ -523,7 +676,7 @@
                     layEvent: 'fullScreen',
                     icon: 'layui-icon-top'
                 }, {title: '导入数据', layEvent: 'import', icon: 'layui-icon-upload-circle'}, 'print']
-            , title: 'ERMS接口测试'
+            , title: '接口测试'
             , page: {groups: 5} //开启分页
 			, loading: false
 			, height: 'full-60'
@@ -600,13 +753,14 @@
                     }
 
                 }
-            }
+            }//排序
 			, size: 'lg'	//大尺寸 /sm小尺寸
 			, skin: 'line' //行边框风格 /row列表框风格 /nob无边框风格
 			, limit : 30
             , limits: [10, 20, 30, 40, 50, 100, 200]
             , where: {//额外参数
-                belong: '{{ abq }}'
+                belong: '{{ abq }}',
+				system:"{{ system }}"
             }
             ,contextmenu: {
 				// 表头右键菜单配置
@@ -751,7 +905,7 @@
                             //console.log(typeof(a));
                             //console.log(b[a]["message"]);
                             return '<span style="color: red;">' + JSON.stringify(b[a]["message"]) + '</span>'
-                        } else if (res.result.indexOf("B.") != -1) {
+                        } else if (res.result.indexOf("B.响应时长") != -1) {
                             let a = JSON.parse(res.result)[res.casename];
                             return '<span style="color: deeppink;">' + JSON.stringify(a) + '</span>'
                         }else if(res.result != ""){
@@ -770,7 +924,7 @@
         	}
             , id: 'testReload'
 			,rowEvent: function (obj) {
-				obj.tr.css({'background':'#5FB878','color':'white'}).siblings().removeAttr('style')
+				obj.tr.css({'background':'#009688','color':'white'}).siblings().removeAttr('style')
 			}
             , done: function (res) {   //返回数据执行回调函数
                 layer.close(index);    //返回数据关闭loading
@@ -840,7 +994,7 @@
                                         "params": data[0]['params'],
                                         "body": data[0]['body']
                                     });
-                                    //监听编辑用户信息，
+                                    //监听编辑用例，
                                     form.on('submit(update_apicase)', function (data) {
                                         console.log(data.field);
                                         $.ajax({
@@ -857,7 +1011,7 @@
                                                 "identity": data.field.identity,
                                                 "method": data.field.method,
                                                 "params": data.field.params,
-                                                "system": "erms",
+                                                "system": "{{ system }}",
                                                 "url": data.field.url,
                                                 "head": data.field.head
                                             },
@@ -1017,7 +1171,8 @@
                                     type: 'GET',
                                     //async: false,
                                     data: {
-                                        "caseid": ids
+                                        "caseid": ids,
+										"isprocess":"no"
                                     },
                                     //请求前的处理,加载loading
                                     beforeSend: function () {
@@ -1322,9 +1477,11 @@
                     shada: 0.6,
                     content: $("#UpdateCase").html(),
                     success: function () {
-                        layui.use('form', function () {
+                        layui.use(['form','jquery'], function () {
                             var form = layui.form;
+                            	$=layui.$;
                             form.val("CreateUpdate", {
+                                "system":'{{ system }}',
                                 "caseID": data.caseid,
                                 "casename": data.casename,
                                 "identity": data.identity,
@@ -1335,9 +1492,43 @@
                                 "body": data.body,
                                 "head": data.head
                             });
+                            form.on('radio', function (data) {
+                                console.log(data.elem); //得到radio原始DOM对象
+                                console.log(data.value); //被点击的radio的value
+                                if (data.value == "erms") {
+                                    $(".erms").show();
+                                    $(".transfer").hide();
+                                    $(".tdr").hide();
+                                    $(".create-case-erms").show();
+                                    $(".create-case-tdr").hide();
+                                    $(".create-case-transfer").hide();
+                                } else if (data.value == "transfer") {
+                                    $(".transfer").show();
+                                    $(".erms").hide();
+                                    $(".tdr").hide();
+                                    $(".create-case-transfer").show();
+                                    $(".create-case-erms").hide();
+                                    $(".create-case-tdr").hide();
+                                } else if (data.value == "tdr") {
+                                    $(".tdr").show();
+                                    $(".erms").hide();
+                                    $(".transfer").hide();
+                                    $(".create-case-tdr").show();
+                                    $(".create-case-transfer").hide();
+                                    $(".create-case-erms").hide();
+                                }
+                            });
                             //监听编辑用户信息，
                             form.on('submit(update_apicase)', function (data) {
                                 console.log(data.field);
+                                var flag = "";
+                                if ('{{ system }}' == "erms") {
+                                    flag = data.field.belong1
+                                } else if ('{{ system }}' == "tdr") {
+                                    flag = data.field.belong
+                                } else if ('{{ system }}' == "tranfsfer") {
+                                    flag = data.field.belong2
+                                }
                                 $.ajax({
                                     cache: false,
                                     url: "/update_apicase/",
@@ -1345,14 +1536,14 @@
                                     type: 'POST',
                                     //async: false,
                                     data: {
-                                        "belong": data.field.belong,
+                                        "belong": flag,
                                         "body": data.field.body,
                                         "caseID": data.field.caseID,
                                         "casename": data.field.casename,
                                         "identity": data.field.identity,
                                         "method": data.field.method,
                                         "params": data.field.params,
-                                        "system": "erms",
+                                        "system": data.field.system,
                                         "url": data.field.url,
                                         "head": data.field.head
                                     },
@@ -1363,7 +1554,6 @@
                                         layer.msg(data, {
                                             icon: 6,
                                             offset: 't',
-                                            anim: 2,
                                             time: 3000//默认三秒
                                         });
                                         $(".layui-laypage-btn").click();
@@ -1464,11 +1654,28 @@
             anim: 1,
             content: $("#popSearchRoleTest3").html(),
             success: function () {
-                layui.use('form', function () {
-                    var form = layui.form;
-                    //监听编辑用户信息，
-					form.val("update_token_api", {
-					    //我是对了对抗重置按钮来的
+                layui.use(['form',"jquery"], function () {
+                    var form = layui.form,
+						$=layui.$;
+                    //监听token信息，
+					form.val("update_token_api");
+					form.on('radio', function (data) {
+                        console.log(data.elem); //得到radio原始DOM对象
+                        console.log(data.value); //被点击的radio的value
+						if (data.value=="erms"){
+						    $(".erms").show();
+						    $(".transfer").hide();
+						    $(".tdr").hide();
+						}else if(data.value=="transfer"){
+						    $(".transfer").show();
+							$(".erms").hide();
+						    $(".tdr").hide();
+						}else if(data.value=="tdr"){
+						    $(".tdr").show();
+							$(".erms").hide();
+						    $(".transfer").hide();
+						}
+
                     });
                     form.on('submit(update_token_api)', function (data) {
                         $.ajax({
@@ -1478,9 +1685,11 @@
                             type: 'POST',
                             //async: false,
                             data: {
-                                "identity1": data.field.identity1,
-                                "identity2": data.field.identity2,
-                                "identity3": data.field.identity3,
+                                "sysadmin": data.field.sysadmin,
+								"admin": data.field.admin,
+								"ast": data.field.ast,
+								"transferadmin": data.field.transferadmin,
+								"tdradmin": data.field.tdradmin,
                                 "system": data.field.system
                             },
                             success: function (data) {
@@ -1527,15 +1736,50 @@
             title: "新建用例",
             skin: "layui-layer-molv",
             shade: 0.6,
-            area: ['35%', ''],
+            area: ['40%', ''],
             content: $("#popSearchRoleTest").html(),
             success: function () {
-                layui.use('form', function () {
-                    var form = layui.form;
+                layui.use(['form','jquery'], function () {
+					var form = layui.form,
+						$=layui.$;
                     //监听编辑用户信息，
                     form.val("create_apicase");
+					form.on('radio', function (data) {
+                        console.log(data.elem); //得到radio原始DOM对象
+                        console.log(data.value); //被点击的radio的value
+						if (data.value=="erms"){
+							$(".erms").show();
+						    $(".transfer").hide();
+						    $(".tdr").hide();
+						    $(".create-case-erms").show();
+						    $(".create-case-tdr").hide();
+						    $(".create-case-transfer").hide();
+						}else if(data.value=="transfer"){
+							$(".transfer").show();
+							$(".erms").hide();
+						    $(".tdr").hide();
+						    $(".create-case-transfer").show();
+							$(".create-case-erms").hide();
+						    $(".create-case-tdr").hide();
+						}else if(data.value=="tdr"){
+							$(".tdr").show();
+							$(".erms").hide();
+						    $(".transfer").hide();
+						    $(".create-case-tdr").show();
+							$(".create-case-transfer").hide();
+						    $(".create-case-erms").hide();
+						}
+                    });
                     form.on('submit(create_apicase)', function (data) {
-                        console.log(data.field);
+						console.log(data.field);
+						var flag = "";
+						if('{{ system }}' == "erms"){
+						    flag = data.field.belong1
+						}else if('{{ system }}' == "tdr"){
+						    flag = data.field.belong
+						}else if('{{ system }}' == "tranfsfer"){
+						    flag = data.field.belong2
+						}
                         $.ajax({
                             cache: false,
                             url: "/create_apicase/",
@@ -1543,13 +1787,13 @@
                             type: 'POST',
                             //async: false,
                             data: {
-                                "belong": data.field.belong,
+                                "belong": flag,
                                 "body": data.field.body,
                                 "casename": data.field.casename,
                                 "identity": data.field.identity,
                                 "method": data.field.method,
                                 "params": data.field.params,
-                                "system": "erms",
+                                "system": data.field.system,
                                 "url": data.field.url,
                                 "head": data.field.head
                             },
@@ -1588,19 +1832,38 @@
             //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
             type: 1,
             title: "编辑用户信息",
-            area: ['35%', ''],
+            area: ['40%', ''],
             shade: 0.6,
             skin: "layui-layer-rim",
             content: $("#popSearchRoleTest2").html(),
             success: function () {
-                layui.use('form', function () {
+                layui.use(['form',"jquery"], function () {
                     var form = layui.form;
+                    	$=layui.$;
                     form.val("update_userinfo_api", {
-                        "identity": "sysadmin",
-                        "username": "admin@amberdata.cn",
+                        "system":"{{ system }}",
+                        "username": "xieyunfeng@amberdata.cn",
                         "password": "Y+zilsR88g9SZI8WOeHJlA=="
                     });
                     //监听编辑用户信息，
+					form.on('radio', function (data) {
+                        console.log(data.elem); //得到radio原始DOM对象
+                        console.log(data.value); //被点击的radio的value
+						if (data.value=="erms"){
+						    $(".erms").show();
+						    $(".transfer").hide();
+						    $(".tdr").hide();
+						}else if(data.value=="transfer"){
+						    $(".transfer").show();
+							$(".erms").hide();
+						    $(".tdr").hide();
+						}else if(data.value=="tdr"){
+						    $(".tdr").show();
+							$(".erms").hide();
+						    $(".transfer").hide();
+						}
+
+                    });
                     form.on('submit(update_userinfo_api)', function (data) {
                         $.ajax({
                             cache: false,
@@ -1644,10 +1907,10 @@
     }
 	//获取用户信息
     function get_user_info() {
-        layer.open({
+        var userinfo = layer.open({
             type: 1,
             title: "用户信息",
-            area: ['55%', ""],
+            area: ['70%', "70%"],
             skin: 'layui-layer-molv',
             shade: 0.6,
             content: '<div style="padding:15px;"><table id="templateTable"></table></div>',
@@ -1655,41 +1918,44 @@
                 var table = layui.table;
                 table.render({
                     elem: '#templateTable'
-                    , url: "/get_userinfo_transfer/"
+                    , url: "/get_userinfo/"
                     //, limit: 11
                     //, height: 'full-200'
                     //,page:true
-                    //, initSort:{
-                    //field:"isMust",
-                    //type:"desc"
-                    //}
+                    , initSort:{
+                    	field:"system",
+                    	type:"desc"
+                    }
 					, size: 'lg'
                     , cols: [[
-                        {field: 'identity', title: '用户身份', width: 120, align: "left"}
-                        , {field: 'username', title: '用户名', width: 200, align: "left"}
-                        , {field: 'password', title: '用户密码', width: 250, align: "left"}
+                        {field: 'identity', title: '用户身份',  align: "left"}
+                        , {field: 'role', title: '角色名',  align: "left"}
+                        , {field: 'username', title: '用户名',  align: "left"}
+                        , {field: 'password', title: '用户密码',  align: "left"}
                         //, {field: 'url', title: '请求地址', width: 250, align: "left"}
                         , {field: 'accessToken', title: '请求令牌', align: "left"}
+                        , {field: 'role', title: '角色名',  align: "left"}
+                        , {field: 'system', title: '所属系统', align: "left"}
                     ]]
                 });
             },
             btn: ['关闭'],
             yes: function () {
-                layer.closeAll()
+                layer.close(userinfo);
             }
 
         });
     }
 </script>
 
-<!--表头按钮-->
+<!--表头按钮 layui-btn-disabled-->
 <script type="text/html" id="toolbarDemo">
 	<div class="layui-btn-container">
 		<button type="button" onclick="selectRole()" class="layui-btn layui-btn-sm">新建用例</button>
 		<button type="button" onclick="loginuser()" class="layui-btn layui-btn-sm">用户信息</button>
 		<button class="layui-btn layui-btn-sm" lay-event="deletecase">批量删除</button>
 		<button id="Runcase" class="layui-btn layui-btn-sm" lay-event="runcase">执行用例</button>
-		<button id="Dingding" class="layui-btn layui-btn-sm layui-btn-disabled" lay-event="dingding">钉钉通知</button>
+		<button id="Dingding" class="layui-btn layui-btn-sm" lay-event="dingding">钉钉通知</button>
 	</div>
 </script>
 <!--行内按钮-->
@@ -1733,14 +1999,19 @@
 <!--用户身份模板-->
 <script type="text/html" id="identityTpl">
 	{% verbatim %}{{#  if(d.identity === 'sysadmin'){ }}{% endverbatim %}
-	<img src="../static/images/sysadmin.png" class="layui-nav-img">
+	<img src="../static/images/640-1.jpeg" class="layui-nav-img">
 
 	{% verbatim %}{{# } else if(d.identity=== 'admin') { }} {% endverbatim %}
-	<img src="../static/images/admin.png" class="layui-nav-img">
+	<img src="../static/images/640-4.jpeg" class="layui-nav-img">
 
 	{% verbatim %}{{# } else if(d.identity=== 'ast') { }} {% endverbatim %}
-	<img src="../static/images/ast.png" class="layui-nav-img">
+	<img src="../static/images/640-5.jpeg" class="layui-nav-img">
 
+	{% verbatim %}{{# } else if(d.identity=== 'transferadmin') { }} {% endverbatim %}
+	<img src="../static/images/640-2.jpeg" class="layui-nav-img">
+
+	{% verbatim %}{{# } else if(d.identity=== 'tdradmin') { }} {% endverbatim %}
+	<img src="../static/images/640-6.jpeg" class="layui-nav-img">
 	{% verbatim %}{{#  } }}{% endverbatim %}
 </script>
 

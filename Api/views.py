@@ -7,6 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 
 # Create your views here.
 
+
 # 用户登录
 def login_views(request):
     if request.POST:
@@ -55,6 +56,7 @@ def performance_views(request):
 @login_required
 def quicktest_views(request):
     return render(request, "quickTest.html")
+
 
 
 

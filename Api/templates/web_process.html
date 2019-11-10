@@ -130,7 +130,7 @@
 
 	</style>
 </head>
-<body class="layui-layout-body" style="background-image: url('../static/images/beijing3.png');background-size:100%;">
+<body class="layui-layout-body" style="background-color:lightsteelblue;">
 
 	<!--主题内容-table-->
 	<div id="layuibody" class="layui-body" style="margin-bottom: -70px;">
@@ -483,24 +483,34 @@
 				<div class="layui-form-item" style="margin-top: 20px;">
 					<label class="layui-form-label">所属系统</label>
 					<div class="layui-input-block">
-						<input type="radio" name="system" value="erms" title="ERMS档案室" checked>
-						{#						<input type="radio" name="system" value="transfer" title="Transfer移交接收系统">#}
+						<input type="radio" name="system" value="erms" title="数据档案室">
+						<input type="radio" name="system" value="transfer" title="移交接收系统">
+						<input type="radio" name="system" value="tdr" title="数字档案馆">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">角色</label>
-					<div class="layui-input-block">
-						<input type="checkbox" name="identity1" value="sysadmin" title="系统管理员" checked>
-						<input type="checkbox" name="identity2" value="admin" title="单位管理员" checked>
-						<input type="checkbox" name="identity3" value="ast" title="单位档案员" checked>
+					<div class="layui-input-block erms" style="display: none;">
+						<input type="checkbox"  name="sysadmin" value="sysadmin" title="系统管理员" checked>
+						<input type="checkbox"  name="admin" value="admin" title="单位管理员" checked>
+						<input type="checkbox"  name="ast" value="ast" title="单位档案员" checked>
+					</div>
+					<div class="layui-input-block transfer" style="display: none;">
+						<input type="checkbox"  name="transferadmin" value="transferadmin" title="数据管理员" checked>
+						<input type="checkbox"  name="sjzjy" value="sjzjy" title="数据质检员">
+						<input type="checkbox"  name="sjshy" value="sjshy" title="数据审核员">
+					</div>
+					<div class="layui-input-block tdr" style="display: none;">
+						<input type="checkbox"  name="tdradmin" value="tdradmin" title="系统管理员" checked>
 					</div>
 				</div>
+
 				<div class="layui-form-item" style="margin-top: 30px;">
 					<div class="layui-input-block">
 						<button class="layui-btn" lay-submit lay-filter="update_token_api"
-								style="margin-left: 225px;background-color: yellowgreen;">立即提交
+								style="float:right;background-color: yellowgreen;">立即提交
 						</button>
-						<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						<button type="reset" class="layui-btn layui-btn-primary" style="float: right;margin-right: 10px;">重置</button>
 					</div>
 				</div>
 			</form>
@@ -878,7 +888,7 @@
                             //console.log(typeof(a));
                             //console.log(b[a]["message"]);
                             return '<span style="color: red;">' + JSON.stringify(b[a]["message"]) + '</span>'
-                        } else if (res.result.indexOf("B.") != -1) {
+                        } else if (res.result.indexOf("B.响应时长") != -1) {
                             let a = JSON.parse(res.result)[res.casename];
                             return '<span style="color: deeppink;">' + JSON.stringify(a) + '</span>'
                         }else if(res.result != ""){
@@ -1093,11 +1103,11 @@
                                                     var prog_url = '/show_progress/';      // prog_url指请求进度的url，后面会在django中设置
                                                     $.getJSON(prog_url, function (num_progress) {
                                                         element.progress('demo', num_progress + '%');
-                                                        if (num_progress == "333") {
+                                                        if (num_progress == "100") {
                                                             clearInterval(sitv);
                                                         }
                                                     });
-                                                }, 100);// 每10毫秒查询一次后台进度
+                                                }, 333);// 每10毫秒查询一次后台进度
                                             });
                                         }
                                     });
@@ -1112,6 +1122,8 @@
                             },
                             success: function (data) {
                                 if (data.status_code == 500){
+                                    layer.msg(data.msg,{icon:5,offset:"t"});
+								}else if(data.status_code == 401){
                                     layer.msg(data.msg,{icon:5,offset:"t"});
 								}else{
 									var strjson = JSON.stringify(data, null, 4);
@@ -1195,7 +1207,8 @@
                                     type: 'GET',
                                     //async: false,
                                     data: {
-                                        "caseid": ids
+                                        "caseid": ids,
+										"isprocess":"yes"
                                     },
                                     //请求前的处理,加载loading
                                     beforeSend: function () {
@@ -1366,7 +1379,6 @@
                                     "caseid": ids
                                 });
                                 form.on('submit(example)', function (data) {
-                                    console.log(data.field.date);
                                     console.log(data.field.date1);
                                     console.log(data.field.date2);
                                     console.log(data.field.caseid);
@@ -1377,10 +1389,9 @@
                                         type: 'POST',
                                         //async: false,
                                         data: {
-                                            "date": data.field.date,
                                             "date1": data.field.date1,
                                             "date2": data.field.date2,
-                                            "caseid": data.field.caseid,
+                                            "caseid": data.field.caseid
                                         },
                                         success: function (data) {
                                             layer.msg(data, {
@@ -1437,7 +1448,7 @@
                             zIndex: layer.zIndex,
                             maxmin: true, //开启最大化最小化按钮
                             area: ['600px', '1200px'],
-                            content: "/detail_api/?id=" + data.caseid,
+                            content: "/detail_process_api/?id=" + data.caseid,
                         });
                         layer.full(index);
                     },
@@ -1910,11 +1921,28 @@
             anim: 1,
             content: $("#popSearchRoleTest3").html(),
             success: function () {
-                layui.use('form', function () {
-                    var form = layui.form;
-                    //监听编辑用户信息，
-					form.val("update_token_api", {
-					    //我是对了对抗重置按钮来的
+                layui.use(['form',"jquery"], function () {
+                    var form = layui.form,
+						$=layui.$;
+                    //监听token信息，
+					form.val("update_token_api");
+					form.on('radio', function (data) {
+                        console.log(data.elem); //得到radio原始DOM对象
+                        console.log(data.value); //被点击的radio的value
+						if (data.value=="erms"){
+						    $(".erms").show();
+						    $(".transfer").hide();
+						    $(".tdr").hide();
+						}else if(data.value=="transfer"){
+						    $(".transfer").show();
+							$(".erms").hide();
+						    $(".tdr").hide();
+						}else if(data.value=="tdr"){
+						    $(".tdr").show();
+							$(".erms").hide();
+						    $(".transfer").hide();
+						}
+
                     });
                     form.on('submit(update_token_api)', function (data) {
                         $.ajax({
@@ -1973,7 +2001,7 @@
             title: "新建用例",
             skin: "layui-layer-molv",
             shade: 0.6,
-            area: ['35%', ''],
+            area: ['40%', ''],
             content: $("#popSearchRoleTest").html(),
             success: function () {
                 layui.use(['form',"jquery"], function () {
@@ -2049,19 +2077,38 @@
             //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
             type: 1,
             title: "编辑用户信息",
-            area: ['35%', ''],
-            shade: 0.6,
+            area: ['40%', ''],
+            //shade: 0.6,
             skin: "layui-layer-rim",
             content: $("#popSearchRoleTest2").html(),
             success: function () {
-                layui.use('form', function () {
+                layui.use(['form',"jquery"], function () {
                     var form = layui.form;
+                    	$=layui.$;
                     form.val("update_userinfo_api", {
-                        "identity": "sysadmin",
+                        "system":"{{ system }}",
                         "username": "admin@amberdata.cn",
                         "password": "Y+zilsR88g9SZI8WOeHJlA=="
                     });
                     //监听编辑用户信息，
+					form.on('radio', function (data) {
+                        console.log(data.elem); //得到radio原始DOM对象
+                        console.log(data.value); //被点击的radio的value
+						if (data.value=="erms"){
+						    $(".erms").show();
+						    $(".transfer").hide();
+						    $(".tdr").hide();
+						}else if(data.value=="transfer"){
+						    $(".transfer").show();
+							$(".erms").hide();
+						    $(".tdr").hide();
+						}else if(data.value=="tdr"){
+						    $(".tdr").show();
+							$(".erms").hide();
+						    $(".transfer").hide();
+						}
+
+                    });
                     form.on('submit(update_userinfo_api)', function (data) {
                         $.ajax({
                             cache: false,
@@ -2070,6 +2117,7 @@
                             type: 'POST',
                             //async: false,
                             data: {
+                                "system":data.field.system,
                                 "identity": data.field.identity,
                                 "username": data.field.username,
                                 "password": data.field.password
@@ -2104,56 +2152,47 @@
 
     }
 	//获取用户信息
-    function get_user_info() {
-        layer.open({
+    function get_user_info()  {
+        var userinfo = layer.open({
             type: 1,
             title: "用户信息",
-            area: ['55%', ""],
+            area: ['70%', "70%"],
             skin: 'layui-layer-molv',
-            shade: 0.6,
+            //shade: 0.6,
             content: '<div style="padding:15px;"><table id="templateTable"></table></div>',
             success: function () {
                 var table = layui.table;
                 table.render({
                     elem: '#templateTable'
-                    , url: "/get_userinfo_transfer/"
+                    , url: "/get_userinfo/"
                     //, limit: 11
                     //, height: 'full-200'
                     //,page:true
-                    //, initSort:{
-                    //field:"isMust",
-                    //type:"desc"
-                    //}
+                    , initSort:{
+                    	field:"system",
+                    	type:"desc"
+                    }
 					, size: 'lg'
                     , cols: [[
-                        {field: 'identity', title: '用户身份', width: 120, align: "left"}
-                        , {field: 'username', title: '用户名', width: 200, align: "left"}
-                        , {field: 'password', title: '用户密码', width: 250, align: "left"}
+                        {field: 'identity', title: '用户身份',  align: "left"}
+                        , {field: 'role', title: '角色名',  align: "left"}
+                        , {field: 'username', title: '用户名',  align: "left"}
+                        , {field: 'password', title: '用户密码',  align: "left"}
                         //, {field: 'url', title: '请求地址', width: 250, align: "left"}
                         , {field: 'accessToken', title: '请求令牌', align: "left"}
+                        , {field: 'role', title: '角色名',  align: "left"}
+                        , {field: 'system', title: '所属系统', align: "left"}
                     ]]
                 });
             },
             btn: ['关闭'],
             yes: function () {
-                layer.closeAll()
+                layer.close(userinfo);
             }
 
         });
     }
 
-    function gettoken1() {
-		layer.open({
-			//layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
-			type: 1,
-			title: false,
-			area: ['50%', ''],
-			//skin: "layui-layer-rim",
-			shade: 0.6,
-			content: $("#jindutiao").html()
-		});
-
-    }
 </script>
 
 
@@ -2166,7 +2205,7 @@
 		<button class="layui-btn layui-btn-sm" lay-event="deletecase">批量删除</button>
 		<button id="Runcase" class="layui-btn layui-btn-sm" lay-event="runcase">执行用例</button>
 		<button id="task" class="layui-btn layui-btn-sm" lay-event="Timingtask">定时任务</button>
-		<button id="Dingding" class="layui-btn layui-btn-sm layui-btn-disabled" lay-event="dingding">钉钉通知</button>
+		<button id="Dingding" class="layui-btn layui-btn-sm" lay-event="dingding">钉钉通知</button>
 	</div>
 </script>
 <!--行内按钮-->
@@ -2178,7 +2217,7 @@
 </script>
 <!--用例名字超链接模板-->
 <script type="text/html" id="casenameTpl">
-	<a href="/detail_api/?id={% verbatim %}{{d.caseid}}{% endverbatim %}" class="layui-table-link" target="_blank" style="color: blueviolet;">
+	<a href="/detail_process_api/?id={% verbatim %}{{d.caseid}}{% endverbatim %}" class="layui-table-link" target="_blank" style="color: blueviolet;">
 		{% verbatim %}{{d.casename}}{% endverbatim %}
 	</a>
 </script>
@@ -2210,14 +2249,19 @@
 <!--用户身份模板-->
 <script type="text/html" id="identityTpl">
 	{% verbatim %}{{#  if(d.identity === 'sysadmin'){ }}{% endverbatim %}
-	<img src="../static/images/sysadmin.png" class="layui-nav-img">
+	<img src="../static/images/640-1.jpeg" class="layui-nav-img">
 
 	{% verbatim %}{{# } else if(d.identity=== 'admin') { }} {% endverbatim %}
-	<img src="../static/images/admin.png" class="layui-nav-img">
+	<img src="../static/images/640-4.jpeg" class="layui-nav-img">
 
 	{% verbatim %}{{# } else if(d.identity=== 'ast') { }} {% endverbatim %}
-	<img src="../static/images/ast.png" class="layui-nav-img">
+	<img src="../static/images/640-5.jpeg" class="layui-nav-img">
 
+	{% verbatim %}{{# } else if(d.identity=== 'yjadmin') { }} {% endverbatim %}
+	<img src="../static/images/640-2.jpeg" class="layui-nav-img">
+
+	{% verbatim %}{{# } else if(d.identity=== 'tdradmin') { }} {% endverbatim %}
+	<img src="../static/images/640-6.jpeg" class="layui-nav-img">
 	{% verbatim %}{{#  } }}{% endverbatim %}
 </script>
 

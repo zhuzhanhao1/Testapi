@@ -19,58 +19,29 @@ ast = con.get_logininfo("ast")
 
 
 class GetToken:
-    def __init__(self):
+    def __init__(self,role):
         self.con = ConnDataBase()
-        self.yjadmin = self.con.get_logininfo("yjadmin")
-        self.sysadmin = self.con.get_logininfo("sysadmin")
-        self.admin = self.con.get_logininfo("admin")
-        self.ast = self.con.get_logininfo("ast")
-
+        self.role = self.con.get_logininfo(role)
 
     def get_token_by_role(self,role):
         headers = {
             "Content-Type": "application/json"
         }
-        #ERMS档案员
-        if role == "ast":
-            params = {
-                "loginName": self.ast[0],
-                "password": self.ast[1]
-            }
-        # ERMS单位管理员
-        elif role == "admin":
-            params = {
-                "loginName": self.admin[0],
-                "password": self.admin[1]
-            }
-        # ERMS系统管理员
-        elif role == "sysadmin":
-            params = {
-                "loginName": self.sysadmin[0],
-                "password": self.sysadmin[1]
-            }
-        #Transfer管理员
-        elif role == "yjadmin":
-            params = {
-                "loginName": self.yjadmin[0],
-                "password": self.yjadmin[1]
-            }
-        #Admin管理员
-        elif role == "adminadmin":
-            params = {
-                "loginName": self.yjadmin[0],
-                "password": self.yjadmin[1]
-            }
+        params = {
+            "loginName": self.role[0],
+            "password": self.role[1]
+        }
         response = requests.post(url, headers=headers, data=json.dumps(params))
         res = response.json()['accessToken']
         # print(res)
         result = self.con.update_token(res, role)
+        print("角色" + role + "的Token已被更新")
         return result  # None
 
 
 if __name__ == "__main__":
     start_time = time.time()
-    a = GetToken()
+    a = GetToken("ast")
     # print(a.get_json(a.get_user_power("ast")))
     print(a.get_token_by_role("ast"))
     end_time = time.time()
