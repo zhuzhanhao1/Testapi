@@ -166,14 +166,12 @@
 					<label class="layui-form-label">所属模块</label>
 					<div class="layui-input-block">
 						<select name="belong" lay-verify="required">
-							<option value="单位接口">单位接口</option>
-							<option value="保留处置策略接口">保留处置策略接口</option>
+							<option value="登录过程接口">登录过程接口</option>
 							<option value="数据表单配置接口">数据表单配置接口</option>
-							<option value="访问控制策略接口">访问控制策略接口</option>
+							<option value="保留处置策略接口">保留处置策略接口</option>
 							<option value="类目保管期限接口">类目保管期限接口</option>
+							<option value="访问控制策略接口">访问控制策略接口</option>
 							<option value="视图自定义接口">视图自定义接口</option>
-							<option value="部门管理接口">部门管理接口</option>
-							<option value="用户管理接口">用户管理接口</option>
 							<option value="整理任务接口">整理任务接口</option>
 						</select>
 					</div>
@@ -243,7 +241,7 @@
 					<label class="layui-form-label">是否有依赖</label>
 					<div class="layui-input-block">
 						<input type="radio" name="isprocess" value="True" title="有依赖">
-						<input type="radio" name="isprocess" value="False" title="无依赖" checked="">
+						<input type="radio" name="isprocess" value="False" title="无依赖" checked>
 					</div>
 				</div>
 
@@ -252,7 +250,7 @@
 					<div class="layui-input-block">
 						<input type="checkbox" name="replaceposition" value="params" title="params">
 						<input type="checkbox" name="replaceposition" value="body" title="body">
-						<input type="checkbox" name="replaceposition" value="" title="null" checked="">
+						<input type="checkbox" name="replaceposition" value="" title="null">
 					</div>
 				</div>
 
@@ -299,16 +297,13 @@
 					<label class="layui-form-label">所属模块</label>
 					<div class="layui-input-block">
 						<select name="belong" lay-verify="required">
-							<option value="单位接口">单位接口</option>
-							<option value="保留处置策略接口">保留处置策略接口</option>
+							<option value="登录过程接口">登录过程接口</option>
 							<option value="数据表单配置接口">数据表单配置接口</option>
-							<option value="访问控制策略接口">访问控制策略接口</option>
+							<option value="保留处置策略接口">保留处置策略接口</option>
 							<option value="类目保管期限接口">类目保管期限接口</option>
+							<option value="访问控制策略接口">访问控制策略接口</option>
 							<option value="视图自定义接口">视图自定义接口</option>
-							<option value="部门管理接口">部门管理接口</option>
-							<option value="用户管理接口">用户管理接口</option>
 							<option value="整理任务接口">整理任务接口</option>
-
 						</select>
 					</div>
 				</div>
@@ -383,7 +378,7 @@
 					<label class="layui-form-label">是否有依赖</label>
 					<div class="layui-input-block">
 						<input type="radio" name="isprocess" value="True" title="有依赖">
-						<input type="radio" name="isprocess" value="False" title="无依赖" checked="">
+						<input type="radio" name="isprocess" value="False" title="无依赖" checked>
 					</div>
 				</div>
 
@@ -392,7 +387,7 @@
 					<div class="layui-input-block">
 						<input type="checkbox" name="replaceposition" value="params" title="params">
 						<input type="checkbox" name="replaceposition" value="body" title="body">
-						<input type="checkbox" name="replaceposition" value="" title="null" checked="">
+						<input type="checkbox" name="replaceposition" value="" title="null">
 					</div>
 				</div>
 
@@ -737,7 +732,7 @@
 			, size: 'lg'	//大尺寸 /sm小尺寸
 			, skin: 'line' //行边框风格 /row列表框风格 /nob无边框风格
 			, limit : 30
-            , limits: [10, 20, 30, 40, 50, 100, 200]
+            , limits: [10, 20, 30, 50, 100, 200,500]
             , where: {//额外参数
                 belong: '{{ abq }}'
             }
@@ -1082,16 +1077,15 @@
                                 if (data.length > 1) {
                                     document.getElementById("Runcase").setAttribute("disabled", true);
                                     document.getElementById("Runcase").innerHTML = "loading...";
-                                    l_index = layer.load(0, {
-                                        shade: [0.5, '#DBDBDB'] //0.1透明度的白色背景
-                                    });
-                                    layer.open({
+                                    l_index = layer.msg('执行接口中，小伙伴请稍候~~',{icon: 16,time:false,shade:0.5});
+                                    //l_index = layer.load(0, {shade: [0.5, '#DBDBDB']}); //0.1透明度的白色背景
+                                    var process = layer.open({
                                         //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
                                         type: 1,
                                         title: false,
                                         area: ['50%', ''],
                                         skin: "layui-layer-rim",
-                                        shade: 0.6,
+                                        //shade: 0.8,
                                         offset: "b",
                                         content: $("#jindutiao").html(),
                                         success: function () {
@@ -1099,24 +1093,23 @@
                                                 var $ = layui.jquery
                                                     , element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
                                                 console.log("come in ");
-                                                var sitv = setInterval(function () {
+												var sitv = setInterval(function () {
                                                     var prog_url = '/show_progress/';      // prog_url指请求进度的url，后面会在django中设置
                                                     $.getJSON(prog_url, function (num_progress) {
                                                         element.progress('demo', num_progress + '%');
                                                         if (num_progress == "100") {
                                                             clearInterval(sitv);
+                                                            layer.close(process);
                                                         }
                                                     });
-                                                }, 333);// 每10毫秒查询一次后台进度
+                                                }, 250);// 每10毫秒查询一次后台进度
                                             });
                                         }
                                     });
                                 } else {
                                     document.getElementById("Runcase").setAttribute("disabled", true);
                                     document.getElementById("Runcase").innerHTML = "loading...";
-                                    l_index = layer.load(0, {
-                                        shade: [0.5, '#DBDBDB'] //0.1透明度的白色背景
-                                    });
+                       				l_index = layer.msg('执行接口中，小伙伴请稍候~~',{icon: 16,time:false,shade:0.5});
                                 }
 
                             },
@@ -1156,8 +1149,8 @@
 											});
 										},
 										btn2: function (index, layro) {//这里就是你要的
-											//layer.close(index);
-											layer.closeAll()
+											layer.close(index);
+											//layer.closeAll();
 											$(".layui-laypage-btn").click();
 										},
 										area: ['800px', '600px'] //自定义文本域宽高
@@ -1214,9 +1207,8 @@
                                     beforeSend: function () {
                                         document.getElementById("Dingding").setAttribute("disabled", true);
                                         document.getElementById("Dingding").innerHTML = "loading...";
-                                        l_index = layer.load(0, {
-                                            shade: [0.5, '#DBDBDB'] //0.1透明度的白色背景
-                                        });
+                                        l_index = layer.msg('发送钉钉中，小伙伴请稍候~~',{icon: 16,time:false,shade:0.5});
+                                        //l_index = layer.load(0, {shade: [0.5, '#DBDBDB']}); //0.1透明度的白色背景
                                     },
                                     success: function (data) {
                                         console.log(data);
@@ -1301,7 +1293,7 @@
                         content: $("#importCase").html()
                     });
                     break;
-                //删除用例
+                //批量删除
                 case "deletecase":
                     var data = checkStatus.data;
                     layer.confirm('真的删除行么', function (index) {
@@ -1340,7 +1332,7 @@
                         });
                     });
                     break;
-                //执行定时任务按钮
+                //定时任务
                 case "Timingtask":
                     var data = checkStatus.data;
                     var ids = "";
@@ -1774,6 +1766,7 @@
                                 "params": data.params,
                                 "body": data.body,
                                 "head": data.head,
+								"isprocess":data.isprocess,
                                 "dependid": data.depend_id,
                                 "dependkey": data.depend_key,
                                 "replacekey": data.replace_key,
@@ -1952,9 +1945,11 @@
                             type: 'POST',
                             //async: false,
                             data: {
-                                "identity1": data.field.identity1,
-                                "identity2": data.field.identity2,
-                                "identity3": data.field.identity3,
+                                "sysadmin": data.field.sysadmin,
+								"admin": data.field.admin,
+								"ast": data.field.ast,
+								"transferadmin": data.field.transferadmin,
+								"tdradmin": data.field.tdradmin,
                                 "system": data.field.system
                             },
                             success: function (data) {
@@ -2117,7 +2112,6 @@
                             type: 'POST',
                             //async: false,
                             data: {
-                                "system":data.field.system,
                                 "identity": data.field.identity,
                                 "username": data.field.username,
                                 "password": data.field.password

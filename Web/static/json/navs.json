@@ -185,15 +185,15 @@
 					"spread": false
 				},
 				{
-					"title": "数据表单配置接口",
-					"icon": "&#xe638;",
-					"href": "/web_process/?belong=data_form_config",
+					"title": "登录过程接口",
+					"icon": "&#xe61c;",
+					"href": "/web_process/?belong=login",
 					"spread": false
 				},
 				{
-					"title": "类目保管期限设定",
-					"icon": "&#xe63c;",
-					"href": "/web_process/?belong=category",
+					"title": "数据表单配置接口",
+					"icon": "&#xe638;",
+					"href": "/web_process/?belong=data_form_config",
 					"spread": false
 				},
 				{
@@ -203,18 +203,24 @@
 					"spread": false
 				},
 				{
+					"title": "类目保管期限设定",
+					"icon": "&#xe63c;",
+					"href": "/web_process/?belong=category",
+					"spread": false
+				},
+				{
 					"title": "访问控制策略管理",
 					"icon": "&#xe631;",
 					"href": "/web_process/?belong=alc",
 					"spread": false
 				},
-								{
+				{
 					"title": "视图自定义",
 					"icon": "&#xe600;",
 					"href": "/web_process/?belong=view",
 					"spread": false
 				},
-								{
+				{
 					"title": "整理任务接口",
 					"icon": "&#xe638;",
 					"href": "/web_process/?belong=finish_task",
@@ -535,6 +541,18 @@
 						"title": "鉴定档案接口",
 						"icon": "&#xe600;",
 						"href": "/web_apiindex/?system=tdr&belong=appraisal_archives",
+						"spread": false
+					},
+                    {
+						"title": "库房存址",
+						"icon": "&#xe638;",
+						"href": "/web_apiindex/?system=tdr&belong=warehouse_address",
+						"spread": false
+					},
+					{
+						"title": "库房接口",
+						"icon": "&#xe600;",
+						"href": "/web_apiindex/?system=tdr&belong=warehouse",
 						"spread": false
 					},
 					{

@@ -51,8 +51,8 @@ def processlist_view(request):
 
     # 流程接口
     if belong:
-        if belong == "unit":
-            apilists = Processapi.objects.filter(belong="单位接口").order_by("sortid")
+        if belong == "login":
+            apilists = Processapi.objects.filter(belong="登录过程接口").order_by("sortid")
         elif belong == "policy":
             apilists = Processapi.objects.filter(belong="保留处置策略接口").order_by("sortid")
         elif belong == "data_form_config":
@@ -345,6 +345,7 @@ def run_processcase_views(request):
     content = request.POST.get("request", "")
     content = json.loads(content)
     if len(content) == 1:
+        caseid = content[0].get("caseid", "")  # 接口id
         identity = content[0].get("identity", "")  # 用户身份
         Runmethod = RequestMethod(identity)  # 根据用户身份获取请求头Token数据
         url = content[0].get("url", "")  # 登录地址
@@ -396,10 +397,10 @@ def run_processcase_views(request):
         # 异常捕获
         except TypeError as e:
             print(e)
-            return JsonResponse({"status_code": 500, "msg": "操作或函数应用于不适当类型的对象"})
+            return JsonResponse({"status_code": 500, "msg": "异常的id为:"+caseid+","+casename+"操作或函数应用于不适当类型的对象"})
         except json.decoder.JSONDecodeError as e:
             print(e)
-            return JsonResponse({"status_code": 500, "msg": "json.loads()读取字符串报错"})
+            return JsonResponse({"status_code": 500, "msg": "异常的id为:"+caseid+","+casename+"json.loads()读取字符串报错"})
 
     else:
         # 多个接口测试的情况
@@ -467,11 +468,11 @@ def run_processcase_views(request):
                     except TypeError as e:
                         print(e)
                         num_progress = 100
-                        return JsonResponse({"status_code": 500, "msg": "操作或函数应用于不适当类型的对象"})
+                        return JsonResponse({"status_code": 500, "msg": "异常的id为:"+caseid+","+casename+"-操作或函数应用于不适当类型的对象"})
                     except json.decoder.JSONDecodeError as e:
                         print(e)
                         num_progress = 100
-                        return JsonResponse({"status_code": 500, "msg": "json.loads()读取字符串报错"})
+                        return JsonResponse({"status_code": 500, "msg": "异常的id为:"+caseid+","+casename+"json.loads()读取字符串报错"})
                 #如果请求的依赖接口不止有一个的时候
                 else:
                     body = json.loads(body) if body != "" else body
@@ -520,11 +521,11 @@ def run_processcase_views(request):
                     except TypeError as e:
                         print(e)
                         num_progress = 100
-                        return JsonResponse({"status_code": 500, "msg": "操作或函数应用于不适当类型的对象"})
+                        return JsonResponse({"status_code": 500, "msg": "异常的id为:"+caseid+","+casename+"操作或函数应用于不适当类型的对象"})
                     except json.decoder.JSONDecodeError as e:
                         print(e)
                         num_progress = 100
-                        return JsonResponse({"status_code": 500, "msg": "json.loads()读取字符串报错"})
+                        return JsonResponse({"status_code": 500, "msg": "异常的id为:"+caseid+","+casename+"json.loads()读取字符串报错"})
             # 不需要别的接口
             elif isprocess != "True":
                 print("我不需要依赖别的接口！！！")
@@ -538,10 +539,10 @@ def run_processcase_views(request):
                     # 异常捕获
                 except TypeError as e:
                     print(e)
-                    return JsonResponse({"status_code": 500, "msg": "操作或函数应用于不适当类型的对象"})
+                    return JsonResponse({"status_code": 500, "msg": "异常的id为:"+caseid+","+casename+"操作或函数应用于不适当类型的对象"})
                 except json.decoder.JSONDecodeError as e:
                     print(e)
-                    return JsonResponse({"status_code": 500, "msg": "json.loads()读取字符串报错"})
+                    return JsonResponse({"status_code": 500, "msg": "异常的id为:"+caseid+","+casename+"json.loads()读取字符串报错"})
                 # 获取运行完的时间
             endtime = time.time()
             runtime = round(endtime - starttime, 3)

@@ -137,6 +137,10 @@ def apilist_view(request):
                     apilists = Case.objects.filter(Q(belong__contains="鉴定任务接口") & Q(system="tdr")).order_by("sortid")
                 elif belong == "appraisal_archives":
                     apilists = Case.objects.filter(Q(belong__contains="鉴定档案接口") & Q(system="tdr")).order_by("sortid")
+                elif belong == "warehouse":
+                    apilists = Case.objects.filter(Q(belong__contains="库房接口") & Q(system="tdr")).order_by("sortid")
+                elif belong == "warehouse_address":
+                    apilists = Case.objects.filter(Q(belong__contains="库房存址") & Q(system="tdr")).order_by("sortid")
 
         elif system == "erms":
             if casename == "" and belong == "" and filterSos == "":
@@ -679,6 +683,7 @@ def ding_ding_view(request):
         }
         dic_json = json.dumps(dic, ensure_ascii=False, sort_keys=True, indent=2)
         print(dic_json)
+
         # send_ding(dic_json,head)
         # send_link(id,casename)
     return HttpResponse("操作成功")
