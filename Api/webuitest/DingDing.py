@@ -1,8 +1,8 @@
 import requests,json
 import logging
 from dingtalkchatbot.chatbot import DingtalkChatbot
-# url = "https://oapi.dingtalk.com/robot/send?access_token=99c9913b6f5370541f17d56b3e1e32ca4d534b25f17df9fcedf44aa5173968a6"
-url = "https://oapi.dingtalk.com/robot/send?access_token=21829afa1afbefb42c38dfe171a4f6398448eec4da63bb914310067d22b256fc"
+url = "https://oapi.dingtalk.com/robot/send?access_token=99c9913b6f5370541f17d56b3e1e32ca4d534b25f17df9fcedf44aa5173968a6"
+# url = "https://oapi.dingtalk.com/robot/send?access_token=21829afa1afbefb42c38dfe171a4f6398448eec4da63bb914310067d22b256fc"
 # 初始化机器人小丁
 def send_image():
     xiaoding = DingtalkChatbot(url)
@@ -11,7 +11,7 @@ def send_image():
 
 def send_link(id,text):
     xiaoding = DingtalkChatbot(url)
-    xiaoding.send_link(title='接口详情', text='{}详情，请点击链接......'.format(text), message_url='http://192.168.10.182:9999/detail_api/?id={}'.format(id))
+    xiaoding.send_link(title='接口详情', text='{}请点击我......'.format(text), message_url='http://192.168.10.182:9999/detail_api/?id={}'.format(id))
 
 def send_ding(content,head=None):
     params = {
@@ -83,6 +83,6 @@ def send_ding(content,head=None):
 
 
 if __name__ == "__main__":
-    pass
-    # send_link()
+    # pass
+    send_link(1,'李建构吃屎')
     # send_image()

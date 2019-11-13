@@ -43,11 +43,14 @@ urlpatterns = [
     url(r'^field_apilist/$',field_apilist_views),
     #单一接口列表排序
     url(r'^web_sort/$', web_sort_views),
+    # 流程执行进度条
+    url(r'^show_api/$', show_api_views),
+    #重复执行
+    url(r'^repeatrun_api/$', repeatrun_api_views),
 
 
 #----------------------接口流程测试-----------------------------
-    #流程测试接口首页-接口列表
-    url(r'^ProcessIndex/$', process_interface_view),
+    #流程测试-接口列表
     url(r'^processlist/$', processlist_view),
     #流程接口的查看详情-增删改
     url(r'^detail_process_api/$',detail_process_api_views),
@@ -60,7 +63,9 @@ urlpatterns = [
     #流程接口列表排序
     url(r'^process_sort/$', process_sort_views),
     #流程执行进度条
-    url(r'^show_progress/$', show_progress),
+    url(r'^show_progress/$', show_progress_views),
+    #重复执行
+    url(r'^repeatrun/$', repeatrun_views),
 
 
     #----------------------web url-----------------------------

@@ -43,7 +43,8 @@ def web_apiindex_views(request):
 @login_required
 def web_process_views(request):
     a = request.GET.get("belong", "")
-    return render(request, 'web_process.html', {"abq":a})
+    b = request.GET.get("system", "")
+    return render(request, 'web_process.html', {"abq":a,"system":b})
 
 #个人信息页
 @login_required

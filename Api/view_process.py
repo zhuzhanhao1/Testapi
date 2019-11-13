@@ -1,4 +1,5 @@
 import os, sys, io
+import threading
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.schedulers.blocking import BlockingScheduler
@@ -6,7 +7,6 @@ from datetime import datetime
 import time
 import json
 import jsonpath
-
 from apscheduler.triggers.interval import IntervalTrigger
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -19,7 +19,7 @@ from .forms import *
 from Api.interfacetest.run_method import RequestMethod
 import pytz
 from Api.interfacetest.get_header import GetToken
-# from Api.webuitest.DingDing import send_ding,send_image,send_link
+from Api.webuitest.DingDing import send_ding,send_image,send_link
 
 currentUrl = os.path.dirname(__file__)
 # 父文件路径
@@ -28,13 +28,7 @@ sys.path.append(cur_path)
 from webuitest.conn_database import ConnDataBase
 
 num_progress = 0 # 全局变量进度数
-
-# 接口api用例首页
-@login_required
-def process_interface_view(request):
-    a = request.GET.get("belong", "")
-    case_count = Processapi.objects.all().count()
-    return render(request, "process_interface.html", {"user": "朱占豪", "abq": a, "case_count": case_count})
+thread_dict = {}
 
 
 #流程测试接口列表
@@ -203,11 +197,12 @@ def create_processcase_views(request):
         replaceposition = request.POST.get("replaceposition", "")
         system = request.POST.get("system","")
 
-        all = Processapi.objects.filter()
+        all = Processapi.objects.filter(system=system)
         L = []
         for i in all:
             L.append(i.sortid)
         m = max(L) + 1
+
 
         if "<" in body or ">" in body:
             print('存在需要替换的符号')
@@ -449,11 +444,13 @@ def run_processcase_views(request):
                     for i in range(len(dependkey)):
                         #将依赖的结果集放入一个列表存储
                         dependvalue = jsonpath.jsonpath(result,dependkey_key[i])[dependkey[dependkey_key[i]]]
+                        print(dependvalue)
                         if type(dependvalue) is list:
                             dependvalue = dependvalue[0]
                         depend_value.append(dependvalue)
                         #将需要替换的结果集放入一个列表存储
                         replacevalue = jsonpath.jsonpath(params_body,replaceKey_key[i])[replaceKey[replaceKey_key[i]]]
+                        print(replacevalue)
                         if type(replacevalue) is list:
                             replacevalue = replacevalue[0]
                         replace_value.append(replacevalue)
@@ -504,12 +501,15 @@ def run_processcase_views(request):
                             depend_value.append(dependvalue)
 
                     params_body = params if replace_position == "params" else body
+                    print("体内容取值开开始。。。。")
                     replace_value = []
                     for i in range(len(replaceKey_key)):
                         replacevalue = jsonpath.jsonpath(params_body,replaceKey_key[i])[replaceKey[replaceKey_key[i]]]
+                        print(replacevalue)
                         if type(replacevalue) is list:
                             replacevalue = replacevalue[0]
                         replace_value.append(replacevalue)
+                    print(replace_value)
                     # 将变量params_body转为json字符串，为了之后的字符串替换
                     params_body = json.dumps(params_body, ensure_ascii=False, sort_keys=True, indent=2)
                     # 将替换的内容体中需要替换的结果集内逐一遍历替换为依赖的结果集内对应的数据
@@ -581,7 +581,7 @@ def run_processcase_views(request):
 
 #进度条
 @login_required
-def show_progress(request):
+def show_progress_views(request):
     global num_progress
     print('show_progress----------'+str(num_progress))
     #当进度百分百的时候，需要吧全局变量初始化，以便下次请求的时候进度条是重0开始，否则默认都是百分之百了
@@ -936,10 +936,12 @@ def process_sort_views(request):
         belong = request.POST.get("belong","")
         system = request.POST.get("system", "")
         datas = json.loads(data)
-        if system == "erms":
-            all = Processapi.objects.filter(Q(belong=belong) & Q(system="erms"))
-        elif system == "transfer":
-            all = Processapi.objects.filter(Q(belong=belong) & Q(system="transfer"))
+
+        if belong:
+            all = Processapi.objects.filter(Q(belong=belong) & Q(system=system))
+        else:
+            all = Processapi.objects.filter(system=system)
+
         l = []
         for i in all:
             l.append(i.sortid)
@@ -949,3 +951,321 @@ def process_sort_views(request):
             Processapi.objects.filter(caseid=d).update(sortid=l[flag])
             flag += 1
         return HttpResponse("排序成功")
+
+
+
+#多线程运行，暂未完善
+def repeatrun_views(request):
+    global thread_dict
+    content = request.POST.get("request", "")
+    content = json.loads(content)
+    iterations = request.POST.get("runtime","")
+    concurrency = request.POST.get("concurrency","")
+    print(content)
+    print(iterations)
+    print(concurrency)
+
+    if concurrency == "" or int(concurrency) == 1:
+        L = {0:int(iterations)}
+        thread = []
+        for start,end in L.items():
+            t = threading.Thread(target=run_apicase,args=(start,end,content))
+            thread.append(t)
+
+        starttime = time.time()
+        for i in range(len(thread)):
+            thread[i].start()
+
+        for w in range(len(thread)):
+            thread[w].join()
+        endtime = time.time()
+
+        runtime = round(endtime - starttime, 3)
+        print(runtime)
+        # q = time.time()
+        # print(run_apicase(start,end,content))
+        # w = time.time()
+        # print(round(w - q, 3))
+        print("运行已结束")
+        thread_json = json.dumps(thread_dict, ensure_ascii=False, sort_keys=True, indent=2)
+        thread_dict = {}
+        return HttpResponse(thread_json)
+
+        # return JsonResponse({"status_code": 200, "msg": "运行已结束,运行时间为:"+str(runtime)+"秒"})
+
+
+def run_apicase(start,end,content):
+    global num_progress
+    global thread_dict
+    print(start)
+    print(type(start))
+    print(end)
+    print(content)
+    print(type(content))
+
+    if len(content) == 1:
+        caseid = content[0].get("caseid", "")  # 接口id
+        identity = content[0].get("identity", "")  # 用户身份
+        Runmethod = RequestMethod(identity)  # 根据用户身份获取请求头Token数据
+        url = content[0].get("url", "")  # 登录地址
+        casename = content[0].get("casename", "")  # 接口名
+        method = content[0].get("method", "")  # 请求方式
+        params = content[0].get("params", "")  # query数据
+        body = content[0].get("body", "")  # body数据
+        isprocess = content[0].get("isprocess", "")  # 是否存在依赖
+
+        if isprocess == "True":
+            thread_dict = {"status_code": 500, "msg": "我是流程接口，请选择我和我依赖的接口一起运行，依赖的接口响应内容可能有变动，需要一同再次发送请求"}
+            return thread_dict
+
+        # 获取开始运行的时间
+        if "＜" in body or "＞" in body:
+            print('body存在需要替换的符号')
+            a = body.replace("＜", "<")
+            b = a.replace("＞", ">")
+            body = b
+        try:
+            L = []
+            a = time.time()
+            for num in range(start, end):
+                d = {}
+                starttime = time.time()
+                response = Runmethod.run_main(method, url, params, body)
+                print(response)
+                d[casename] = response
+                endtime = time.time()
+                runtime = round(endtime - starttime, 3)
+                print(runtime)
+                d["响应时间"] = str(runtime)
+                num += 1
+                # 给全局变量每次循环完赋值,取整
+                num_progress = round(num / end * 100, )
+
+                if runtime > 0.5 and runtime <= 3.0:
+                    d["A.响应时长"] = str(runtime) + "秒"
+                elif runtime > 3.0:
+                    d["B.响应时长"] = str(runtime) + "秒"
+                else:
+                    d["S.响应时长"] = str(runtime) + "秒"
+                L.append(d)
+                # json格式化
+                djson = json.dumps(d, ensure_ascii=False, sort_keys=True, indent=2)
+                print(djson)
+                if "身份认证失败" in djson:
+                    num_progress = 100
+                    return JsonResponse({"status_code": 401, "msg": "身份认证失败。 'AccessKey' 或 'AccessToken' 不正确。"})
+                if "<" in djson or ">" in djson:
+                    print('result存在需要替换的符号')
+                    a = djson.replace("<", "＜")
+                    b = a.replace(">", "＞")
+                    Processapi.objects.filter(caseid=caseid).update(result=b)
+                else:
+                    Processapi.objects.filter(caseid=caseid).update(result=djson)
+
+            b = time.time()
+            c = round(b - a, 3)
+            thread_dict["接口自动化响应内容"] = L
+            thread_dict["总消耗时间"] = c
+            # 发送钉钉消息
+            # send_ding(djson_new)
+            return thread_dict
+
+        except TypeError as e:
+            print(e)
+            # send_ding({"status_code": 500, "msg": "异常的id为:"+caseid+","+casename+"操作或函数应用于不适当类型的对象"})
+            return {"status_code": 500, "msg": "异常的id为:"+caseid+","+casename+"操作或函数应用于不适当类型的对象"}
+        except json.decoder.JSONDecodeError as e:
+            print(e)
+            # send_ding({"status_code": 500, "msg": "异常的id为:" + caseid + "," + casename + "json.loads()读取字符串报错"})
+            return {"status_code": 500, "msg": "异常的id为:"+caseid+","+casename+"操作或函数应用于不适当类型的对象"}
+
+    else:
+        # 多个接口测试的情况
+        print("多个接口测试")
+        # 将每次运行的字典结果集用列表存储
+        L = []
+        t1 = time.time()
+        cnt = 0
+        for num in range(start, end):
+            for i in content:
+                caseid = i.get("caseid","")
+                identity = i.get("identity", "")  # 用户身份
+                Runmethod = RequestMethod(identity)  # 根据用户身份获取请求头Token数据
+                url = i.get("url", "")  # 登录地址
+                method = i.get("method", "")  # 请求方式
+                params = i.get("params", "")  # query数据
+                body = i.get("body", "")  # body数据
+                casename = i.get("casename", "")  # 接口名
+                isprocess = i.get("isprocess", "")  # 是否存在依赖
+                depend_id = i.get("depend_id", "")  # 依赖的id
+                depend_key = i.get("depend_key", "")  # 依赖的键
+                replace_key = i.get("replace_key", "")  # 需要替换的键
+                replace_position = i.get("replace_position", "")  # 替换的区域
+
+                starttime = time.time()
+                # 判断是否为流程测试接口，如果是的话先通过依赖数据的ID查询结果
+                if isprocess == "True":
+                    print("我需要依赖别的接口哦！！！")
+                    depend_id = depend_id.split(",")
+                    #如果请求的依赖接口只有一个的时候
+                    if len(depend_id) == 1:
+                        dependid = Processapi.objects.get(caseid=depend_id[0])
+                        # 获取依赖接口返回的结果
+                        result = json.loads(dependid.result)[dependid.casename]
+                        body = json.loads(body) if body != "" else body
+                        params = json.loads(params) if params != "" else params
+                        #从前台拿到需替换的key,转为字典，字典的键存入列表
+                        replaceKey = eval(replace_key)
+                        replaceKey_key = [x for x in replaceKey]
+                        print(replaceKey_key)
+                        #从前台拿到需要依赖的key,转为字典，把字典的键存入列表
+                        dependkey = eval(depend_key)
+                        dependkey_key = [x for x in dependkey]
+                        print(dependkey_key)
+                        #判断替换的区域是body还是params，赋值给变量params_body
+                        params_body = params if replace_position == "params" else body
+                        depend_value = []   #首先创建依赖的空列表
+                        replace_value = []  #首先创建替换的空列表
+                        for i in range(len(dependkey)):
+                            #将依赖的结果集放入一个列表存储
+                            dependvalue = jsonpath.jsonpath(result,dependkey_key[i])[dependkey[dependkey_key[i]]]
+                            print(dependvalue)
+                            if type(dependvalue) is list:
+                                dependvalue = dependvalue[0]
+                            depend_value.append(dependvalue)
+                            #将需要替换的结果集放入一个列表存储
+                            replacevalue = jsonpath.jsonpath(params_body,replaceKey_key[i])[replaceKey[replaceKey_key[i]]]
+                            print(replacevalue)
+                            if type(replacevalue) is list:
+                                replacevalue = replacevalue[0]
+                            replace_value.append(replacevalue)
+                        #将变量params_body转为json字符串，为了之后的字符串替换
+                        params_body = json.dumps(params_body, ensure_ascii=False, sort_keys=True, indent=2)
+                        #将替换的内容体中需要替换的结果集内逐一遍历替换为依赖的结果集内对应的数据
+                        for i in range(len(depend_value)):
+                            params_body = params_body.replace(replace_value[i],depend_value[i])
+                        print(params_body)
+                        try:
+                            response = Runmethod.run_main(method, url, params_body, json.dumps(body)) if replace_position =="params" else Runmethod.run_main(method, url, json.dumps(params),params_body)
+                        except TypeError as e:
+                            print(e)
+                            num_progress = 100
+                            return {"status_code": 500, "msg": "异常的id为:" + caseid + "," + casename + "操作或函数应用于不适当类型的对象"}
+                        except json.decoder.JSONDecodeError as e:
+                            print(e)
+                            num_progress = 100
+                            return {"status_code": 500, "msg": "异常的id为:" + caseid + "," + casename + "操作或函数应用于不适当类型的对象"}
+                    #如果请求的依赖接口不止有一个的时候
+                    else:
+                        body = json.loads(body) if body != "" else body
+                        params = json.loads(params) if params != "" else params
+                        # 从前台拿到需替换的key,转为字典，字典的键存入列表
+                        replaceKey = eval(replace_key)
+                        replaceKey_key = [x for x in replaceKey]
+                        print(replaceKey_key)
+                        # 从前台拿到需要依赖的key,转为字典，把字典的键存入列表
+                        dependkey = eval(depend_key)
+                        #将所有依赖的接口对应的结果的值通过jsonpath[key]替换出来，加入一个列表中
+                        depend_value = []
+                        for i in range(len(depend_id)):
+                            dependid = Processapi.objects.get(caseid=depend_id[i])
+                            # 通过id获取依赖接口返回的结果
+                            result = json.loads(dependid.result)[dependid.casename]
+                            print(result)
+                            #获取需要替换的jsonpath[key]的结果，转为字典，字典的键放入一个列表存储。
+                            dependkey_a = dependkey[i]
+                            print(dependkey_a)
+                            dependkey_ab = [x for x in dependkey_a]
+                            print(dependkey_ab)
+                            #
+                            for ii in range(len(dependkey_ab)):
+                                dependvalue = jsonpath.jsonpath(result,dependkey_ab[ii])[dependkey_a[dependkey_ab[ii]]]
+                                print(dependvalue)
+                                if type(dependvalue) is list:
+                                    dependvalue = dependvalue[0]
+                                depend_value.append(dependvalue)
+
+                        params_body = params if replace_position == "params" else body
+                        print("体内容取值开开始。。。。")
+                        replace_value = []
+                        for i in range(len(replaceKey_key)):
+                            replacevalue = jsonpath.jsonpath(params_body,replaceKey_key[i])[replaceKey[replaceKey_key[i]]]
+                            print(replacevalue)
+                            if type(replacevalue) is list:
+                                replacevalue = replacevalue[0]
+                            replace_value.append(replacevalue)
+                        print(replace_value)
+                        # 将变量params_body转为json字符串，为了之后的字符串替换
+                        params_body = json.dumps(params_body, ensure_ascii=False, sort_keys=True, indent=2)
+                        # 将替换的内容体中需要替换的结果集内逐一遍历替换为依赖的结果集内对应的数据
+                        for i in range(len(depend_value)):
+                            params_body = params_body.replace(replace_value[i],depend_value[i])
+                        print(params_body)
+                        try:
+                            response = Runmethod.run_main(method, url, params_body, json.dumps(body)) if replace_position =="params" else Runmethod.run_main(method, url, json.dumps(params),params_body)
+                        except TypeError as e:
+                            print(e)
+                            num_progress = 100
+                            return {"status_code": 500, "msg": "异常的id为:" + caseid + "," + casename + "操作或函数应用于不适当类型的对象"}
+                        except json.decoder.JSONDecodeError as e:
+                            print(e)
+                            num_progress = 100
+                            return {"status_code": 500, "msg": "异常的id为:" + caseid + "," + casename + "操作或函数应用于不适当类型的对象"}
+                # 不需要别的接口
+                elif isprocess != "True":
+                    print("我不需要依赖别的接口！！！")
+                    if "＜" in body or "＞" in body:
+                        print('body存在需要替换的符号')
+                        a = body.replace("＜", "<")
+                        b = a.replace("＞", ">")
+                        body = b
+                    try:
+                        response = Runmethod.run_main(method, url, params, body)
+                        # 异常捕获
+                    except TypeError as e:
+                        print(e)
+                        # send_ding({"status_code": 500, "msg": "异常的id为:"+caseid+","+casename+"操作或函数应用于不适当类型的对象"})
+                        return {"status_code": 500, "msg": "异常的id为:" + caseid + "," + casename + "操作或函数应用于不适当类型的对象"}
+                    except json.decoder.JSONDecodeError as e:
+                        print(e)
+                        # send_ding({"status_code": 500, "msg": "异常的id为:" + caseid + "," + casename + "json.loads()读取字符串报错"})
+                        return {"status_code": 500, "msg": "异常的id为:" + caseid + "," + casename + "操作或函数应用于不适当类型的对象"}
+                    # 获取运行完的时间
+                endtime = time.time()
+                runtime = round(endtime - starttime, 3)
+                # 存为字典，转换为json格式
+                d = {}
+                d[casename] = response
+
+                if runtime > 0.5 and runtime <= 3.0:
+                    d["A.响应时长"] = str(runtime) + "秒"
+                elif runtime > 3.0:
+                    d["B.响应时长"] = str(runtime) + "秒"
+                else:
+                    d["S.响应时长"] = str(runtime) + "秒"
+                L.append(d)
+                # json格式化
+                djson = json.dumps(d, ensure_ascii=False, sort_keys=True, indent=2)
+                print(djson)
+                if "身份认证失败" in djson:
+                    num_progress = 100
+                    return JsonResponse({"status_code": 401, "msg": "身份认证失败。 'AccessKey' 或 'AccessToken' 不正确。"})
+                if "<" in djson or ">" in djson:
+                    print('result存在需要替换的符号')
+                    a = djson.replace("<", "＜")
+                    b = a.replace(">", "＞")
+                    Processapi.objects.filter(caseid=caseid).update(result=b)
+                else:
+                    Processapi.objects.filter(caseid=caseid).update(result=djson)
+
+                cnt += 1
+                #给全局变量每次循环完赋值,取整
+                num_progress = round(cnt/(end*len(content)) * 100,)
+        t2 = time.time()
+        all_time = t2 - t1
+        c = round(all_time, 3)
+        thread_dict["接口自动化响应内容"] = L
+        thread_dict["总消耗时间"] = c
+        # 发送钉钉消息
+        # send_ding(djson_new)
+        return thread_dict

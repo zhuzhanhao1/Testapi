@@ -71,7 +71,7 @@
 
 	</style>
 </head>
-<body class="layui-layout-body" style="background-image: url('../static/images/beijing3.png');background-size:100%;">
+<body class="layui-layout-body"  style="background-color:lightsteelblue;">
 <div class="layui-layout layui-layout-admin">
 
 	<div id="layuibody" class="layui-body" style="margin-bottom: -87px;">
@@ -339,13 +339,13 @@
 <!--身份头像模板-->
 <script type="text/html" id="identityTpl">
 	{% verbatim %}{{#  if(d.identity === '系统管理员'){ }}{% endverbatim %}
-	<img src="./../static/images/sysadmin.png" class="layui-nav-img">
+	<img src="../static/images/640-1.jpeg" class="layui-nav-img">
 
 	{% verbatim %}{{# } else if(d.identity=== '单位管理员') { }} {% endverbatim %}
-	<img src="./../static/images/admin.png" class="layui-nav-img">
+	<img src="../static/images/640-4.jpeg" class="layui-nav-img">
 
 	{% verbatim %}{{# } else if(d.identity=== '单位档案员') { }} {% endverbatim %}
-	<img src="./../static/images/ast.png" class="layui-nav-img">
+	<img src="../static/images/640-5.jpeg" class="layui-nav-img">
 
 	{% verbatim %}{{#  } }}{% endverbatim %}
 </script>
@@ -970,6 +970,7 @@
         });
 
     }
+
     function get_user_info() {
         layer.open({
             type: 1,

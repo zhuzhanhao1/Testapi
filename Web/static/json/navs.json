@@ -181,49 +181,49 @@
 				{
 					"title": "流程接口总览",
 					"icon": "&#xe638;",
-					"href": "/web_process/",
+					"href": "/web_process/?system=erms&belong=",
 					"spread": false
 				},
 				{
 					"title": "登录过程接口",
 					"icon": "&#xe61c;",
-					"href": "/web_process/?belong=login",
+					"href": "/web_process/?system=erms&belong=login",
 					"spread": false
 				},
 				{
 					"title": "数据表单配置接口",
 					"icon": "&#xe638;",
-					"href": "/web_process/?belong=data_form_config",
+					"href": "/web_process/?system=erms&belong=data_form_config",
 					"spread": false
 				},
 				{
 					"title": "保留处置策略管理",
 					"icon": "&#xe656;",
-					"href": "/web_process/?belong=policy",
+					"href": "/web_process/?system=erms&belong=policy",
 					"spread": false
 				},
 				{
 					"title": "类目保管期限设定",
 					"icon": "&#xe63c;",
-					"href": "/web_process/?belong=category",
+					"href": "/web_process/?system=erms&belong=category",
 					"spread": false
 				},
 				{
 					"title": "访问控制策略管理",
 					"icon": "&#xe631;",
-					"href": "/web_process/?belong=alc",
+					"href": "/web_process/?system=erms&belong=alc",
 					"spread": false
 				},
 				{
 					"title": "视图自定义",
 					"icon": "&#xe600;",
-					"href": "/web_process/?belong=view",
+					"href": "/web_process/?system=erms&belong=view",
 					"spread": false
 				},
 				{
 					"title": "整理任务接口",
 					"icon": "&#xe638;",
-					"href": "/web_process/?belong=finish_task",
+					"href": "/web_process/?system=erms&belong=finish_task",
 					"spread": false
 				}
 			]
@@ -537,12 +537,6 @@
 						"href": "/web_apiindex/?system=tdr&belong=appraisal_task",
 						"spread": false
 					},
-					{
-						"title": "鉴定档案接口",
-						"icon": "&#xe600;",
-						"href": "/web_apiindex/?system=tdr&belong=appraisal_archives",
-						"spread": false
-					},
                     {
 						"title": "库房存址",
 						"icon": "&#xe638;",
@@ -637,6 +631,7 @@
 			"href": "",
 			"spread": false,
 			"children": [
+
 			]
 		},
 		{

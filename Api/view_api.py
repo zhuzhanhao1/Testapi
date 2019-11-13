@@ -1,5 +1,7 @@
 import io
 import threading
+
+import jsonpath
 import xlrd
 from xlwt import *
 import os,sys
@@ -24,6 +26,9 @@ cur_path = os.path.abspath(os.path.join(currentUrl,os.pardir))
 sys.path.append(cur_path)
 from webuitest.conn_database import ConnDataBase
 
+
+num_progress = 0 # 全局变量进度数
+thread_dict = {}
 
 #接口测试首页
 @login_required
@@ -598,10 +603,9 @@ def run_apicase_views(request):
         # 转换为JSON格式，且格式化
         djson_new = json.dumps(dict, ensure_ascii=False, sort_keys=True, indent=2)
         print(djson_new)
-        # 发送钉钉消息
-        # send_ding(djson_new)
         # 将JSON数据返回给前端
         return HttpResponse(djson_new)
+
 
 
 #导入用例
@@ -684,8 +688,8 @@ def ding_ding_view(request):
         dic_json = json.dumps(dic, ensure_ascii=False, sort_keys=True, indent=2)
         print(dic_json)
 
-        # send_ding(dic_json,head)
-        # send_link(id,casename)
+        send_ding(dic_json,head)
+        send_link(id,"{"+casename+"-详情}-->")
     return HttpResponse("操作成功")
 
 
@@ -814,97 +818,150 @@ def web_sort_views(request):
         return HttpResponse("排序成功")
 
 
+#进度条
+@login_required
+def show_api_views(request):
+    global num_progress
+    print('show_api----------'+str(num_progress))
+    #当进度百分百的时候，需要吧全局变量初始化，以便下次请求的时候进度条是重0开始，否则默认都是百分之百了
+    if num_progress == 100:
+        num_progress = 0
+        return JsonResponse(100, safe=False)
+    #当进度不是百分之百的时候，返回当前进度
+    else:
+        return JsonResponse(num_progress, safe=False)
 
-#多线程运行，暂未完善
-def thread_view(request):
-    id = request.GET.get("caseid","")
-    iterations = request.GET.get("iterations","")
-    concurrency = request.GET.get("concurrency","")
-    if concurrency == "":
-        L = {0:iterations}
+
+#多线程运行，单一接口测试仅支持一个接口的重复调用
+def repeatrun_api_views(request):
+    global thread_dict
+    content = request.POST.get("request", "")
+    content = json.loads(content)
+    iterations = request.POST.get("runtime","")
+    concurrency = request.POST.get("concurrency","")
+    print(content)
+    print(iterations)
+    print(concurrency)
+
+    if concurrency == "" or int(concurrency) == 1:
+        L = {0:int(iterations)}
         thread = []
         for start,end in L.items():
-            t = threading.Thread(target=run_apicase,args=(start,end))
+            t = threading.Thread(target=run_apicase,args=(start,end,content))
             thread.append(t)
 
-        start_time = datetime.now()
+        starttime = time.time()
         for i in range(len(thread)):
             thread[i].start()
 
         for w in range(len(thread)):
             thread[w].join()
-        end_time = datetime.now()
+        endtime = time.time()
 
-        run_time = end_time - start_time
-        print(run_time)
-
+        runtime = round(endtime - starttime, 3)
+        print(runtime)
+        # q = time.time()
+        # print(run_apicase(start,end,content))
+        # w = time.time()
+        # print(round(w - q, 3))
         print("运行已结束")
+        thread_json = json.dumps(thread_dict, ensure_ascii=False, sort_keys=True, indent=2)
+        thread_dict = {}
+        return HttpResponse(thread_json)
 
-def run_apicase(caseid):
-    con = ConnDataBase()
-    id = Case.objects.get(caseid=caseid)
-    d = {}
-    #判断当前请求的系统，给对应的系统匹配上对应的URL
-    if id.system == "erms":
-        URL = str(con.get_logininfo("sysadmin")[2], 'utf-8')
-    elif id.system == "admin":
-        URL = str(con.get_logininfo("adminadmin")[2], 'utf-8')
-    else:
-        URL = str(con.get_logininfo("yjadmin")[2], 'utf-8')
-    identity = id.identity
-    Runmethod = RequestMethod(identity)
-    url = URL + id.url
-    # print(url)
-    method = id.method
-    params = id.params
-    body = id.body
-    casename = id.casename
-    head = id.exceptres
-    #eval()字符串转字典
-    starttime = time.time()
-    if body != "":
+        # return JsonResponse({"status_code": 200, "msg": "运行已结束,运行时间为:"+str(runtime)+"秒"})
+
+#多线程的子方法
+def run_apicase(start,end,content):
+    global num_progress
+    global thread_dict
+    print(start)
+    print(type(start))
+    print(end)
+    print(content)
+    print(type(content))
+
+    if len(content) == 1:
+        caseid = content[0].get("caseid", "")  # 接口id
+        identity = content[0].get("identity", "")  # 用户身份
+        Runmethod = RequestMethod(identity)  # 根据用户身份获取请求头Token数据
+        url = content[0].get("url", "")  # 登录地址
+        casename = content[0].get("casename", "")  # 接口名
+        method = content[0].get("method", "")  # 请求方式
+        params = content[0].get("params", "")  # query数据
+        body = content[0].get("body", "")  # body数据
+        isprocess = content[0].get("isprocess", "")  # 是否存在依赖
+
+        if isprocess == "True":
+            thread_dict = {"status_code": 500, "msg": "我是流程接口，请选择我和我依赖的接口一起运行，依赖的接口响应内容可能有变动，需要一同再次发送请求"}
+            return thread_dict
+
+        # 获取开始运行的时间
         if "＜" in body or "＞" in body:
             print('body存在需要替换的符号')
             a = body.replace("＜", "<")
             b = a.replace("＞", ">")
             body = b
-        body = eval(body)
-        if params:
-            params = eval(params)
-        response = Runmethod.run_main(method, url, params, body)
+        try:
+            L = []
+            a = time.time()
+            for num in range(start, end):
+                d = {}
+                starttime = time.time()
+                response = Runmethod.run_main(method, url, params, body)
+                print(response)
+                d[casename] = response
+                endtime = time.time()
+                runtime = round(endtime - starttime, 3)
+                print(runtime)
+                d["响应时间"] = str(runtime)
+                num += 1
+                # 给全局变量每次循环完赋值,取整
+                num_progress = round(num / end * 100, )
 
-    elif body == '':
-        if params:
-            params = eval(params)
-        response = Runmethod.run_main(method, url, params, body)
+                if runtime > 0.5 and runtime <= 3.0:
+                    d["A.响应时长"] = str(runtime) + "秒"
+                elif runtime > 3.0:
+                    d["B.响应时长"] = str(runtime) + "秒"
+                else:
+                    d["S.响应时长"] = str(runtime) + "秒"
+                L.append(d)
+                # json格式化
+                djson = json.dumps(d, ensure_ascii=False, sort_keys=True, indent=2)
+                print(djson)
+                if "身份认证失败" in djson:
+                    num_progress = 100
+                    return JsonResponse({"status_code": 401, "msg": "身份认证失败。 'AccessKey' 或 'AccessToken' 不正确。"})
+                if "<" in djson or ">" in djson:
+                    print('result存在需要替换的符号')
+                    a = djson.replace("<", "＜")
+                    b = a.replace(">", "＞")
+                    Case.objects.filter(caseid=caseid).update(result=b)
+                else:
+                    Case.objects.filter(caseid=caseid).update(result=djson)
 
-    endtime = time.time()
-    runtime = round(endtime - starttime, 3)
-    # 存为字典，转换为json格式
-    print(response,"Ssssssssssssssssss")
-    d[casename] = response
-    if runtime > 0.5 and runtime <= 1.0:
-        d[casename+"运行时间为"] = str(runtime)+"秒"
-    elif runtime > 3.0:
-        d[casename +"运行缓慢"] = str(runtime)+"秒"
+            b = time.time()
+            c = round(b - a, 3)
+            thread_dict["接口自动化响应内容"] = L
+            thread_dict["接口总消耗时间"] = c
+            thread_dict["接口平均响应时间"] = c/end
+            # 发送钉钉消息
+            # send_ding(djson_new)
+            return thread_dict
+
+        except TypeError as e:
+            print(e)
+            # send_ding({"status_code": 500, "msg": "异常的id为:"+caseid+","+casename+"操作或函数应用于不适当类型的对象"})
+            return {"status_code": 500, "msg": "异常的id为:"+caseid+","+casename+"操作或函数应用于不适当类型的对象"}
+        except json.decoder.JSONDecodeError as e:
+            print(e)
+            # send_ding({"status_code": 500, "msg": "异常的id为:" + caseid + "," + casename + "json.loads()读取字符串报错"})
+            return {"status_code": 500, "msg": "异常的id为:"+caseid+","+casename+"操作或函数应用于不适当类型的对象"}
+
     else:
-        d[casename +"运行时间为"] = str(runtime)+"秒"
-    d["＜"+caseid+"＞"+"负责人"] = head
-    # print(d)
-    # json格式化
-    djson = json.dumps(d, ensure_ascii=False, sort_keys=True, indent=2)
-    if "<" in djson or ">" in djson:
-        print('result存在需要替换的符号')
-        a = djson.replace("<", "＜")
-        print(a)
-        b = a.replace(">", "＞")
-        print(b)
-        Case.objects.filter(caseid=caseid).update(result=b)
-    else:
-        Case.objects.filter(caseid=caseid).update(result=djson)
-    print(djson)
-    # 发送钉钉消息
-    # send_ding(djson)
+        # 多个接口测试的情况
+        print("多个接口测试")
+        pass
 
 
 #导出数据，暂时放弃使用，导出的数据量大会出错，使用前端的方案导出
