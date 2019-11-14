@@ -79,11 +79,18 @@ class RequestMethod():
             "Content-Type": "application/json"
         }
         params = json.loads(params) if params != "" else None
-        if data:
+        if data == '[]':
+            # data = eval(data)
+            print("body传的是一个空数组的情况下，我被执行了！")
+            data = json.loads(data)
+            # data = data if any(data) == True else None
+            r = requests.put(url, params=params, data=json.dumps(data), headers=headers)
+        elif data:
             # data = eval(data)
             data = json.loads(data)
             data = data if any(data) == True else None
             r = requests.put(url, params=params, data=json.dumps(data), headers=headers)
+
         else:
             r = requests.put(url, params=params, data=None, headers=headers)
         try:

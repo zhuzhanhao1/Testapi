@@ -248,9 +248,9 @@
 				<div class="layui-form-item depend" style="display: none;">
 					<label class="layui-form-label">替换区域</label>
 					<div class="layui-input-block">
-						<input type="checkbox" name="replaceposition" value="params" title="params">
-						<input type="checkbox" name="replaceposition" value="body" title="body">
-						<input type="checkbox" name="replaceposition" value="" title="null">
+						<input type="radio" name="replaceposition" value="params" title="params">
+						<input type="radio" name="replaceposition" value="body" title="body">
+{#						<input type="checkbox" name="replaceposition" value="" title="null">#}
 					</div>
 				</div>
 
@@ -385,9 +385,9 @@
 				<div class="layui-form-item depend" style="display: none;">
 					<label class="layui-form-label">替换区域</label>
 					<div class="layui-input-block">
-						<input type="checkbox" name="replaceposition" value="params" title="params">
-						<input type="checkbox" name="replaceposition" value="body" title="body">
-						<input type="checkbox" name="replaceposition" value="" title="null">
+						<input type="radio" name="replaceposition" value="params" title="params">
+						<input type="radio" name="replaceposition" value="body" title="body">
+{#						<input type="checkbox" name="replaceposition" value="" title="null">#}
 					</div>
 				</div>
 
@@ -955,7 +955,10 @@
                         } else if (res.result.indexOf("B.响应时长") != -1) {
                             let a = JSON.parse(res.result)[res.casename];
                             return '<span style="color: deeppink;">' + JSON.stringify(a) + '</span>'
-                        }else if(res.result != ""){
+                        } else if (res.result.indexOf("A.响应时长") != -1) {
+                            let a = JSON.parse(res.result)[res.casename];
+                            return '<span style="color: cornflowerblue;">' + JSON.stringify(a) + '</span>'
+                        } else if(res.result != ""){
                             let a = JSON.parse(res.result)[res.casename];
                             return '<span>' + JSON.stringify(a) + '</span>'
                         } else {

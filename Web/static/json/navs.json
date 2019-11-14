@@ -550,24 +550,6 @@
 						"spread": false
 					},
 					{
-						"title": "单位接口",
-						"icon": "&#xe770;",
-						"href": "/web_apiindex/?system=tdr&belong=unit",
-						"spread": false
-					},
-					{
-						"title": "部门管理接口",
-						"icon": "&#xe613;",
-						"href": "/web_apiindex/?system=tdr&belong=dept",
-						"spread": false
-					},
-					{
-						"title": "用户管理接口",
-						"icon": "&#xe61c;",
-						"href": "/web_apiindex/?system=tdr&belong=user",
-						"spread": false
-					},
-					{
 						"title": "Record接口",
 						"icon": "&#xe655;",
 						"href": "/web_apiindex/?system=tdr&belong=record",
@@ -597,10 +579,10 @@
 						"href": "/web_apiindex/?system=tdr&belong=navigation",
 						"spread": false
 					},
-					{
-						"title": "映射规则接口",
-						"icon": "&#xe62c;",
-						"href": "/web_apiindex/?system=tdr&belong=attribute_mapping_scheme",
+				 	{
+						"title": "视图自定义",
+						"icon": "&#xe600;",
+						"href": "/web_apiindex/?system=tdr&belong=view",
 						"spread": false
 					},
 					{
@@ -609,6 +591,13 @@
 						"href": "/web_apiindex/?system=tdr&belong=category",
 						"spread": false
 					},
+					{
+						"title": "映射规则接口",
+						"icon": "&#xe62c;",
+						"href": "/web_apiindex/?system=tdr&belong=attribute_mapping_scheme",
+						"spread": false
+					},
+
 					{
 						"title": "公共操作相关接口",
 						"icon": "&#xe638;",
@@ -620,9 +609,25 @@
 						"icon": "&#xe600;",
 						"href": "/web_apiindex/?system=tdr&belong=metadata",
 						"spread": false
+					},
+					{
+						"title": "单位接口",
+						"icon": "&#xe770;",
+						"href": "/web_apiindex/?system=tdr&belong=unit",
+						"spread": false
+					},
+					{
+						"title": "部门管理接口",
+						"icon": "&#xe613;",
+						"href": "/web_apiindex/?system=tdr&belong=dept",
+						"spread": false
+					},
+					{
+						"title": "用户管理接口",
+						"icon": "&#xe61c;",
+						"href": "/web_apiindex/?system=tdr&belong=user",
+						"spread": false
 					}
-
-
 			]
 		},
 		{

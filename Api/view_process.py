@@ -349,10 +349,10 @@ def run_processcase_views(request):
         params = content[0].get("params", "")  # query数据
         body = content[0].get("body", "")  # body数据
         isprocess = content[0].get("isprocess", "")  # 是否存在依赖
-        depend_id = content[0].get("depend_id", "")  # 依赖的ID
-        depend_key = content[0].get("depend_key", "")  # 依=依赖的key
-        replace_key = content[0].get("replace_key", "")  # 替换的key
-        replace_position = content[0].get("replace_position", "")  # 替换的位置
+        # depend_id = content[0].get("depend_id", "")  # 依赖的ID
+        # depend_key = content[0].get("depend_key", "")  # 依=依赖的key
+        # replace_key = content[0].get("replace_key", "")  # 替换的key
+        # replace_position = content[0].get("replace_position", "")  # 替换的位置
         if isprocess == "True":
             return JsonResponse({"status_code": 500, "msg": "我是流程接口，请选择我和我依赖的接口一起运行，依赖的接口响应内容可能有变动，需要一同再次发送请求"})
         # 获取开始运行的时间
@@ -494,6 +494,7 @@ def run_processcase_views(request):
                         print(dependkey_ab)
                         #
                         for ii in range(len(dependkey_ab)):
+
                             dependvalue = jsonpath.jsonpath(result,dependkey_ab[ii])[dependkey_a[dependkey_ab[ii]]]
                             print(dependvalue)
                             if type(dependvalue) is list:
@@ -677,6 +678,7 @@ def job_function(ids,end_time,sched):
             Runmethod = RequestMethod(identity)
             if isprocess == "True":
                 return JsonResponse({"status_code": 500, "msg": "我是流程接口，请选择我和我依赖的接口一起运行，依赖的接口响应内容可能有变动，需要一同再次发送请求"})
+
             # 获取开始运行的时间
             starttime = time.time()
             if "＜" in body or "＞" in body:
