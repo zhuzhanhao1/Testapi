@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>朱占豪测试系统</title>
+	<link rel="icon" href="./../static/images/favicon%202.ico">
+	<link rel="stylesheet" href="./../static/css/layui.css">
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<link href="./../static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+	<script src="./../static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+	<script src="./../static/js/layui/layui.js"></script>
+	<link rel="stylesheet" href="./../static/font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="./../static/css/soulTable.css">
+
+</head>
+
+<body>
+	<div class="layui-layout layui-layout-admin">
+		<div class="layui-row" id="quickTest">
+			<div class="modal fade">
+				<div class="modal-content">
+					<div class="modal-header" style="margin-top: 10px;">
+						<span></span>
+					</div>
+					<div class="modal-body">
+						<blockquote class="layui-elem-quote">所属项目：ERMS数字档案室系统</blockquote>
+{#						<blockquote class="layui-elem-quote layui-quote-nm">引用区域的文字</blockquote>#}
+c
+
+						<fieldset class="layui-elem-field layui-field-title">
+						  <legend>执行完成的接口用例列表</legend>
+						  <div class="layui-field-box" style="padding: 15px;">
+							<table class="layui-hide" id="test" lay-filter="test"></table>
+						  </div>
+						</fieldset>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+</body>
+
+<script>
+    // 自定义模块
+    layui.config({
+        base: './../static/js/layui/lay/modules/',   // 模块目录
+        version: 'v1.3.28'
+    }).extend({             // 模块别名
+        soulTable: 'soulTable'
+    });
+
+    layui.use(['table',"soulTable"], function (data) {
+        var table = layui.table;
+        soulTable = layui.soulTable;
+        //第一个实例
+        var layer = layui.layer;
+        var index = layer.load(0); //添加laoding,0-2两种方式
+        var myTable = table.render({
+            elem: '#test'
+            , url: '/process_result_list/' //数据接口"exports"
+            , toolbar: '#toolbarDemo'
+            , defaultToolbar: [
+                'filter', {title: '导出数据', layEvent: 'export', icon: 'layui-icon-download-circle'}, 'print']
+            , title: '接口流程测试'
+            , page: {groups: 5} //开启分页
+			, loading: false
+			, height: 'full-260'
+			,cellMinWidth: 80
+			, size: 'lg'	//lg大尺寸 /sm小尺寸
+			, skin: 'nob' //line行边框风格 /row列表框风格 /nob无边框风格
+			, limit : 10
+            , limits: [10, 20, 30, 50, 100, 200,500]
+            , where: {//额外参数
+				caseids:'{{ dic.caseids }}'
+            }
+            , cols: [[ //表头, fixed: 'left'
+                {type: 'checkbox'}
+                , {field: 'casename', title: '接口名称', align: "left", excel: {color:'0040ff',bgColor:'f3fef3'}, templet: "#casenameTpl"}
+                , {field: 'head', title: '响应时长',  align: "left",event:"head"}//merge: true行合并
+                , {
+                    field: 'result', title: '执行结果',align: "left",  event:"detail", templet: function (res) {
+                         if (res.result.indexOf("message") != -1 && res.result.indexOf("error") != -1 && res.result.indexOf(res.casename) != -1) {
+                            return '<span style="color: red;">' + "fail" + '</span>'
+                        } else {
+                            return '<span style="color: "yellowgreen;">' + "pass" +  '</span>'
+                        }
+                    }
+                }
+
+				, {field: 'head', title: '负责人', align: "left",event:"head"}//merge: true行合并
+
+            ]]
+            , id: 'testReload'
+			,rowEvent: function (obj) {
+				obj.tr.css({'background':'#5FB878','color':'white'}).siblings().removeAttr('style')
+			}
+            , done: function (res) {   //返回数据执行回调函数
+                layer.close(index);    //返回数据关闭loading
+                soulTable.render(this);
+            }
+        });
+
+
+        //头工具栏事件
+        table.on('toolbar(test)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            //console.log(checkStatus);
+            switch (obj.event) {
+                //发送钉钉消息
+                case 'dingding':
+                    var data = checkStatus.data;
+                    console.log(data);
+                    if (data.length == 0) {
+                        layer.close(index);
+                        layer.msg("请先选中需要发送的接口", {
+                            icon: 2,
+                            offset: "t"
+                        });
+                    } else {
+                        layer.confirm("你确定要发送接口请求结果给相应的负责人吗？\n注意:请求正常发送所有结果信息，请求失败发送错误内容", {
+                                icon: 3,
+                                btn: ["确定", "取消"]
+                            }, function () {
+                                var ids = "";
+                                for (i = 0; i < data.length; i++) {
+                                    ids += data[i]["caseid"] + ",";
+                                    console.log(ids);
+                                }
+                                $.ajax({
+                                    cache: false,
+                                    url: "/ding_ding/",
+                                    dataType: 'text',
+                                    type: 'GET',
+                                    //async: false,
+                                    data: {
+                                        "caseid": ids,
+										"isprocess":"yes"
+                                    },
+                                    //请求前的处理,加载loading
+                                    beforeSend: function () {
+                                        document.getElementById("Dingding").setAttribute("disabled", true);
+                                        document.getElementById("Dingding").innerHTML = "loading...";
+                                        l_index = layer.msg('发送钉钉中，小伙伴请稍候~~',{icon: 16,time:false,shade:0.5});
+                                        //l_index = layer.load(0, {shade: [0.5, '#DBDBDB']}); //0.1透明度的白色背景
+                                    },
+                                    success: function (data) {
+                                        console.log(data);
+                                        layer.msg(data, {
+                                            icon: 6,
+                                            offset: 't',
+                                        });
+
+                                    },
+                                    error: function (data) {
+                                        console.log(data);
+                                        layer.msg(data, {
+                                            icon: 5,
+                                            offset: 't',
+                                            anim: 6
+                                        });
+                                    },
+                                    complete: function () {
+                                        document.getElementById("Dingding").removeAttribute("disabled");
+                                        document.getElementById("Dingding").innerHTML = "钉钉通知";
+                                        layer.close(l_index);
+                                    }
+                                });
+
+                            }, function () {
+                                layer.msg(
+                                    "取消发送钉钉消息",
+                                    {icon: 1, offset: "t"}
+                                );
+                            }
+                        );
+                    }
+                    break;
+                //导出用例
+                case "export":
+                    if (checkStatus.data.length > 0) {
+                        soulTable.export(myTable, {
+                            filename: '勾选数据.xlsx',
+                            checked: true, // 只导出勾选数据
+                            border: {
+                                style: 'thin',
+                                color: '000000'
+                            },
+                            head: { // 表头样式
+                                family: 'helvetica', // 字体
+                                size: 14, // 字号
+                                color: 'FFFFFF', // 字体颜色
+                                bgColor: 'ff8c00' // 背景颜色
+                            },
+                            font: { // 正文样式
+                                family: 'Calibri', // 字体
+                                size: 12, // 字号
+                                color: '000000', // 字体颜色
+                                bgColor: 'FFFFFF' //背景颜色t
+                            }
+                        });
+                        layer.msg('操作成功', {icon: 6, offset: 't'});
+                    } else {
+                        layer.msg('请先勾选数据在导出！', {icon: 0, offset: 't'});
+                    }
+                    break;
+            }
+
+        });
+        //监听行工具事件
+        table.on('tool(test)', function (obj) {
+            var data = obj.data;
+            //console.log(obj);
+            if (obj.event === 'detail') {
+                console.log(data.result);
+                //var strjson = JSON.parse(data.result);
+                layer.prompt({
+                    formType: 2,//多行文本
+                    value: data.result,
+                    shade: false,
+					title:data.casename+"响应结果",
+					maxmin:true,
+                    skin: "layui-layer-rim",//hui
+                    closeBtn: 0,
+                    zIndex: layer.zIndex,
+                    area: ['800px', '600px'], //自定义文本域宽高
+                    btn: ["点我查看详情", "关闭"],
+                    yes: function () {
+                        var index = layer.open({
+                            type: 2,
+                            title: data.casename + "详细信息",
+                            //shadeClose: true,
+                            shade: false,
+                            zIndex: layer.zIndex,
+                            maxmin: true, //开启最大化最小化按钮
+                            area: ['600px', '1200px'],
+                            content: "/detail_process_api/?id=" + data.caseid,
+                        });
+                        layer.full(index);
+                    },
+                    btn2: function (index) {
+                        layer.close(index);
+                    }
+                });
+            }
+
+        });
+    });
+
+</script>
+
+<!--表头按钮-->
+<script type="text/html" id="toolbarDemo">
+	<div class="layui-btn-container">
+		<button id="Dingding" class="layui-btn layui-btn-sm" lay-event="dingding">钉钉通知</button>
+	</div>
+</script>
+
+<script type="text/html" id="casenameTpl">
+	<a href="/detail_process_api/?id={% verbatim %}{{d.caseid}}{% endverbatim %}" class="layui-table-link" target="_blank" style="color: blueviolet;">
+		{% verbatim %}{{d.casename}}{% endverbatim %}
+	</a>
+</script>
+
+
+</html>

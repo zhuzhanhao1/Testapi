@@ -57,6 +57,11 @@ def performance_views(request):
 def quicktest_views(request):
     return render(request, "quickTest.html")
 
+#流程测试响应结果
+@login_required
+def process_result_views(request):
+    return render(request,"process_result.html")
+
 
 
 

@@ -146,7 +146,7 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'),)
 #设置关闭浏览器时则清空对应的session空间
 # SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
-LOG_FILE = "./all.log"
+LOG_FILE = "./error.log"
 
 LOGGING = {
     'version': 1,
@@ -192,12 +192,12 @@ LOGGING = {
         '': {
             'handlers': ['file', 'console'],
             'level': 'INFO',
-            'propagate': True,
+            'propagate': False,
             },
         'django': {
             'handlers': ['file', 'console'],
             'level': 'DEBUG',
-            'propagate': True,
+            'propagate': False,
         },
         'django.request': {
             'handlers': ['mail_admins', 'console'],

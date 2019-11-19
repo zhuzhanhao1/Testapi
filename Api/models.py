@@ -54,6 +54,7 @@ class Processapi(models.Model):
     order_no = models.CharField(verbose_name="排序号",max_length=20)
     sortid = models.IntegerField(verbose_name="排序号")
     system = models.CharField(max_length=50, verbose_name="所属系统")
+    duration = models.FloatField(verbose_name="响应时长")
 
     def __str__(self):
         return self.casename

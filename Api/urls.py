@@ -66,7 +66,10 @@ urlpatterns = [
     url(r'^show_progress/$', show_progress_views),
     #重复执行
     url(r'^repeatrun/$', repeatrun_views),
-
+    #流程结果
+    url(r'^process_result/$', process_result_views),
+    #流程结果列表
+    url(r'^process_result_list/$', process_result_list_views),
 
     #----------------------web url-----------------------------
     # url(r'^webindex/$',webindex_views),

@@ -521,12 +521,12 @@ def run_apicase_views(request):
             # 存为字典，转换为json格式
             d = {}
             d[casename] = response
-            if runtime > 0.5 and runtime <= 3.0:
+            if runtime > 0 and runtime < 1.0:
+                d["S.响应时长"] = str(int(runtime*1000)) + "毫秒"
+            elif runtime >= 1.0 and runtime < 3.0:
                 d["A.响应时长"] = str(runtime) + "秒"
-            elif runtime > 3.0:
+            elif runtime >= 3.0:
                 d["B.响应时长"] = str(runtime) + "秒"
-            else:
-                d["S.响应时长"] = str(runtime) + "秒"
             # json格式化
             djson = json.dumps(d, ensure_ascii=False, sort_keys=True, indent=2)
             if "<" in djson or ">" in djson:
@@ -575,12 +575,12 @@ def run_apicase_views(request):
                 # 存为字典，转换为json格式
                 d = {}
                 d[casename] = response
-                if runtime > 0.5 and runtime <= 3.0:
+                if runtime > 0 and runtime < 1.0:
+                    d["S.响应时长"] = str(int(runtime * 1000)) + "毫秒"
+                elif runtime >= 1.0 and runtime < 3.0:
                     d["A.响应时长"] = str(runtime) + "秒"
-                elif runtime > 3.0:
+                elif runtime >= 3.0:
                     d["B.响应时长"] = str(runtime) + "秒"
-                else:
-                    d["S.响应时长"] = str(runtime) + "秒"
                 L.append(d)
                 # json格式化
                 djson = json.dumps(d, ensure_ascii=False, sort_keys=True, indent=2)
@@ -919,12 +919,12 @@ def run_apicase(start,end,content):
                 # 给全局变量每次循环完赋值,取整
                 num_progress = round(num / end * 100, )
 
-                if runtime > 0.5 and runtime <= 3.0:
+                if runtime > 0 and runtime < 1.0:
+                    d["S.响应时长"] = str(int(runtime * 1000)) + "毫秒"
+                elif runtime >= 1.0 and runtime < 3.0:
                     d["A.响应时长"] = str(runtime) + "秒"
-                elif runtime > 3.0:
+                elif runtime >= 3.0:
                     d["B.响应时长"] = str(runtime) + "秒"
-                else:
-                    d["S.响应时长"] = str(runtime) + "秒"
                 L.append(d)
                 # json格式化
                 djson = json.dumps(d, ensure_ascii=False, sort_keys=True, indent=2)
