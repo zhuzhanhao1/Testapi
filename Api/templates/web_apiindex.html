@@ -211,6 +211,13 @@
 							<option value="鉴定档案接口">鉴定档案接口</option>
 							<option value="库房存址">库房存址</option>
 							<option value="库房接口">库房接口</option>
+							<option value="库房层接口">库房层接口</option>
+							<option value="专题接口">专题接口</option>
+							<option value="专题档案接口">专题档案接口</option>
+							<option value="利用档案接口">利用档案接口</option>
+							<option value="档案利用接口">档案利用接口</option>
+							<option value="实体调卷管理接口">实体调卷管理接口</option>
+							<option value="调卷单内档案详情">调卷单内档案详情</option>
 						</select>
 					</div>
 
@@ -381,6 +388,13 @@
 							<option value="鉴定档案接口">鉴定档案接口</option>
 							<option value="库房存址">库房存址</option>
 							<option value="库房接口">库房接口</option>
+							<option value="库房层接口">库房层接口</option>
+							<option value="专题接口">专题接口</option>
+							<option value="专题档案接口">专题档案接口</option>
+							<option value="利用档案接口">利用档案接口</option>
+							<option value="档案利用接口">档案利用接口</option>
+							<option value="实体调卷管理接口">实体调卷管理接口</option>
+							<option value="调卷单内档案详情">调卷单内档案详情</option>
 						</select>
 					</div>
 
@@ -808,7 +822,8 @@
                         }
                         var belong = obj.cache[0].belong;
                         console.log(l);
-                        $.ajax({
+                        console.log(belong);
+						$.ajax({
                             cache: false,
                             url: "/web_sort/",
                             dataType: 'text',
@@ -819,7 +834,7 @@
                                 //"newIndex":obj.newIndex
                                 "data": JSON.stringify(l),
 								"belong":belong,
-								"system":"erms"
+								"system":"{{ system }}"
                             },
                             success: function (data) {
                                 layer.msg(data, {
@@ -981,19 +996,39 @@
 						return '<span>' + a[a.length-1] + '</span>'
                     }}
                 , {field: 'method', title: '请求方式', width: 90, align: "left", templet: "#methodTpl"}
-                , {field: 'params', title: 'Query参数',  align: "left", event: 'params'}
+                , {field: 'params', title: 'Query参数', align: "left", event: 'params'}
                 , {field: 'body', title: 'Body参数',  event: 'body',  align: "left"}
+                , {
+                    field: 'durantion',
+                    title: '响应时长',
+                    align: "left",
+                    sort: true,
+					width: 100,
+                    event: "durantion",
+                    templet: function (res) {
+                        if (res.duration < 1) {
+                            let a = String(res.duration * 1000) + "毫秒";
+                            return '<span>' + a + '</span>'
+                        } else if (res.duration >= 1 && res.duration < 3) {
+                            let b = String(res.duration) + "秒";
+                            return '<span style="color: cornflowerblue;">' + b + '</span>'
+                        } else {
+                            let b = String(res.duration) + "秒";
+                            return '<span style="color: deeppink;">' + b + '</span>'
+                        }
+                    }
+                }
                 , {
                     field: 'result', title: '响应结果', align: "left",  event:"detail", templet: function (res) {
                         if (res.result.indexOf("message") != -1 && res.result.indexOf("error") != -1 && res.result.indexOf(res.casename) != -1) {
-                            var a = res.casename;
-                            var b = JSON.parse(res.result);
+                            let a = res.casename;
+                            let b = JSON.parse(res.result);
                             //console.log(typeof(a));
                             //console.log(b[a]["message"]);
                             return '<span style="color: red;">' + JSON.stringify(b[a]["message"]) + '</span>'
-                        } else if (res.result.indexOf("B.响应时长") != -1) {
-                            let a = JSON.parse(res.result)[res.casename];
-                            return '<span style="color: deeppink;">' + JSON.stringify(a) + '</span>'
+                        //} else if (res.result.indexOf("B.响应时长") != -1) {
+                            //let a = JSON.parse(res.result)[res.casename];
+                            //return '<span style="color: deeppink;">' + JSON.stringify(a) + '</span>'
                         }else if(res.result != ""){
                             let a = JSON.parse(res.result)[res.casename];
                             return '<span>' + JSON.stringify(a) + '</span>'

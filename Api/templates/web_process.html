@@ -1088,14 +1088,14 @@
                             //} else if (res.result.indexOf("A.响应时长") != -1) {
                             //let a = JSON.parse(res.result)[res.casename];
                             //return '<span style="color: cornflowerblue;">' + JSON.stringify(a) + '</span>'
-                            //} else if(res.result != ""){
-                            //let a = JSON.parse(res.result)[res.casename];
-                            //return '<span>' + JSON.stringify(a) + '</span>'
-                        } else {
-                            return '<span>' + res.result + '</span>'
-                        }
-                    }
-                }
+                            } else if(res.result != ""){
+                            	let a = JSON.parse(res.result)[res.casename];
+                            	return '<span>' + JSON.stringify(a) + '</span>'
+                        	} else {
+                            	return '<span>' + res.result + '</span>'
+                        	}
+                    	}
+                	}
                 , {field: 'head', title: '负责人', width: 80, align: "left", event: "head"}//merge: true行合并
 
             ]]

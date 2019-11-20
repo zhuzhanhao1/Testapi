@@ -550,6 +550,48 @@
 						"spread": false
 					},
 					{
+						"title": "库房层接口",
+						"icon": "&#xe655;",
+						"href": "/web_apiindex/?system=tdr&belong=warehouseLayer",
+						"spread": false
+					},
+					{
+						"title": "专题接口",
+						"icon": "&#xe655;",
+						"href": "/web_apiindex/?system=tdr&belong=subject",
+						"spread": false
+					},
+				{
+						"title": "专题档案接口",
+						"icon": "&#xe655;",
+						"href": "/web_apiindex/?system=tdr&belong=subject_relation",
+						"spread": false
+					},
+									{
+						"title": "利用档案接口",
+						"icon": "&#xe655;",
+						"href": "/web_apiindex/?system=tdr&belong=usage_archives",
+						"spread": false
+					},
+									{
+						"title": "档案利用接口",
+						"icon": "&#xe655;",
+						"href": "/web_apiindex/?system=tdr&belong=usage",
+						"spread": false
+					},
+									{
+						"title": "实体调卷管理接口",
+						"icon": "&#xe655;",
+						"href": "/web_apiindex/?system=tdr&belong=file_retrieval",
+						"spread": false
+					},
+					{
+						"title": "调卷单内档案详情",
+						"icon": "&#xe655;",
+						"href": "/web_apiindex/?system=tdr&belong=retrieval_archives",
+						"spread": false
+					},
+					{
 						"title": "Record接口",
 						"icon": "&#xe655;",
 						"href": "/web_apiindex/?system=tdr&belong=record",

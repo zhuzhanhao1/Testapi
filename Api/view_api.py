@@ -72,7 +72,8 @@ def apilist_view(request):
                         "method": weblist.method,
                         "params": weblist.params,
                         "body": weblist.body,
-                        "result": weblist.result
+                        "result": weblist.result,
+                        "duration": weblist.duration
                     }
                     L.append(data)
             print(L)
@@ -142,10 +143,27 @@ def apilist_view(request):
                     apilists = Case.objects.filter(Q(belong__contains="鉴定任务接口") & Q(system="tdr")).order_by("sortid")
                 elif belong == "appraisal_archives":
                     apilists = Case.objects.filter(Q(belong__contains="鉴定档案接口") & Q(system="tdr")).order_by("sortid")
+
                 elif belong == "warehouse":
                     apilists = Case.objects.filter(Q(belong__contains="库房接口") & Q(system="tdr")).order_by("sortid")
                 elif belong == "warehouse_address":
                     apilists = Case.objects.filter(Q(belong__contains="库房存址") & Q(system="tdr")).order_by("sortid")
+                elif belong == "warehouseLayer":
+                    apilists = Case.objects.filter(Q(belong__contains="库房层接口") & Q(system="tdr")).order_by("sortid")
+                elif belong == "subject":
+                    apilists = Case.objects.filter(Q(belong__contains="专题接口") & Q(system="tdr")).order_by("sortid")
+
+                elif belong == "subject_relation":
+                    apilists = Case.objects.filter(Q(belong__contains="专题档案接口") & Q(system="tdr")).order_by("sortid")
+                elif belong == "usage_archives":
+                    apilists = Case.objects.filter(Q(belong__contains="利用档案接口") & Q(system="tdr")).order_by("sortid")
+                elif belong == "usage":
+                    apilists = Case.objects.filter(Q(belong__contains="档案利用接口") & Q(system="tdr")).order_by("sortid")
+                elif belong == "file_retrieval":
+                    apilists = Case.objects.filter(Q(belong__contains="实体调卷管理接口") & Q(system="tdr")).order_by("sortid")
+                elif belong == "retrieval_archives":
+                    apilists = Case.objects.filter(Q(belong__contains="调卷单内档案详情") & Q(system="tdr")).order_by("sortid")
+
 
         elif system == "erms":
             if casename == "" and belong == "" and filterSos == "":
@@ -252,7 +270,8 @@ def apilist_view(request):
             "method": weblist.method,
             "params": weblist.params,
             "body": weblist.body,
-            "result": weblist.result
+            "result": weblist.result,
+            "duration":weblist.duration
         }
         L.append(data)
     print("此模块的用例个数为:" + str(len(L)))
@@ -289,7 +308,7 @@ def create_apicase_views(request):
         m = max(L) + 1
         if system:
             try:
-                Case.objects.create(casename=casename, identity=identity, url=url, system=system,
+                Case.objects.create(casename=casename, identity=identity, url=url, system=system,duration=1,
                                     method=method, params=params, body=body, belong=belong,sortid=m,exceptres=head)
             except Exception as e:
                 return HttpResponse(e)
@@ -521,12 +540,6 @@ def run_apicase_views(request):
             # 存为字典，转换为json格式
             d = {}
             d[casename] = response
-            if runtime > 0 and runtime < 1.0:
-                d["S.响应时长"] = str(int(runtime*1000)) + "毫秒"
-            elif runtime >= 1.0 and runtime < 3.0:
-                d["A.响应时长"] = str(runtime) + "秒"
-            elif runtime >= 3.0:
-                d["B.响应时长"] = str(runtime) + "秒"
             # json格式化
             djson = json.dumps(d, ensure_ascii=False, sort_keys=True, indent=2)
             if "<" in djson or ">" in djson:
@@ -536,6 +549,7 @@ def run_apicase_views(request):
                 Case.objects.filter(caseid=content[0]["caseid"]).update(result=b)
             else:
                 Case.objects.filter(caseid=content[0]["caseid"]).update(result=djson)
+            Case.objects.filter(caseid=content[0]["caseid"]).update(duration=runtime)
             print(djson)
             return HttpResponse(djson)
         #异常捕获
@@ -575,12 +589,6 @@ def run_apicase_views(request):
                 # 存为字典，转换为json格式
                 d = {}
                 d[casename] = response
-                if runtime > 0 and runtime < 1.0:
-                    d["S.响应时长"] = str(int(runtime * 1000)) + "毫秒"
-                elif runtime >= 1.0 and runtime < 3.0:
-                    d["A.响应时长"] = str(runtime) + "秒"
-                elif runtime >= 3.0:
-                    d["B.响应时长"] = str(runtime) + "秒"
                 L.append(d)
                 # json格式化
                 djson = json.dumps(d, ensure_ascii=False, sort_keys=True, indent=2)
@@ -591,6 +599,7 @@ def run_apicase_views(request):
                     Case.objects.filter(caseid=i["caseid"]).update(result=b)
                 else:
                     Case.objects.filter(caseid=i["caseid"]).update(result=djson)
+                Case.objects.filter(caseid=i["caseid"]).update(duration=runtime)
             #异常捕获
             except TypeError as e:
                 print(e)
@@ -807,6 +816,8 @@ def web_sort_views(request):
             all = Case.objects.filter(Q(belong=belong) & Q(system="erms"))
         elif system == "transfer":
             all = Case.objects.filter(Q(belong=belong) & Q(system="transfer"))
+        elif system == "tdr":
+            all = Case.objects.filter(Q(belong=belong) & Q(system="tdr"))
         l = []
         for i in all:
             l.append(i.sortid)
