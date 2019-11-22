@@ -484,7 +484,7 @@ def run_processcase_views(request):
             djson = json.dumps(d, ensure_ascii=False, sort_keys=True, indent=2)
             print(djson)
             if "身份认证失败" in djson:
-                return JsonResponse({"status_code": 401, "msg": "身份认证失败。 'AccessKey' 或 'AccessToken' 不正确。"})
+                return JsonResponse({"status_code": 401, "msg": "'AccessKey' 或 'AccessToken' 不正确。"})
             if "<" in djson or ">" in djson:
                 print('result存在需要替换的符号')
                 a = djson.replace("<", "＜")
@@ -505,7 +505,7 @@ def run_processcase_views(request):
             return JsonResponse({"status_code": 500, "msg": "异常的id为:"+str(caseid)+","+casename+"json.loads()读取字符串报错"})
 
     else:
-        # 多个接口测试的情况
+        #多个接口测试的情况
         print("多个接口测试")
         # 将每次运行的字典结果集用列表存储
         L = []
@@ -676,7 +676,7 @@ def run_processcase_views(request):
             print(djson)
             if "身份认证失败" in djson:
                 num_progress = 100
-                return JsonResponse({"status_code": 401, "msg": "身份认证失败。 'AccessKey' 或 'AccessToken' 不正确。"})
+                return JsonResponse({"status_code": 401, "msg": "'AccessKey' 或 'AccessToken' 不正确。"})
             if "error" in djson and "timestamp" in djson or "异常的id为" in djson or "我所依赖的id为" in djson:
                 failed_num += 1
                 L.append(d)
@@ -1115,7 +1115,7 @@ def process_sort_views(request):
 
 
 
-#多线程运行，暂未完善
+#多线程运行
 def repeatrun_views(request):
     global thread_dict
     content = request.POST.get("request", "")
@@ -1201,10 +1201,13 @@ def run_apicase(start,end,content):
                 print(djson)
                 if "身份认证失败" in djson:
                     num_progress = 100
-                    return JsonResponse({"status_code": 401, "msg": "身份认证失败。 'AccessKey' 或 'AccessToken' 不正确。"})
+                    thread_dict["status_code"] = 401
+                    thread_dict["msg"] = "'AccessKey' 或 'AccessToken' 不正确。"
+
                 if "error" in djson and "timestamp" in djson:
                     failed_num += 1
                     L.append(d)
+
                 if "<" in djson or ">" in djson:
                     print('result存在需要替换的符号')
                     a = djson.replace("<", "＜")
@@ -1228,12 +1231,12 @@ def run_apicase(start,end,content):
 
         except TypeError as e:
             print(e)
-            # send_ding({"status_code": 500, "msg": "异常的id为:"+caseid+","+casename+"操作或函数应用于不适当类型的对象"})
-            return {"status_code": 500, "msg": "异常的id为:"+caseid+","+casename+"操作或函数应用于不适当类型的对象"}
+            thread_dict["类型错误"] = "异常的id为:"+caseid+","+casename+"操作或函数应用于不适当类型的对象"
+            return thread_dict
         except json.decoder.JSONDecodeError as e:
             print(e)
-            # send_ding({"status_code": 500, "msg": "异常的id为:" + caseid + "," + casename + "json.loads()读取字符串报错"})
-            return {"status_code": 500, "msg": "异常的id为:"+caseid+","+casename+"操作或函数应用于不适当类型的对象"}
+            thread_dict["JSON解析异常"] = "异常的id为:"+caseid+","+casename+"操作或函数应用于不适当类型的对象"
+            return thread_dict
 
     else:
         # 多个接口测试的情况
@@ -1260,7 +1263,7 @@ def run_apicase(start,end,content):
                 replace_position = i.get("replace_position", "")  # 替换的区域
 
                 starttime = time.time()
-                # 判断是否为流程测试接口，如果是的话先通过依赖数据的ID查询结果
+                #判断是否为流程测试接口，如果是的话先通过依赖数据的ID查询结果
                 if isprocess == "True":
                     print("我需要依赖别的接口哦！！！")
                     depend_id = depend_id.split(",")
@@ -1384,7 +1387,7 @@ def run_apicase(start,end,content):
                                     print(e)
                                     response = "异常的id为:" + str(caseid) + "," + "json.loads()读取字符串报错"
                                 break
-                # 不需要别的接口
+                #不需要别的接口
                 elif isprocess != "True":
                     print("我不需要依赖别的接口！！！")
                     if "＜" in body or "＞" in body:
@@ -1394,7 +1397,7 @@ def run_apicase(start,end,content):
                         body = b
                     try:
                         response = Runmethod.run_main(method, url, params, body)
-                        # 异常捕获
+                        #异常捕获
                     except TypeError as e:
                         print(e)
                         response = "异常的id为:" + str(caseid) + "," + "操作或函数应用于不适当类型的对象"
@@ -1404,20 +1407,24 @@ def run_apicase(start,end,content):
                     # 获取运行完的时间
                 endtime = time.time()
                 runtime = round(endtime - starttime, 3)
-                # 存为字典，转换为json格式
+                #存为字典，转换为json格式
                 d = {}
                 d[casename] = response
-                # json格式化
+                #json格式化
                 djson = json.dumps(d, ensure_ascii=False, sort_keys=True, indent=2)
                 print(djson)
                 if "身份认证失败" in djson:
                     num_progress = 100
-                    return JsonResponse({"status_code": 401, "msg": "身份认证失败。 'AccessKey' 或 'AccessToken' 不正确。"})
+                    thread_dict["status_code"] = 401
+                    thread_dict["msg"] = "'AccessKey' 或 'AccessToken' 不正确。"
+                    return thread_dict
+
                 if "error" in djson and "timestamp" in djson or "异常的id为" in djson or "我所依赖的id为" in djson:
                     failed_num += 1
                     L.append(d)
                     process_ids.append(caseid)
                     print(process_ids)
+
                 if "<" in djson or ">" in djson:
                     print('result存在需要替换的符号')
                     a = djson.replace("<", "＜")

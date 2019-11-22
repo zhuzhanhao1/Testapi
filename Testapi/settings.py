@@ -189,16 +189,16 @@ LOGGING = {
         }
     },
     'loggers': {
-        '': {
-            'handlers': ['file', 'console'],
-            'level': 'INFO',
-            'propagate': False,
-            },
-        'django': {
-            'handlers': ['file', 'console'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
+        # '': {
+        #     'handlers': ['file', 'console'],
+        #     'level': 'INFO',
+        #     'propagate': True,
+        #     },
+        # 'django': {
+        #     'handlers': ['file', 'console'],
+        #     'level': 'DEBUG',
+        #     'propagate': True,
+        # },
         'django.request': {
             'handlers': ['mail_admins', 'console'],
             'level': 'ERROR',

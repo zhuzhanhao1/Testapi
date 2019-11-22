@@ -26,7 +26,6 @@ cur_path = os.path.abspath(os.path.join(currentUrl,os.pardir))
 sys.path.append(cur_path)
 from webuitest.conn_database import ConnDataBase
 
-
 num_progress = 0 # 全局变量进度数
 thread_dict = {}
 
