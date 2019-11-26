@@ -170,7 +170,7 @@
 		<div class="demoTable">
 			<div class="layui-breadcrumb">
 					<span class="layui-icon layui-icon-link" style="font-size: 22px;color: #fff;">
-						<a href="/web_apiindex/" class="index" style="color: #fff;">http://amberdata.cn/ermsapi/v2</a>
+						<a href="/web_apiindex/" class="index" style="color: #fff;">http://amberdata.cn/ermsapi</a>
 						<a class="kit-side-fold casetitle" style="font-size: 22px;color: #fff;">{{ abq }}</a>
 					</span>
 			</div>
@@ -1047,7 +1047,7 @@
                     ]
                 }
                 , {
-                    field: 'url', title: '请求路径', width: 250, align: "left", templet: function (res) {
+                    field: 'url', title: '请求路径', width: 250, align: "left", templet: function (res){
                         var a = res.url.split("/");
                         return '<span>' + a[a.length - 1] + '</span>'
                     }

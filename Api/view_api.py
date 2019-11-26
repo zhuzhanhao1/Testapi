@@ -1051,4 +1051,12 @@ def export_data_views(request):
         return HttpResponse("操作成功")
 
 
+#遍历修改字段，测试用
+def zzh_test_views(request):
+    all_case = Case.objects.filter()
+    for case in all_case:
+        URL = case.url.replace("\r","")
+        Case.objects.filter(caseid=case.caseid).update(url=URL)
+        print(case.caseid)
+    return HttpResponse("success!")
 

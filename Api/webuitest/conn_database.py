@@ -57,34 +57,38 @@ class ConnDataBase:
         return self.cursor.fetchone()
         # return self.cursor.fetchall()
 
-
+    #根据用户身份获取用户的token
     def get_logininfo(self,identity):
         sql = "select username,password,url,token from ERMS.userinfo where identity='{}';".format(identity)
         res = self.fetchCount(sql)
         return res
 
+    #获取所有的用户信息
     def get_logininfos(self):
         sql = "select * from ERMS.userinfo;"
         self.execute_sql(sql)
         return self.cursor.fetchall()
 
+    #更具用户的身份更新用户的账号密码
     def update_logininfo(self,username,password,identity):
         sql = "update ERMS.userinfo set username='{zhanghao}',password='{mima}'  where identity='{shenfeng}';".format(zhanghao=username,mima=password,shenfeng=identity)
         print(sql)
         res = self.fetchCount(sql)
         return res
 
-
+    #根据用户的身份更改用户的token
     def update_token(self,token,identity):
         sql = "update ERMS.userinfo set token='{token}' where identity='{shenfeng}';".format(token=token,shenfeng=identity)
         res = self.fetchCount(sql)
         return res
 
+    #通过id获取接口参数的详细信息
     def get_requestParams(self,id):
         sql = "select parameterName,parameterThat,requestType,isMust,dataType from ERMS.requestParams where id={};".format(id)
         self.execute_sql(sql)
         return self.cursor.fetchall()
 
+    #插入接口的详细信息
     def insert_requestParams(self,id,parameterName,parameterThat,requestType,isMust,dataType):
         sql = "insert into ERMS.requestParams (id,parameterName,parameterThat,requestType,isMust,dataType) values('{0}','{1}','{2}','{3}','{4}','{5}');".format(id,parameterName,parameterThat,requestType,isMust,dataType)
         res = self.fetchCount(sql)

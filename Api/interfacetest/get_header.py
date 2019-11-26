@@ -9,12 +9,12 @@ sys.path.append('/Users/zhuzhanhao/Testapi')
 from Api.webuitest.conn_database import ConnDataBase
 
 
-url="http://amberdata.cn/adminapi/v2/user/login"
+url="http://amberdata.cn/adminapi/user/login"
 
-con = ConnDataBase()
-sysadmin = con.get_logininfo("sysadmin")
-admin = con.get_logininfo("admin")
-ast = con.get_logininfo("ast")
+# logincon = ConnDataBase()
+# sysadmin = con.get_logininfo("sysadmin")
+# admin = con.get_logininfo("admin")
+# ast = con.get_logininfo("ast")
 
 
 

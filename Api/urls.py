@@ -95,6 +95,4 @@ urlpatterns = [
     url(r'^TestReport/$',report_webcase_views),
     #自动化列表排序
     url(r'^autosort/$',autosort_views),
-
-
 ]

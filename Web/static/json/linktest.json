@@ -7,22 +7,22 @@
 			"linkId": "1",
 			"logo": "./../../static/images/amberdata.png",
 			"websiteName": "元数据治理平台",
-			"websiteUrl": "http://amberdata.cn/metadata/v2",
+			"websiteUrl": "http://amberdata.cn/metadata",
             "websiteApiUrl": "没见过，不知道有没有"
 		},
 		{
 			"linkId": "2",
 			"logo": "./../../static/images/amberdata.png",
 			"websiteName": "数字档案室",
-			"websiteUrl": "http://amberdata.cn/erms/v2",
-            "websiteApiUrl": "http://amberdata.cn/ermsapi/v2/doc.html"
+			"websiteUrl": "http://amberdata.cn/erms",
+            "websiteApiUrl": "http://amberdata.cn/ermsapi/doc.html"
 		},
 		{
 			"linkId": "3",
 			"logo": "./../../static/images/amberdata.png",
 			"websiteName": "移交接收系统",
-			"websiteUrl": "http://amberdata.cn/transfer/v2",
-            "websiteApiUrl": "http://amberdata.cn/transferapi/v2/doc.html"
+			"websiteUrl": "http://amberdata.cn/transfer",
+            "websiteApiUrl": "http://amberdata.cn/transferapi/doc.html"
 		},
 		{
 			"linkId": "4",
@@ -35,8 +35,8 @@
 			"linkId": "5",
 			"logo": "./../../static/images/amberdata.png",
 			"websiteName": "用户权限管理系统",
-			"websiteUrl": "http://amberdata.cn/admin/v2",
-            "websiteApiUrl": "http://amberdata.cn/adminapi/v2/doc.html"
+			"websiteUrl": "http://amberdata.cn/admin",
+            "websiteApiUrl": "http://amberdata.cn/adminapi/doc.html"
 		},
 		{
 			"linkId": "6",
