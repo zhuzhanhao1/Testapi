@@ -88,7 +88,7 @@ DATABASES = {
         'NAME': 'Testapi',
         'USER':'root',
         'PASSWORD':'123456',
-        'HOST':'localhost',
+        'HOST':'localhost',#47.98.56.102
         'PORT':'3306',
         "CONN_MAX_AGE":9
 
@@ -117,12 +117,21 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+# 设置语言
+# LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-hans'
 
-TIME_ZONE = 'UTC'
+#设置时区
+# TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
+#设置字符集
+DEFAULT_CHARSET = "utf-8"
+
+#国际化
 USE_I18N = True
 
+#相同内容被不同时区地区的用户访问时，是否以不同格式内容展示(例如时间，日期，数字)
 USE_L10N = True
 
 USE_TZ = True
@@ -146,10 +155,13 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'),)
 #设置关闭浏览器时则清空对应的session空间
 # SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
-LOG_FILE = "./error.log"
+LOG_FILE = "./../logs/debug.log"
+
 
 LOGGING = {
+    # version, 只能为1
     'version': 1,
+    # True 表示禁用loggers
     'disable_existing_loggers': True,
 
     'filters': {
@@ -157,12 +169,13 @@ LOGGING = {
             '()': 'django.utils.log.RequireDebugFalse'
         }
     },
+    # 【格式化】- [可以配置多种样式分别命名，根据需要选择保存的格式]
     'formatters': {
         'simple': {
             'format': '[%(levelname)s] %(module)s : %(message)s'
         },
         'verbose': {
-            'format': '[%(asctime)s] [%(levelname)s] %(module)s : %(message)s'
+            'format': '[%(asctime)s] [%(levelname)s] [%(funcName)s] : %(message)s'
         }
     },
     'handlers': {
@@ -172,37 +185,48 @@ LOGGING = {
         },
         'console': {
             'level': 'INFO',
-            'class': 'logging.StreamHandler',
+            'class': 'logging.StreamHandler',#输出到Stream。通常用来打印到标准输出。
             'formatter': 'verbose'
         },
         'file': {
-            'level': 'INFO',
+            'level': 'WARNING',
             'class': 'logging.FileHandler',
             'formatter': 'verbose',
-            'filename': LOG_FILE,
+            'filename': os.path.join(BASE_DIR, "logs",'debug.log'),#日志输出文件
             'mode': 'a',
         },
-        'mail_admins': {
-            'level': 'ERROR',
-            'class': 'django.utils.log.AdminEmailHandler',
-            'filters': ['require_debug_false']
-        }
+        #'file': {
+            #'level': 'DEBUG',
+            #'class': 'logging.handlers.RotatingFileHandler',#自动按大小切分的log文件
+            #'class': 'logging.FileHandler',
+            #'formatter': 'verbose',
+            #'filename': LOG_FILE,
+            #'filename': os.path.join(BASE_DIR, "logs",'debug.log'),#日志输出文件
+            #'maxBytes': 5 * 1024 * 1024,
+            #'backupCount': 5,#备份份数
+        #},
+        # 'mail_admins': {
+        #     'level': 'ERROR',
+        #     'class': 'django.utils.log.AdminEmailHandler',
+        #     'filters': ['require_debug_false']# 仅当 DEBUG = False 时才发送邮件
+        # }
     },
+    #logging管理器
     'loggers': {
-        '': {
-            'handlers': ['file', 'console'],
-            'level': 'INFO',
-            'propagate': True,
-            },
+        # '': {
+        #     'handlers': ['file', 'console'],
+        #     'level': 'INFO',
+        #     'propagate': True,
+        #     },
         'django': {
             'handlers': ['file', 'console'],
             'level': 'DEBUG',
             'propagate': True,
         },
-        'django.request': {
-            'handlers': ['mail_admins', 'console'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
+        # 'django.request': {
+        #     'handlers': ['mail_admins', 'console'],
+        #     'level': 'ERROR',
+        #     'propagate': True,
+        # },
     }
 }

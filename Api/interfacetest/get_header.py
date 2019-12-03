@@ -33,7 +33,7 @@ class GetToken:
         }
         response = requests.post(url, headers=headers, data=json.dumps(params))
         res = response.json()['accessToken']
-        # print(res)
+        print(res)
         result = self.con.update_token(res, role)
         print("角色" + role + "的Token已被更新")
         return result  # None

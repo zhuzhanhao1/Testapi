@@ -1,6 +1,6 @@
 import os, sys, io
 import threading
-
+import logging
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.schedulers.blocking import BlockingScheduler
 from datetime import datetime
@@ -29,7 +29,7 @@ from webuitest.conn_database import ConnDataBase
 
 num_progress = 0 # 全局变量进度数
 thread_dict = {}
-
+logger = logging.getLogger("django")
 
 #流程测试接口列表
 @login_required
@@ -257,6 +257,7 @@ def processlist_view(request):
     for contact in contacts:
         res.append(contact)
     datas = {"code": 0, "msg": "用例列表展现", "count": len(L), "data": res}
+    logger.warning("朱占豪测试日志级别")
     return JsonResponse(datas)
 
 #流程结果列表

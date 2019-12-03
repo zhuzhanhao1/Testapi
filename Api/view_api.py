@@ -503,7 +503,7 @@ def update_token_api_views(request):
 
     except Exception as e:
         print(e)
-        return HttpResponse("Failed to return " + str(e))
+        return HttpResponse("Failed to return Token")
 
 
     return HttpResponse("操作成功")

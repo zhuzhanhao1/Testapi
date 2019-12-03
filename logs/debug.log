@@ -1,0 +1,13 @@
+[2019-12-03 18:07:56,222] [WARNING] [processlist_view] : 朱占豪测试日志级别
+[2019-12-03 18:19:15,589] [WARNING] [get_response] : Not Found: /accounts/login/
+[2019-12-03 18:19:15,590] [WARNING] [log_message] : "GET /accounts/login/?next=/web_index/ HTTP/1.1" 404 11267
+[2019-12-03 18:19:15,679] [WARNING] [get_response] : Not Found: /favicon.ico
+[2019-12-03 18:19:15,680] [WARNING] [log_message] : "GET /favicon.ico HTTP/1.1" 404 11238
+[2019-12-03 18:21:46,099] [WARNING] [processlist_view] : 朱占豪测试日志级别
+[2019-12-03 18:21:48,882] [WARNING] [processlist_view] : 朱占豪测试日志级别
+[2019-12-03 19:48:31,758] [WARNING] [processlist_view] : 朱占豪测试日志级别
+[2019-12-03 19:48:47,067] [WARNING] [processlist_view] : 朱占豪测试日志级别
+[2019-12-03 19:52:34,023] [WARNING] [processlist_view] : 朱占豪测试日志级别
+[2019-12-03 19:52:36,204] [WARNING] [processlist_view] : 朱占豪测试日志级别
+[2019-12-03 19:52:43,403] [WARNING] [processlist_view] : 朱占豪测试日志级别
+[2019-12-03 23:20:57,067] [WARNING] [processlist_view] : 朱占豪测试日志级别
