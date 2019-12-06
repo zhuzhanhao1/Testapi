@@ -60,7 +60,7 @@ def quicktest_views(request):
 #流程测试响应结果
 @login_required
 def process_result_views(request):
-    return render(request,"process_result.html")
+    return render(request, "process_result.html")
 
 
 #zzh测试frame首页
@@ -85,7 +85,7 @@ def web_functionalTest_views(request):
 def web_autoTest_views(request):
     a = request.GET.get("belong", "")
     b = request.GET.get("system", "")
-    return render(request, 'web_autoTest.html',{"abq":a, "system":b})
+    return render(request, 'web_autoTest.html', {"abq":a, "system":b})
 
 #快速测试
 @login_required
@@ -97,14 +97,14 @@ def web_quicktest_views(request):
 def web_apiindex_views(request):
     a = request.GET.get("belong","")
     b = request.GET.get("system","")
-    return render(request, "web_apiindex.html", {"abq":a,"system":b})
+    return render(request, "web_apiindex.html", {"abq":a, "system":b})
 
 #流程接口首页
 @login_required
 def web_process_views(request):
     a = request.GET.get("belong", "")
     b = request.GET.get("system", "")
-    return render(request, 'web_process.html', {"abq":a,"system":b})
+    return render(request, 'web_process.html', {"abq":a, "system":b})
 
 #个人信息页
 @login_required

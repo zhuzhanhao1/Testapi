@@ -5,10 +5,8 @@ import time
 import os
 
 cur_path = os.path.dirname(os.path.realpath(__file__))
-# print(cur_path)
 cur_path1 = os.path.dirname(os.path.realpath(cur_path))
 cur_path2 = os.path.dirname(os.path.realpath(cur_path1))
-# print(cur_path2)
 sys.path.append(cur_path2)
 
 # sys.path.append('/Users/zhuzhanhao/Testapi')

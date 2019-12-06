@@ -330,3 +330,15 @@ django.template.exceptions.TemplateDoesNotExist: static/index.html
 [2019-12-06 23:34:43,588] [WARNING] [log_message] : "GET /favicon.ico HTTP/1.1" 404 11238
 [2019-12-07 00:15:21,963] [WARNING] [get_response] : Not Found: /web_info/.static.images.json
 [2019-12-07 00:15:21,967] [WARNING] [log_message] : "GET /web_info/.static.images.json HTTP/1.1" 404 11289
+[2019-12-07 00:27:28,719] [ERROR] [handle_uncaught_exception] : Internal Server Error: /apilist/
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/zhuzhanhao/Testapi/Api/api/view_api.py", line 145, in apilist_view
+    apilists = Case.objects.filter(Q(belong__contains="库房接口") & Q(system="tdr")).order_by("sortid")
+NameError: name 'Case' is not defined
+[2019-12-07 00:27:29,628] [ERROR] [log_message] : "GET /apilist/?page=1&limit=30&belong=warehouse&system=tdr HTTP/1.1" 500 14876

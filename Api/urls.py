@@ -1,8 +1,8 @@
 from django.conf.urls import url
-from .view_process import *
-from .views import *
-from .view_web import *
-from .view_api import *
+from api.view_process import *
+from api.views import *
+from api.view_web import *
+from api.view_api import *
 
 urlpatterns = [
     #登入登出

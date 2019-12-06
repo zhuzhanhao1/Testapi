@@ -1,6 +1,5 @@
 import io
 import threading
-
 import xlrd
 from xlwt import *
 import os,sys
@@ -12,11 +11,12 @@ from django.db import transaction
 from django.db.models import Q
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
-from .forms import *
 from Api.common.run_method import RequestMethod
 from Api.common.run_mehod_quick import RequestMethodQuick
 from Api.common.get_header import  GetToken
-from common.DingDing import send_ding,send_link
+from common.ding_ding import send_ding,send_link
+from Api.models import *
+
 
 currentUrl = os.path.dirname(__file__)
 #父文件路径
@@ -36,7 +36,7 @@ def apiindex_view(request):
         case_count = Case.objects.filter(system=b).count()
     else:
         case_count =  Case.objects.filter().count()
-    return render(request,"apiindex.html",{"user":"朱占豪","abq":a,"case_count":case_count,"system":b})
+    return render(request, "apiindex.html", {"user": "朱占豪", "abq":a, "case_count":case_count, "system":b})
 
 
 #接口列表列表
@@ -438,7 +438,7 @@ def detail_api_views(request):
             "result" : result,
             "head" : head
         }
-        return render(request,"detail.html",{"dic":dic})
+        return render(request, "detail.html", {"dic":dic})
     else:
         return HttpResponse("没有传ID参数！")
 

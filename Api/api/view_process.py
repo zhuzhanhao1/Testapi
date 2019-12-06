@@ -11,13 +11,11 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
-from .forms import *
 from Api.common.run_method import RequestMethod
 import pytz
 from Api.common.get_header import GetToken
-
-from common.DingDing import send_ding, send_link
-
+from common.ding_ding import send_ding, send_link
+from Api.models import *
 
 currentUrl = os.path.dirname(__file__)
 # 父文件路径
