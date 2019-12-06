@@ -5,27 +5,24 @@ import os
 import xlrd
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, JsonResponse
 
 # 本文件路径
-from Api.models import Webcase, User, Autocase
+from Api.models import Webcase, Autocase
 
 currentUrl = os.path.dirname(__file__)
 # 父文件路径
 cur_path = os.path.abspath(os.path.join(currentUrl, os.pardir))
 sys.path.append(cur_path)
 
-from Api.webuitest.A_sysadmin_test import SystemManagement
-from Api.webuitest.B_admin_test import UnitManagement
-from Api.webuitest.C_ywsd_test import AstManagement
-import Api.webuitest.htmlCN
-from Api.webuitest.conn_database import ConnDataBase
-from Api.webuitest.EmailSend import SendEmail
-from Api.webuitest.DingDing import send_ding
-
+from Api.WebUi.A_sysadmin_test import SystemManagement
+from Api.WebUi.B_admin_test import UnitManagement
+from Api.WebUi.C_ywsd_test import AstManagement
+import WebUi.config.htmlCN
+from common.conn_database import ConnDataBase
 
 
 # web首页
@@ -582,11 +579,11 @@ class AllTest:
         report_abspath = os.path.join(report_path, 'TestReport.html')
         print("测试报告的路径为:{}".format(report_abspath))
         with open(report_abspath, 'wb') as report_file:
-            runner = Api.webuitest.htmlCN.HTMLTestRunner(stream=report_file,
-                                                         title=u"ERMS自动化测试报告",
-                                                         verbosity=2,
-                                                         description='Web Automation Testingweb',
-                                                         tester=u"朱占豪")
+            runner = WebUi.config.htmlCN.HTMLTestRunner(stream=report_file,
+                                                        title=u"ERMS自动化测试报告",
+                                                        verbosity=2,
+                                                        description='Web Automation Testingweb',
+                                                        tester=u"朱占豪")
             runner.run(all_case)
 
 

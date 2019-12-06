@@ -105,3 +105,228 @@ Traceback (most recent call last):
     raise JSONDecodeError("Expecting value", s, err.value) from None
 json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
 [2019-12-04 11:38:32,160] [ERROR] [log_message] : "GET /processlist/?page=1&limit=30&belong=&system=erms&key%5Bcasename%5D=%E9%94%99%E8%AF%AF%E6%8E%A5%E5%8F%A3%E6%9F%A5%E8%AF%A2 HTTP/1.1" 500 15984
+[2019-12-06 22:34:34,349] [ERROR] [handle_uncaught_exception] : Internal Server Error: /web_index/
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/Users/zhuzhanhao/Testapi/Api/views.py", line 69, in web_index_views
+    return render(request, 'static/index.html')
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/shortcuts.py", line 30, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/template/loader.py", line 67, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/template/loader.py", line 25, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: static/index.html
+[2019-12-06 22:34:34,534] [ERROR] [log_message] : "GET /web_index/ HTTP/1.1" 500 83578
+[2019-12-06 22:34:35,385] [WARNING] [get_response] : Not Found: /favicon.ico
+[2019-12-06 22:34:35,386] [WARNING] [log_message] : "GET /favicon.ico HTTP/1.1" 404 11238
+[2019-12-06 22:36:19,127] [ERROR] [handle_uncaught_exception] : Internal Server Error: /web_index/
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/Users/zhuzhanhao/Testapi/Api/views.py", line 69, in web_index_views
+    return render(request, 'static/index.html')
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/shortcuts.py", line 30, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/template/loader.py", line 67, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/template/loader.py", line 25, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: static/index.html
+[2019-12-06 22:36:19,198] [ERROR] [log_message] : "GET /web_index/ HTTP/1.1" 500 83578
+[2019-12-06 22:36:22,257] [ERROR] [handle_uncaught_exception] : Internal Server Error: /web_index/
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/Users/zhuzhanhao/Testapi/Api/views.py", line 69, in web_index_views
+    return render(request, 'static/index.html')
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/shortcuts.py", line 30, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/template/loader.py", line 67, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/template/loader.py", line 25, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: static/index.html
+[2019-12-06 22:36:22,314] [ERROR] [log_message] : "GET /web_index/ HTTP/1.1" 500 83578
+[2019-12-06 22:36:25,717] [ERROR] [handle_uncaught_exception] : Internal Server Error: /web_index/
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/Users/zhuzhanhao/Testapi/Api/views.py", line 69, in web_index_views
+    return render(request, 'static/index.html')
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/shortcuts.py", line 30, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/template/loader.py", line 67, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/template/loader.py", line 25, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: static/index.html
+[2019-12-06 22:36:25,780] [ERROR] [log_message] : "GET /web_index/ HTTP/1.1" 500 83578
+[2019-12-06 22:41:15,253] [ERROR] [handle_uncaught_exception] : Internal Server Error: /web_index/
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/Users/zhuzhanhao/Testapi/Api/views.py", line 69, in web_index_views
+    return render(request, 'static/index.html')
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/shortcuts.py", line 30, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/template/loader.py", line 67, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/template/loader.py", line 25, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: static/index.html
+[2019-12-06 22:41:15,416] [ERROR] [log_message] : "GET /web_index/ HTTP/1.1" 500 83578
+[2019-12-06 22:41:17,923] [ERROR] [handle_uncaught_exception] : Internal Server Error: /web_index/
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/Users/zhuzhanhao/Testapi/Api/views.py", line 69, in web_index_views
+    return render(request, 'static/index.html')
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/shortcuts.py", line 30, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/template/loader.py", line 67, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/template/loader.py", line 25, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: static/index.html
+[2019-12-06 22:41:17,978] [ERROR] [log_message] : "GET /web_index/ HTTP/1.1" 500 83578
+[2019-12-06 22:50:46,861] [ERROR] [handle_uncaught_exception] : Internal Server Error: /web_index/
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/Users/zhuzhanhao/Testapi/Api/views.py", line 69, in web_index_views
+    return render(request, 'static/index.html')
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/shortcuts.py", line 30, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/template/loader.py", line 67, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/template/loader.py", line 25, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: static/index.html
+[2019-12-06 22:50:46,934] [ERROR] [log_message] : "GET /web_index/ HTTP/1.1" 500 83578
+[2019-12-06 22:50:48,631] [ERROR] [handle_uncaught_exception] : Internal Server Error: /web_index/
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/Users/zhuzhanhao/Testapi/Api/views.py", line 69, in web_index_views
+    return render(request, 'static/index.html')
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/shortcuts.py", line 30, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/template/loader.py", line 67, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/template/loader.py", line 25, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: static/index.html
+[2019-12-06 22:50:48,692] [ERROR] [log_message] : "GET /web_index/ HTTP/1.1" 500 83578
+[2019-12-06 22:50:59,610] [ERROR] [handle_uncaught_exception] : Internal Server Error: /web_index/
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/Users/zhuzhanhao/Testapi/Api/views.py", line 69, in web_index_views
+    return render(request, 'static/index.html')
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/shortcuts.py", line 30, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/template/loader.py", line 67, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/template/loader.py", line 25, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: static/index.html
+[2019-12-06 22:50:59,686] [ERROR] [log_message] : "GET /web_index/ HTTP/1.1" 500 83593
+[2019-12-06 22:53:04,992] [WARNING] [get_response] : Not Found: /web_index/.static.images.json
+[2019-12-06 22:53:04,994] [WARNING] [log_message] : "GET /web_index/.static.images.json HTTP/1.1" 404 11292
+[2019-12-06 22:53:09,433] [WARNING] [get_response] : Not Found: /web_index/.static.images.json
+[2019-12-06 22:53:09,433] [WARNING] [log_message] : "GET /web_index/.static.images.json HTTP/1.1" 404 11292
+[2019-12-06 22:53:11,448] [WARNING] [get_response] : Not Found: /web_index/.static.images.json
+[2019-12-06 22:53:11,449] [WARNING] [log_message] : "GET /web_index/.static.images.json HTTP/1.1" 404 11292
+[2019-12-06 22:53:48,837] [WARNING] [get_response] : Not Found: /web_index/.static.images.json
+[2019-12-06 22:53:48,838] [WARNING] [log_message] : "GET /web_index/.static.images.json HTTP/1.1" 404 11292
+[2019-12-06 22:57:16,040] [WARNING] [get_response] : Not Found: /web_index/.static.images.json
+[2019-12-06 22:57:16,044] [WARNING] [log_message] : "GET /web_index/.static.images.json HTTP/1.1" 404 11292
+[2019-12-06 22:57:16,583] [WARNING] [get_response] : Not Found: /web_index/.static.images.json
+[2019-12-06 22:57:16,583] [WARNING] [log_message] : "GET /web_index/.static.images.json HTTP/1.1" 404 11292
+[2019-12-06 23:01:05,799] [WARNING] [get_response] : Not Found: /Web/static/layui/css/layui.css
+[2019-12-06 23:01:05,818] [WARNING] [log_message] : "GET /Web/static/layui/css/layui.css HTTP/1.1" 404 11295
+[2019-12-06 23:01:05,817] [WARNING] [get_response] : Not Found: /Web/static/layui/layui.js
+[2019-12-06 23:01:05,821] [WARNING] [log_message] : "GET /Web/static/layui/layui.js HTTP/1.1" 404 11280
+[2019-12-06 23:01:13,746] [WARNING] [get_response] : Not Found: /Web/static/layui/css/layui.css
+[2019-12-06 23:01:13,753] [WARNING] [log_message] : "GET /Web/static/layui/css/layui.css HTTP/1.1" 404 11295
+[2019-12-06 23:01:13,765] [WARNING] [get_response] : Not Found: /Web/static/layui/layui.js
+[2019-12-06 23:01:13,765] [WARNING] [log_message] : "GET /Web/static/layui/layui.js HTTP/1.1" 404 11280
+[2019-12-06 23:02:17,231] [WARNING] [get_response] : Not Found: /Web/static/layui/css/layui.css
+[2019-12-06 23:02:17,243] [WARNING] [get_response] : Not Found: /Web/static/layui/layui.js
+[2019-12-06 23:02:17,244] [WARNING] [log_message] : "GET /Web/static/layui/css/layui.css HTTP/1.1" 404 11295
+[2019-12-06 23:02:17,245] [WARNING] [log_message] : "GET /Web/static/layui/layui.js HTTP/1.1" 404 11280
+[2019-12-06 23:04:22,333] [WARNING] [get_response] : Not Found: /Web/static/layui/css/layui.css
+[2019-12-06 23:04:22,334] [WARNING] [get_response] : Not Found: /Web/static/layui/layui.js
+[2019-12-06 23:04:22,335] [WARNING] [log_message] : "GET /Web/static/layui/layui.js HTTP/1.1" 404 11280
+[2019-12-06 23:04:22,348] [WARNING] [log_message] : "GET /Web/static/layui/css/layui.css HTTP/1.1" 404 11295
+[2019-12-06 23:04:25,829] [WARNING] [get_response] : Not Found: /Web/static/layui/css/layui.css
+[2019-12-06 23:04:25,832] [WARNING] [log_message] : "GET /Web/static/layui/css/layui.css HTTP/1.1" 404 11295
+[2019-12-06 23:04:25,853] [WARNING] [get_response] : Not Found: /Web/static/layui/layui.js
+[2019-12-06 23:04:25,854] [WARNING] [log_message] : "GET /Web/static/layui/layui.js HTTP/1.1" 404 11280
+[2019-12-06 23:04:28,791] [WARNING] [get_response] : Not Found: /web_linklist/.static.images.json
+[2019-12-06 23:04:28,792] [WARNING] [log_message] : "GET /web_linklist/.static.images.json?page=1&limit=20 HTTP/1.1" 404 11321
+[2019-12-06 23:05:13,426] [WARNING] [get_response] : Not Found: /Web/static/layui/css/layui.css
+[2019-12-06 23:05:13,442] [WARNING] [get_response] : Not Found: /Web/static/layui/layui.js
+[2019-12-06 23:05:13,443] [WARNING] [log_message] : "GET /Web/static/layui/css/layui.css HTTP/1.1" 404 11295
+[2019-12-06 23:05:13,443] [WARNING] [log_message] : "GET /Web/static/layui/layui.js HTTP/1.1" 404 11280
+[2019-12-06 23:23:04,419] [WARNING] [log_message] : "GET /static/images/login_bg.jpg HTTP/1.1" 404 1670
+[2019-12-06 23:34:43,585] [WARNING] [get_response] : Not Found: /favicon.ico
+[2019-12-06 23:34:43,588] [WARNING] [log_message] : "GET /favicon.ico HTTP/1.1" 404 11238
+[2019-12-07 00:15:21,963] [WARNING] [get_response] : Not Found: /web_info/.static.images.json
+[2019-12-07 00:15:21,967] [WARNING] [log_message] : "GET /web_info/.static.images.json HTTP/1.1" 404 11289

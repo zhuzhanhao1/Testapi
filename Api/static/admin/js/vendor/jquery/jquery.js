@@ -8813,7 +8813,7 @@ jQuery.extend( {
 	},
 
 	getJSON: function( url, data, callback ) {
-		return jQuery.get( url, data, callback, "json" );
+		return jQuery.get( url, data, callback, "static.images.json" );
 	},
 
 	getScript: function( url, callback ) {
@@ -9335,7 +9335,7 @@ jQuery.ajaxPrefilter( "json jsonp", function( s, originalSettings, jqXHR ) {
 		};
 
 		// Force json dataType
-		s.dataTypes[ 0 ] = "json";
+		s.dataTypes[ 0 ] = "static.images.json";
 
 		// Install callback
 		overwritten = window[ callbackName ];

@@ -1,30 +1,28 @@
 import io
 import threading
 
-import jsonpath
 import xlrd
 from xlwt import *
 import os,sys
 import time
-from datetime import datetime
 import json
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.core.paginator import Paginator
 from django.db import transaction
 from django.db.models import Q
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, JsonResponse
 from .forms import *
-from Api.interfacetest.run_method import RequestMethod
-from Api.interfacetest.run_mehod_quick import RequestMethodQuick
-from Api.interfacetest.get_header import  GetToken
-from Api.webuitest.DingDing import send_ding,send_link
+from Api.common.run_method import RequestMethod
+from Api.common.run_mehod_quick import RequestMethodQuick
+from Api.common.get_header import  GetToken
+from common.DingDing import send_ding,send_link
 
 currentUrl = os.path.dirname(__file__)
 #父文件路径
 cur_path = os.path.abspath(os.path.join(currentUrl,os.pardir))
 sys.path.append(cur_path)
-from webuitest.conn_database import ConnDataBase
+from common.conn_database import ConnDataBase
 
 num_progress = 0 # 全局变量进度数
 thread_dict = {}

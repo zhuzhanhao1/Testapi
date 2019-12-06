@@ -117,7 +117,7 @@ if (typeof jQuery === 'undefined') {
       $parent = $this.closest('.alert')
     }
 
-    $parent.trigger(e = $.Event('close.bs.alert'))
+    $parent.trigger(e = $.Event('static.images.close.bs.alert'))
 
     if (e.isDefaultPrevented()) return
 

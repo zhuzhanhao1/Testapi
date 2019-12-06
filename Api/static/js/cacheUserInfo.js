@@ -26,7 +26,7 @@ layui.config({
         $(".userPhone").val(userInfo.userPhone); //手机号
         $(".userBirthday").val(userInfo.userBirthday); //出生年月
         //填充省份信息，同时调取市级信息列表
-        $.get("../../json/address.json", function (addressData) {
+        $.get("..static.images.json", function (addressData) {
             $(".userAddress select[name='province']").val(userInfo.province); //省
             var value = userInfo.province;
             if (value > 0) {

@@ -1,31 +1,28 @@
-import os, sys, io
+import os, sys
 import threading
 import logging
 from apscheduler.schedulers.background import BackgroundScheduler
-from apscheduler.schedulers.blocking import BlockingScheduler
 from datetime import datetime
 import time
 import json
 import jsonpath
-from apscheduler.triggers.interval import IntervalTrigger
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.db import transaction
+from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from xlwt import Workbook
+from django.http import HttpResponse, JsonResponse
 from .forms import *
-from Api.interfacetest.run_method import RequestMethod
+from Api.common.run_method import RequestMethod
 import pytz
-from Api.interfacetest.get_header import GetToken
-from Api.webuitest.DingDing import send_ding,send_image,send_link
+from Api.common.get_header import GetToken
+
+from common.DingDing import send_ding, send_link
+
 
 currentUrl = os.path.dirname(__file__)
 # 父文件路径
 cur_path = os.path.abspath(os.path.join(currentUrl, os.pardir))
 sys.path.append(cur_path)
-from webuitest.conn_database import ConnDataBase
 
 num_progress = 0 # 全局变量进度数
 thread_dict = {}

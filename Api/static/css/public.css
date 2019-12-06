@@ -55,7 +55,7 @@ form input.layui-input[disabled]{ background:#f2f2f2; color:#595963!important; }
 .multiSelect{ line-height:normal; height:auto; padding:4px 10px; overflow:hidden;min-height:38px; margin-top:-38px; left:0; z-index:99;position:relative;background:none;}
 .multiSelect a{ padding:2px 5px; background:#908e8e; border-radius:2px; color:#fff; display:block; line-height:20px; height:20px; margin:2px 5px 2px 0; float:left;}
 .multiSelect a span{ float:left;}
-.multiSelect a i{ float:left; display:block; margin:2px 0 0 2px; border-radius:2px; width:8px; height:8px; background:url(./../images/close.png) no-repeat center; background-size:65%; padding:4px;}
+.multiSelect a i{ float:left; display:block; margin:2px 0 0 2px; border-radius:2px; width:8px; height:8px; background:url(../images/close.png) no-repeat center; background-size:65%; padding:4px;}
 .multiSelect a i:hover{ background-color:#545556;}
 /*404页面*/
 .noFind{ text-align:center; padding-top:2%;}
@@ -91,10 +91,9 @@ form input.layui-input[disabled]{ background:#f2f2f2; color:#595963!important; }
 /*开发文档*/
 h2.method{ font-size:18px; line-height:45px; padding-left:5px;}
 /*登录*/
-
-/*.loginBody{ background:url("../images/login_bg.jpg") no-repeat center center;}*/
 .loginHtml,.loginBody{ height:100%;}
-.loginBody form.layui-form{ padding:0 20px; width:300px; height:335px; position:absolute; left:50%; top:42%; margin:-150px 0 0 -150px; -webkit-box-sizing:border-box;-moz-box-sizing:border-box; -o-box-sizing:border-box; box-sizing:border-box; background:#fff;-webkit-border-radius:5px; -moz-border-radius:5px; border-radius:5px; box-shadow:0 0 50px #009688;}
+.loginBody{ background:url("../images/login_bg.jpg") no-repeat center center;}
+.loginBody form.layui-form{ padding:0 20px; width:300px; height:335px; position:absolute; left:50%; top:50%; margin:-150px 0 0 -150px; -webkit-box-sizing:border-box;-moz-box-sizing:border-box; -o-box-sizing:border-box; box-sizing:border-box; background:#fff;-webkit-border-radius:5px; -moz-border-radius:5px; border-radius:5px; box-shadow:0 0 50px #009688;}
 .login_face{ margin:-55px auto 20px; width:100px; height:100px; -webkit-border-radius:50%; -moz-border-radius:50%; border-radius:50%; border:5px solid #fff; overflow:hidden;box-shadow:0 0 30px #009688;}
 .login_face img{ width:100%;}
 .loginBody .layui-form-item{ position:relative;}
