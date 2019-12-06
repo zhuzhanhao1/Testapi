@@ -11,3 +11,97 @@
 [2019-12-03 19:52:36,204] [WARNING] [processlist_view] : 朱占豪测试日志级别
 [2019-12-03 19:52:43,403] [WARNING] [processlist_view] : 朱占豪测试日志级别
 [2019-12-03 23:20:57,067] [WARNING] [processlist_view] : 朱占豪测试日志级别
+[2019-12-04 11:15:42,462] [ERROR] [handle_uncaught_exception] : Internal Server Error: /processlist/
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/Users/zhuzhanhao/Testapi/Api/view_process.py", line 291, in processlist_view
+    for weblist in apilists:
+UnboundLocalError: local variable 'apilists' referenced before assignment
+[2019-12-04 11:15:42,808] [ERROR] [log_message] : "GET /processlist/?page=1&limit=30&belong=&system=erms&filterSos=%5B%7B%22prefix%22%3A%22and%22%2C%22field%22%3A%22casename%22%2C%22mode%22%3A%22condition%22%2C%22type%22%3A%22eq%22%2C%22value%22%3A%22%E6%96%B0%E5%BB%BA%22%2C%22id%22%3A1%7D%5D HTTP/1.1" 500 15560
+[2019-12-04 11:34:52,436] [ERROR] [handle_uncaught_exception] : Internal Server Error: /processlist/
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/Users/zhuzhanhao/Testapi/Api/view_process.py", line 117, in processlist_view
+    for i in json.loads(filterSos):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/json/__init__.py", line 354, in loads
+    return _default_decoder.decode(s)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/json/decoder.py", line 339, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/json/decoder.py", line 357, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+[2019-12-04 11:34:52,569] [ERROR] [log_message] : "GET /processlist/?page=1&limit=30&belong=&system=erms&key%5Bcasename%5D=%E9%94%99%E8%AF%AF%E6%8E%A5%E5%8F%A3%E6%9F%A5%E8%AF%A2 HTTP/1.1" 500 15984
+[2019-12-04 11:36:23,666] [ERROR] [handle_uncaught_exception] : Internal Server Error: /processlist/
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/Users/zhuzhanhao/Testapi/Api/view_process.py", line 117, in processlist_view
+    for i in json.loads(filterSos):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/json/__init__.py", line 354, in loads
+    return _default_decoder.decode(s)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/json/decoder.py", line 339, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/json/decoder.py", line 357, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+[2019-12-04 11:36:23,690] [ERROR] [log_message] : "GET /processlist/?page=1&limit=30&belong=&system=erms&key%5Bcasename%5D=%E9%94%99%E8%AF%AF%E6%8E%A5%E5%8F%A3%E6%9F%A5%E8%AF%A2 HTTP/1.1" 500 15984
+[2019-12-04 11:36:56,429] [ERROR] [handle_uncaught_exception] : Internal Server Error: /processlist/
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/Users/zhuzhanhao/Testapi/Api/view_process.py", line 117, in processlist_view
+    for i in json.loads(filterSos):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/json/__init__.py", line 354, in loads
+    return _default_decoder.decode(s)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/json/decoder.py", line 339, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/json/decoder.py", line 357, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+[2019-12-04 11:36:56,457] [ERROR] [log_message] : "GET /processlist/?page=1&limit=30&belong=&system=erms&key%5Bcasename%5D=A HTTP/1.1" 500 15861
+[2019-12-04 11:38:32,017] [ERROR] [handle_uncaught_exception] : Internal Server Error: /processlist/
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/Users/zhuzhanhao/Testapi/Api/view_process.py", line 117, in processlist_view
+    for i in json.loads(filterSos):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/json/__init__.py", line 354, in loads
+    return _default_decoder.decode(s)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/json/decoder.py", line 339, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/json/decoder.py", line 357, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+[2019-12-04 11:38:32,160] [ERROR] [log_message] : "GET /processlist/?page=1&limit=30&belong=&system=erms&key%5Bcasename%5D=%E9%94%99%E8%AF%AF%E6%8E%A5%E5%8F%A3%E6%9F%A5%E8%AF%A2 HTTP/1.1" 500 15984

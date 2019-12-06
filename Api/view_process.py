@@ -31,45 +31,28 @@ num_progress = 0 # 全局变量进度数
 thread_dict = {}
 logger = logging.getLogger("django")
 
+
 #流程测试接口列表
 @login_required
 def processlist_view(request):
     casename = request.GET.get("key[casename]", "")
     filterSos = request.GET.get("filterSos", "")
     belong = request.GET.get('belong', "")
+    system = request.GET.get("system","")
     print("请求进入的模块是:" + belong)
 
-    if casename == "" and belong == "" and filterSos== "":
-        apilists = Processapi.objects.filter().order_by("sortid")
-
-    # 流程接口
-    if belong:
-        if belong == "login":
-            apilists = Processapi.objects.filter(belong="登录过程接口").order_by("sortid")
-        elif belong == "policy":
-            apilists = Processapi.objects.filter(belong="保留处置策略接口").order_by("sortid")
-        elif belong == "data_form_config":
-            apilists = Processapi.objects.filter(belong="数据表单配置接口").order_by("sortid")
-        elif belong == "alc":
-            apilists = Processapi.objects.filter(belong="访问控制策略接口").order_by("sortid")
-        elif belong == "category":
-            apilists = Processapi.objects.filter(belong="类目保管期限接口").order_by("sortid")
-        elif belong == "view":
-            apilists = Processapi.objects.filter(belong="视图自定义接口").order_by("sortid")
-        elif belong == "finish_task":
-            apilists = Processapi.objects.filter(belong="整理任务接口").order_by("sortid")
+    if (casename == "" and belong == "" and filterSos== "") or (casename == "" and belong == "" and filterSos == "[]"):
+        apilists = Processapi.objects.filter(system=system).order_by("sortid")
 
     # 按用例名称查询
     elif casename:
         print("搜索的用例名是:" + casename)
         apilists = Processapi.objects.filter(casename__contains=casename)
-        print(apilists)
-        # if apilists.count() == 0:
         if casename == "错误接口查询":
-            apilists = Processapi.objects.filter().order_by("sortid")
+            apilists = Processapi.objects.filter(system=system).order_by("sortid")
             L = []
             for weblist in apilists:
-                if weblist.system == "erms" and "error" in weblist.result and "timestamp" in weblist.result:
+                if "error" in weblist.result and "timestamp" in weblist.result:
                     # print("存在的啊")
                     data = {
                         "caseid": weblist.caseid,
@@ -91,24 +74,23 @@ def processlist_view(request):
                         "duration": weblist.duration
                     }
                     L.append(data)
-            print("此模块的用例个数为:" + str(len(L)))
-            pageindex = request.GET.get('page', "")
-            pagesize = request.GET.get("limit", "")
-            pageInator = Paginator(L, pagesize)
-            # 分页
-            contacts = pageInator.page(pageindex)
-            res = []
-            for contact in contacts:
-                res.append(contact)
-            datas = {"code": 0, "msg": "", "count": len(L), "data": res}
-            return JsonResponse(datas)
+            # print("此模块的用例个数为:" + str(len(L)))
+            # pageindex = request.GET.get('page', "")
+            # pagesize = request.GET.get("limit", "")
+            # pageInator = Paginator(L, pagesize)
+            # # 分页
+            # contacts = pageInator.page(pageindex)
+            # res = []
+            # for contact in contacts:
+            #     res.append(contact)
+            # datas = {"code": 0, "msg": "", "count": len(L), "data": res}
+            # return JsonResponse(datas)
 
         elif casename == "A":
-            apilists = Processapi.objects.filter().order_by("duration")
+            apilists = Processapi.objects.filter(system=system).order_by("duration")
             L = []
             for weblist in apilists:
-                if weblist.system == "erms" and weblist.duration >= 1:
-                    # print("存在的啊")
+                if weblist.duration >= 1 and weblist.duration < 3:
                     data = {
                         "caseid": weblist.caseid,
                         "isprocess": weblist.isprocess,
@@ -129,23 +111,23 @@ def processlist_view(request):
                         "duration":weblist.duration
                     }
                     L.append(data)
-            print("此模块的用例个数为:" + str(len(L)))
-            pageindex = request.GET.get('page', "")
-            pagesize = request.GET.get("limit", "")
-            pageInator = Paginator(L, pagesize)
-            # 分页
-            contacts = pageInator.page(pageindex)
-            res = []
-            for contact in contacts:
-                res.append(contact)
-            datas = {"code": 0, "msg": "", "count": len(L), "data": res}
-            return JsonResponse(datas)
+            # print("此模块的用例个数为:" + str(len(L)))
+            # pageindex = request.GET.get('page', "")
+            # pagesize = request.GET.get("limit", "")
+            # pageInator = Paginator(L, pagesize)
+            # # 分页
+            # contacts = pageInator.page(pageindex)
+            # res = []
+            # for contact in contacts:
+            #     res.append(contact)
+            # datas = {"code": 0, "msg": "", "count": len(L), "data": res}
+            # return JsonResponse(datas)
 
         elif casename == "B":
-            apilists = Processapi.objects.filter().order_by("duration")
+            apilists = Processapi.objects.filter(system=system).order_by("duration")
             L = []
             for weblist in apilists:
-                if weblist.system == "erms" and weblist.duration >= 3:
+                if weblist.duration >= 3:
                     # print("存在的啊")
                     data = {
                         "caseid": weblist.caseid,
@@ -167,29 +149,52 @@ def processlist_view(request):
                         "duration":weblist.duration
                     }
                     L.append(data)
-            print("此模块的用例个数为:" + str(len(L)))
-            pageindex = request.GET.get('page', "")
-            pagesize = request.GET.get("limit", "")
-            pageInator = Paginator(L, pagesize)
-            # 分页
-            contacts = pageInator.page(pageindex)
-            res = []
-            for contact in contacts:
-                res.append(contact)
-            datas = {"code": 0, "msg": "", "count": len(L), "data": res}
-            return JsonResponse(datas)
+        print("此模块的用例个数为:" + str(len(L)))
+        pageindex = request.GET.get('page', "")
+        pagesize = request.GET.get("limit", "")
+        pageInator = Paginator(L, pagesize)
+        # 分页
+        contacts = pageInator.page(pageindex)
+        res = []
+        for contact in contacts:
+            res.append(contact)
+        datas = {"code": 0, "msg": "", "count": len(L), "data": res}
+        return JsonResponse(datas)
 
-
-    elif filterSos:
-        print(filterSos)
-        if filterSos == "[]":
-            apilists = Processapi.objects.filter(system="erms").order_by("sortid")
+    elif belong:
+        if filterSos == "" or filterSos == '[]':
+            if belong == "login":
+                apilists = Processapi.objects.filter(belong="登录过程接口").order_by("sortid")
+            elif belong == "policy":
+                apilists = Processapi.objects.filter(belong="保留处置策略接口").order_by("sortid")
+            elif belong == "data_form_config":
+                apilists = Processapi.objects.filter(belong="数据表单配置接口").order_by("sortid")
+            elif belong == "alc":
+                apilists = Processapi.objects.filter(belong="访问控制策略接口").order_by("sortid")
+            elif belong == "category":
+                apilists = Processapi.objects.filter(belong="类目保管期限接口").order_by("sortid")
+            elif belong == "view":
+                apilists = Processapi.objects.filter(belong="视图自定义接口").order_by("sortid")
+            elif belong == "finish_task":
+                apilists = Processapi.objects.filter(belong="整理任务接口").order_by("sortid")
         else:
             L = []
             for i in json.loads(filterSos):
                 filterSos_res = i.get("value")
-                print(filterSos_res)
-                apilists = Processapi.objects.filter(Q(casename__contains=filterSos_res) & Q(system="erms")).order_by("sortid")
+                if belong == "login":
+                    apilists = Processapi.objects.filter(Q(casename__contains=filterSos_res) & Q(system=system) & Q(belong="登录过程接口")).order_by("sortid")
+                elif belong == "policy":
+                    apilists = Processapi.objects.filter(Q(casename__contains=filterSos_res) & Q(system=system) & Q(belong="保留处置策略接口")).order_by("sortid")
+                elif belong == "data_form_config":
+                    apilists = Processapi.objects.filter(Q(casename__contains=filterSos_res) & Q(system=system) & Q(belong="数据表单配置接口")).order_by("sortid")
+                elif belong == "alc":
+                    apilists = Processapi.objects.filter(Q(casename__contains=filterSos_res) & Q(system=system) & Q(belong="访问控制策略接口")).order_by("sortid")
+                elif belong == "category":
+                    apilists = Processapi.objects.filter(Q(casename__contains=filterSos_res) & Q(system=system) & Q(belong="类目保管期限接口")).order_by("sortid")
+                elif belong == "view":
+                    apilists = Processapi.objects.filter(Q(casename__contains=filterSos_res) & Q(system=system) & Q(belong="视图自定义接口")).order_by("sortid")
+                elif belong == "finish_task":
+                    apilists = Processapi.objects.filter(Q(casename__contains=filterSos_res) & Q(system=system) & Q(belong="整理任务接口")).order_by("sortid")
                 for weblist in apilists:
                     data = {
                         "caseid": weblist.caseid,
@@ -224,6 +229,45 @@ def processlist_view(request):
             datas = {"code": 0, "msg": "", "count": len(L), "data": res}
             return JsonResponse(datas)
 
+    elif belong == "" and filterSos != "" or  filterSos != "[]":
+        L = []
+        for i in json.loads(filterSos):
+            filterSos_res = i.get("value")
+            apilists = Processapi.objects.filter(Q(casename__contains=filterSos_res) & Q(system=system)).order_by("sortid")
+            for weblist in apilists:
+                data = {
+                    "caseid": weblist.caseid,
+                    "isprocess": weblist.isprocess,
+                    "identity": weblist.identity,
+                    "casename": weblist.casename,
+                    "url": weblist.url,
+                    "method": weblist.method,
+                    "params": weblist.params,
+                    "body": weblist.body,
+                    "result": weblist.result,
+                    "sortid": weblist.sortid,
+                    "depend_id": weblist.depend_id,
+                    "depend_key": weblist.depend_key,
+                    "replace_key": weblist.replace_key,
+                    "replace_position": weblist.replace_position,
+                    "belong": weblist.belong,
+                    "head": weblist.header,
+                    "duration": weblist.duration
+                }
+                L.append(data)
+        print(L)
+        print("此模块的用例个数为:" + str(len(L)))
+        pageindex = request.GET.get('page', "")
+        pagesize = request.GET.get("limit", "")
+        pageInator = Paginator(L, pagesize)
+        # 分页
+        contacts = pageInator.page(pageindex)
+        res = []
+        for contact in contacts:
+            res.append(contact)
+        datas = {"code": 0, "msg": "", "count": len(L), "data": res}
+        return JsonResponse(datas)
+
     L = []
     for weblist in apilists:
         data = {
@@ -257,36 +301,6 @@ def processlist_view(request):
     for contact in contacts:
         res.append(contact)
     datas = {"code": 0, "msg": "用例列表展现", "count": len(L), "data": res}
-    logger.warning("朱占豪测试日志级别")
-    return JsonResponse(datas)
-
-#流程结果列表
-@login_required
-def process_result_list_views(request):
-    caseids = request.GET.get("caseids","")
-    print(caseids)
-    print(type(caseids))
-    L = []
-    for i in json.loads(caseids):
-        apilists = Processapi.objects.filter(Q(caseid=i) & Q(system="erms")).order_by("sortid")
-        for weblist in apilists:
-            data = {
-                "casename": weblist.casename,
-                "result": weblist.result,
-                "head": weblist.header
-            }
-            L.append(data)
-    print(L)
-    print("此模块的用例个数为:" + str(len(L)))
-    pageindex = request.GET.get('page', "")
-    pagesize = request.GET.get("limit", "")
-    pageInator = Paginator(L, pagesize)
-    # 分页
-    contacts = pageInator.page(pageindex)
-    res = []
-    for contact in contacts:
-        res.append(contact)
-    datas = {"code": 0, "msg": "", "count": len(L), "data": res}
     return JsonResponse(datas)
 
 
@@ -313,8 +327,6 @@ def create_processcase_views(request):
         for i in all:
             L.append(i.sortid)
         m = max(L) + 1
-
-
         if "<" in body or ">" in body:
             print('存在需要替换的符号')
             a = body.replace("<", "＜")
@@ -334,6 +346,7 @@ def create_processcase_views(request):
                                       )
         return HttpResponse("操作成功")
     else:
+        logger.warning("请求方式不对")
         return HttpResponse("请求方式不对")
 
 
@@ -348,6 +361,7 @@ def delete_processcase_views(request):
             print(ids)
             for caseid in caseids:
                 Processapi.objects.filter(caseid=caseid.get("caseid","")).delete()
+            # logging.warning("批量删除成功")
             return HttpResponse("操作成功")
         elif id:
             Processapi.objects.filter(caseid=id).delete()
@@ -355,6 +369,7 @@ def delete_processcase_views(request):
         else:
             return HttpResponse("没有获取请求的ID")
     else:
+        logger.warning("请求方式有误")
         return HttpResponse("请求方式有误")
 
 
@@ -372,9 +387,7 @@ def update_processcase_views(request):
         depend_key = request.GET.get("depend_key", "")
         replace_key = request.GET.get("replace_key", "")
         replace_position = request.GET.get("replace_position","")
-        print(ids)
         if params:
-            print(params)
             if params == "1":
                 Processapi.objects.filter(caseid=ids).update(params="")
             else:
@@ -393,7 +406,6 @@ def update_processcase_views(request):
             else:
                 Processapi.objects.filter(caseid=ids).update(body=body)
         elif head:
-            print(head)
             Processapi.objects.filter(caseid=ids).update(header=head)
         elif depend_id:
             Processapi.objects.filter(caseid=ids).update(depend_id=depend_id)
@@ -403,8 +415,8 @@ def update_processcase_views(request):
             Processapi.objects.filter(caseid=ids).update(replace_key=replace_key)
         elif replace_position:
             Processapi.objects.filter(caseid=ids).update(replace_position=replace_position)
-
         return HttpResponse("编辑成功")
+
     elif request.method == "POST":
         print("全部修改")
         caseid = request.POST.get("caseID", "")
@@ -497,12 +509,12 @@ def run_processcase_views(request):
             return HttpResponse(djson)
         # 异常捕获
         except TypeError as e:
-            print(e)
-            print(type(e))
+            logger.warning(e)
+            logging.warning("异常的id为:"+str(caseid)+","+casename+"操作或函数应用于不适当类型的对象")
             return JsonResponse({"status_code": 500, "msg": "异常的id为:"+str(caseid)+","+casename+"操作或函数应用于不适当类型的对象"})
         except json.decoder.JSONDecodeError as e:
-            print(e)
-            print(type(e))
+            logger.warning(e)
+            logging.warning("异常的id为:"+str(caseid)+","+casename+"json.loads()读取字符串报错")
             return JsonResponse({"status_code": 500, "msg": "异常的id为:"+str(caseid)+","+casename+"json.loads()读取字符串报错"})
 
     else:
@@ -1117,6 +1129,7 @@ def process_sort_views(request):
 
 
 #多线程运行
+@login_required
 def repeatrun_views(request):
     global thread_dict
     content = request.POST.get("request", "")
@@ -1447,6 +1460,36 @@ def run_apicase(start,end,content):
         thread_dict["失败接口响应结果集"] = L
         thread_dict["重复执行次数"] = end
         return thread_dict
+
+# 流程结果列表
+@login_required
+def process_result_list_views(request):
+    caseids = request.GET.get("caseids", "")
+    print(caseids)
+    print(type(caseids))
+    L = []
+    for i in json.loads(caseids):
+        apilists = Processapi.objects.filter(Q(caseid=i) & Q(system="erms")).order_by("sortid")
+        for weblist in apilists:
+            data = {
+                "casename": weblist.casename,
+                "result": weblist.result,
+                "head": weblist.header
+            }
+            L.append(data)
+    print(L)
+    print("此模块的用例个数为:" + str(len(L)))
+    pageindex = request.GET.get('page', "")
+    pagesize = request.GET.get("limit", "")
+    pageInator = Paginator(L, pagesize)
+    # 分页
+    contacts = pageInator.page(pageindex)
+    res = []
+    for contact in contacts:
+        res.append(contact)
+    datas = {"code": 0, "msg": "", "count": len(L), "data": res}
+    return JsonResponse(datas)
+
 
 
 
