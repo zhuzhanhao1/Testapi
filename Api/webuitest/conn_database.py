@@ -7,7 +7,7 @@ sys.path.append(cur_path)
 import pymysql
 
 class ConnDataBase:
-    def __init__(self,host="127.0.0.1",user='root',pwd='123456',
+    def __init__(self,host="47.98.56.102",user='root',pwd='123456',
                  db='ERMS',port=3306,charset='utf8'):
         self.host = host
         self.user = user

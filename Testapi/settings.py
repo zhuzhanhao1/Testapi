@@ -88,7 +88,7 @@ DATABASES = {
         'NAME': 'Testapi',
         'USER':'root',
         'PASSWORD':'123456',
-        'HOST':'localhost',#47.98.56.102
+        'HOST':'47.98.56.102',#47.98.56.102
         'PORT':'3306',
         "CONN_MAX_AGE":9
 
