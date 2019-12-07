@@ -11,7 +11,7 @@ def send_image():
 
 def send_link(id,text):
     xiaoding = DingtalkChatbot(url)
-    xiaoding.send_link(title='接口详情', text='{}请点击我......'.format(text), message_url='http://192.168.10.182:9999/detail_api/?id={}'.format(id))
+    xiaoding.send_link(title='接口详情', text='{}请点击我......'.format(text), message_url='http://47.98.56.102:8000/detail_api/?id={}'.format(id))
 
 def send_ding(content,head=None):
     params = {
@@ -84,5 +84,5 @@ def send_ding(content,head=None):
 
 if __name__ == "__main__":
     # pass
-    send_link(1,'李建构吃屎')
+    send_link(1,'{李建构吃屎')
     # send_image()
