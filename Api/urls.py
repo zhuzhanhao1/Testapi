@@ -1,4 +1,10 @@
 from django.conf.urls import url
+import os
+import sys
+currentUrl = os.path.dirname(__file__)
+cur_path = os.path.abspath(os.path.join(currentUrl,os.pardir))
+sys.path.append(cur_path)
+
 from api.view_process import *
 from api.views import *
 from api.view_web import *
