@@ -342,3 +342,4 @@ Traceback (most recent call last):
     apilists = Case.objects.filter(Q(belong__contains="库房接口") & Q(system="tdr")).order_by("sortid")
 NameError: name 'Case' is not defined
 [2019-12-07 00:27:29,628] [ERROR] [log_message] : "GET /apilist/?page=1&limit=30&belong=warehouse&system=tdr HTTP/1.1" 500 14876
+[2019-12-07 14:01:33,225] [WARNING] [log_message] : "GET /static/images/login_bg.jpg HTTP/1.1" 404 1670
