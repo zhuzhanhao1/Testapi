@@ -1,0 +1,6 @@
+[2019-12-10 02:19:57,286] [INFO] [log_message] : "GET /web_index/ HTTP/1.1" 200 40266
+[2019-12-10 02:19:57,530] [INFO] [log_message] : "GET /web_welcome/ HTTP/1.1" 200 116454
+[2019-12-10 02:19:58,166] [INFO] [log_message] : "GET /static/images/favicon%202.ico HTTP/1.1" 200 1150
+[2019-12-10 02:21:05,441] [INFO] [log_message] : "GET /web_index/ HTTP/1.1" 200 40266
+[2019-12-10 02:21:06,815] [INFO] [log_message] : "GET /web_welcome/ HTTP/1.1" 200 116454
+[2019-12-10 02:21:06,876] [INFO] [log_message] : "GET /static/images/favicon%202.ico HTTP/1.1" 200 1150
