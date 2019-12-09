@@ -39,6 +39,7 @@ def apiindex_view(request):
     return render(request, "apiindex.html", {"user": "朱占豪", "abq":a, "case_count":case_count, "system":b})
 
 
+
 #接口列表列表
 def apilist_view(request):
     casename = request.GET.get("key[casename]","")
@@ -1057,4 +1058,44 @@ def zzh_test_views(request):
         Case.objects.filter(caseid=case.caseid).update(url=URL)
         print(case.caseid)
     return HttpResponse("success!")
+
+
+
+#检索
+def search_views(request):
+    data = request.GET.get("key","")
+    print(data)
+
+    if data:
+        apilist = Case.objects.filter(Q(casename__contains=data) | Q(url__contains=data) | Q(exceptres__contains=data))
+    else:
+        apilist = Case.objects.filter()
+    L = []
+    for weblist in apilist:
+        data = {
+            "caseid": weblist.caseid,
+            "belong": weblist.belong,
+            "processid": weblist.isprocess,
+            "identity": weblist.identity,
+            "casename": weblist.casename,
+            "url": weblist.url,
+            "head": weblist.exceptres,
+            "method": weblist.method,
+            "params": weblist.params,
+            "body": weblist.body,
+            "result": weblist.result,
+            "duration": weblist.duration
+        }
+        L.append(data)
+    print("此模块的用例个数为:" + str(len(L)))
+    pageindex = request.GET.get('page', "")
+    pagesize = request.GET.get("limit", "")
+    pageInator = Paginator(L, pagesize)
+    # 分页
+    contacts = pageInator.page(pageindex)
+    res = []
+    for contact in contacts:
+        res.append(contact)
+    datas = {"code": 0, "msg": "", "count": len(L), "data": res}
+    return JsonResponse(datas)
 

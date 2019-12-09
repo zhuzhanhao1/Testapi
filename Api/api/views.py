@@ -71,7 +71,7 @@ def web_index_views(request):
 #后台首页
 @login_required
 def web_welcome_views(request):
-    return render(request, 'web_welcome.html')
+    return render(request, 'search.html')
 
 #erms功能测试
 @login_required

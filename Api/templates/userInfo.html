@@ -16,7 +16,7 @@
 <form class="layui-form layui-row">
 	<div class="layui-col-md3 layui-col-xs12 user_right">
 		<div class="layui-upload-list">
-			<img class="layui-upload-img layui-circle userFaceBtn userAvatar" id="userFace" src="../static/images/userface4.jpg">
+			<img class="layui-upload-img layui-circle userFaceBtn userAvatar" id="userFace" src="../static/images/login.png">
 		</div>
 		<button type="button" class="layui-btn layui-btn-primary userFaceBtn"><i class="layui-icon">&#xe67c;</i> 掐指一算，我要换一个头像了</button>
 		<p>由于是纯静态页面，所以只能显示一张随机的图片</p>
@@ -222,7 +222,7 @@
             $("#userFace").attr("src", window.sessionStorage.getItem('userFace'));
             $(".userAvatar").attr("src", $(".userAvatar").attr("src").split("images/")[0] + "images/" + window.sessionStorage.getItem('userFace').split("images/")[1]);
         } else {
-            $("#userFace").attr("src", "./../static/images/userface4.jpg");
+            $("#userFace").attr("src", "./../static/images/login.png");
         }
 
         //判断是否修改过用户信息，如果修改过则填充修改后的信息

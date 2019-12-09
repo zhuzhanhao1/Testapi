@@ -53,6 +53,8 @@ urlpatterns = [
     url(r'^show_api/$', show_api_views),
     #重复执行
     url(r'^repeatrun_api/$', repeatrun_api_views),
+    #检索用例
+    url(r'^search', search_views),
 
 
 #----------------------接口流程测试-----------------------------

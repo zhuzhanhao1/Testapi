@@ -1371,3 +1371,259 @@ django.db.utils.OperationalError: (2013, 'Lost connection to MySQL server during
 [2019-12-07 20:51:13,134] [ERROR] [log_message] : "GET /show_progress/?_=1575722965397 HTTP/1.1" 500 26433
 [2019-12-07 20:51:14,081] [ERROR] [log_message] : "GET /show_progress/?_=1575722965398 HTTP/1.1" 500 25887
 [2019-12-07 20:51:15,754] [ERROR] [log_message] : "GET /show_progress/?_=1575722965390 HTTP/1.1" 500 25487
+[2019-12-07 23:21:10,343] [WARNING] [log_message] : "GET /static/images/login_bg.jpg HTTP/1.1" 404 1670
+[2019-12-08 15:24:32,598] [WARNING] [log_message] : "GET /static/images/login_bg.jpg HTTP/1.1" 404 1670
+[2019-12-08 17:32:45,134] [WARNING] [get_response] : Not Found: /zzhceshi/
+[2019-12-08 17:32:45,137] [WARNING] [log_message] : "GET /zzhceshi/?_=1575797561957 HTTP/1.1" 404 11248
+[2019-12-08 17:33:32,612] [WARNING] [get_response] : Not Found: /zzhceshi/
+[2019-12-08 17:33:32,614] [WARNING] [log_message] : "GET /zzhceshi/?data=11111&_=1575797609407 HTTP/1.1" 404 11263
+[2019-12-09 11:12:27,526] [WARNING] [get_response] : Not Found: /accounts/login/
+[2019-12-09 11:12:27,528] [WARNING] [log_message] : "GET /accounts/login/?next=/web_index/ HTTP/1.1" 404 11267
+[2019-12-09 11:12:27,962] [WARNING] [get_response] : Not Found: /favicon.ico
+[2019-12-09 11:12:27,962] [WARNING] [log_message] : "GET /favicon.ico HTTP/1.1" 404 11238
+[2019-12-09 11:12:36,790] [WARNING] [log_message] : "GET /static/images/login_bg.jpg HTTP/1.1" 404 1670
+[2019-12-09 12:04:34,508] [ERROR] [handle_uncaught_exception] : Internal Server Error: /search/
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 198, in _get_response
+    "returned None instead." % (callback.__module__, view_name)
+ValueError: The view Api.api.view_api.search_views didn't return an HttpResponse object. It returned None instead.
+[2019-12-09 12:04:34,841] [ERROR] [log_message] : "POST /search/ HTTP/1.1" 500 14526
+[2019-12-09 13:48:38,713] [ERROR] [handle_uncaught_exception] : Internal Server Error: /search/
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 198, in _get_response
+    "returned None instead." % (callback.__module__, view_name)
+ValueError: The view Api.api.view_api.search_views didn't return an HttpResponse object. It returned None instead.
+[2019-12-09 13:48:38,867] [ERROR] [log_message] : "POST /search/ HTTP/1.1" 500 14522
+[2019-12-09 13:49:07,807] [ERROR] [handle_uncaught_exception] : Internal Server Error: /search/
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 198, in _get_response
+    "returned None instead." % (callback.__module__, view_name)
+ValueError: The view Api.api.view_api.search_views didn't return an HttpResponse object. It returned None instead.
+[2019-12-09 13:49:08,055] [ERROR] [log_message] : "POST /search/ HTTP/1.1" 500 14524
+[2019-12-09 13:50:59,544] [ERROR] [handle_uncaught_exception] : Internal Server Error: /search/
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 198, in _get_response
+    "returned None instead." % (callback.__module__, view_name)
+ValueError: The view Api.api.view_api.search_views didn't return an HttpResponse object. It returned None instead.
+[2019-12-09 13:50:59,873] [ERROR] [log_message] : "POST /search/ HTTP/1.1" 500 14526
+[2019-12-09 14:00:01,962] [ERROR] [handle_uncaught_exception] : Internal Server Error: /search/
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/zhuzhanhao/Testapi/Api/api/view_api.py", line 1098, in search_views
+    pageInator = Paginator(L, pagesize)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/paginator.py", line 32, in __init__
+    self.per_page = int(per_page)
+ValueError: invalid literal for int() with base 10: ''
+[2019-12-09 14:00:02,067] [ERROR] [log_message] : "POST /search/ HTTP/1.1" 500 14923
+[2019-12-09 14:04:01,555] [ERROR] [handle_uncaught_exception] : Internal Server Error: /search/
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/zhuzhanhao/Testapi/Api/api/view_api.py", line 1098, in search_views
+    pageInator = Paginator(L, pagesize)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/paginator.py", line 32, in __init__
+    self.per_page = int(per_page)
+ValueError: invalid literal for int() with base 10: ''
+[2019-12-09 14:04:01,628] [ERROR] [log_message] : "POST /search/ HTTP/1.1" 500 14922
+[2019-12-09 14:06:47,731] [ERROR] [handle_uncaught_exception] : Internal Server Error: /search/
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/zhuzhanhao/Testapi/Api/api/view_api.py", line 1098, in search_views
+    pageInator = Paginator(L, pagesize)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/paginator.py", line 32, in __init__
+    self.per_page = int(per_page)
+ValueError: invalid literal for int() with base 10: ''
+[2019-12-09 14:06:47,811] [ERROR] [log_message] : "POST /search/ HTTP/1.1" 500 14923
+[2019-12-09 14:08:52,951] [ERROR] [handle_uncaught_exception] : Internal Server Error: /search/
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/zhuzhanhao/Testapi/Api/api/view_api.py", line 1098, in search_views
+    pageInator = Paginator(L, pagesize)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/paginator.py", line 32, in __init__
+    self.per_page = int(per_page)
+ValueError: invalid literal for int() with base 10: ''
+[2019-12-09 14:08:53,007] [ERROR] [log_message] : "POST /search/ HTTP/1.1" 500 14922
+[2019-12-09 14:11:17,966] [ERROR] [handle_uncaught_exception] : Internal Server Error: /search/
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/zhuzhanhao/Testapi/Api/api/view_api.py", line 1098, in search_views
+    pageInator = Paginator(L, pagesize)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/paginator.py", line 32, in __init__
+    self.per_page = int(per_page)
+ValueError: invalid literal for int() with base 10: ''
+[2019-12-09 14:11:18,112] [ERROR] [log_message] : "POST /search/ HTTP/1.1" 500 14922
+[2019-12-09 14:13:15,068] [ERROR] [handle_uncaught_exception] : Internal Server Error: /search/
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/zhuzhanhao/Testapi/Api/api/view_api.py", line 1098, in search_views
+    pageInator = Paginator(L, pagesize)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/paginator.py", line 32, in __init__
+    self.per_page = int(per_page)
+ValueError: invalid literal for int() with base 10: ''
+[2019-12-09 14:13:15,121] [ERROR] [log_message] : "POST /search/ HTTP/1.1" 500 14922
+[2019-12-09 14:20:19,051] [ERROR] [handle_uncaught_exception] : Internal Server Error: /search/
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 198, in _get_response
+    "returned None instead." % (callback.__module__, view_name)
+ValueError: The view Api.api.view_api.search_views didn't return an HttpResponse object. It returned None instead.
+[2019-12-09 14:20:19,511] [ERROR] [log_message] : "GET /search/?page=1&limit=11 HTTP/1.1" 500 14510
+[2019-12-09 14:38:59,318] [ERROR] [handle_uncaught_exception] : Internal Server Error: /search/
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/zhuzhanhao/Testapi/Api/api/view_api.py", line 1098, in search_views
+    pageInator = Paginator(L, pagesize)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/paginator.py", line 32, in __init__
+    self.per_page = int(per_page)
+ValueError: invalid literal for int() with base 10: ''
+[2019-12-09 14:38:59,550] [ERROR] [log_message] : "POST /search/ HTTP/1.1" 500 14928
+[2019-12-09 14:39:56,660] [ERROR] [log_message] : "POST /search/ HTTP/1.1" 500 59
+[2019-12-09 14:42:48,636] [ERROR] [handle_uncaught_exception] : Internal Server Error: /search/
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 198, in _get_response
+    "returned None instead." % (callback.__module__, view_name)
+ValueError: The view Api.api.view_api.search_views didn't return an HttpResponse object. It returned None instead.
+[2019-12-09 14:42:48,872] [ERROR] [log_message] : "GET /search/?page=1&limit=10 HTTP/1.1" 500 14510
+[2019-12-09 14:56:35,525] [WARNING] [get_response] : Not Found: /web_welcome/"{/"code/": 0, /"msg/": /"/", /"count/": 1, /"data/": [{/"caseid/": 386, /"belong/": /"//u6848//u5377//u7ba1//u7406//u63a5//u53e3/", /"processid/": /"/", /"identity/": /"tdradmin/", /"casename/": /"//u65b0//u5efa//u6848//u5377/", /"url/": /"http://amberdata.cn/tdrapi/volume/create_volume/", /"head/": /"//u8001//u674e/", /"method/": /"post/", /"params/": /"/", /"body/": /"/", /"result/": /"/", /"duration/": 1.0}]}"
+[2019-12-09 14:56:35,527] [WARNING] [log_message] : "GET /web_welcome/%22%7B/%22code/%22:%200,%20/%22msg/%22:%20/%22/%22,%20/%22count/%22:%201,%20/%22data/%22:%20[%7B/%22caseid/%22:%20386,%20/%22belong/%22:%20/%22//u6848//u5377//u7ba1//u7406//u63a5//u53e3/%22,%20/%22processid/%22:%20/%22/%22,%20/%22identity/%22:%20/%22tdradmin/%22,%20/%22casename/%22:%20/%22//u65b0//u5efa//u6848//u5377/%22,%20/%22url/%22:%20/%22http://amberdata.cn/tdrapi/volume/create_volume/%22,%20/%22head/%22:%20/%22//u8001//u674e/%22,%20/%22method/%22:%20/%22post/%22,%20/%22params/%22:%20/%22/%22,%20/%22body/%22:%20/%22/%22,%20/%22result/%22:%20/%22/%22,%20/%22duration/%22:%201.0%7D]%7D%22?page=1&limit=10 HTTP/1.1" 404 13413
+[2019-12-09 15:13:19,981] [ERROR] [handle_uncaught_exception] : Internal Server Error: /search
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 198, in _get_response
+    "returned None instead." % (callback.__module__, view_name)
+ValueError: The view Api.api.view_api.search_views didn't return an HttpResponse object. It returned None instead.
+[2019-12-09 15:13:20,270] [ERROR] [log_message] : "GET /search?key=%E6%96%B0%E5%BB%BA%E6%A1%88%E5%8D%B7&page=1&limit=10 HTTP/1.1" 500 14610
+[2019-12-09 15:14:10,894] [ERROR] [handle_uncaught_exception] : Internal Server Error: /search
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 198, in _get_response
+    "returned None instead." % (callback.__module__, view_name)
+ValueError: The view Api.api.view_api.search_views didn't return an HttpResponse object. It returned None instead.
+[2019-12-09 15:14:11,245] [ERROR] [log_message] : "GET /search?key=%E6%96%B0%E5%BB%BA%E6%A1%88%E5%8D%B7&page=1&limit=10 HTTP/1.1" 500 14609
+[2019-12-09 15:15:43,160] [ERROR] [handle_uncaught_exception] : Internal Server Error: /search
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 198, in _get_response
+    "returned None instead." % (callback.__module__, view_name)
+ValueError: The view Api.api.view_api.search_views didn't return an HttpResponse object. It returned None instead.
+[2019-12-09 15:15:43,314] [ERROR] [log_message] : "GET /search?key=11111111&page=1&limit=10 HTTP/1.1" 500 14551
+[2019-12-09 15:16:20,546] [ERROR] [handle_uncaught_exception] : Internal Server Error: /search
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 198, in _get_response
+    "returned None instead." % (callback.__module__, view_name)
+ValueError: The view Api.api.view_api.search_views didn't return an HttpResponse object. It returned None instead.
+[2019-12-09 15:16:20,837] [ERROR] [log_message] : "GET /search?key=%E6%96%B0%E5%BB%BA&page=1&limit=10 HTTP/1.1" 500 14568
+[2019-12-09 15:18:19,743] [ERROR] [handle_uncaught_exception] : Internal Server Error: /search
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 198, in _get_response
+    "returned None instead." % (callback.__module__, view_name)
+ValueError: The view Api.api.view_api.search_views didn't return an HttpResponse object. It returned None instead.
+[2019-12-09 15:18:19,993] [ERROR] [log_message] : "GET /search?key=aaaa&page=1&limit=10 HTTP/1.1" 500 14539
+[2019-12-09 15:19:20,703] [ERROR] [handle_uncaught_exception] : Internal Server Error: /search
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 198, in _get_response
+    "returned None instead." % (callback.__module__, view_name)
+ValueError: The view Api.api.view_api.search_views didn't return an HttpResponse object. It returned None instead.
+[2019-12-09 15:19:20,856] [ERROR] [log_message] : "GET /search?key=782458422772823&page=1&limit=10 HTTP/1.1" 500 14571
+[2019-12-09 15:19:47,464] [ERROR] [handle_uncaught_exception] : Internal Server Error: /search
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 198, in _get_response
+    "returned None instead." % (callback.__module__, view_name)
+ValueError: The view Api.api.view_api.search_views didn't return an HttpResponse object. It returned None instead.
+[2019-12-09 15:19:47,640] [ERROR] [log_message] : "GET /search?key=11111&page=1&limit=10 HTTP/1.1" 500 14541
+[2019-12-09 16:01:28,195] [ERROR] [handle_uncaught_exception] : Internal Server Error: /search
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/zhuzhanhao/Testapi/Api/api/view_api.py", line 1098, in search_views
+    pageInator = Paginator(L, pagesize)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/paginator.py", line 32, in __init__
+    self.per_page = int(per_page)
+ValueError: invalid literal for int() with base 10: ''
+[2019-12-09 16:01:28,369] [ERROR] [log_message] : "POST /search?key=%E8%80%81%E6%9D%8E HTTP/1.1" 500 14999
+[2019-12-09 17:44:56,666] [ERROR] [handle_uncaught_exception] : Internal Server Error: /search
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 198, in _get_response
+    "returned None instead." % (callback.__module__, view_name)
+ValueError: The view Api.api.view_api.search_views didn't return an HttpResponse object. It returned None instead.
+[2019-12-09 17:44:56,886] [ERROR] [log_message] : "GET /search?key=&page=1&limit=10 HTTP/1.1" 500 14525
+[2019-12-09 17:45:04,972] [ERROR] [handle_uncaught_exception] : Internal Server Error: /search
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/handlers/base.py", line 198, in _get_response
+    "returned None instead." % (callback.__module__, view_name)
+ValueError: The view Api.api.view_api.search_views didn't return an HttpResponse object. It returned None instead.
+[2019-12-09 17:45:05,134] [ERROR] [log_message] : "GET /search?key=&page=1&limit=10 HTTP/1.1" 500 14525
+[2019-12-09 18:35:56,823] [WARNING] [get_response] : Not Found: /web_info/.static.images.json
+[2019-12-09 18:35:56,828] [WARNING] [log_message] : "GET /web_info/.static.images.json HTTP/1.1" 404 11444
+[2019-12-09 18:36:33,549] [WARNING] [get_response] : Not Found: /web_info/.static.images.json
+[2019-12-09 18:36:33,550] [WARNING] [log_message] : "GET /web_info/.static.images.json HTTP/1.1" 404 11444
+[2019-12-09 18:36:45,205] [WARNING] [get_response] : Not Found: /web_info/.static.images.json
+[2019-12-09 18:36:45,207] [WARNING] [log_message] : "GET /web_info/.static.images.json HTTP/1.1" 404 11444
+[2019-12-09 18:36:53,113] [WARNING] [get_response] : Not Found: /web_info/.static.images.json
+[2019-12-09 18:36:53,114] [WARNING] [log_message] : "GET /web_info/.static.images.json HTTP/1.1" 404 11444
+[2019-12-09 18:37:40,198] [WARNING] [get_response] : Not Found: /web_info/.static.images.json
+[2019-12-09 18:37:40,199] [WARNING] [log_message] : "GET /web_info/.static.images.json HTTP/1.1" 404 11444

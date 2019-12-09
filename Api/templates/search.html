@@ -1,0 +1,2384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>朱占豪的首页</title>
+	<meta name="viewport"
+		  content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<script src="./../static/js/layui/layui.js"></script>
+	<link rel="icon" href="./../static/images/favicon%202.ico">
+	<link rel="stylesheet" href="./../static/css/layui.css" media="all">
+	<link rel="stylesheet" type="text/css" href="./../static/css/main.css">
+	<script src="./../static/jquery-3.4.1/jquery-3.4.1.min.js" type="text/javascript"></script>
+</head>
+<style>
+	.footer p.copyright {
+		padding: 15px 0 10px 0;
+	}
+
+	.footer {
+		padding: 0px;
+		position: fixed;
+		bottom: 0px;
+		width: 100%;
+	}
+
+	a:hover {
+		font-size: 20px;
+		color: purple;
+	}
+
+	.service-process-box {
+		margin-bottom: -3px;
+	}
+
+	.item {
+		opacity: 0.8;
+	}
+
+	.header_box {
+		height: 60px;
+		line-height: 60px;
+	}
+
+	.process-centent {
+		margin-top: 5%;
+	{#margin-top: -30px;#}
+	}
+
+	html, body {
+		height: 100%;
+	}
+
+	body {
+		padding: 0px;
+		margin: 0px;
+		background: url(./../static/images/banner2.jpg);
+		background-position: center;
+		background-size: cover;
+		background-attachment: fixed;
+		background-repeat: no-repeat;
+	}
+
+	.search-wrapper {
+		position: absolute;
+		-webkit-transform: translate(-50%, -50%);
+		-moz-transform: translate(-50%, -50%);
+		transform: translate(-50%, -50%);
+		top: 50%;
+		left: 50%;
+	}
+
+	.search-wrapper.active {
+	}
+
+	.search-wrapper .input-holder {
+		overflow: hidden;
+		height: 70px;
+		background: rgba(255, 255, 255, 0);
+		border-radius: 6px;
+		position: relative;
+		width: 70px;
+		-webkit-transition: all 0.3s ease-in-out;
+		-moz-transition: all 0.3s ease-in-out;
+		transition: all 0.3s ease-in-out;
+	}
+
+	.search-wrapper.active .input-holder {
+		border-radius: 50px;
+		width: 450px;
+		background: rgba(0, 0, 0, 0.5);
+		-webkit-transition: all .5s cubic-bezier(0.000, 0.105, 0.035, 1.570);
+		-moz-transition: all .5s cubic-bezier(0.000, 0.105, 0.035, 1.570);
+		transition: all .5s cubic-bezier(0.000, 0.105, 0.035, 1.570);
+	}
+
+	.search-wrapper .input-holder .search-input {
+		width: 100%;
+		height: 50px;
+		padding: 0px 70px 0 20px;
+		opacity: 0;
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		background: transparent;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+		border: none;
+		outline: none;
+		font-family: "Open Sans", Arial, Verdana;
+		font-size: 16px;
+		font-weight: 400;
+		line-height: 20px;
+		color: #FFF;
+		-webkit-transform: translate(0, 60px);
+		-moz-transform: translate(0, 60px);
+		transform: translate(0, 60px);
+		-webkit-transition: all .3s cubic-bezier(0.000, 0.105, 0.035, 1.570);
+		-moz-transition: all .3s cubic-bezier(0.000, 0.105, 0.035, 1.570);
+		transition: all .3s cubic-bezier(0.000, 0.105, 0.035, 1.570);
+
+		-webkit-transition-delay: 0.3s;
+		-moz-transition-delay: 0.3s;
+		transition-delay: 0.3s;
+	}
+
+	.search-wrapper.active .input-holder .search-input {
+		opacity: 1;
+		-webkit-transform: translate(0, 10px);
+		-moz-transform: translate(0, 10px);
+		transform: translate(0, 10px);
+	}
+
+	.search-wrapper .input-holder .search-icon {
+		width: 70px;
+		height: 70px;
+		border: none;
+		border-radius: 6px;
+		background: #FFF;
+		padding: 0px;
+		outline: none;
+		position: relative;
+		z-index: 2;
+		float: right;
+		cursor: pointer;
+		-webkit-transition: all 0.3s ease-in-out;
+		-moz-transition: all 0.3s ease-in-out;
+		transition: all 0.3s ease-in-out;
+	}
+
+	.search-wrapper.active .input-holder .search-icon {
+		width: 50px;
+		height: 50px;
+		margin: 10px;
+		border-radius: 30px;
+	}
+
+	.search-wrapper .input-holder .search-icon span {
+		width: 22px;
+		height: 22px;
+		display: inline-block;
+		vertical-align: middle;
+		position: relative;
+		-webkit-transform: rotate(45deg);
+		-moz-transform: rotate(45deg);
+		transform: rotate(45deg);
+		-webkit-transition: all .4s cubic-bezier(0.650, -0.600, 0.240, 1.650);
+		-moz-transition: all .4s cubic-bezier(0.650, -0.600, 0.240, 1.650);
+		transition: all .4s cubic-bezier(0.650, -0.600, 0.240, 1.650);
+
+	}
+
+	.search-wrapper.active .input-holder .search-icon span {
+		-webkit-transform: rotate(-45deg);
+		-moz-transform: rotate(-45deg);
+		transform: rotate(-45deg);
+	}
+
+	.search-wrapper .input-holder .search-icon span::before, .search-wrapper .input-holder .search-icon span::after {
+		position: absolute;
+		content: '';
+	}
+
+	.search-wrapper .input-holder .search-icon span::before {
+		width: 4px;
+		height: 11px;
+		left: 9px;
+		top: 18px;
+		border-radius: 2px;
+		background: #974BE0;
+	}
+
+	.search-wrapper .input-holder .search-icon span::after {
+		width: 14px;
+		height: 14px;
+		left: 0px;
+		top: 0px;
+		border-radius: 16px;
+		border: 4px solid #974BE0;
+	}
+
+	.search-wrapper .close {
+		position: absolute;
+		z-index: 1;
+		top: 24px;
+		right: 20px;
+		width: 25px;
+		height: 25px;
+		cursor: pointer;
+		-webkit-transform: rotate(-180deg);
+		-moz-transform: rotate(-180deg);
+		transform: rotate(-180deg);
+		-webkit-transition: all .3s cubic-bezier(0.285, -0.450, 0.935, 0.110);
+		-moz-transition: all .3s cubic-bezier(0.285, -0.450, 0.935, 0.110);
+		transition: all .3s cubic-bezier(0.285, -0.450, 0.935, 0.110);
+		-webkit-transition-delay: 0.2s;
+		-moz-transition-delay: 0.2s;
+		transition-delay: 0.2s;
+	}
+
+	.search-wrapper.active .close {
+		right: -50px;
+		-webkit-transform: rotate(45deg);
+		-moz-transform: rotate(45deg);
+		transform: rotate(45deg);
+		-webkit-transition: all .6s cubic-bezier(0.000, 0.105, 0.035, 1.570);
+		-moz-transition: all .6s cubic-bezier(0.000, 0.105, 0.035, 1.570);
+		transition: all .6s cubic-bezier(0.000, 0.105, 0.035, 1.570);
+		-webkit-transition-delay: 0.5s;
+		-moz-transition-delay: 0.5s;
+		transition-delay: 0.5s;
+	}
+
+	.search-wrapper .close::before, .search-wrapper .close::after {
+		position: absolute;
+		content: '';
+		background: #FFF;
+		border-radius: 2px;
+	}
+
+	.search-wrapper .close::before {
+		width: 5px;
+		height: 25px;
+		left: 10px;
+		top: 0px;
+	}
+
+	.search-wrapper .close::after {
+		width: 25px;
+		height: 5px;
+		left: 0px;
+		top: 10px;
+	}
+
+	.search-wrapper .result-container {
+		width: 100%;
+		position: absolute;
+		top: 80px;
+		left: 0px;
+		text-align: center;
+		font-family: "Open Sans", Arial, Verdana;
+		font-size: 14px;
+		display: none;
+		color: #B7B7B7;
+	}
+
+
+	@media screen and (max-width: 560px) {
+		.search-wrapper.active .input-holder {
+			width: 200px;
+		}
+	}
+
+
+</style>
+
+<body>
+
+<!-- header -->
+<div class="header_box">
+	<div class="header">
+		<div class="nav">
+			<h1 style="position: fixed;left: 30px;">
+				<span>Search</span>
+			</h1>
+			<h3 style="position: fixed;right: 10px;">
+				<span id="nowTime" class="logo"></span>
+			</h3>
+		</div>
+
+	</div>
+</div>
+<!-- end-header -->
+
+<!--创建用例-->
+<div class="layui-row" id="popSearchRoleTest" style="display: none;">
+	<div class="layui-col-md11">
+		<form class="layui-form" id="demoadd" lay-filter="create_apicase">
+
+			<div class="layui-form-item" style="margin-top: 20px;">
+				<label class="layui-form-label">所属系统</label>
+				<div class="layui-input-block">
+					<input type="radio" name="system" value="erms" title="数据档案室">
+					<input type="radio" name="system" value="transfer" title="移交接收系统">
+					<input type="radio" name="system" value="tdr" title="数字档案馆">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">角色</label>
+				<div class="layui-input-block erms" style="display: none;">
+					<input type="radio"  name="identity" value="sysadmin" title="系统管理员">
+					<input type="radio"  name="identity" value="admin" title="单位管理员">
+					<input type="radio"  name="identity" value="ast" title="单位档案员">
+				</div>
+				<div class="layui-input-block transfer" style="display: none;">
+					<input type="radio"  name="identity" value="transferadmin" title="数据管理员">
+					<input type="radio"  name="identity" value="sjzjy" title="数据质检员">
+					<input type="radio"  name="identity" value="sjshy" title="数据审核员">
+				</div>
+				<div class="layui-input-block tdr" style="display: none;">
+					<input type="radio"  name="identity" value="tdradmin" title="系统管理员">
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<label class="layui-form-label">所属模块</label>
+
+				<div class="layui-input-block create-case-tdr" style="display: none;">
+					<select name="belong" lay-verify="required">
+						<option value="单位接口">单位接口</option>
+						<option value="部门管理接口">部门管理接口</option>
+						<option value="用户管理接口">用户管理接口</option>
+						<option value="门类管理接口">门类管理接口</option>
+						<option value="视图自定义接口">视图自定义接口</option>
+						<option value="Record接口">Record接口</option>
+						<option value="文档管理接口">文档管理接口</option>
+						<option value="案卷管理接口">案卷管理接口</option>
+						<option value="档案管理接口">档案管理接口</option>
+						<option value="资源管理接口">资源管理接口</option>
+						<option value="导航管理接口">导航管理接口</option>
+						<option value="文件计划管理接口">文件计划管理接口</option>
+						<option value="公共操作相关接口">公共操作相关接口</option>
+						<option value="通用文件夹管理接口">通用文件夹管理接口</option>
+						<option value="元数据管理平台接口">元数据管理平台接口</option>
+						<option value="映射规则接口">映射规则接口</option>
+						<option value="鉴定任务接口">鉴定任务接口</option>
+						<option value="鉴定档案接口">鉴定档案接口</option>
+						<option value="库房存址">库房存址</option>
+						<option value="库房接口">库房接口</option>
+						<option value="库房层接口">库房层接口</option>
+						<option value="专题接口">专题接口</option>
+						<option value="专题档案接口">专题档案接口</option>
+						<option value="利用档案接口">利用档案接口</option>
+						<option value="档案利用接口">档案利用接口</option>
+						<option value="实体调卷管理接口">实体调卷管理接口</option>
+						<option value="调卷单内档案详情">调卷单内档案详情</option>
+					</select>
+				</div>
+
+				<div class="layui-input-block  create-case-erms" style="display: none;">
+					<select name="belong1" lay-verify="required">
+						<option value="单位接口">单位接口</option>
+						<option value="部门管理接口">部门管理接口</option>
+						<option value="用户管理接口">用户管理接口</option>
+						<option value="保留处置策略接口">保留处置策略接口</option>
+						<option value="角色管理接口">角色管理接口</option>
+						<option value="数据表单配置管理接口">数据表单配置管理接口</option>
+						<option value="门类管理接口">门类管理接口</option>
+						<option value="类目模块接口">类目模块接口</option>
+						<option value="保留处置策略接口">保留处置策略接口</option>
+						<option value="访问控制权限接口">访问控制权限接口</option>
+						<option value="视图自定义接口">视图自定义接口</option>
+						<option value="Record接口">Record接口</option>
+						<option value="文档管理接口">文档管理接口</option>
+						<option value="案卷管理接口">案卷管理接口</option>
+						<option value="档案管理接口">档案管理接口</option>
+						<option value="资源管理接口">资源管理接口</option>
+						<option value="导航管理接口">导航管理接口</option>
+						<option value="数据表单管理接口">数据表单管理接口</option>
+						<option value="文件计划管理接口">文件计划管理接口</option>
+						<option value="公共操作相关接口">公共操作相关接口</option>
+						<option value="通用文件夹管理接口">通用文件夹管理接口</option>
+						<option value="元数据管理平台接口">元数据管理平台接口</option>
+						<option value="续存记录接口">续存记录接口</option>
+						<option value="移交表单信息接口">移交表单信息接口</option>
+						<option value="映射规则接口">映射规则接口</option>
+					</select>
+				</div>
+
+				<div class="layui-input-block  create-case-transfer" style="display: none;">
+					<select name="belong2" lay-verify="required">
+						<option value="用户模块接口">用户模块接口</option>
+						<option value="Record接口">Record接口</option>
+						<option value="资源管理接口">资源管理接口</option>
+						<option value="原文接口">原文接口</option>
+						<option value="导航接口">导航接口</option>
+						<option value="意见接口">意见接口</option>
+						<option value="案卷相关接口">案卷相关接口</option>
+						<option value="档案相关接口">档案相关接口</option>
+						<option value="映射规则接口">映射规则接口</option>
+						<option value="检测报告相关接口">检测报告相关接口</option>
+						<option value="移交表单相关接口">移交表单相关接口</option>
+						<option value="元数据平台接口">元数据平台接口</option>
+					</select>
+				</div>
+
+			</div>
+
+			<div class="layui-form-item">
+				<label class="layui-form-label">请求方式</label>
+				<div class="layui-input-block">
+					<input type="radio" name="method" value="get" title="GET" checked>
+					<input type="radio" name="method" value="post" title="POST">
+					<input type="radio" name="method" value="put" title="PUT">
+					<input type="radio" name="method" value="delete" title="Delete">
+					<input type="radio" name="method" value="file" title="FILE">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">用例名称</label>
+				<div class="layui-input-block">
+					<input type="text" name="casename" required lay-verify="required" placeholder="请输入用例名称"
+						   autocomplete="off" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">请求地址</label>
+				<div class="layui-input-block">
+					<input type="text" name="url" required lay-verify="required" placeholder="请输入用例名称"
+						   autocomplete="off" class="layui-input">
+				</div>
+			</div>
+
+
+			<div class="layui-form-item layui-form-text">
+				<label class="layui-form-label">Query Params</label>
+				<div class="layui-input-block">
+					<textarea name="params" placeholder="请输入内容" class="layui-textarea"></textarea>
+				</div>
+			</div>
+
+			<div class="layui-form-item layui-form-text">
+				<label class="layui-form-label">Form Data</label>
+				<div class="layui-input-block">
+					<textarea name="body" placeholder="请输入内容" class="layui-textarea"></textarea>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">负责人</label>
+				<div class="layui-input-block">
+					<select name="head" lay-verify="required">
+						<option value="老张">老张</option>
+						<option value="老王">老王</option>
+						<option value="老李">老李</option>
+						<option value="老江">老江</option>
+						<option value="老刘">老刘</option>
+					</select>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+					<button class="layui-btn" lay-submit lay-filter="create_apicase"
+							style="float: right;">立即提交
+					</button>
+					<button type="reset" class="layui-btn layui-btn-primary" style="float: right;margin-right: 10px;">重置</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+<!--编辑用例-->
+<div class="layui-row" id="UpdateCase" style="display: none;">
+	<div class="layui-col-md11">
+		<form class="layui-form" lay-filter="CreateUpdate">
+
+			<div class="layui-form-item" style="margin-top: 20px;">
+				<label class="layui-form-label">所属系统</label>
+				<div class="layui-input-block">
+					<input type="radio" name="system" value="erms" title="数据档案室">
+					<input type="radio" name="system" value="transfer" title="移交接收系统">
+					<input type="radio" name="system" value="tdr" title="数字档案馆">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">角色</label>
+				<div class="layui-input-block erms" style="display: none;">
+					<input type="radio"  name="identity" value="sysadmin" title="系统管理员">
+					<input type="radio"  name="identity" value="admin" title="单位管理员">
+					<input type="radio"  name="identity" value="ast" title="单位档案员">
+				</div>
+				<div class="layui-input-block transfer" style="display: none;">
+					<input type="radio"  name="identity" value="transferadmin" title="数据管理员">
+					<input type="radio"  name="identity" value="sjzjy" title="数据质检员">
+					<input type="radio"  name="identity" value="sjshy" title="数据审核员">
+				</div>
+				<div class="layui-input-block tdr" style="display: none;">
+					<input type="radio"  name="identity" value="tdradmin" title="系统管理员">
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<label class="layui-form-label">所属模块</label>
+
+				<div class="layui-input-block create-case-tdr" style="display: none;">
+					<select name="belong" lay-verify="required">
+						<option value="单位接口">单位接口</option>
+						<option value="部门管理接口">部门管理接口</option>
+						<option value="用户管理接口">用户管理接口</option>
+						<option value="门类管理接口">门类管理接口</option>
+						<option value="视图自定义接口">视图自定义接口</option>
+						<option value="Record接口">Record接口</option>
+						<option value="文档管理接口">文档管理接口</option>
+						<option value="案卷管理接口">案卷管理接口</option>
+						<option value="档案管理接口">档案管理接口</option>
+						<option value="资源管理接口">资源管理接口</option>
+						<option value="导航管理接口">导航管理接口</option>
+						<option value="文件计划管理接口">文件计划管理接口</option>
+						<option value="公共操作相关接口">公共操作相关接口</option>
+						<option value="通用文件夹管理接口">通用文件夹管理接口</option>
+						<option value="元数据管理平台接口">元数据管理平台接口</option>
+						<option value="映射规则接口">映射规则接口</option>
+						<option value="鉴定任务接口">鉴定任务接口</option>
+						<option value="鉴定档案接口">鉴定档案接口</option>
+						<option value="库房存址">库房存址</option>
+						<option value="库房接口">库房接口</option>
+						<option value="库房层接口">库房层接口</option>
+						<option value="专题接口">专题接口</option>
+						<option value="专题档案接口">专题档案接口</option>
+						<option value="利用档案接口">利用档案接口</option>
+						<option value="档案利用接口">档案利用接口</option>
+						<option value="实体调卷管理接口">实体调卷管理接口</option>
+						<option value="调卷单内档案详情">调卷单内档案详情</option>
+					</select>
+				</div>
+
+				<div class="layui-input-block  create-case-erms" style="display: none;">
+					<select name="belong1" lay-verify="required">
+						<option value="单位接口">单位接口</option>
+						<option value="部门管理接口">部门管理接口</option>
+						<option value="用户管理接口">用户管理接口</option>
+						<option value="保留处置策略接口">保留处置策略接口</option>
+						<option value="角色管理接口">角色管理接口</option>
+						<option value="数据表单配置管理接口">数据表单配置管理接口</option>
+						<option value="门类管理接口">门类管理接口</option>
+						<option value="类目模块接口">类目模块接口</option>
+						<option value="保留处置策略接口">保留处置策略接口</option>
+						<option value="访问控制权限接口">访问控制权限接口</option>
+						<option value="视图自定义接口">视图自定义接口</option>
+						<option value="Record接口">Record接口</option>
+						<option value="文档管理接口">文档管理接口</option>
+						<option value="案卷管理接口">案卷管理接口</option>
+						<option value="档案管理接口">档案管理接口</option>
+						<option value="资源管理接口">资源管理接口</option>
+						<option value="导航管理接口">导航管理接口</option>
+						<option value="数据表单管理接口">数据表单管理接口</option>
+						<option value="文件计划管理接口">文件计划管理接口</option>
+						<option value="公共操作相关接口">公共操作相关接口</option>
+						<option value="通用文件夹管理接口">通用文件夹管理接口</option>
+						<option value="元数据管理平台接口">元数据管理平台接口</option>
+						<option value="续存记录接口">续存记录接口</option>
+						<option value="移交表单信息接口">移交表单信息接口</option>
+						<option value="映射规则接口">映射规则接口</option>
+					</select>
+				</div>
+
+				<div class="layui-input-block  create-case-transfer" style="display: none;">
+					<select name="belong2" lay-verify="required">
+						<option value="用户模块接口">用户模块接口</option>
+						<option value="Record接口">Record接口</option>
+						<option value="资源管理接口">资源管理接口</option>
+						<option value="原文接口">原文接口</option>
+						<option value="导航接口">导航接口</option>
+						<option value="意见接口">意见接口</option>
+						<option value="案卷相关接口">案卷相关接口</option>
+						<option value="档案相关接口">档案相关接口</option>
+						<option value="映射规则接口">映射规则接口</option>
+						<option value="检测报告相关接口">检测报告相关接口</option>
+						<option value="移交表单相关接口">移交表单相关接口</option>
+						<option value="元数据平台接口">元数据平台接口</option>
+					</select>
+				</div>
+
+			</div>
+
+			<div class="layui-form-item">
+				<label class="layui-form-label">请求方式</label>
+				<div class="layui-input-block">
+					<input type="radio" name="method" value="get" title="GET" checked>
+					<input type="radio" name="method" value="post" title="POST">
+					<input type="radio" name="method" value="put" title="PUT">
+					<input type="radio" name="method" value="delete" title="Delete">
+					<input type="radio" name="method" value="file" title="FILE">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">用例ID</label>
+				<div class="layui-input-block">
+					<input type="text" name="caseID" required lay-verify="required" placeholder=""
+						   autocomplete="off" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">用例名称</label>
+				<div class="layui-input-block">
+					<input type="text" name="casename" required lay-verify="required" placeholder="请输入用例名称"
+						   autocomplete="off" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">请求地址</label>
+				<div class="layui-input-block">
+					<input type="text" name="url" required lay-verify="required" placeholder="请输入用例名称"
+						   autocomplete="off" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item layui-form-text">
+				<label class="layui-form-label">Query Params</label>
+				<div class="layui-input-block">
+					<textarea name="params" placeholder="请输入内容" class="layui-textarea"></textarea>
+				</div>
+			</div>
+			<div class="layui-form-item layui-form-text">
+				<label class="layui-form-label">Form Data</label>
+				<div class="layui-input-block">
+					<textarea name="body" placeholder="请输入内容" class="layui-textarea"></textarea>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">负责人</label>
+				<div class="layui-input-block">
+					<select name="head" lay-verify="required">
+						<option value="老张">老张</option>
+						<option value="老王">老王</option>
+						<option value="老李">老李</option>
+						<option value="老江">老江</option>
+						<option value="老刘">老刘</option>
+					</select>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+					<button class="layui-btn" lay-submit lay-filter="update_apicase"
+							style="float: right;">立即提交
+					</button>
+					<button type="reset" class="layui-btn layui-btn-primary" style="float: right;margin-right: 10px;">重置</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+<!--更新用户信息-->
+<div class="layui-row" id="popSearchRoleTest2" style="display: none;">
+	<div class="layui-col-md11">
+		<form class="layui-form" lay-filter="update_userinfo_api">
+
+			<div class="layui-form-item" style="margin-top: 20px;">
+				<button type="button" class="layui-btn layui-btn-warm" onclick="gettoken()"
+						style="float: right;margin-left: 10px;">获取Token
+				</button>
+				<button type="button" class="layui-btn layui-btn-warm" onclick="get_user_info()"
+						style="float: right;">用户信息
+				</button>
+			</div>
+			<div class="layui-form-item" style="margin-top: 20px;">
+				<label class="layui-form-label">所属系统</label>
+				<div class="layui-input-block">
+					<input type="radio" name="system" value="erms" title="数据档案室">
+					<input type="radio" name="system" value="transfer" title="移交接收系统">
+					<input type="radio" name="system" value="tdr" title="数字档案馆">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">角色</label>
+				<div class="layui-input-block erms" style="display: none;">
+					<input type="radio"  name="identity" value="sysadmin" title="系统管理员">
+					<input type="radio"  name="identity" value="admin" title="单位管理员">
+					<input type="radio"  name="identity" value="ast" title="单位档案员">
+				</div>
+				<div class="layui-input-block transfer" style="display: none;">
+					<input type="radio"  name="identity" value="transferadmin" title="数据管理员">
+					<input type="radio"  name="identity" value="sjzjy" title="数据质检员">
+					<input type="radio"  name="identity" value="sjshy" title="数据审核员">
+				</div>
+				<div class="layui-input-block tdr" style="display: none;">
+					<input type="radio"  name="identity" value="tdradmin" title="系统管理员">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">账号</label>
+				<div class="layui-input-block">
+					<input type="text" id="username" name="username" required lay-verify="required"
+						   placeholder="请输入账号" autocomplete="off" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item layui-form-text">
+				<label class="layui-form-label">密码</label>
+				<div class="layui-input-block">
+					<input type="text" id="password" name="password" required lay-verify="required"
+						   placeholder="请输入密码" autocomplete="off" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+					<button class="layui-btn layui-btn-warm" lay-submit lay-filter="update_userinfo_api"
+							style="float: right;margin-left:5px;">立即提交
+					</button>
+					<button type="reset" style="float: right;" class="layui-btn layui-btn-primary">重置</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+<!--获取令牌-->
+<div class="layui-row" id="popSearchRoleTest3" style="display: none;">
+	<div class="layui-col-md11">
+		<form class="layui-form" lay-filter="update_token_api">
+			<div class="layui-form-item" style="margin-top: 20px;">
+				<label class="layui-form-label">所属系统</label>
+				<div class="layui-input-block">
+					<input type="radio" name="system" value="erms" title="数据档案室" checked>
+					<input type="radio" name="system" value="transfer" title="移交接收系统">
+					<input type="radio" name="system" value="tdr" title="数字档案馆">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">角色</label>
+				<div class="layui-input-block erms" style="display: none;">
+					<input type="checkbox"  name="sysadmin" value="sysadmin" title="系统管理员" checked>
+					<input type="checkbox"  name="admin" value="admin" title="单位管理员" checked>
+					<input type="checkbox"  name="ast" value="ast" title="单位档案员" checked>
+				</div>
+				<div class="layui-input-block transfer" style="display: none;">
+					<input type="checkbox"  name="transferadmin" value="transferadmin" title="数据管理员" checked>
+					<input type="checkbox"  name="sjzjy" value="sjzjy" title="数据质检员">
+					<input type="checkbox"  name="sjshy" value="sjshy" title="数据审核员">
+				</div>
+				<div class="layui-input-block tdr" style="display: none;">
+					<input type="checkbox"  name="tdradmin" value="tdradmin" title="系统管理员" checked>
+				</div>
+			</div>
+
+			<div class="layui-form-item" style="margin-top: 30px;">
+					<div class="layui-input-block">
+					<button class="layui-btn" lay-submit lay-filter="update_token_api"
+							style="float:right;background-color: yellowgreen;">立即提交
+					</button>
+					<button type="reset" class="layui-btn layui-btn-primary" style="float: right;margin-right: 10px;">重置</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+<!--负责人-->
+<div class="layui-row" id="requestParams" style="display: none;">
+	<div class="layui-col-md11">
+		<form class="layui-form" lay-filter="head">
+			<div class="layui-form-item" style="margin-top: 20px;">
+				<label class="layui-form-label">负责人:</label>
+				<div class="layui-input-block">
+					<select name="head" lay-verify="required">
+						<option value="老张">老张</option>
+						<option value="老王">老王</option>
+						<option value="老李">老李</option>
+						<option value="老江">老江</option>
+						<option value="老刘">老刘</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="layui-form-item" style="margin-top: 130px;">
+				<div class="layui-input-block">
+					<button class="layui-btn" lay-submit lay-filter="update_apicase"
+							style="float: right;background-color: cornflowerblue;">立即提交
+					</button>
+					<button type="reset" class="layui-btn layui-btn-primary" style="float: right;margin-right: 10px;">重置</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+<!--导入测试用例-->
+<div class="layui-row" id="importCase" style="display:none;">
+	<div class="layui-col-md11">
+		<form class="layui-form" enctype="multipart/form-data" action="/import_case/" method="post">
+
+			<div class="layui-form-item" style="margin-top: 20px;">
+				<div class="layui-input-block">
+					<input type="file" name="file" id="filename">
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+					<button class="layui-btn" lay-submit lay-filter="importCase" style="float: right;">上传</button>
+{#						<button type="reset" class="layui-btn layui-btn-primary">重置</button>#}
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+<!--进度条-->
+<div class="layui-row" id="jindutiao" style="display: none;">
+	<div class="layui-col-md11">
+		<div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="demo">
+			<div class="layui-progress-bar" lay-percent="0%"></div>
+		</div>
+{#			<div class="progress-div">#}
+{#				<div class="progress">#}
+{#					<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="2"#}
+{#						 aria-valuemin="0"#}
+{#						 aria-valuemax="100" style="min-width: 2em; width: 2%;">#}
+{#						2%#}
+{#					</div>#}
+{#				</div>#}
+{#			</div>#}
+	</div>
+</div>
+
+<!--重复执行-->
+<div class="layui-row" id="repeatrun" style="display: none;">
+	<div class="layui-col-md11">
+		<div class="layui-tab">
+		  <ul class="layui-tab-title">
+			<li class="layui-this">单线程执行</li>
+			<li>多线程执行</li>
+		  </ul>
+		  <div class="layui-tab-content">
+			<div class="layui-tab-item layui-show">
+				<form class="layui-form" lay-filter="repeat">
+
+					<div class="layui-form-item" style="margin-top: 30px;">
+						<label class="layui-form-label">执行次数</label>
+						<div class="layui-input-block">
+							<input type="text" name="runtime" required lay-verify="required" placeholder="请输入执行次数"
+								   autocomplete="off" class="layui-input">
+						</div>
+					</div>
+
+
+					<div class="layui-form-item" style="margin-top: 30px;">
+						<div class="layui-input-block">
+							<button class="layui-btn" lay-submit lay-filter="repeat"
+									style="float: right;background-color: cornflowerblue;">立即提交
+							</button>
+							<button type="reset" class="layui-btn layui-btn-primary" style="float: right;margin-right: 10px;">重置</button>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="layui-tab-item">
+				<form class="layui-form" lay-filter="repeat">
+
+					<div class="layui-form-item" style="margin-top: 30px;">
+						<label class="layui-form-label">执行次数</label>
+						<div class="layui-input-block">
+							<input type="text" name="runtime" required lay-verify="required" placeholder="请输入执行次数"
+								   autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">线程数</label>
+						<div class="layui-input-block">
+							<input type="text" name="concurrency" required lay-verify="required" placeholder="请输入线程数"
+								   autocomplete="off" class="layui-input">
+						</div>
+					</div>
+
+					<div class="layui-form-item" style="margin-top: 30px;">
+						<div class="layui-input-block">
+							<button class="layui-btn" lay-submit lay-filter="repeat"
+									style="float: right;background-color: cornflowerblue;">立即提交
+							</button>
+							<button type="reset" class="layui-btn layui-btn-primary" style="float: right;margin-right: 10px;">重置</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		  </div>
+		</div>
+	</div>
+</div>
+
+<div class="">
+	<div style="text-align: center;margin: 0 auto;width: 350px;margin-top: 200px;">
+		<img src="./../static/images/1575792094_207136.png"/>
+	</div>
+	<form onsubmit="submitFn(this, event);">
+		<div class="search-wrapper">
+			<div class="input-holder">
+				<input type="text" class="search-input" placeholder="Type to search"/>
+				<button class="search-icon" onclick="searchToggle(this, event);"><span></span></button>
+			</div>
+			<span class="close" onclick="searchToggle(this, event);"></span>
+			<div class="result-container">
+			</div>
+		</div>
+	</form>
+</div>
+
+<div class="footer">
+	<p class="copyright">
+		有事没事的测试一下，你会发现其实还有很多的问题等你去发现<br/>
+		人生苦短，我用Python
+	</p>
+	{#	<div class="icon_box">#}
+	{#      <a href="#"><i class="layui-icon layui-icon-login-wechat weixin-icon"></i></a>#}
+	{#      <a href="#"><i class="layui-icon layui-icon-login-weibo weibo-icon"></i></a>#}
+	{#    </div>#}
+</div>
+
+
+
+
+<script type="text/javascript">
+
+    function searchToggle(obj, evt) {
+        var container = $(obj).closest('.search-wrapper');
+
+        if ( ! container.hasClass('active')) {
+            container.addClass('active');
+            evt.preventDefault();
+        } else if (container.hasClass('active') && $(obj).closest('.input-holder').length == 0) {
+            container.removeClass('active');
+            // clear input
+            container.find('.search-input').val('');
+            // clear and hide result container when we press close
+            container.find('.result-container').fadeOut(100, function () {
+                $(this).empty();
+            });
+        }
+    }
+
+    function submitFn(obj, evt) {
+        value = $(obj).find('.search-input').val().trim();
+
+        _html = "Yup yup! Your search text sounds like this: ";
+        if ( ! value.length) {
+            //_html = "Yup yup! Add some text friend :D";
+        } else {
+            _html += "<b>" + value + "</b>";
+        }
+    	// 自定义模块
+		layui.config({
+			base: './../static/js/layui/lay/modules/',   // 模块目录
+			version: 'v1.3.28'
+		}).extend({             // 模块别名
+			soulTable: 'soulTable'
+		});
+		layui.use(['table',"soulTable"], function (data) {
+			var table = layui.table;
+			soulTable = layui.soulTable;
+            var searchlist = layer.open({
+                type: 1,
+                title: "Search",
+                area: ['90%', "90%"],
+                skin: 'layui-layer-molv',
+                shade: 0.6,
+                content: '<div style="padding:15px;"><table id="test" lay-filter="test"></table></div>',
+                success: function () {
+                    var table = layui.table;
+                    var index = layer.load(0); //添加laoding,0-2两种方式
+                    table.render({
+                        elem: '#test'
+                        , url: '/search?key=' + value
+                        , toolbar: '#toolbarDemo'
+                        , defaultToolbar: [
+                            'filter', {title: '导出数据', layEvent: 'export', icon: 'layui-icon-download-circle'}, {
+                                title: '全屏显示',
+                                layEvent: 'fullScreen',
+                                icon: 'layui-icon-top'
+                            }, {title: '导入数据', layEvent: 'import', icon: 'layui-icon-upload-circle'}, 'print']
+                        , title: '接口测试'
+                        , limit: 9
+                        , limits: [10, 20, 30, 100, 200, 500]
+                        , size: 'lg'	//大尺寸 /sm小尺寸
+                        , skin: 'line' //行边框风格 /row列表框风格 /nob无边框风格
+                        , page: {groups: 5}  //开启分页
+                        , loading: false
+                        , height: 'full-225'
+                        , cols: [[ //表头, fixed: 'left'
+                            {type: 'checkbox'}
+                            , {title: '操作', toolbar: '#barDemo', width: 90, align: "left"}
+                            , {field: 'identity', title: '', width: 60, align: "center", templet: "#identityTpl"}
+                            , {
+                                field: 'casename',
+                                title: '接口名称',
+                                width: 250,
+                                align: "left",
+                                excel: {color: '0040ff', bgColor: 'f3fef3'},
+                                templet: "#casenameTpl",
+                                children: [
+                                    {
+                                        elem: '#templateTable'
+                                        , url: "/field_apilist/"
+                                        , where: function (row) {
+                                            console.log(row);
+                                            return {caseid: row.caseid}
+                                        }
+                                        , title: "请求参数详情"
+                                        , skin: 'line'
+                                        , size: "lg"
+                                        //, height: 'full-10'
+                                        , cols: [[
+                                            {
+                                                field: 'parameterName',
+                                                title: '参数名称',
+                                                width: 220,
+                                                align: "left",
+                                                style: 'background-color: #eee;'
+                                            }
+                                            , {
+                                                field: 'parameterThat',
+                                                title: '参数说明',
+                                                width: 250,
+                                                align: "left",
+                                                style: 'background-color: #eee;'
+                                            }
+                                            , {
+                                                field: 'requestType',
+                                                title: '请求类型',
+                                                width: 150,
+                                                align: "left",
+                                                style: 'background-color: #eee;'
+                                            }
+                                            , {
+                                                field: 'isMust',
+                                                title: '是否必须',
+                                                width: 150,
+                                                align: "left",
+                                                templet: "#methodTpl",
+                                                sort: true,
+                                                style: 'background-color: #eee;'
+                                            }
+                                            , {
+                                                field: 'dataType',
+                                                title: '请求类型',
+                                                width: 190,
+                                                align: "left",
+                                                style: 'background-color: #eee;'
+                                            }
+                                        ]]
+                                        , done: function (data) {
+                                            //console.log(data);
+                                            soulTable.render(this);
+                                        }
+
+                                    }
+                                ]
+                            }// filter: true
+                            , {
+                                field: 'url', title: '请求路径', width: 250, align: "left", templet: function (res) {
+                                    var a = res.url.split("/");
+                                    return '<span>' + a[a.length - 1] + '</span>'
+                                }
+                            }
+                            , {field: 'method', title: '请求方式', width: 90, align: "left", templet: "#methodTpl"}
+                            , {field: 'params', title: 'Query参数', align: "left", event: 'params'}
+                            , {field: 'body', title: 'Body参数', event: 'body', align: "left"}
+                            , {
+                                field: 'durantion',
+                                title: '响应时长',
+                                align: "left",
+                                sort: true,
+                                width: 100,
+                                event: "durantion",
+                                templet: function (res) {
+                                    if (res.duration < 1) {
+                                        let a = String(res.duration * 1000) + "毫秒";
+                                        return '<span>' + a + '</span>'
+                                    } else if (res.duration >= 1 && res.duration < 3) {
+                                        let b = String(res.duration) + "秒";
+                                        return '<span style="color: cornflowerblue;">' + b + '</span>'
+                                    } else {
+                                        let b = String(res.duration) + "秒";
+                                        return '<span style="color: deeppink;">' + b + '</span>'
+                                    }
+                                }
+                            }
+                            , {
+                                field: 'result',
+                                title: '响应结果',
+                                align: "left",
+                                event: "detail",
+                                templet: function (res) {
+                                    if (res.result.indexOf("message") != -1 && res.result.indexOf("error") != -1 && res.result.indexOf(res.casename) != -1) {
+                                        let a = res.casename;
+                                        let b = JSON.parse(res.result);
+                                        return '<span style="color: red;">' + JSON.stringify(b[a]["message"]) + '</span>'
+                                    } else if (res.result != "") {
+                                        let a = JSON.parse(res.result)[res.casename];
+                                        return '<span>' + JSON.stringify(a) + '</span>'
+                                    } else {
+                                        return '<span>' + res.result + '</span>'
+                                    }
+                                }
+                            }
+                            , {field: 'head', title: '负责人', width: 80, align: "left", event: "head"}//merge: true行合并
+
+                        ]]
+                        , done: function (res) {   //返回数据执行回调函数
+                            layer.close(index);    //返回数据关闭loading
+                            soulTable.render(this);
+                        }
+                    });
+                    //头工具栏事件
+                    table.on('toolbar(test)', function (obj) {
+                        var checkStatus = table.checkStatus(obj.config.id);
+                        //console.log(checkStatus);
+                        switch (obj.event) {
+                            //更新用例
+                            case 'getCheckData':
+                                var data = checkStatus.data;
+                                console.log(data[0]);
+                                if (data.length == 0) {
+                                    layer.close(index);
+                                    layer.msg("请先选中需要编辑的用例", {
+                                        icon: 2,
+                                        offset: "t"
+                                    });
+                                } else {
+                                    var a = layer.open({
+                                        //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+                                        type: 1,
+                                        title: "编辑用例",
+                                        area: ['40%', '95%'],
+                                        skin: "layui-layer-molv",
+                                        shade: 0.6,
+                                        content: $("#UpdateCase").html(),
+                                        success: function () {
+                                            layui.use('form', function () {
+                                                var form = layui.form;
+                                                form.val("CreateUpdate", {
+                                                    "caseID": data[0]['caseid'],
+                                                    "casename": data[0]['casename'],
+                                                    "identity": data[0]["identity"],
+                                                    "url": data[0]['url'],
+                                                    "head": data[0]["head"],
+                                                    "method": data[0]['method'],
+                                                    "belong": data[0]['belong'],
+                                                    "params": data[0]['params'],
+                                                    "body": data[0]['body']
+                                                });
+                                                //监听编辑用例，
+                                                form.on('submit(update_apicase)', function (data) {
+                                                    console.log(data.field);
+                                                    $.ajax({
+                                                        cache: false,
+                                                        url: "/update_apicase/",
+                                                        dataType: 'text',
+                                                        type: 'POST',
+                                                        //async: false,
+                                                        data: {
+                                                            "belong": data.field.belong,
+                                                            "body": data.field.body,
+                                                            "caseID": data.field.caseID,
+                                                            "casename": data.field.casename,
+                                                            "identity": data.field.identity,
+                                                            "method": data.field.method,
+                                                            "params": data.field.params,
+                                                            "system": "{{ system }}",
+                                                            "url": data.field.url,
+                                                            "head": data.field.head
+                                                        },
+                                                        beforeSend: function () {
+                                                            l_index = layer.load(0, {shade: [0.5, '#DBDBDB']});
+                                                        },
+                                                        success: function (data) {
+                                                            layer.msg(data, {
+                                                                icon: 6,
+                                                                offset: 't',
+                                                                anim: 2,
+                                                                time: 3000//默认三秒
+                                                            });
+                                                            $(".layui-laypage-btn").click();
+
+                                                        },
+                                                        error: function (data) {
+                                                            console.log(data);
+                                                            layer.msg(data, {
+                                                                icon: 5,
+                                                                offset: 't',
+                                                                anim: 2,
+                                                            });
+                                                        },
+                                                        complete: function () {
+                                                            layer.close(l_index);
+                                                            layer.close(a)
+                                                        }
+
+                                                    });
+                                                    return false;//阻止表单跳转
+                                                });
+                                            });
+                                            //CreateUpdate
+                                        }
+                                    });
+                                }
+                                break;
+                            //执行用例
+                            case 'runcase':
+                                var data = checkStatus.data;
+                                console.log(data);
+                                if (data.length == 0) {
+                                    layer.close(index);
+                                    layer.msg("请先选中需要执行的用例", {
+                                        icon: 2,
+                                        offset: "t"
+                                    });
+                                } else {
+                                    var l = [];
+                                    for (i = 0; i < data.length; i++) {
+                                        var dic = {};
+                                        dic["caseid"] = data[i]["caseid"];
+                                        dic['identity'] = data[i]['identity'];
+                                        dic['casename'] = data[i]['casename'];
+                                        dic["url"] = data[i]['url'];
+                                        dic['method'] = data[i]['method'];
+                                        dic['params'] = data[i]['params'];
+                                        dic['body'] = data[i]['body'];
+                                        l.push(dic);
+                                    }
+                                    console.log(l);
+                                    $.ajax({
+                                        cache: false,
+                                        url: "/run_apicase/",
+                                        dataType: 'json',
+                                        type: 'POST',
+                                        //async: false,
+                                        data: {
+                                            "request": JSON.stringify(l)
+                                        },
+                                        //请求前的处理,加载loading
+                                        beforeSend: function () {
+                                            document.getElementById("Runcase").setAttribute("disabled", true);
+                                            document.getElementById("Runcase").innerHTML = "loading...";
+                                            l_index = layer.load(0, {
+                                                shade: [0.5, '#DBDBDB'] //0.1透明度的白色背景
+                                            });
+                                        },
+                                        success: function (data) {
+                                            var strjson = JSON.stringify(data, null, 4);
+                                            console.log(strjson);
+                                            layer.prompt({
+                                                formType: 2,//多行文本
+                                                value: strjson,
+                                                title: '响应结果',
+                                                maxmin: true, //允许全屏最小化
+                                                anim: 4,//从左滚动进来
+                                                //shade: 0.6, //遮罩透明度
+                                                skin: "layui-layer-rim",
+                                                //监听取消按钮
+                                                zIndex: layer.zIndex,
+                                                shade: false,
+                                                btn: ["json.cn", "关闭"],
+                                                yes: function () {
+                                                    layer.open({
+                                                        type: 2,
+                                                        title: "json.cn",
+                                                        //shadeClose: true,
+                                                        shade: false,
+                                                        zIndex: layer.zIndex,
+                                                        maxmin: true, //开启最大化最小化按钮
+                                                        area: ['70%', '70%'],
+                                                        content: 'https://www.json.cn',
+                                                        success: function () {
+                                                            layer.setTop(layero);
+                                                        }
+                                                    });
+
+                                                },
+                                                btn2: function (index, layro) {//这里就是你要的
+                                                    layer.close(index);
+                                                    $(".layui-laypage-btn").click();
+                                                },
+                                                area: ['800px', '600px'] //自定义文本域宽高
+                                            });
+                                        },
+                                        error: function (data) {
+                                            console.log("请求失败" + data);
+                                            layer.msg("NameError", {
+                                                icon: 5,
+                                                offset: 't',
+                                            });
+                                        },
+                                        complete: function () {
+                                            document.getElementById("Runcase").removeAttribute("disabled");
+                                            document.getElementById("Runcase").innerHTML = "执行用例";
+                                            layer.close(l_index);
+                                        }
+                                    });
+                                }
+                                break;
+                            //发送钉钉消息
+                            case 'dingding':
+                                var data = checkStatus.data;
+                                console.log(data);
+                                if (data.length == 0) {
+                                    layer.close(index);
+                                    layer.msg("请先选中需要发送的接口", {
+                                        icon: 2,
+                                        offset: "t"
+                                    });
+                                } else {
+                                    layer.confirm("你确定要发送接口请求结果给相应的负责人吗？\n注意:钉钉机器人发送，不可撤回！", {
+                                            icon: 3,
+                                            btn: ["确定", "取消"]
+                                        }, function () {
+                                            var ids = "";
+                                            for (i = 0; i < data.length; i++) {
+                                                ids += data[i]["caseid"] + ",";
+                                                console.log(ids);
+                                            }
+                                            $.ajax({
+                                                cache: false,
+                                                url: "/ding_ding/",
+                                                dataType: 'text',
+                                                type: 'GET',
+                                                //async: false,
+                                                data: {
+                                                    "caseid": ids,
+                                                    "isprocess": "no"
+                                                },
+                                                //请求前的处理,加载loading
+                                                beforeSend: function () {
+                                                    document.getElementById("Dingding").setAttribute("disabled", true);
+                                                    document.getElementById("Dingding").innerHTML = "loading...";
+                                                    l_index = layer.load(0, {
+                                                        shade: [0.5, '#DBDBDB'] //0.1透明度的白色背景
+                                                    });
+                                                },
+                                                success: function (data) {
+                                                    console.log(data);
+                                                    layer.msg(data, {
+                                                        icon: 6,
+                                                        offset: 't',
+                                                    });
+
+                                                },
+                                                error: function (data) {
+                                                    console.log(data);
+                                                    layer.msg(data, {
+                                                        icon: 5,
+                                                        offset: 't',
+                                                        anim: 6
+                                                    });
+                                                },
+                                                complete: function () {
+                                                    document.getElementById("Dingding").removeAttribute("disabled");
+                                                    document.getElementById("Dingding").innerHTML = "钉钉通知";
+                                                    layer.close(l_index);
+                                                }
+                                            });
+
+                                        }, function () {
+                                            layer.msg(
+                                                "取消发送钉钉消息",
+                                                {icon: 1, offset: "t"}
+                                            );
+                                        }
+                                    );
+                                }
+                                break;
+                            //导出用例
+                            case "export":
+                                if (checkStatus.data.length > 0) {
+                                    soulTable.export(myTable, {
+                                        filename: '勾选数据.xlsx',
+                                        checked: true, // 只导出勾选数据
+                                        border: {
+                                            style: 'thin',
+                                            color: '000000'
+                                        },
+                                        head: { // 表头样式
+                                            family: 'helvetica', // 字体
+                                            size: 14, // 字号
+                                            color: 'FFFFFF', // 字体颜色
+                                            bgColor: 'ff8c00' // 背景颜色
+                                        },
+                                        font: { // 正文样式
+                                            family: 'Calibri', // 字体
+                                            size: 12, // 字号
+                                            color: '000000', // 字体颜色
+                                            bgColor: 'FFFFFF' //背景颜色t
+                                        }
+                                    });
+                                    layer.msg('操作成功', {icon: 6, offset: 't'});
+                                } else {
+                                    layer.msg('请先勾选数据在导出！', {icon: 0, offset: 't'});
+                                }
+                                break;
+                            //全屏显示
+                            case "fullScreen":
+                                var docE = document.documentElement;
+                                if (docE.requestFullScreen) {
+                                    docE.requestFullScreen();
+                                } else if (docE.mozRequestFullScreen) {
+                                    docE.mozRequestFullScreen();
+                                } else if (docE.webkitRequestFullScreen) {
+                                    docE.webkitRequestFullScreen();
+                                }
+                                break;
+                            //导入用例
+                            case "import":
+                                layer.open({
+                                    //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+                                    type: 1,
+                                    title: "导入用例",
+                                    area: ['35%', '30%'],
+                                    skin: "layui-layer-rim",
+                                    shade: 0.6,
+                                    content: $("#importCase").html()
+                                });
+                                break;
+                            //删除用例
+                            case "deletecase":
+                                var data = checkStatus.data;
+                                layer.confirm('真的删除行么', function (index) {
+                                    console.log(data);
+                                    layer.close(index);
+                                    var l = [];
+                                    for (i = 0; i < data.length; i++) {
+                                        var dic = {};
+                                        dic["caseid"] = data[i]["caseid"];
+                                        l.push(dic);
+                                    }
+                                    console.log(l);
+                                    $.ajax({
+                                        cache: false,
+                                        url: "/del_apicase/",
+                                        dataType: 'text',
+                                        type: 'GET',
+                                        //async: false,
+                                        data: {
+                                            "ids": JSON.stringify(l),
+                                        },
+                                        success: function (data) {
+                                            layer.msg(data, {
+                                                offset: 't',
+                                                icon: 6,
+                                            });
+                                            $(".layui-laypage-btn").click();
+                                        },
+                                        error: function (data) {
+                                            console.log(data);
+                                            layer.msg(data, {
+                                                offset: 't',
+                                                icon: 5
+                                            });
+                                        }
+                                    });
+                                });
+                                break;
+                            //重复执行
+                            case 'repeatrun':
+                                var data = checkStatus.data;
+                                console.log(data);
+                                if (data.length == 0) {
+                                    layer.close(index);
+                                    layer.msg("请先选中需要执行的用例", {
+                                        icon: 4,
+                                        offset: "t"
+                                    });
+                                } else if (data.length == 1) {
+                                    var l = [];
+                                    for (i = 0; i < data.length; i++) {
+                                        var dic = {};
+                                        dic["caseid"] = data[i]["caseid"];
+                                        dic['identity'] = data[i]['identity'];
+                                        dic['casename'] = data[i]['casename'];
+                                        dic["url"] = data[i]['url'];
+                                        dic['method'] = data[i]['method'];
+                                        dic['params'] = data[i]['params'];
+                                        dic['body'] = data[i]['body'];
+                                        l.push(dic);
+                                    }
+                                    console.log(l);
+                                    var repeat = layer.open({
+                                        //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+                                        type: 1,
+                                        title: "重复执行",
+                                        area: ['30%', '40%'],
+                                        skin: "layui-layer-rim",
+                                        shade: 0.6,
+                                        content: $("#repeatrun").html(),
+                                        success: function (layero, index) {
+                                            layui.use('form', function () {
+                                                var form = layui.form;
+                                                form.val("repeat");
+                                                form.on('submit(repeat)', function (data) {
+                                                    $.ajax({
+                                                        cache: false,
+                                                        url: "/repeatrun_api/",
+                                                        dataType: 'json',
+                                                        type: 'POST',
+                                                        //async: false,
+                                                        data: {
+                                                            "request": JSON.stringify(l),
+                                                            "runtime": data.field.runtime,
+                                                            "concurrency": data.field.concurrency
+                                                        },
+                                                        //请求前的处理,加载loading
+                                                        beforeSend: function () {
+                                                            layer.close(repeat);
+                                                            l_index = layer.msg('执行接口中，小伙伴请稍候~~', {
+                                                                icon: 16,
+                                                                time: false,
+                                                                shade: 0.5
+                                                            });
+                                                            //l_index = layer.load(0, {shade: [0.5, '#DBDBDB']}); //0.1透明度的白色背景
+                                                            var process = layer.open({
+                                                                //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+                                                                type: 1,
+                                                                title: false,
+                                                                area: ['50%', ''],
+                                                                skin: "layui-layer-rim",
+                                                                //shade: 0.8,
+                                                                offset: "b",
+                                                                content: $("#jindutiao").html(),
+                                                                success: function () {
+                                                                    layui.use('element', function () {
+                                                                        var $ = layui.jquery
+                                                                            , element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
+                                                                        console.log("come in ");
+                                                                        var sitv = setInterval(function () {
+                                                                            var prog_url = '/show_api/';      // prog_url指请求进度的url，后面会在django中设置
+                                                                            $.getJSON(prog_url, function (num_progress) {
+                                                                                element.progress('demo', num_progress + '%');
+                                                                                if (num_progress == "100") {
+                                                                                    clearInterval(sitv);
+                                                                                    layer.close(process);
+                                                                                }
+                                                                            });
+                                                                        }, 250);// 每10毫秒查询一次后台进度
+                                                                    });
+                                                                }
+                                                            });
+
+                                                        },
+                                                        success: function (data) {
+                                                            if (data.status_code == 500) {
+                                                                layer.msg(data.msg, {icon: 5, offset: "t"});
+                                                            } else if (data.status_code == 401) {
+                                                                layer.msg(data.msg, {icon: 5, offset: "t"});
+                                                            } else {
+                                                                var strjson = JSON.stringify(data, null, 4);
+                                                                console.log(strjson);
+                                                                layer.prompt({
+                                                                    formType: 2,//多行文本
+                                                                    value: strjson,
+                                                                    title: '响应结果',
+                                                                    maxmin: true, //允许全屏最小化
+                                                                    anim: 4,//从左滚动进来
+                                                                    //shade: 0.6, //遮罩透明度
+                                                                    skin: "layui-layer-rim",
+                                                                    //监听取消按钮
+                                                                    zIndex: layer.zIndex,
+                                                                    shade: false,
+                                                                    area: ['800px', '600px'], //自定义文本域宽高
+                                                                    btn: ["json.cn", "关闭"],
+                                                                    yes: function () {
+                                                                        layer.open({
+                                                                            type: 2,
+                                                                            title: "json.cn",
+                                                                            //shadeClose: true,
+                                                                            shade: false,
+                                                                            zIndex: layer.zIndex,
+                                                                            maxmin: true, //开启最大化最小化按钮
+                                                                            area: ['50%', '50%'],
+                                                                            content: 'https://www.json.cn',
+                                                                            success: function () {
+                                                                                layer.setTop(layero);
+                                                                            }
+                                                                        });
+                                                                    },
+                                                                    btn2: function (index, layro) {//这里就是你要的
+                                                                        layer.close(index);
+                                                                        //layer.closeAll();
+                                                                        $(".layui-laypage-btn").click();
+                                                                    }
+                                                                });
+                                                            }
+
+                                                        },
+                                                        error: function (data) {
+                                                            console.log("请求失败" + data);
+                                                            layer.msg("NameError", {
+                                                                icon: 5,
+                                                                offset: 't',
+                                                            });
+                                                        },
+                                                        complete: function () {
+                                                            layer.close(l_index);
+
+                                                        }
+                                                    });
+                                                    return false;//阻止表单跳转
+                                                });
+                                            });
+                                        }
+                                    });
+
+                                } else {
+                                    layer.msg("单一接口测试功能仅支持重复执行一个接口，请小伙伴重新选择", {
+                                        icon: 2,
+                                        offset: "t"
+                                    });
+                                }
+                                break;
+                        }
+
+                    });
+                    //监听行工具事件
+                    table.on('tool(test)', function (obj) {
+                        var data = obj.data;
+                        //console.log(obj);
+                        if (obj.event === 'detail') {
+                            console.log(data.result);
+                            //var strjson = JSON.parse(data.result);
+                            layer.prompt({
+                                formType: 2,//多行文本
+                                value: data.result,
+                                shade: false,
+                                title: data.casename + "响应结果",
+                                //anim: 4,//从左滚动进来
+                                maxmin: true,
+                                skin: "layui-layer-rim",//hui
+                                closeBtn: 0,
+                                zIndex: layer.zIndex,
+                                area: ['600px', '500px'], //自定义文本域宽高
+                                btn: ["详情", "关闭"],
+                                yes: function () {
+                                    var index = layer.open({
+                                        type: 2,
+                                        title: data.casename + "详细信息",
+                                        //shadeClose: true,
+                                        shade: false,
+                                        zIndex: layer.zIndex,
+                                        maxmin: true, //开启最大化最小化按钮
+                                        area: ['600px', '1200px'],
+                                        content: "/detail_api/?id=" + data.caseid,
+                                    });
+                                    layer.full(index);
+                                },
+                                btn2: function (index) {
+                                    layer.close(index);
+                                }
+                            });
+                        } else if (obj.event === 'del') {
+                            layer.confirm('真的删除行么', {icon: 2, title: "删除提示"}, function (index) {
+                                console.log(obj.data);
+                                //layer.msg("确定删除",{icon:1});
+                                obj.del();//删除对应行（tr）的DOM结构，并更新缓存
+                                layer.close(index);
+                                //向服务端发送删除指令
+                                var id = obj.data["caseid"];
+                                console.log(id);
+                                $.ajax({
+                                    cache: false,
+                                    url: "/del_apicase/",
+                                    dataType: 'text',
+                                    type: 'GET',
+                                    async: false,
+                                    data: {
+                                        "id": id,
+                                    },
+                                    success: function (data) {
+                                        layer.msg(data, {
+                                            offset: 't',
+                                            icon: 6,
+                                        });
+                                        $(".layui-laypage-btn").click();
+                                    },
+                                    error: function (data) {
+                                        console.log(data);
+                                        layer.msg(data, {
+                                            offset: 't',
+                                            icon: 5,
+                                        });
+                                    }
+                                });
+                            });
+                        } else if (obj.event === 'params') {
+                            layer.prompt({
+                                formType: 2
+                                , value: data.params
+                                , title: ["编辑Query parmas"]
+                                , skin: "layui-layer-lan"
+                                , shade: false
+                                , area: ['500px', '300px'] //自定义文本域宽高
+
+                            }, function (value, index) {
+                                console.log(value);
+                                console.log(index);
+                                $.ajax({
+                                    cache: false,
+                                    url: "/update_apicase/",
+                                    dataType: 'text',
+                                    type: 'GET',
+                                    async: false,
+                                    data: {
+                                        "ids": obj.data['caseid'],
+                                        "params": value
+                                    },
+                                    success: function (data) {
+                                        layer.msg(data, {
+                                            offset: 't',
+                                            anim: 2,
+                                            icon: 6,
+                                        });
+                                    },
+                                    error: function (data) {
+                                        console.log(data);
+                                        layer.msg(data, {
+                                            offset: 't',
+                                            anim: 2,
+                                            area: ["200px", "50px"],
+                                        });
+                                    }
+                                });
+                                //同步更新缓存对应的值
+                                obj.update({
+                                    params: value
+                                });
+                                layer.close(index);
+
+                            });
+                        } else if (obj.event === 'body') {
+                            layer.prompt({
+                                formType: 2
+                                , value: data.body
+                                , title: ["编辑data forms"]
+                                , skin: "layui-layer-lan"
+                                , shade: 0.6
+                                , area: ['600px', '400px'] //自定义文本域宽高
+                                , maxlength: 500000
+
+                            }, function (value, index) {
+                                console.log(value);
+                                console.log(index);
+                                $.ajax({
+                                    cache: false,
+                                    url: "/update_apicase/",
+                                    dataType: 'text',
+                                    type: 'GET',
+                                    async: false,
+                                    data: {
+                                        "ids": obj.data['caseid'],
+                                        "body": value
+                                    },
+                                    success: function (data) {
+                                        layer.msg(data, {
+                                            offset: 't',
+                                            anim: 2,
+                                            icon: 6,
+                                        });
+                                        //setTimeout(function(){ window.location.reload(); }, 500);
+                                    },
+                                    error: function (data) {
+                                        console.log(data);
+                                        layer.msg(data, {
+                                            offset: 't',
+                                            icon: '5'
+                                        });
+                                    }
+                                });
+                                //同步更新缓存对应的值
+                                obj.update({
+                                    body: value
+                                });
+                                layer.close(index);
+
+                            });
+                        } else if (obj.event === 'requestparams') {
+                            var a = layer.open({
+                                type: 1,
+                                title: "编辑用例",
+                                area: ['40%', ""],
+                                skin: "layui-layer-molv",
+                                shada: 0.6,
+                                content: $("#UpdateCase").html(),
+                                success: function () {
+                                    layui.use(['form', 'jquery'], function () {
+                                        var form = layui.form;
+                                        $ = layui.$;
+                                        form.val("CreateUpdate", {
+                                            "system": '{{ system }}',
+                                            "caseID": data.caseid,
+                                            "casename": data.casename,
+                                            "identity": data.identity,
+                                            "url": data.url,
+                                            "method": data.method,
+                                            "belong": data.belong,
+                                            "params": data.params,
+                                            "body": data.body,
+                                            "head": data.head
+                                        });
+                                        form.on('radio', function (data) {
+                                            console.log(data.elem); //得到radio原始DOM对象
+                                            console.log(data.value); //被点击的radio的value
+                                            if (data.value == "erms") {
+                                                $(".erms").show();
+                                                $(".transfer").hide();
+                                                $(".tdr").hide();
+                                                $(".create-case-erms").show();
+                                                $(".create-case-tdr").hide();
+                                                $(".create-case-transfer").hide();
+                                            } else if (data.value == "transfer") {
+                                                $(".transfer").show();
+                                                $(".erms").hide();
+                                                $(".tdr").hide();
+                                                $(".create-case-transfer").show();
+                                                $(".create-case-erms").hide();
+                                                $(".create-case-tdr").hide();
+                                            } else if (data.value == "tdr") {
+                                                $(".tdr").show();
+                                                $(".erms").hide();
+                                                $(".transfer").hide();
+                                                $(".create-case-tdr").show();
+                                                $(".create-case-transfer").hide();
+                                                $(".create-case-erms").hide();
+                                            }
+                                        });
+                                        //监听编辑用户信息，
+                                        form.on('submit(update_apicase)', function (data) {
+                                            console.log(data.field);
+                                            var flag = "";
+                                            if ('{{ system }}' == "erms") {
+                                                flag = data.field.belong1
+                                            } else if ('{{ system }}' == "tdr") {
+                                                flag = data.field.belong
+                                            } else if ('{{ system }}' == "tranfsfer") {
+                                                flag = data.field.belong2
+                                            }
+                                            $.ajax({
+                                                cache: false,
+                                                url: "/update_apicase/",
+                                                dataType: 'text',
+                                                type: 'POST',
+                                                //async: false,
+                                                data: {
+                                                    "belong": flag,
+                                                    "body": data.field.body,
+                                                    "caseID": data.field.caseID,
+                                                    "casename": data.field.casename,
+                                                    "identity": data.field.identity,
+                                                    "method": data.field.method,
+                                                    "params": data.field.params,
+                                                    "system": data.field.system,
+                                                    "url": data.field.url,
+                                                    "head": data.field.head
+                                                },
+                                                beforeSend: function () {
+                                                    l_index = layer.load(0, {shade: [0.5, '#DBDBDB']});
+                                                },
+                                                success: function (data) {
+                                                    layer.msg(data, {
+                                                        icon: 6,
+                                                        offset: 't',
+                                                        time: 3000//默认三秒
+                                                    });
+                                                    $(".layui-laypage-btn").click();
+                                                },
+                                                error: function (data) {
+                                                    console.log(data);
+                                                    layer.msg(data, {
+                                                        icon: 5,
+                                                        offset: 't',
+                                                        anim: 2,
+                                                    });
+                                                },
+                                                complete: function () {
+                                                    layer.close(l_index);
+                                                    layer.close(a);
+                                                    ``
+                                                }
+
+                                            });
+                                            return false;//阻止表单跳转
+                                        });
+                                    });
+                                }
+                            });
+
+                        } else if (obj.event === 'head') {
+                            var update_apicase = layer.open({
+                                type: 1
+                                , value: data.head
+                                , title: ["编辑负责人"]
+                                , skin: "layui-layer-lan"
+                                , shade: 0.6
+                                , shadeClose: true
+                                , moveOut: true
+                                , area: ["30%", '40%'] //自定义文本域宽高
+                                , content: $("#requestParams").html(),
+                                success: function () {
+                                    layui.use('form', function () {
+                                        var form = layui.form;
+                                        form.val("head", {
+                                            //我是对了对抗重置按钮来的
+                                        });
+                                        //监听编辑用户信息，
+                                        form.on('submit(update_apicase)', function (data) {
+                                            $.ajax({
+                                                cache: false,
+                                                url: "/update_apicase/",
+                                                dataType: 'text',
+                                                type: 'GET',
+                                                //async: false,
+                                                data: {
+                                                    "ids": obj.data['caseid'],
+                                                    "head": data.field.head
+                                                },
+                                                success: function (data) {
+                                                    layer.msg(data, {
+                                                        icon: 6,
+                                                        offset: 't',
+                                                        anim: 2,
+                                                    });
+                                                    $(".layui-laypage-btn").click();
+                                                },
+                                                error: function (data) {
+                                                    console.log(data);
+                                                    layer.msg(data, {
+                                                        icon: 5,
+                                                        offset: 't',
+                                                        anim: 2,
+                                                    });
+                                                },
+                                                complete: function () {
+                                                    layer.close(update_apicase);
+                                                }
+
+                                            });
+                                            return false;//阻止表单跳转
+                                        });
+                                    })
+                                }
+
+                            });
+
+                        }
+                    });
+                },
+                btn: ['关闭'],
+                yes: function () {
+                    layer.close(searchlist);
+                    soulTable.render(this);
+                }
+
+            });
+        });
+        $(obj).find('.result-container').html('<span>' + _html + '</span>');
+        $(obj).find('.result-container').fadeIn(100);
+        evt.preventDefault();
+    }
+</script>
+
+
+
+
+
+
+<script>
+    //获取令牌
+    function gettoken() {
+        var update_token_api = layer.open({
+            //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+            type: 1,
+            title: "获取AccessToken",
+            area: ['35%', ''],
+            skin: "layui-layer-rim",
+            shade: 0.6,
+            anim: 1,
+            content: $("#popSearchRoleTest3").html(),
+            success: function () {
+                layui.use(['form',"jquery"], function () {
+                    var form = layui.form,
+						$=layui.$;
+                    //监听token信息，
+					form.val("update_token_api");
+					form.on('radio', function (data) {
+                        console.log(data.elem); //得到radio原始DOM对象
+                        console.log(data.value); //被点击的radio的value
+						if (data.value=="erms"){
+						    $(".erms").show();
+						    $(".transfer").hide();
+						    $(".tdr").hide();
+						}else if(data.value=="transfer"){
+						    $(".transfer").show();
+							$(".erms").hide();
+						    $(".tdr").hide();
+						}else if(data.value=="tdr"){
+						    $(".tdr").show();
+							$(".erms").hide();
+						    $(".transfer").hide();
+						}
+
+                    });
+                    form.on('submit(update_token_api)', function (data) {
+                        $.ajax({
+                            cache: false,
+                            url: "/update_token_api/",
+                            dataType: 'text',
+                            type: 'POST',
+                            //async: false,
+                            data: {
+                                "sysadmin": data.field.sysadmin,
+								"admin": data.field.admin,
+								"ast": data.field.ast,
+								"transferadmin": data.field.transferadmin,
+								"tdradmin": data.field.tdradmin,
+                                "system": data.field.system
+                            },
+                            success: function (data) {
+                                if (data.indexOf("Failed") != -1) {
+                                    layer.msg(data, {
+                                        icon: 5,
+                                        offset: 't',
+                                        anim: 2,
+                                    });
+                                } else {
+                                    layer.msg(data, {
+                                        icon: 6,
+                                        offset: 't',
+                                        anim: 2,
+                                    });
+                                }
+                            },
+                            error: function (data) {
+                                console.log(data);
+                                layer.msg(data, {
+                                    icon: 5,
+                                    offset: 't',
+                                    anim: 2,
+                                });
+                            },
+                            complete: function () {
+                                layer.close(update_token_api);
+                            }
+
+                        });
+                        return false;//阻止表单跳转
+                    });
+                })
+            }
+        });
+
+
+    }
+    //新建用例
+    function selectRole() {
+        var Create_apicase = layer.open({
+            //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+            type: 1,
+            title: "新建用例",
+            skin: "layui-layer-molv",
+            shade: 0.6,
+            area: ['40%', ''],
+            content: $("#popSearchRoleTest").html(),
+            success: function () {
+                layui.use(['form','jquery'], function () {
+					var form = layui.form,
+						$=layui.$;
+                    //监听编辑用户信息，
+                    form.val("create_apicase");
+					form.on('radio', function (data) {
+                        console.log(data.elem); //得到radio原始DOM对象
+                        console.log(data.value); //被点击的radio的value
+						if (data.value=="erms"){
+							$(".erms").show();
+						    $(".transfer").hide();
+						    $(".tdr").hide();
+						    $(".create-case-erms").show();
+						    $(".create-case-tdr").hide();
+						    $(".create-case-transfer").hide();
+						}else if(data.value=="transfer"){
+							$(".transfer").show();
+							$(".erms").hide();
+						    $(".tdr").hide();
+						    $(".create-case-transfer").show();
+							$(".create-case-erms").hide();
+						    $(".create-case-tdr").hide();
+						}else if(data.value=="tdr"){
+							$(".tdr").show();
+							$(".erms").hide();
+						    $(".transfer").hide();
+						    $(".create-case-tdr").show();
+							$(".create-case-transfer").hide();
+						    $(".create-case-erms").hide();
+						}
+                    });
+                    form.on('submit(create_apicase)', function (data) {
+						console.log(data.field);
+						var flag = "";
+						if('{{ system }}' == "erms"){
+						    flag = data.field.belong1
+						}else if('{{ system }}' == "tdr"){
+						    flag = data.field.belong
+						}else if('{{ system }}' == "tranfsfer"){
+						    flag = data.field.belong2
+						}
+                        $.ajax({
+                            cache: false,
+                            url: "/create_apicase/",
+                            dataType: 'text',
+                            type: 'POST',
+                            //async: false,
+                            data: {
+                                "belong": flag,
+                                "body": data.field.body,
+                                "casename": data.field.casename,
+                                "identity": data.field.identity,
+                                "method": data.field.method,
+                                "params": data.field.params,
+                                "system": data.field.system,
+                                "url": data.field.url,
+                                "head": data.field.head
+                            },
+                            beforeSend: function () {
+                                l_index = layer.load(0, {shade: [0.5, '#DBDBDB']});
+                            },
+                            success: function (data) {
+                                layer.msg(data, {
+                                    icon: 6,
+                                    offset: 't',
+                                });
+                                $(".layui-laypage-btn").click();
+                            },
+                            error: function (data) {
+                                console.log(data);
+                                layer.msg(data, {
+                                    icon: 5,
+                                    offset: 't',
+                                });
+                            },
+                            complete: function () {
+                                layer.close(l_index);
+                                layer.close(Create_apicase);
+                            }
+
+                        });
+                        return false;//阻止表单跳转
+                    });
+                });
+            }
+        });
+    }
+    //编辑用户信息
+    function loginuser() {
+        var update_userinfo_api = layer.open({
+            //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+            type: 1,
+            title: "编辑用户信息",
+            area: ['40%', ''],
+            shade: 0.6,
+            skin: "layui-layer-rim",
+            content: $("#popSearchRoleTest2").html(),
+            success: function () {
+                layui.use(['form',"jquery"], function () {
+                    var form = layui.form;
+                    	$=layui.$;
+                    form.val("update_userinfo_api", {
+                        "system":"{{ system }}",
+                        "username": "xieyunfeng@amberdata.cn",
+                        "password": "Y+zilsR88g9SZI8WOeHJlA=="
+                    });
+                    //监听编辑用户信息，
+					form.on('radio', function (data) {
+                        console.log(data.elem); //得到radio原始DOM对象
+                        console.log(data.value); //被点击的radio的value
+						if (data.value=="erms"){
+						    $(".erms").show();
+						    $(".transfer").hide();
+						    $(".tdr").hide();
+						}else if(data.value=="transfer"){
+						    $(".transfer").show();
+							$(".erms").hide();
+						    $(".tdr").hide();
+						}else if(data.value=="tdr"){
+						    $(".tdr").show();
+							$(".erms").hide();
+						    $(".transfer").hide();
+						}
+
+                    });
+                    form.on('submit(update_userinfo_api)', function (data) {
+                        $.ajax({
+                            cache: false,
+                            url: "/update_userinfo_api/",
+                            dataType: 'text',
+                            type: 'POST',
+                            //async: false,
+                            data: {
+                                "identity": data.field.identity,
+                                "username": data.field.username,
+                                "password": data.field.password
+                            },
+                            success: function (data) {
+                                layer.msg(data, {
+                                    icon: 6,
+                                    offset: 't',
+                                    anim: 2,
+                                });
+                            },
+                            error: function (data) {
+                                console.log(data);
+                                layer.msg(data, {
+                                    icon: 5,
+                                    offset: 't',
+                                    anim: 2,
+                                });
+                            },
+                            complete: function () {
+                                layer.close(update_userinfo_api)
+
+                            }
+                        });
+                        return false;//阻止表单跳转
+                    });
+
+
+                });
+            }
+        });
+
+    }
+	//获取用户信息
+    function get_user_info() {
+        var userinfo = layer.open({
+            type: 1,
+            title: "用户信息",
+            area: ['70%', "70%"],
+            skin: 'layui-layer-molv',
+            shade: 0.6,
+            content: '<div style="padding:15px;"><table id="templateTable"></table></div>',
+            success: function () {
+                var table = layui.table;
+                table.render({
+                    elem: '#templateTable'
+                    , url: "/get_userinfo/"
+                    //, limit: 11
+                    //, height: 'full-200'
+                    //,page:true
+                    , initSort:{
+                    	field:"system",
+                    	type:"desc"
+                    }
+					, size: 'lg'
+                    , cols: [[
+                        {field: 'identity', title: '用户身份',  align: "left"}
+                        , {field: 'role', title: '角色名',  align: "left"}
+                        , {field: 'username', title: '用户名',  align: "left"}
+                        , {field: 'password', title: '用户密码',  align: "left"}
+                        //, {field: 'url', title: '请求地址', width: 250, align: "left"}
+                        , {field: 'accessToken', title: '请求令牌', align: "left"}
+                        , {field: 'role', title: '角色名',  align: "left"}
+                        , {field: 'system', title: '所属系统', align: "left"}
+                    ]]
+                });
+            },
+            btn: ['关闭'],
+            yes: function () {
+                layer.close(userinfo);
+            }
+
+        });
+    }
+</script>
+<!--表头按钮 layui-btn-disabled-->
+<script type="text/html" id="toolbarDemo">
+	<div class="layui-btn-container">
+		<button type="button" onclick="selectRole()" class="layui-btn layui-btn-sm">新建用例</button>
+		<button type="button" onclick="loginuser()" class="layui-btn layui-btn-sm">用户信息</button>
+		<button class="layui-btn layui-btn-sm" lay-event="deletecase">批量删除</button>
+		<button id="Runcase" class="layui-btn layui-btn-sm" lay-event="runcase">执行用例</button>
+		<button id="Dingding" class="layui-btn layui-btn-sm" lay-event="dingding">钉钉通知</button>
+		<button class="layui-btn layui-btn-sm" lay-event="repeatrun">重复执行</button>
+	</div>
+</script>
+<!--行内按钮-->
+<script type="text/html" id="barDemo">
+	<a class="layui-icon layui-icon-edit"
+	   style="color:#797979;font-size: 20px;vertical-align:middle;font-weight: lighter;" lay-event="requestparams"></a>
+	<a class="layui-icon layui-icon-delete" lay-event="del"
+	   style="color: #797979;font-size: 20px;vertical-align:middle;font-weight: lighter;"></a>
+</script>
+<!--用例名字超链接模板-->
+<script type="text/html" id="casenameTpl">
+	<a href="/detail_api/?id={% verbatim %}{{d.caseid}}{% endverbatim %}" class="layui-table-link" target="_blank"
+	   style="color: blueviolet;">
+		{% verbatim %}{{d.casename}}{% endverbatim %}
+	</a>
+</script>
+<!--请求方式模板-->
+<script type="text/html" id="methodTpl">
+	{% verbatim %}{{#  if(d.method === 'get'){ }}{% endverbatim %}
+	<span style="color: mediumpurple;">{% verbatim %}GET{% endverbatim %}</span>
+
+	{% verbatim %}{{# } else if(d.method=== 'post') { }} {% endverbatim %}
+	<span style="color: yellowgreen;">{% verbatim %}POST{% endverbatim %}</span>
+
+	{% verbatim %}{{# } else if(d.method=== 'put') { }} {% endverbatim %}
+	<span style="color: #00b4ef;">{% verbatim %}PUT{% endverbatim %}</span>
+
+	{% verbatim %}{{# } else if(d.method=== 'delete' || d.method=== 'Delete' ) { }} {% endverbatim %}
+	<span style="color: deeppink;">{% verbatim %}DELETE{% endverbatim %}</span>
+
+	{% verbatim %}{{# } else if(d.method=== 'file' ) { }} {% endverbatim %}
+	<span style="color: yellowgreen;">{% verbatim %}FILE{% endverbatim %}</span>
+
+	{% verbatim %}{{# } else if(d.isMust.indexOf("false") != -1) { }} {% endverbatim %}
+	<span style="color: lightslategrey;">{% verbatim %}{{ d.isMust }}{% endverbatim %}</span>
+
+	{% verbatim %}{{# } else if(d.isMust.indexOf("true") != -1) { }} {% endverbatim %}
+	<span style="color: deeppink;">{% verbatim %}{{ d.isMust }}{% endverbatim %}</span>
+
+	{% verbatim %}{{#  } }}{% endverbatim %}
+</script>
+<!--用户身份模板-->
+<script type="text/html" id="identityTpl">
+	{% verbatim %}{{#  if(d.identity === 'sysadmin'){ }}{% endverbatim %}
+	<img src="../static/images/640-1.jpeg" class="layui-nav-img">
+
+	{% verbatim %}{{# } else if(d.identity=== 'admin') { }} {% endverbatim %}
+	<img src="../static/images/640-4.jpeg" class="layui-nav-img">
+
+	{% verbatim %}{{# } else if(d.identity=== 'ast') { }} {% endverbatim %}
+	<img src="../static/images/640-5.jpeg" class="layui-nav-img">
+
+	{% verbatim %}{{# } else if(d.identity=== 'transferadmin') { }} {% endverbatim %}
+	<img src="../static/images/640-2.jpeg" class="layui-nav-img">
+
+	{% verbatim %}{{# } else if(d.identity=== 'tdradmin') { }} {% endverbatim %}
+	<img src="../static/images/640-6.jpeg" class="layui-nav-img">
+	{% verbatim %}{{#  } }}{% endverbatim %}
+</script>
+<!--时间-->
+<script type="text/javascript">
+    layui.use('jquery', function () {
+        var $ = layui.$;
+        //建造实例
+        $('.app-header-menuicon').on('click', function () {
+            $('.header-down-nav').toggleClass('down-nav')
+        })
+    });
+    //获取系统时间
+    var newDate = '';
+    getLangDate();
+
+    //值小于10时，在前面补0
+    function dateFilter(date) {
+        if (date < 10) {
+            return "0" + date;
+        }
+        return date;
+    }
+
+    function getLangDate() {
+        var dateObj = new Date(); //表示当前系统时间的Date对象
+        var year = dateObj.getFullYear(); //当前系统时间的完整年份值
+        var month = dateObj.getMonth() + 1; //当前系统时间的月份值
+        var date = dateObj.getDate(); //当前系统时间的月份中的日
+        var day = dateObj.getDay(); //当前系统时间中的星期值
+        var weeks = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+        var week = weeks[day]; //根据星期值，从数组中获取对应的星期字符串
+        var hour = dateObj.getHours(); //当前系统时间的小时值
+        var minute = dateObj.getMinutes(); //当前系统时间的分钟值
+        var second = dateObj.getSeconds(); //当前系统时间的秒钟值
+        var timeValue = "" + ((hour >= 12) ? (hour >= 18) ? "晚上" : "下午" : "上午"); //当前时间属于上午、晚上还是下午
+        newDate = dateFilter(year) + "年" + dateFilter(month) + "月" + dateFilter(date) + "日 " + " " + dateFilter(hour) + ":" + dateFilter(minute) + ":" + dateFilter(second);
+        document.getElementById("nowTime").innerHTML = timeValue + "好！" + newDate + "　" + week;
+        setTimeout("getLangDate()", 1000);
+    }
+</script>
+</body>
+
+</html>
