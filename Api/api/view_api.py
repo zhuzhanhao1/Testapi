@@ -14,7 +14,7 @@ from django.http import HttpResponse, JsonResponse
 from Api.common.run_method import RequestMethod
 from Api.common.run_mehod_quick import RequestMethodQuick
 from Api.common.get_header import  GetToken
-from common.ding_ding import send_process_link,send_ding,send_image,send_api_link
+from common.ding_ding import send_process_link,send_api_link
 from Api.models import *
 
 
