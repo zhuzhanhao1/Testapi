@@ -14,7 +14,7 @@ from django.http import HttpResponse, JsonResponse
 from Api.common.run_method import RequestMethod
 from Api.common.run_mehod_quick import RequestMethodQuick
 from Api.common.get_header import  GetToken
-from common.ding_ding import send_ding,send_link
+from common.ding_ding import send_process_link,send_ding,send_image,send_api_link
 from Api.models import *
 
 
@@ -404,7 +404,7 @@ def delete_apicase_views(request):
         return HttpResponse("请求方式有误")
 
 #接口详情
-def detail_api_views(request):
+def get_apicase_details_views(request):
     res = request.GET.get("id","")
     if res:
         id = Case.objects.get(caseid=res)
@@ -655,48 +655,47 @@ def import_apicase_views(request):
 def ding_ding_view(request):
     ids = request.GET.get("caseid","").split(",")[:-1]
     isporcess = request.GET.get("isprocess","")
-    print(isporcess)
-    print(ids)
     for id in ids:
+        print(id)
         if isporcess == "no":
-            caseid = Case.objects.get(caseid=id)
+            data = Case.objects.get(caseid=id)
+            casename = data.casename
+            send_api_link(id, casename + "-/详情-->")
         elif isporcess == "yes":
-            caseid = Processapi.objects.get(caseid=id)
-        casename = caseid.casename
-        head = caseid.exceptres
-        if caseid.result:
-            res = json.loads(caseid.result)
-            result = [res]
-        else:
-            result = ""
-        if caseid.params:
-            par = json.loads(caseid.params)
-            params = [par]
-        else:
-            params= ""
-        if caseid.body:
-            bod = json.loads(caseid.body)
-            body = [bod]
-        else:
-            body=""
-        url = caseid.url
-        method = caseid.method
-        # error_content = json.loads(result)[casename]["message"]
-        # dic_json = casename + "错误提示为 : " + error_content
-        # dic = {casename:"error", "message":error_content}
-        dic = {
-            "InterfaceName":casename,
-            "Url": url,
-            "Method":method,
-            "Query":params,
-            "Body":body,
-            "Response":result
-        }
-        dic_json = json.dumps(dic, ensure_ascii=False, sort_keys=True, indent=2)
-        print(dic_json)
-
-        send_ding(dic_json,head)
-        send_link(id,"{"+casename+"-详情}-->")
+            data = Processapi.objects.get(caseid=id)
+            casename = data.casename
+            print(casename)
+            send_process_link(id, casename + "-/详情-->")
+        # head = data.exceptres
+        # if data.result:
+        #     res = json.loads(data.result)
+        #     result = [res]
+        # else:
+        #     result = ""
+        # if data.params:
+        #     par = json.loads(data.params)
+        #     params = [par]
+        # else:
+        #     params= ""
+        # if data.body:
+        #     bod = json.loads(data.body)
+        #     body = [bod]
+        # else:
+        #     body=""
+        # url = data.url
+        # method = data.method
+        # dic = {
+        #     "InterfaceName":casename,
+        #     "Url": url,
+        #     "Method":method,
+        #     "Query":params,
+        #     "Body":body,
+        #     "Response":result
+        # }
+        # dic_json = json.dumps(dic, ensure_ascii=False, sort_keys=True, indent=2)
+        # print(dic_json)
+        #
+        # send_ding(dic_json,head)
     return HttpResponse("操作成功")
 
 

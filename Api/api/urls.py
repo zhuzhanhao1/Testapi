@@ -35,7 +35,7 @@ urlpatterns = [
     url(r'^apiindex/$', apiindex_view),
     url(r'^apilist/$', apilist_view),
     #接口的查看详情-增删改
-    url(r'^detail_api/$',detail_api_views),
+    url(r'^get_apicase_details/$',get_apicase_details_views),
     url(r'^create_apicase/$', create_apicase_views),
     url(r'^del_apicase/$', delete_apicase_views),
     url(r'^update_apicase/$', update_apicase_views),
@@ -61,7 +61,7 @@ urlpatterns = [
     #流程测试-接口列表
     url(r'^processlist/$', processlist_view),
     #流程接口的查看详情-增删改
-    url(r'^detail_process_api/$',detail_process_api_views),
+    url(r'^get_processcase_details/$',get_processcase_details_views),
     url(r'^create_processcase/$', create_processcase_views),
     url(r'^del_processcase/$', delete_processcase_views),
     url(r'^update_processcase/$', update_processcase_views),
@@ -77,8 +77,7 @@ urlpatterns = [
     #流程结果
     url(r'^process_result/$', process_result_views),
     #流程结果列表
-    url(r'^process_result_list/$', process_result_list_views),
-
+    url(r'^process_result_list', process_result_list_views),
 
 
     # 测试系统V2版首页
@@ -100,8 +99,6 @@ urlpatterns = [
     url(r'^web_linktest/$', web_linktest_views),
     # 流程接口测试首页
     url(r'^web_process/$', web_process_views),
-
-
 
 
     #----------------------web url-----------------------------

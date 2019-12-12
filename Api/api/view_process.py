@@ -14,7 +14,7 @@ from django.http import HttpResponse, JsonResponse
 from Api.common.run_method import RequestMethod
 import pytz
 from Api.common.get_header import GetToken
-from common.ding_ding import send_ding, send_link
+from common.ding_ding import send_ding,send_api_link,send_process_link,send_image
 from Api.models import *
 
 currentUrl = os.path.dirname(__file__)
@@ -489,6 +489,8 @@ def run_processcase_views(request):
             d = {}
             d[casename] = response
             # json格式化
+            d["status_code"] = 200
+            d["casename"] = casename
             djson = json.dumps(d, ensure_ascii=False, sort_keys=True, indent=2)
             print(djson)
             if "身份认证失败" in djson:
@@ -688,7 +690,7 @@ def run_processcase_views(request):
             if "error" in djson and "timestamp" in djson or "异常的id为" in djson or "我所依赖的id为" in djson:
                 failed_num += 1
                 L.append(d)
-                process_ids.append(caseid)
+                process_ids.append(str(caseid))
                 print(process_ids)
 
             if "<" in djson or ">" in djson:
@@ -704,10 +706,13 @@ def run_processcase_views(request):
             num_progress = round(num/len(content) * 100,)
 
         dic = {}
-        dic["执行接口总数"] = len(content)
-        dic["通过接口数"] = len(content) - failed_num
-        dic["失败接口数"] = failed_num
-        dic["失败接口响应结果集"] = L
+        dic["content"] = len(content)
+        dic["pass"] = len(content) - failed_num
+        dic["errors"] = failed_num
+        # dic["失败接口响应结果集"] = L
+        errorids = ",".join(process_ids)
+        dic["errorids"] = errorids
+        dic["status_code"] = 201
         djson_new = json.dumps(dic, ensure_ascii=False, sort_keys=True, indent=2)
         return HttpResponse(djson_new)
 
@@ -727,7 +732,7 @@ def show_progress_views(request):
 
 #流程测试接口详情
 @login_required
-def detail_process_api_views(request):
+def get_processcase_details_views(request):
     res = request.GET.get("id", "")
     id = Processapi.objects.get(caseid=res)
     identity = id.identity
@@ -1462,14 +1467,18 @@ def process_result_list_views(request):
     caseids = request.GET.get("caseids", "")
     print(caseids)
     print(type(caseids))
+    caseids = caseids.split(",")
+    print(caseids)
     L = []
-    for i in json.loads(caseids):
+    for i in caseids:
         apilists = Processapi.objects.filter(Q(caseid=i) & Q(system="erms")).order_by("sortid")
         for weblist in apilists:
             data = {
+                "caseid":weblist.caseid,
                 "casename": weblist.casename,
                 "result": weblist.result,
-                "head": weblist.header
+                "head": weblist.header,
+                "duration": weblist.duration,
             }
             L.append(data)
     print(L)

@@ -19,7 +19,7 @@ def login_views(request):
         if user is not None and user.is_active:    #判断用户名和密码是否有效
             auth.login(request, user)
             request.session['user'] = username  #跨请求的保持user参数
-            response = HttpResponseRedirect('/welcome/')
+            response = HttpResponseRedirect('/web_index/')
             return response
         else:
             messages.add_message(request, messages.WARNING, '账户或者密码错误，请检查')

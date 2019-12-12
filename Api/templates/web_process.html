@@ -16,6 +16,9 @@
 	<script type="text/javascript" src="../static/js/cache.js"></script>
 
 	<style>
+		#layui-laypage-2{
+			left: 0px;
+		}
 		#casetitle {
 			font-size: 22px;
 			padding: 0px;
@@ -66,7 +69,9 @@
 			color: #fff;
 		}
 
-		.layui-table-page .layui-laypage {
+
+
+		#layui-table-page1 > .layui-laypage {
 			position: fixed;
 			right: 30px;
 		}
@@ -150,16 +155,14 @@
 		.layui-body {
 			left: 0px;
 		}
-		.layui-elem-quote{
-			margin-bottom:0px;
-			padding:10px;
+
+		.layui-elem-quote {
+			margin-bottom: 0px;
+			padding: 10px;
 			background: #ffffff;
 			margin-right: -70px;
 
 		}
-
-
-
 
 
 	</style>
@@ -663,34 +666,9 @@
 				</div>
 			</div>
 		</blockquote>
-{#		<div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="demo">#}
-{#			<div class="layui-progress-bar" lay-percent="0%"></div>#}
-{#		</div>#}
-	</div>
-</div>
-
-<!--响应结果-->
-<div class="layui-row" id="process_result" style="display: none;" >
-	<div class="layui-col-md11">
-		<blockquote class="layui-elem-quote">所属项目：ERMS数字档案室系统</blockquote>
-		<fieldset class="layui-elem-field">
-			<legend>执行结果</legend>
-			<div class="layui-field-box">
-				<label>用例总数：</label>
-				<span style="color: black" id="all_num">{{ dic.all_num }}</span>、
-				<label>成功的用例数：</label>
-				<span style="color: yellowgreen" id="success_num">{{ dic.success_num }}</span>、
-				<label>失败的用例数：</label>
-				<span style="color: red" id="fail_num">{{ dic.fail_num }}</span>
-			</div>
-		</fieldset>
-
-		<fieldset class="layui-elem-field layui-field-title">
-			<legend>执行完成的接口用例列表</legend>
-			<div class="layui-field-box" style="padding: 15px;">
-				<table class="layui-hide" id="test1" lay-filter="test"></table>
-			</div>
-		</fieldset>
+		{#		<div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="demo">#}
+		{#			<div class="layui-progress-bar" lay-percent="0%"></div>#}
+		{#		</div>#}
 	</div>
 </div>
 
@@ -1050,7 +1028,7 @@
                     ]
                 }
                 , {
-                    field: 'url', title: '请求路径', width: 250, align: "left", templet: function (res){
+                    field: 'url', title: '请求路径', width: 250, align: "left", templet: function (res) {
                         var a = res.url.split("/");
                         return '<span>' + a[a.length - 1] + '</span>'
                     }
@@ -1096,14 +1074,14 @@
                             //} else if (res.result.indexOf("A.响应时长") != -1) {
                             //let a = JSON.parse(res.result)[res.casename];
                             //return '<span style="color: cornflowerblue;">' + JSON.stringify(a) + '</span>'
-                            } else if(res.result != ""){
-                            	let a = JSON.parse(res.result)[res.casename];
-                            	return '<span>' + JSON.stringify(a) + '</span>'
-                        	} else {
-                            	return '<span>' + res.result + '</span>'
-                        	}
-                    	}
-                	}
+                        } else if (res.result != "") {
+                            let a = JSON.parse(res.result)[res.casename];
+                            return '<span>' + JSON.stringify(a) + '</span>'
+                        } else {
+                            return '<span>' + res.result + '</span>'
+                        }
+                    }
+                }
                 , {field: 'head', title: '负责人', width: 80, align: "left", event: "head"}//merge: true行合并
 
             ]]
@@ -1287,7 +1265,7 @@
                                 if (data.length > 1) {
                                     document.getElementById("Runcase").setAttribute("disabled", true);
                                     document.getElementById("Runcase").innerHTML = "loading...";
-									l_index = layer.msg('执行接口中，小伙伴请稍候~~', {icon: 16, time: false, shade: 0.5});
+                                    l_index = layer.msg('执行接口中，小伙伴请稍候~~', {icon: 16, time: false, shade: 0.5});
                                     //l_index = layer.load(0, {shade: [0.5, '#DBDBDB']}); //0.1透明度的白色背景
                                     var process = layer.open({
                                         type: 1,
@@ -1301,42 +1279,41 @@
                                             layui.use('element', function () {
                                                 var $ = layui.jquery
                                                     , element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
-                                                console.log("come in ");
                                                 var sitv = setInterval(function () {
                                                     //var prog_url = '/show_progress/';      // prog_url指请求进度的url，后面会在django中设置
                                                     //$.getJSON('/show_progress/', function (num_progress) {
-                                                        //console.log(num_progress);
-                                                        //element.progress('demo', num_progress + '%');
+                                                    //console.log(num_progress);
+                                                    //element.progress('demo', num_progress + '%');
                                                     //});
-													$.ajax({
-														cache: false,
-														url: "/show_progress/",
-														dataType: 'JSON',
-														type: 'GET',
-														//async: false,
-														data: {},
-														success: function (num_progress) {
-															console.log(num_progress);
-															element.progress('demo', num_progress + '%');
-															if(num_progress>33 && num_progress<66){
-																$(".layui-progress-bar").addClass("layui-bg-orange");
-															}else if(num_progress>=66 && num_progress<100){
-																$(".layui-progress-bar").removeClass("layui-bg-orange");
-																$(".layui-progress-bar").addClass("layui-bg-red");
-															}else if (num_progress == "100") {
-																$(".layui-progress-bar").removeClass("layui-bg-red");
-																clearInterval(sitv);
-																layer.close(process);
-															}
-														},
-														error: function (data) {
-															console.log(data);
-															layer.msg(data, {
-																offset: 't',
-																icon: 5
-															});
-														}
-													});
+                                                    $.ajax({
+                                                        cache: false,
+                                                        url: "/show_progress/",
+                                                        dataType: 'JSON',
+                                                        type: 'GET',
+                                                        //async: false,
+                                                        data: {},
+                                                        success: function (num_progress) {
+                                                            console.log(num_progress);
+                                                            element.progress('demo', num_progress + '%');
+                                                            if (num_progress > 33 && num_progress < 66) {
+                                                                $(".layui-progress-bar").addClass("layui-bg-orange");
+                                                            } else if (num_progress >= 66 && num_progress < 100) {
+                                                                $(".layui-progress-bar").removeClass("layui-bg-orange");
+                                                                $(".layui-progress-bar").addClass("layui-bg-red");
+                                                            } else if (num_progress == "100") {
+                                                                $(".layui-progress-bar").removeClass("layui-bg-red");
+                                                                clearInterval(sitv);
+                                                                layer.close(process);
+                                                            }
+                                                        },
+                                                        error: function (data) {
+                                                            console.log(data);
+                                                            layer.msg(data, {
+                                                                offset: 't',
+                                                                icon: 5
+                                                            });
+                                                        }
+                                                    });
 
                                                 }, 250);// 每10毫秒查询一次后台进度
                                             });
@@ -1350,29 +1327,225 @@
 
                             },
                             success: function (data) {
-                                if (data.status_code == 500) {
-                                    layer.msg(data.msg, {icon: 5, offset: "t"});
-                                } else if (data.status_code == 401) {
-                                    layer.msg(data.msg, {icon: 5, offset: "t"});
-                                } else if (data.status_code == 402) {
-                                    console.log(data);
-                                    console.log(typeof (data));
-                                    layer.open({
+                                console.log(data.status_code);
+                                console.log(typeof (data.status_code));
+                                if (data.status_code == 201) {
+                                    console.log("我先进来的");
+									let content = data.content;
+                                    let failcases = data.errorids;
+                                    let pass = data.pass;
+                                    let errors = data.errors;
+                                    var result = layer.open({
                                         type: 1,
                                         title: false,
-                                        //shadeClose: true,
                                         shade: false,
-                                        //zIndex: layer.zIndex,
-                                        //maxmin: true, //开启最大化最小化按钮
-                                        area: ['90%', '90%'],
-                                        content: $("#process_result").html(),
-                                        success: function () {
-                                            $("#all_num").val(data.all_num);
+                                        area: ['80%', '80%'],
+                                        //content: $("#process_result").html(),
+                                        content: '<div style="padding:15px;">' +
+											//'<blockquote class="layui-elem-quote">所属项目：ERMS数字档案室系统</blockquote>'+
+                                            '<fieldset class="layui-elem-field">' +
+                                            '<legend>执行结果</legend>' +
+                                            '<div class="layui-field-box">' +
+                                            '<label>用例总数：</label>' +
+                                            '<span style="color: blue" id="all_num"></span>、' +
+                                            '<label>成功的用例数：</label>' +
+                                            '<span style="color: yellowgreen" id="success_num"></span>、' +
+                                            '<label>失败的用例数：</label>' +
+                                            '<span style="color: red" id="fail_num"></span>' +
+                                            '</div>' +
+                                            '</fieldset>' +
+                                            '<fieldset class="layui-elem-field layui-field-title">' +
+                                            '<legend>执行失败的接口用例列表</legend>' +
+                                            '<div class="layui-field-box" style="padding: 15px;">' +
+                                            '<table class="layui-hide" id="templateTable"  lay-filter="templateTable"></table>' +
+                                            '</div>' +
+                                            '</fieldset>' +
+                                            '</div>',
+                                        success: function (data) {
+                                            document.getElementById("all_num").innerText = content;
+                                            $("#success_num").html(pass);
+                                            $("#fail_num").html(errors);
+                                            var myTable = table.render({
+                                                elem: '#templateTable'
+                                                , url: '/process_result_list/'
+                                                , page: true
+                                                , toolbar: '#resultDemo'
+                                                //, height: 'full-20'
+                                                , limit: 10
+                                                , cols: [[
+                                                    {type: 'checkbox'}
+                                                    , {field: 'casename', title: '接口名称', align: "left"}
+                                                    , {
+                                                        field: 'duration', width: 100, title: '响应时长', align: "left",
+                                                        templet: function (res) {
+                                                            if (res.duration < 1) {
+                                                                let a = String(res.duration * 1000) + "毫秒";
+                                                                return '<span>' + a + '</span>'
+                                                            } else if (res.duration >= 1 && res.duration < 3) {
+                                                                let b = String(res.duration) + "秒";
+                                                                return '<span style="color: cornflowerblue;">' + b + '</span>'
+                                                            } else {
+                                                                let b = String(res.duration) + "秒";
+                                                                return '<span style="color: deeppink;">' + b + '</span>'
+                                                            }
+                                                        }
+                                                    }
+                                                    , {
+                                                        field: 'result',
+                                                        title: '响应结果',
+                                                        align: "left",
+                                                        event: "detail",
+                                                        templet: function (res) {
+                                                            if (res.result.indexOf("message") != -1 && res.result.indexOf("error") != -1 && res.result.indexOf(res.casename) != -1) {
+                                                                var a = res.casename;
+                                                                var b = JSON.parse(res.result);
+                                                                return '<span style="color: red;">' + JSON.stringify(b[a]["message"]) + '</span>'
+                                                            } else if (res.result != "") {
+                                                                let a = JSON.parse(res.result)[res.casename];
+                                                                return '<span>' + JSON.stringify(a) + '</span>'
+                                                            } else {
+                                                                return '<span>' + res.result + '</span>'
+                                                            }
+                                                        }
+                                                    }
+                                                    , {field: 'head', width: 90, title: '负责人', align: "left"}
+                                                ]]
+                                                , where: {
+                                                    caseids: failcases
+                                                }
+                                            });
+                                            //头工具栏事件
+                                            table.on('toolbar(templateTable)', function (obj) {
+                                                var checkStatus = table.checkStatus(obj.config.id);
+                                                //console.log(checkStatus);
+                                                switch (obj.event) {
+                                                    //发送钉钉消息
+                                                    case 'dingding':
+                                                        var data = checkStatus.data;
+                                                        console.log(data);
+                                                        if (data.length == 0) {
+                                                            layer.close(index);
+                                                            layer.msg("请先选中需要发送的接口", {
+                                                                icon: 2,
+                                                                offset: "t"
+                                                            });
+                                                        } else {
+                                                            layer.confirm("你确定要发送接口请求结果给相应的负责人吗？\n注意:请求正常发送所有结果信息，请求失败发送错误内容", {
+                                                                    icon: 3,
+                                                                    btn: ["确定", "取消"]
+                                                                }, function () {
+                                                                    var ids = "";
+                                                                    for (i = 0; i < data.length; i++) {
+                                                                        ids += data[i]["caseid"] + ",";
+                                                                        console.log(ids);
+                                                                    }
+                                                                    $.ajax({
+                                                                        cache: false,
+                                                                        url: "/ding_ding/",
+                                                                        dataType: 'text',
+                                                                        type: 'GET',
+                                                                        //async: false,
+                                                                        data: {
+                                                                            "caseid": ids,
+                                                                            "isprocess": "yes"
+                                                                        },
+                                                                        //请求前的处理,加载loading
+                                                                        beforeSend: function () {
+                                                                            document.getElementById("Dingding").setAttribute("disabled", true);
+                                                                            document.getElementById("Dingding").innerHTML = "loading...";
+                                                                            l_index = layer.msg('发送钉钉中，小伙伴请稍候~~', {
+                                                                                icon: 16,
+                                                                                time: false,
+                                                                                shade: 0.5
+                                                                            });
+                                                                            //l_index = layer.load(0, {shade: [0.5, '#DBDBDB']}); //0.1透明度的白色背景
+                                                                        },
+                                                                        success: function (data) {
+                                                                            console.log(data);
+                                                                            layer.msg(data, {
+                                                                                icon: 6,
+                                                                                offset: 't',
+                                                                            });
+
+                                                                        },
+                                                                        error: function (data) {
+                                                                            console.log(data);
+                                                                            layer.msg(data, {
+                                                                                icon: 5,
+                                                                                offset: 't',
+                                                                                anim: 6
+                                                                            });
+                                                                        },
+                                                                        complete: function () {
+                                                                            document.getElementById("Dingding").removeAttribute("disabled");
+                                                                            document.getElementById("Dingding").innerHTML = "钉钉通知";
+                                                                            layer.close(l_index);
+                                                                        }
+                                                                    });
+
+                                                                }, function () {
+                                                                    layer.msg(
+                                                                        "取消发送钉钉消息",
+                                                                        {icon: 1, offset: "t"}
+                                                                    );
+                                                                }
+                                                            );
+                                                        }
+                                                        break;
+                                                }
+
+                                            });
+                                            //监听行工具事件
+                                            table.on('tool(templateTable)', function (obj) {
+                                                var data = obj.data;
+                                                //console.log(obj);
+                                                if (obj.event === 'detail') {
+                                                    console.log(data.result);
+                                                    //var strjson = JSON.parse(data.result);
+                                                    layer.prompt({
+                                                        formType: 2,//多行文本
+                                                        value: data.result,
+                                                        shade: false,
+                                                        title: data.casename + "响应结果",
+                                                        maxmin: true,
+                                                        skin: "layui-layer-rim",//hui
+                                                        closeBtn: 0,
+                                                        zIndex: layer.zIndex,
+                                                        area: ['750px', '500px'], //自定义文本域宽高
+                                                        btn: ["点我查看详情", "关闭"],
+                                                        yes: function () {
+                                                            var index = layer.open({
+                                                                type: 2,
+                                                                title: data.casename + "详细信息",
+                                                                //shadeClose: true,
+                                                                shade: false,
+                                                                zIndex: layer.zIndex,
+                                                                maxmin: true, //开启最大化最小化按钮
+                                                                area: ['600px', '1200px'],
+                                                                content: "/detail_process_api/?id=" + data.caseid,
+                                                            });
+                                                            layer.full(index);
+                                                        },
+                                                        btn2: function (index) {
+                                                            layer.close(index);
+                                                        }
+                                                    });
+                                                }
+
+                                            });
+                                        },
+                                        btn: ['关闭'],
+                                        yes: function () {
+                                            layer.close(result);
+                                            $(".layui-laypage-btn").click();
                                         }
                                     });
-                                } else {
-                                    var strjson = JSON.stringify(data, null, 4);
-                                    console.log(strjson);
+
+                                } else if(data.status_code == 200){
+                                    console.log("我后进来的");
+                                    console.log(data.casename);
+                                    let name = data.casename;
+                                    var strjson = JSON.stringify(data[name], null, 4);
                                     layer.prompt({
                                         formType: 2,//多行文本
                                         value: strjson,
@@ -1393,22 +1566,21 @@
                                                 shade: false,
                                                 zIndex: layer.zIndex,
                                                 maxmin: true, //开启最大化最小化按钮
-                                                area: ['70%', '80%'],
+                                                area: ['893px', '600px'],
                                                 content: 'https://www.json.cn',
                                                 success: function () {
                                                     layer.setTop(layero);
                                                 }
                                             });
+
                                         },
                                         btn2: function (index, layro) {//这里就是你要的
                                             layer.close(index);
-                                            //layer.closeAll();
                                             $(".layui-laypage-btn").click();
                                         },
-                                        area: ['700px', '600px'] //自定义文本域宽高
+                                        area: ['700px', '500px'] //自定义文本域宽高
                                     });
                                 }
-
                             },
                             error: function (data) {
                                 console.log("请求失败" + data);
@@ -1741,16 +1913,16 @@
                                                                 var prog_url = '/show_progress/';      // prog_url指请求进度的url，后面会在django中设置
                                                                 $.getJSON(prog_url, function (num_progress) {
                                                                     element.progress('demo', num_progress + '%');
-																	if(num_progress>33 && num_progress<66){
-																		$(".layui-progress-bar").addClass("layui-bg-orange");
-																	}else if(num_progress>=66 && num_progress<100){
-																		$(".layui-progress-bar").removeClass("layui-bg-orange");
-																		$(".layui-progress-bar").addClass("layui-bg-red");
-																	}else if (num_progress == "100") {
-																	    $(".layui-progress-bar").removeClass("layui-bg-red");
-																		clearInterval(sitv);
-																		layer.close(process);
-																	}
+                                                                    if (num_progress > 33 && num_progress < 66) {
+                                                                        $(".layui-progress-bar").addClass("layui-bg-orange");
+                                                                    } else if (num_progress >= 66 && num_progress < 100) {
+                                                                        $(".layui-progress-bar").removeClass("layui-bg-orange");
+                                                                        $(".layui-progress-bar").addClass("layui-bg-red");
+                                                                    } else if (num_progress == "100") {
+                                                                        $(".layui-progress-bar").removeClass("layui-bg-red");
+                                                                        clearInterval(sitv);
+                                                                        layer.close(process);
+                                                                    }
                                                                 });
                                                             }, 250);// 每10毫秒查询一次后台进度
                                                         });
@@ -2334,9 +2506,9 @@
                     var form = layui.form,
                         $ = layui.$;
                     //监听token信息，
-                    form.val("update_token_api",{
-                        "system":'{{ system }}'
-					});
+                    form.val("update_token_api", {
+                        "system": '{{ system }}'
+                    });
                     form.on('radio', function (data) {
                         console.log(data.elem); //得到radio原始DOM对象
                         console.log(data.value); //被点击的radio的value
@@ -2609,7 +2781,11 @@
 
 </script>
 
-
+<script type="text/html" id="resultDemo">
+	<div class="layui-btn-container">
+		<button  class="layui-btn layui-btn-sm" lay-event="dingding">钉钉通知</button>
+	</div>
+</script>
 <!--表头按钮-->
 <script type="text/html" id="toolbarDemo">
 	<div class="layui-btn-container">
@@ -2634,7 +2810,7 @@
 </script>
 <!--用例名字超链接模板-->
 <script type="text/html" id="casenameTpl">
-	<a href="/detail_process_api/?id={% verbatim %}{{d.caseid}}{% endverbatim %}" class="layui-table-link"
+	<a href="/get_processcase_details/?id={% verbatim %}{{d.caseid}}{% endverbatim %}" class="layui-table-link"
 	   target="_blank" style="color: blueviolet;">
 		{% verbatim %}{{d.casename}}{% endverbatim %}
 	</a>
