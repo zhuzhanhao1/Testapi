@@ -1465,35 +1465,35 @@ def run_apicase(start,end,content):
 @login_required
 def process_result_list_views(request):
     caseids = request.GET.get("caseids", "")
-    print(caseids)
-    print(type(caseids))
-    caseids = caseids.split(",")
-    print(caseids)
-    L = []
-    for i in caseids:
-        apilists = Processapi.objects.filter(Q(caseid=i) & Q(system="erms")).order_by("sortid")
-        for weblist in apilists:
-            data = {
-                "caseid":weblist.caseid,
-                "casename": weblist.casename,
-                "result": weblist.result,
-                "head": weblist.header,
-                "duration": weblist.duration,
-            }
-            L.append(data)
-    print(L)
-    print("此模块的用例个数为:" + str(len(L)))
-    pageindex = request.GET.get('page', "")
-    pagesize = request.GET.get("limit", "")
-    pageInator = Paginator(L, pagesize)
-    # 分页
-    contacts = pageInator.page(pageindex)
-    res = []
-    for contact in contacts:
-        res.append(contact)
-    datas = {"code": 0, "msg": "", "count": len(L), "data": res}
-    return JsonResponse(datas)
-
+    if caseids:
+        caseids = caseids.split(",")
+        L = []
+        for i in caseids:
+            apilists = Processapi.objects.filter(Q(caseid=i) & Q(system="erms")).order_by("sortid")
+            for weblist in apilists:
+                data = {
+                    "caseid":weblist.caseid,
+                    "casename": weblist.casename,
+                    "result": weblist.result,
+                    "head": weblist.header,
+                    "duration": weblist.duration,
+                }
+                L.append(data)
+        print(L)
+        print("此模块的用例个数为:" + str(len(L)))
+        pageindex = request.GET.get('page', "")
+        pagesize = request.GET.get("limit", "")
+        pageInator = Paginator(L, pagesize)
+        # 分页
+        contacts = pageInator.page(pageindex)
+        res = []
+        for contact in contacts:
+            res.append(contact)
+        datas = {"code": 0, "msg": "", "count": len(L), "data": res}
+        return JsonResponse(datas)
+    else:
+        datas = {"code": 0, "msg": "", "count": 0, "data": []}
+        return JsonResponse(datas)
 
 
 

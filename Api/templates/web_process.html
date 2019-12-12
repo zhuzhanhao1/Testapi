@@ -1581,6 +1581,12 @@
                                         area: ['700px', '500px'] //自定义文本域宽高
                                     });
                                 }
+                                else if(data.status_code == 500 || data.status_code == 401){
+                                    layer.msg(data.msg, {
+										icon: 5,
+										offset: 't',
+                                });
+								}
                             },
                             error: function (data) {
                                 console.log("请求失败" + data);
